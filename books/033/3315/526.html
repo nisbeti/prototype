@@ -103,6 +103,20 @@
       if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
       if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
       if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
       // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
       if (language !== 'en') {
         root.setAttribute('data-translating', '');

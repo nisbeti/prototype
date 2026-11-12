@@ -1,0 +1,799 @@
+/*
+  The static reader's one stylesheet (docs/static-reader-plan.md). Plain CSS, as the edition has no build step of its
+  own: the colours follow the site's (Tailwind's zinc, green, red, sky, amber and emerald), light and dark, and every
+  font is in assets/fonts so nothing is fetched.
+*/
+
+@font-face {
+  font-family: 'Amiri';
+  font-weight: 400;
+  src: url('fonts/amiri-arabic-400-normal.woff2') format('woff2');
+  unicode-range:
+    U+0600-06FF, U+0750-077F, U+0870-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FEFC;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Amiri';
+  font-weight: 700;
+  src: url('fonts/amiri-arabic-700-normal.woff2') format('woff2');
+  unicode-range:
+    U+0600-06FF, U+0750-077F, U+0870-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FEFC;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Amiri';
+  font-weight: 400;
+  src: url('fonts/amiri-latin-400-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Amiri';
+  font-weight: 700;
+  src: url('fonts/amiri-latin-700-normal.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  font-weight: 400;
+  src: url('fonts/noto-naskh-arabic-arabic-400-normal.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Naskh Arabic';
+  font-weight: 700;
+  src: url('fonts/noto-naskh-arabic-arabic-700-normal.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  font-weight: 400;
+  src: url('fonts/noto-sans-arabic-arabic-400-normal.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  font-weight: 700;
+  src: url('fonts/noto-sans-arabic-arabic-700-normal.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Amiri Quran';
+  src: url('fonts/amiri-quran-arabic-400-normal.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'KFGQPC Uthmanic Hafs';
+  src: url('fonts/uthmanic-hafs.woff2') format('woff2');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IndoPak Nastaleeq';
+  src: url('fonts/indopak-nastaleeq.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* Noto Naskh Arabic stands behind Amiri for the honorific ligatures (U+FD40–FD4F) Amiri has no glyph for. */
+:root {
+  --font-arabic: Amiri, 'Noto Naskh Arabic', serif;
+  --font-ui: system-ui, -apple-system, 'Segoe UI', Roboto, var(--font-arabic), sans-serif;
+  --background: #fff;
+  --surface: #fafafa;
+  --text: #27272a;
+  --muted: #71717a;
+  --border: #e4e4e7;
+  --accent: #0369a1;
+  --button: #f4f4f5;
+  --green: #166534;
+  --red: #991b1b;
+  --sky: #075985;
+  --grey: #27272a;
+  --yellow: #854d0e;
+  --tint-passage: rgb(186 230 253 / 40%);
+  --tint-passage-deep: rgb(186 230 253 / 70%);
+  --tint-hadith: rgb(167 243 208 / 40%);
+  --tint-hadith-deep: rgb(167 243 208 / 70%);
+  --tint-verse: rgb(253 230 138 / 40%);
+  --tint-verse-deep: rgb(253 230 138 / 70%);
+  --tint-matn: rgb(209 250 229 / 45%);
+  --ayah-mark: #b45309;
+  color-scheme: light;
+}
+
+:root.dark {
+  --background: #18181b;
+  --surface: #27272a;
+  --text: #f4f4f5;
+  --muted: #a1a1aa;
+  --border: #3f3f46;
+  --accent: #38bdf8;
+  --button: #3f3f46;
+  --green: #22c55e;
+  --red: #f87171;
+  --sky: #0ea5e9;
+  --grey: #a1a1aa;
+  --yellow: #ca8a04;
+  --tint-passage: rgb(7 89 133 / 40%);
+  --tint-passage-deep: rgb(7 89 133 / 70%);
+  --tint-hadith: rgb(6 95 70 / 40%);
+  --tint-hadith-deep: rgb(6 95 70 / 70%);
+  --tint-verse: rgb(120 53 15 / 40%);
+  --tint-verse-deep: rgb(120 53 15 / 70%);
+  --tint-matn: rgb(6 78 59 / 30%);
+  --ayah-mark: #f59e0b;
+  color-scheme: dark;
+}
+
+:root[data-arabic-font='naskh'] {
+  --font-arabic: 'Noto Naskh Arabic', serif;
+}
+
+:root[data-arabic-font='sans'] {
+  --font-arabic: 'Noto Sans Arabic', 'Noto Naskh Arabic', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: var(--font-ui);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[lang='ar'],
+:lang(ar),
+:lang(ur) {
+  font-family: var(--font-arabic);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  padding: 0.75rem 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.site-name {
+  font-family: var(--font-arabic);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.site-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+}
+
+.site-main {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 1.25rem 16px 4rem;
+}
+
+.page-title {
+  margin: 0 0 0.25rem;
+  font-size: 1.75rem;
+  line-height: 1.4;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.translated-only:empty {
+  display: none;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--button);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.button:hover {
+  text-decoration: none;
+  filter: brightness(0.97);
+}
+
+.button.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.button.small {
+  padding: 0.15rem 0.5rem;
+  font-size: 0.8rem;
+}
+
+.button[aria-pressed='true'] {
+  outline: 2px solid var(--accent);
+}
+
+.link-button {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+  gap: 0.75rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tiles a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.tiles a span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.panel {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.panel h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+}
+
+.book-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.book-head-text {
+  flex: 1 1 18rem;
+  min-width: 0;
+}
+
+.cover {
+  width: 9rem;
+  max-width: 40%;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+}
+
+.credits {
+  margin: 0.35rem 0;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+  margin-top: 1rem;
+}
+
+.book-card {
+  margin: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.book-card div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.5rem;
+}
+
+.book-card dt {
+  color: var(--muted);
+}
+
+.book-card dt::after {
+  content: ':';
+}
+
+.book-card dd {
+  margin: 0;
+}
+
+.plain {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.absent {
+  color: var(--muted);
+  cursor: default;
+}
+
+.contents {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.15rem;
+}
+
+.contents li {
+  padding-inline-start: calc(var(--depth, 0) * 1.25rem);
+  padding-block: 0.15rem;
+}
+
+.card-text {
+  font-size: 1.25rem;
+  line-height: 2;
+}
+
+/* Tables: sortable by their headings, and narrowed by an A–Z bar above them. */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.table th,
+.table td {
+  padding: 0.45rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table th[data-sort] {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.table th[aria-sort='ascending']::after {
+  content: ' ▲';
+}
+
+.table th[aria-sort='descending']::after {
+  content: ' ▼';
+}
+
+.az {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  margin: 1rem 0;
+}
+
+.az button {
+  min-width: 2rem;
+  padding: 0.2rem 0.4rem;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  background: var(--button);
+  color: var(--text);
+  font-family: var(--font-arabic);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.az button[aria-pressed='true'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* The reader. */
+.reader-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.reader-title {
+  flex: 1 1 14rem;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.reader-title strong {
+  font-size: 1.2rem;
+}
+
+.reader-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.reader {
+  touch-action: pan-y;
+}
+
+.page-text {
+  font-family: var(--font-arabic);
+  font-size: clamp(1.25rem, 3.6vw, 1.6rem);
+  line-height: 2.1;
+  text-align: justify;
+  overflow-wrap: anywhere;
+}
+
+.page-text p {
+  margin: 0 0 0.6em;
+}
+
+.page-text hr {
+  margin-block: 1.25em;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+.text-green-800 {
+  color: var(--green);
+}
+
+.text-red-800 {
+  color: var(--red);
+}
+
+.text-sky-800 {
+  color: var(--sky);
+}
+
+.text-zinc-800 {
+  color: var(--grey);
+}
+
+.text-yellow-800 {
+  color: var(--yellow);
+}
+
+.footnote-mark {
+  color: var(--green);
+  font-size: 0.65em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+.footnote-number {
+  color: var(--green);
+  font-size: 0.75em;
+}
+
+.page-text .hadith {
+  background-color: var(--tint-matn);
+  border-radius: 0.25rem;
+}
+
+/* A passage the page shares with other books: an ayah in amber, a hadith in green and any other in blue, deeper where more than one covers the words. */
+.page-text .passage {
+  cursor: pointer;
+  border-radius: 0.25rem;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  background-color: var(--tint-passage);
+}
+
+.page-text .passage[data-deep] {
+  background-color: var(--tint-passage-deep);
+}
+
+.page-text .passage[data-kind='hadith'] {
+  background-color: var(--tint-hadith);
+}
+
+.page-text .passage[data-kind='hadith'][data-deep] {
+  background-color: var(--tint-hadith-deep);
+}
+
+.page-text .passage[data-kind='verse'] {
+  background-color: var(--tint-verse);
+}
+
+.page-text .passage[data-kind='verse'][data-deep] {
+  background-color: var(--tint-verse-deep);
+}
+
+.page-text .passage:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+:root[data-hide-passages] .page-text .passage[data-kind='passage'] {
+  background-color: transparent;
+  cursor: auto;
+}
+
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  position: sticky;
+  bottom: 0;
+  padding: 0.6rem 0;
+  background: var(--background);
+  border-top: 1px solid var(--border);
+}
+
+.page-number {
+  color: var(--muted);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* The sheet a passage, an ayah or a card opens in. */
+.sheet {
+  width: min(40rem, calc(100vw - 32px));
+  max-height: 80vh;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--background);
+  color: var(--text);
+}
+
+.sheet::backdrop {
+  background: rgb(0 0 0 / 40%);
+}
+
+.sheet-head {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.sheet-body {
+  padding: 1rem;
+}
+
+.sheet-quote {
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--surface);
+  font-family: var(--font-arabic);
+  font-size: 1.2rem;
+  line-height: 2;
+}
+
+.sheet-rows {
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.sheet-rows li {
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet-rows .editions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  font-size: 0.9rem;
+}
+
+/* The Qur'an. */
+.surah-list {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 0.5rem;
+}
+
+.surah-list a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.surah-number {
+  color: var(--muted);
+  min-width: 1.75rem;
+}
+
+.surah-name {
+  font-size: 1.3rem;
+}
+
+.quran-reader {
+  max-width: 56rem;
+  margin: 0 auto;
+}
+
+.quran-text {
+  font-family: 'KFGQPC Uthmanic Hafs', 'Amiri Quran', serif;
+  font-size: clamp(1.55rem, 4.4vw, 2.2rem);
+  line-height: 2.3;
+  text-align: justify;
+  text-align-last: right;
+}
+
+.quran-text.basmalah {
+  text-align: center;
+  text-align-last: center;
+}
+
+.when-uthmani,
+.when-amiri,
+.when-indopak {
+  display: none;
+}
+
+:root:not([data-quran-font]) .when-uthmani,
+:root[data-quran-font='uthmani'] .when-uthmani,
+:root[data-quran-font='amiri'] .when-amiri,
+:root[data-quran-font='indopak'] .when-indopak {
+  display: inline;
+}
+
+:root[data-quran-font='amiri'] .quran-text {
+  font-family: 'Amiri Quran', Amiri, serif;
+}
+
+:root[data-quran-font='indopak'] .quran-text {
+  font-family: 'IndoPak Nastaleeq', 'Amiri Quran', serif;
+  font-size: clamp(1.7rem, 4.8vw, 2.4rem);
+}
+
+.quran-ayah {
+  scroll-margin-top: 6rem;
+  border-radius: 0.375rem;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.quran-ayah:target,
+.quran-ayah[data-playing] {
+  background-color: var(--tint-verse);
+}
+
+.ayah-linked {
+  cursor: pointer;
+  text-decoration: underline dotted var(--muted);
+  text-underline-offset: 0.4em;
+}
+
+.ayah-mark {
+  color: var(--ayah-mark);
+  white-space: nowrap;
+  cursor: pointer;
+  border-radius: 0.25rem;
+}
+
+.ayah-mark-hafs {
+  position: relative;
+  display: inline-block;
+}
+
+.ayah-mark-hafs .ayah-digits {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.5em;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Settings. */
+.settings {
+  display: grid;
+  gap: 1rem;
+  max-width: 28rem;
+  margin-top: 1.5rem;
+}
+
+.settings label {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.settings label.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.settings select {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--background);
+  color: var(--text);
+  font: inherit;
+}
+
+@media (max-width: 40rem) {
+  .site-nav {
+    font-size: 0.95rem;
+  }
+
+  .table {
+    font-size: 0.85rem;
+  }
+}

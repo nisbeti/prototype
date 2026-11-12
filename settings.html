@@ -1,0 +1,220 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root=""
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  />
+  <title>Settings</title>
+  <link
+    rel="stylesheet"
+    href="assets/reader.css"
+  />
+  <script src="assets/i18n.js"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = languages[language] ? languages[language].dir : 'rtl';
+      var theme = get('theme');
+      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        root.classList.add('dark');
+      }
+      root.dataset.arabicFont = get('arabicFont') || 'amiri';
+      root.dataset.quranFont = get('quranFont') || 'uthmani';
+      if (get('passages') === 'off') {
+        root.dataset.hidePassages = '';
+      }
+    })();
+  </script>
+  <script
+    src="assets/reader.js"
+    defer
+  ></script>
+</head>
+<body>
+  <header class="site-header">
+    <a
+      class="site-name"
+      href="index.html"
+      lang="ar"
+    >
+      باحث
+    </a>
+    <nav class="site-nav">
+      <a href="books.html"><span data-t="Books">Books</span></a>
+      <a href="catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
+      <a href="authors.html"><span data-t="Authors">Authors</span></a>
+      <a href="publishers.html"><span data-t="Publishers">Publishers</span></a>
+      <a href="quran/index.html"><span data-t="Quran">Quran</span></a>
+      <a
+        href="settings.html"
+        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+      >
+        ⚙
+      </a>
+    </nav>
+  </header>
+
+  <main class="site-main">
+      <h1 class="page-title"><span data-t="Settings">Settings</span></h1>
+  <p class="muted"><span data-t="These are kept in this browser only. There is no account, so another browser or computer starts with the defaults.">These are kept in this browser only. There is no account, so another browser or computer starts with the defaults.</span></p>
+
+  <form
+    class="settings"
+    data-settings
+  >
+    <label>
+      <span><span data-t="Language">Language</span></span>
+      <select
+        name="language"
+        data-language-options
+      ></select>
+    </label>
+
+    <label>
+      <span><span data-t="Appearance">Appearance</span></span>
+      <select name="theme">
+                            <option
+            value="system"
+            data-t="System"
+          >
+            System
+          </option>
+                            <option
+            value="light"
+            data-t="Light"
+          >
+            Light
+          </option>
+                            <option
+            value="dark"
+            data-t="Dark"
+          >
+            Dark
+          </option>
+              </select>
+    </label>
+
+    <label>
+      <span><span data-t="Arabic font">Arabic font</span></span>
+      <select name="arabicFont">
+        <option value="amiri">Amiri</option>
+        <option value="naskh">Noto Naskh Arabic</option>
+        <option value="sans">Noto Sans Arabic</option>
+      </select>
+    </label>
+
+    <label>
+      <span><span data-t="Quran font">Quran font</span></span>
+      <select name="quranFont">
+                <option
+          value="uthmani"
+          data-t="Uthmani"
+        >
+          Uthmani
+        </option>
+        <option value="indopak">IndoPak</option>
+        <option value="amiri">Amiri</option>
+      </select>
+    </label>
+
+    <label>
+      <span><span data-t="Reciter">Reciter</span></span>
+      <select name="reciter">
+                            <option
+            value="alafasy"
+            data-t="Mishary al-Afasy"
+          >
+            Mishary al-Afasy
+          </option>
+                            <option
+            value="husary"
+            data-t="Mahmoud Khalil al-Husary"
+          >
+            Mahmoud Khalil al-Husary
+          </option>
+                            <option
+            value="hudhaify"
+            data-t="Ali al-Hudhaify"
+          >
+            Ali al-Hudhaify
+          </option>
+                            <option
+            value="muaiqly"
+            data-t="Maher al-Muaiqly"
+          >
+            Maher al-Muaiqly
+          </option>
+                            <option
+            value="ayyoub"
+            data-t="Muhammad Ayyoub"
+          >
+            Muhammad Ayyoub
+          </option>
+              </select>
+      <small class="muted"><span data-t="Recitation needs an internet connection.">Recitation needs an internet connection.</span></small>
+    </label>
+
+    <label>
+      <span><span data-t="Read-aloud speed">Read-aloud speed</span></span>
+      <select name="readAloudSpeed">
+                  <option value="50">50%</option>
+                  <option value="75">75%</option>
+                  <option value="100">100%</option>
+                  <option value="125">125%</option>
+                  <option value="150">150%</option>
+              </select>
+    </label>
+
+    <label class="checkbox">
+      <input
+        type="checkbox"
+        name="passages"
+        value="on"
+      />
+      <span><span data-t="Mark similar passages in the books">Mark similar passages in the books</span></span>
+    </label>
+  </form>
+  </main>
+
+  
+  <dialog
+    class="sheet"
+    data-sheet
+  >
+    <div class="sheet-head">
+      <strong data-sheet-title></strong>
+      <button
+        type="button"
+        class="button"
+        data-sheet-close
+      >
+        <span data-t="Close">Close</span>
+      </button>
+    </div>
+    <div
+      class="sheet-body"
+      data-sheet-body
+    ></div>
+  </dialog>
+</body>
+</html>

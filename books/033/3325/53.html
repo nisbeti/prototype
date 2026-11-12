@@ -72,6 +72,27 @@
       root.lang = language;
       root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
       root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      [
+        'inter-latin-400-normal',
+        'inter-latin-500-normal',
+        arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+      ].forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
       var quranFont = get('quran-font');
       root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
       var scale = parseInt(get('content-scale'), 10);
@@ -87,10 +108,12 @@
       }
     })();
   </script>
-  <script
-    src="../../../assets/static.js"
-    defer
-  ></script>
+  
+  <link
+    rel="expect"
+    href="#bahith-ready"
+    blocking="render"
+  />
 </head>
 <body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
@@ -1144,5 +1167,12 @@
     {"quotes":{"1948438":"3:152","1948439":"8:67","1948440":"42:20","1948441":"17:18","1948442":"11:15","1948443":"6:52","1948444":"18:28","1948445":"30:38","1948446":"30:39","1948447":"92:20","1948448":"2:265","1948449":"2:272","1948450":"4:114","1948451":"8:60","1948452":"11:7","1948453":"18:110","1948454":"60:10","1948455":"11:15","1948456":"4:142","1948457":"107:4","1948458":"8:47","1948459":"4:36","1948460":"18:110","1948461":"2:225"}}
   </script>
     </div>
+
+  
+  <script src="../../../assets/static.js"></script>
+  <div
+    id="bahith-ready"
+    hidden
+  ></div>
 </body>
 </html>

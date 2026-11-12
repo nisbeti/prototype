@@ -72,6 +72,27 @@
       root.lang = language;
       root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
       root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      [
+        'inter-latin-400-normal',
+        'inter-latin-500-normal',
+        arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+      ].forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
       var quranFont = get('quran-font');
       root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
       var scale = parseInt(get('content-scale'), 10);
@@ -87,10 +108,12 @@
       }
     })();
   </script>
-  <script
-    src="../../../assets/static.js"
-    defer
-  ></script>
+  
+  <link
+    rel="expect"
+    href="#bahith-ready"
+    blocking="render"
+  />
 </head>
 <body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
@@ -1163,5 +1186,12 @@
     {"quotes":{"1384583":"39:53","1384584":"20:48","1384585":"7:156","1384586":"6:160","1384587":"14:36","1384588":"5:118","1384589":"14:27","1384590":"11:114","1384591":"40:44","1384592":"7:99","1384593":"12:87","1384594":"3:106","1384595":"6:165","1384596":"82:13","1384597":"101:6","1384598":"17:109","1384599":"53:59","1384600":"4:41","1384601":"10:24","1384602":"18:45","1384603":"57:20","1384604":"3:14","1384605":"35:5","1384606":"102:1","1384607":"29:64","1384608":"102:1","1384609":"19:59","1384610":"28:79","1384611":"102:8","1384612":"17:18"}}
   </script>
     </div>
+
+  
+  <script src="../../../assets/static.js"></script>
+  <div
+    id="bahith-ready"
+    hidden
+  ></div>
 </body>
 </html>

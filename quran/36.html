@@ -72,6 +72,27 @@
       root.lang = language;
       root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
       root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      [
+        'inter-latin-400-normal',
+        'inter-latin-500-normal',
+        arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+      ].forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
       var quranFont = get('quran-font');
       root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
       var scale = parseInt(get('content-scale'), 10);
@@ -87,10 +108,12 @@
       }
     })();
   </script>
-  <script
-    src="../assets/static.js"
-    defer
-  ></script>
+  
+  <link
+    rel="expect"
+    href="#bahith-ready"
+    blocking="render"
+  />
 </head>
 <body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
@@ -1348,5 +1371,12 @@
     {"1":{"quotes":[{"title":"فتح الباري لابن رجب","author":"ابن رجب الحنبلي","href":"books/033/3315/3173.html#p3200"}],"tafsirs":[]},"8":{"quotes":[{"title":"صحيح مسلم - ت عبد الباقي","author":"مسلم","href":"books/003/353/5829.html#p5837"}],"tafsirs":[]},"12":{"quotes":[{"title":"فتح الباري لابن رجب","author":"ابن رجب الحنبلي","href":"books/033/3315/2615.html#p2651"},{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/17.html#p48"}],"tafsirs":[]},"29":{"quotes":[{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/54.html#p62"}],"tafsirs":[]},"36":{"quotes":[{"title":"فتح الباري لابن رجب","author":"ابن رجب الحنبلي","href":"books/033/3315/2289.html#p2314"}],"tafsirs":[]},"38":{"quotes":[{"title":"صحيح مسلم - ت عبد الباقي","author":"مسلم","href":"books/003/353/322.html#p351"}],"tafsirs":[]},"60":{"quotes":[{"title":"جامع العلوم والحكم - ت الفحل","author":"ابن رجب الحنبلي","href":"books/033/3318/466.html#p481"},{"title":"جامع العلوم والحكم - ت الأرنؤوط","author":"ابن رجب الحنبلي","href":"books/033/3325/490.html#p518"}],"tafsirs":[]},"71":{"quotes":[{"title":"فتح الباري لابن رجب","author":"ابن رجب الحنبلي","href":"books/033/3315/1.html#p3"},{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/54.html#p74"}],"tafsirs":[]},"72":{"quotes":[{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/54.html#p74"}],"tafsirs":[]},"78":{"quotes":[{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/54.html#p60"}],"tafsirs":[]},"79":{"quotes":[{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/54.html#p60"}],"tafsirs":[]},"81":{"quotes":[{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/54.html#p61"}],"tafsirs":[]},"82":{"quotes":[{"title":"جامع العلوم والحكم - ت الفحل","author":"ابن رجب الحنبلي","href":"books/033/3318/506.html#p523"},{"title":"جامع العلوم والحكم - ت الأرنؤوط","author":"ابن رجب الحنبلي","href":"books/033/3325/549.html#p567"},{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/54.html#p61"}],"tafsirs":[]},"83":{"quotes":[{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/54.html#p62"}],"tafsirs":[]}}
   </script>
     </div>
+
+  
+  <script src="../assets/static.js"></script>
+  <div
+    id="bahith-ready"
+    hidden
+  ></div>
 </body>
 </html>

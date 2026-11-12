@@ -72,6 +72,27 @@
       root.lang = language;
       root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
       root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      [
+        'inter-latin-400-normal',
+        'inter-latin-500-normal',
+        arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+      ].forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
       var quranFont = get('quran-font');
       root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
       var scale = parseInt(get('content-scale'), 10);
@@ -87,10 +108,12 @@
       }
     })();
   </script>
-  <script
-    src="../../../assets/static.js"
-    defer
-  ></script>
+  
+  <link
+    rel="expect"
+    href="#bahith-ready"
+    blocking="render"
+  />
 </head>
 <body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
@@ -1241,5 +1264,12 @@
     {"quotes":{"1948865":"16:40","1948866":"50:29","1948867":"40:31","1948868":"3:108","1948869":"41:46","1948870":"10:44","1948871":"4:40","1948872":"4:124","1948873":"9:120","1948874":"5:119","1948875":"5:119","1948876":"20:112","1948877":"31:13","1948878":"2:254","1948879":"11:102","1948880":"18:17","1948881":"35:2","1948882":"51:58","1948883":"29:17","1948884":"11:6","1948885":"7:23","1948886":"11:47","1948887":"26:75","1948888":"30:40","1948889":"16:78","1948890":"93:7","1948891":"42:52","1948892":"1:6","1948893":"2:128","1948894":"3:176","1948895":"3:144","1948896":"33:36","1948897":"4:131","1948898":"14:8","1948899":"3:97","1948900":"22:37","1948901":"3:135","1948902":"9:118","1948903":"9:118","1948904":"16:96","1948905":"56:32","1948906":"16:40","1948907":"36:82","1948908":"16:40","1948909":"3:59","1948910":"99:7","1948911":"18:49","1948912":"3:30","1948913":"3:30","1948914":"58:6","1948915":"3:185","1948916":"4:123","1948917":"39:10","1948918":"4:79","1948919":"16:97","1948920":"32:21","1948921":"7:43","1948922":"39:74","1948923":"35:34","1948924":"14:22","1948925":"40:10","1948926":"75:2","1948927":"35:37","1948928":"9:92","1948929":"5:54","1948930":"14:11","1948931":"2:263","1948932":"4:114","1948933":"4:114","1948934":"57:2"}}
   </script>
     </div>
+
+  
+  <script src="../../../assets/static.js"></script>
+  <div
+    id="bahith-ready"
+    hidden
+  ></div>
 </body>
 </html>

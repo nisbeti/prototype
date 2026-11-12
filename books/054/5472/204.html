@@ -72,6 +72,27 @@
       root.lang = language;
       root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
       root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      [
+        'inter-latin-400-normal',
+        'inter-latin-500-normal',
+        arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+      ].forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
       var quranFont = get('quran-font');
       root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
       var scale = parseInt(get('content-scale'), 10);
@@ -87,10 +108,12 @@
       }
     })();
   </script>
-  <script
-    src="../../../assets/static.js"
-    defer
-  ></script>
+  
+  <link
+    rel="expect"
+    href="#bahith-ready"
+    blocking="render"
+  />
 </head>
 <body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
@@ -1264,5 +1287,12 @@
     {"quotes":{"204239":"87:16","204240":"38:26","204241":"38:22","204242":"38:23","204243":"38:23","204244":"38:24","204245":"38:24","204246":"38:24","204247":"46:13","204248":"41:30","204249":"11:112","204250":"4:103","204251":"32:17","204252":"32:17","204253":"2:196","204254":"21:47","204255":"25:58","204256":"2:255","204257":"50:38","204258":"42:11","204259":"12:24","204260":"81:19","204261":"56:75","204262":"3:121","204263":"26:196","204264":"2:114","204265":"75:16","204266":"2:43","204267":"5:6","204268":"2:207","204269":"21:47","204270":"101:6","204271":"7:8","204272":"16:102","204273":"26:193","204274":"15:9","204275":"56:58","204276":"56:62","204277":"37:137","204278":"7:40","204279":"42:20","204280":"17:18","204281":"17:19"}}
   </script>
     </div>
+
+  
+  <script src="../../../assets/static.js"></script>
+  <div
+    id="bahith-ready"
+    hidden
+  ></div>
 </body>
 </html>

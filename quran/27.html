@@ -72,6 +72,27 @@
       root.lang = language;
       root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
       root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      [
+        'inter-latin-400-normal',
+        'inter-latin-500-normal',
+        arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+      ].forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
       var quranFont = get('quran-font');
       root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
       var scale = parseInt(get('content-scale'), 10);
@@ -87,10 +108,12 @@
       }
     })();
   </script>
-  <script
-    src="../assets/static.js"
-    defer
-  ></script>
+  
+  <link
+    rel="expect"
+    href="#bahith-ready"
+    blocking="render"
+  />
 </head>
 <body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
@@ -1478,5 +1501,12 @@
     {"14":{"quotes":[{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/17.html#p32"}],"tafsirs":[]},"15":{"quotes":[{"title":"جامع العلوم والحكم - ت الفحل","author":"ابن رجب الحنبلي","href":"books/033/3318/541.html#p551"},{"title":"جامع العلوم والحكم - ت الأرنؤوط","author":"ابن رجب الحنبلي","href":"books/033/3325/588.html#p599"}],"tafsirs":[]},"26":{"quotes":[{"title":"صحيح مسلم - ت عبد الباقي","author":"مسلم","href":"books/003/353/6829.html#p6854"},{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/572.html#p599"}],"tafsirs":[]},"40":{"quotes":[{"title":"فتح الباري لابن رجب","author":"ابن رجب الحنبلي","href":"books/033/3315/1454.html#p1459"}],"tafsirs":[]},"44":{"quotes":[{"title":"جامع العلوم والحكم - ت الفحل","author":"ابن رجب الحنبلي","href":"books/033/3318/51.html#p84"},{"title":"جامع العلوم والحكم - ت الأرنؤوط","author":"ابن رجب الحنبلي","href":"books/033/3325/87.html#p107"}],"tafsirs":[]},"62":{"quotes":[{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/572.html#p590"},{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/164.html#p201"}],"tafsirs":[]},"65":{"quotes":[{"title":"صحيح مسلم - ت عبد الباقي","author":"مسلم","href":"books/003/353/359.html#p387"}],"tafsirs":[]},"80":{"quotes":[{"title":"صحيح مسلم - ت عبد الباقي","author":"مسلم","href":"books/003/353/2068.html#p2087"}],"tafsirs":[]},"82":{"quotes":[{"title":"صحيح مسلم - ت عبد الباقي","author":"مسلم","href":"books/003/353/7219.html#p7219"}],"tafsirs":[]},"87":{"quotes":[{"title":"صحيح مسلم - ت عبد الباقي","author":"مسلم","href":"books/003/353/6080.html#p6085"}],"tafsirs":[]},"89":{"quotes":[{"title":"جامع العلوم والحكم - ت الفحل","author":"ابن رجب الحنبلي","href":"books/033/3318/634.html#p656"},{"title":"جامع العلوم والحكم - ت الأرنؤوط","author":"ابن رجب الحنبلي","href":"books/033/3325/691.html#p717"}],"tafsirs":[]}}
   </script>
     </div>
+
+  
+  <script src="../assets/static.js"></script>
+  <div
+    id="bahith-ready"
+    hidden
+  ></div>
 </body>
 </html>

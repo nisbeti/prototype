@@ -73,18 +73,22 @@
       root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
       root.dataset.arabicFont = get('arabic-font') || 'amiri';
       // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
-      // not move as they arrive.
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
       var arabicFonts = {
         amiri: 'amiri-arabic-400-normal',
         sans: 'noto-sans-arabic-arabic-400-normal',
         indopak: 'indopak-nastaleeq',
         uthmani: 'uthmanic-hafs',
       };
-      [
-        'inter-latin-400-normal',
-        'inter-latin-500-normal',
-        arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
-      ].forEach(function (font) {
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
         var link = document.createElement('link');
         link.rel = 'preload';
         link.as = 'font';
@@ -108,12 +112,6 @@
       }
     })();
   </script>
-  
-  <link
-    rel="expect"
-    href="#bahith-ready"
-    blocking="render"
-  />
 </head>
 <body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
@@ -1452,9 +1450,5 @@
 
   
   <script src="../assets/static.js"></script>
-  <div
-    id="bahith-ready"
-    hidden
-  ></div>
 </body>
 </html>

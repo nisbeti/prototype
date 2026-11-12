@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="items"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>كلمة الاخلاص وتحقيق معناها</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,133 +70,120 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
-    </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <div class="book-head">
-          <img
-        class="cover"
-        src="../../catalogue/1048/104897.jpg"
-        alt=""
-      />
-    
-    <div class="book-head-text">
-      <h1 class="page-title">
-        <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Word of Sincerity and Its Meaning&quot;,&quot;es&quot;:&quot;La palabra de la sinceridad y la aclaración de su significado (Kalimat al-Ikhlas)&quot;,&quot;fr&quot;:&quot;La parole de sincérité et l&#039;explication de son sens&quot;,&quot;id&quot;:&quot;Kalimat Ikhlas dan Penjelasan Maknanya&quot;,&quot;ja&quot;:&quot;純粋な信仰告白とその意味の確定&quot;,&quot;ru&quot;:&quot;Слово искренности и разъяснение его смысла&quot;,&quot;sw&quot;:&quot;Kalimat al-Ikhlas wa Tahqiq Ma&#039;naha (Neno la Ikhlasi na ufafanuzi wa maana yake)&quot;,&quot;tr&quot;:&quot;İhlâs Kelimesi ve Anlamının Tahkiki&quot;,&quot;zh&quot;:&quot;《清真言及其含义考释》&quot;}" data-original="كلمة الاخلاص وتحقيق معناها">كلمة الاخلاص وتحقيق معناها</span>
-      </h1>
-
-                        <p class="credits">
-            <span data-t="Authors">Authors</span>:
-                                        <a href="../../authors/216/21663.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Rajab Al-Hanbali&quot;,&quot;es&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;id&quot;:&quot;Ibnu Rajab Al-Hanbali&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ・アル＝ハンバリー&quot;,&quot;ru&quot;:&quot;Ибн Раджаб аль-Ханбали&quot;,&quot;sw&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;İbn Receb el-Hanbelî&quot;,&quot;zh&quot;:&quot;伊本·拉哲卜·罕百里&quot;}" data-original="ابن رجب الحنبلي">ابن رجب الحنبلي</span>
-              </a>
-                                    </p>
-                                <p class="credits">
-            <span data-t="Editors">Editors</span>:
-                                        <a href="../../authors/31953/3195361.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Imad Taha Farrah&quot;,&quot;es&quot;:&quot;Imad Taha Farrah&quot;,&quot;fr&quot;:&quot;Imad Taha Farrah&quot;,&quot;id&quot;:&quot;Imad Taha Farrah&quot;,&quot;ja&quot;:&quot;イマード・ターハー・ファッラ&quot;,&quot;ru&quot;:&quot;Имад Таха Фарра&quot;,&quot;sw&quot;:&quot;Imad Taha Farrah&quot;,&quot;tr&quot;:&quot;İmâd Taha Ferre&quot;,&quot;zh&quot;:&quot;伊马德·塔哈·法拉&quot;}" data-original="عماد طه فرة">عماد طه فرة</span>
-              </a>
-                                    </p>
-                                <p class="credits">
-            <span data-t="Publishers">Publishers</span>:
-                                        <a href="../../publishers/898/89823.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Sahaba for Heritage&quot;,&quot;es&quot;:&quot;Dar al-Sahabah li-l-Turath&quot;,&quot;fr&quot;:&quot;Dar al-Sahaba li al-Turath&quot;,&quot;id&quot;:&quot;Dar Ash-Shahabah li At-Turats&quot;,&quot;ja&quot;:&quot;ダール・アッ＝サハーバ・リッ＝トゥラース&quot;,&quot;ru&quot;:&quot;Дар ас-Сахаба ли-т-турас&quot;,&quot;sw&quot;:&quot;Dar as-Sahaba lit-Turath&quot;,&quot;tr&quot;:&quot;Dârü&#039;s-sahâbe li&#039;t-türâs&quot;,&quot;zh&quot;:&quot;圣门弟子遗产出版社&quot;}" data-original="دار الصحابة للتراث">دار الصحابة للتراث</span>
-              </a>
-                                    </p>
-              
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/Aqidah/104897_Aqidah02240_%D9%83%D9%84%D9%85%D8%A9_%D8%A7%D9%84%D8%A5%D8%AE%D9%84%D8%A7%D8%B5_%D9%88%D8%AA%D8%AD%D9%82%D9%8A%D9%82_%D9%85%D8%B9%D9%86%D8%A7%D9%87%D8%A7_%D9%84%D8%A7%D8%A8%D9%86_%D8%B1%D8%AC%D8%A8_%D8%A7%D9%84%D8%AD%D9%86%D8%A8%D9%84%D9%8A_pdf__%D8%A7%D9%84%D8%B9%D9%82%D9%8A%D8%AF.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T102524Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=e1096003c8e9a818ea48b1b2682157ddc466f5ab58ed7878802559a5a7489ead"
-            rel="noopener"
-            target="_blank"
-          >
-            <span data-t="Download">Download</span>
-          </a>
-          <span class="muted"><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></span>
-                      </p>
-    </div>
-  </div>
-
-      <section class="panel">
-      <dl class="book-card">
-                  <div>
-            <dt><span data-t="Published">Published</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;1408 AH&quot;,&quot;es&quot;:&quot;1408 H&quot;,&quot;fr&quot;:&quot;1408 H&quot;,&quot;id&quot;:&quot;1408 H&quot;,&quot;ja&quot;:&quot;ヒジュラ暦1408年&quot;,&quot;ru&quot;:&quot;1408 г. х.&quot;,&quot;sw&quot;:&quot;1408H&quot;,&quot;tr&quot;:&quot;1408 H&quot;,&quot;ur&quot;:&quot;1408ھ&quot;,&quot;zh&quot;:&quot;伊历1408年&quot;}" data-original="1408ه">1408ه</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Country">Country</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Tanta, Egypt&quot;,&quot;es&quot;:&quot;Tanta, Egipto&quot;,&quot;fr&quot;:&quot;Tanta, Égypte&quot;,&quot;id&quot;:&quot;Tanta, Mesir&quot;,&quot;ja&quot;:&quot;タンタ、エジプト&quot;,&quot;ru&quot;:&quot;Танта, Египет&quot;,&quot;sw&quot;:&quot;Tanta, Misri&quot;,&quot;tr&quot;:&quot;Tanta, Mısır&quot;,&quot;zh&quot;:&quot;坦塔，埃及&quot;}" data-original="طنطا، مصر">طنطا، مصر</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Edition">Edition</span></dt>
-            <dd><span dir="auto">1</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Volumes">Volumes</span></dt>
-            <dd><span dir="auto">1</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Pages">Pages</span></dt>
-            <dd><span dir="auto">100</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Type">Type</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Category">Category</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Theology, Sects, and Religions&quot;,&quot;es&quot;:&quot;Credo, escuelas y religiones&quot;,&quot;fr&quot;:&quot;Croyance, courants doctrinaux et religions&quot;,&quot;id&quot;:&quot;Akidah, Mazhab, dan Agama&quot;,&quot;ja&quot;:&quot;信条・学派・宗教&quot;,&quot;ru&quot;:&quot;Вероубеждение, течения и религии&quot;,&quot;sw&quot;:&quot;Aqida, madhehebu na dini&quot;,&quot;tr&quot;:&quot;İnanç, Mezhepler ve Dinler&quot;,&quot;ur&quot;:&quot;عقیدہ، مذاہب اور ادیان&quot;,&quot;zh&quot;:&quot;信仰、教派与宗教&quot;}" data-original="العقيدة والمذاهب والأديان">العقيدة والمذاهب والأديان</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Subcategory">Subcategory</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Monotheism&quot;,&quot;es&quot;:&quot;Unicidad de Allah&quot;,&quot;fr&quot;:&quot;Tawhid&quot;,&quot;id&quot;:&quot;Tauhid&quot;,&quot;ja&quot;:&quot;タウヒード&quot;,&quot;ru&quot;:&quot;Единобожие&quot;,&quot;sw&quot;:&quot;Tawhidi&quot;,&quot;tr&quot;:&quot;Tevhid&quot;,&quot;ur&quot;:&quot;توحید&quot;,&quot;zh&quot;:&quot;认主独一&quot;}" data-original="التوحيد">التوحيد</span></dd>
-          </div>
-              </dl>
-    </section>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
-      <section class="panel">
-      <h2><span data-t="Description">Description</span></h2>
-      <p class="caption" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: The Word of Sincerity and Its Meaning\n\n▪️ Author: Al-Hafiz Ibn Rajab Al-Hanbali\n▫️ Editor: Imad Taha Farrah\n▪️ Publisher: Dar Al-Sahaba for Heritage\n▫️ Publish Date: 1408 AH\n▪️ Publish Country: Tanta, Egypt\n▫️ Edition: 1\n▪️ Number of Volumes: 1\n▫️ Pages: 100\n▪️ Type of Material: Book\n▫️ Main Category: Theology, Sects, and Religions\n▪️ Sub Category: Monotheism&quot;,&quot;es&quot;:&quot;▫️ Título: \nLa palabra de la sinceridad y la aclaración de su significado (Kalimat al-Ikhlas)\n\n▪️ Autor: al-Hafiz Ibn Rajab al-Hanbali\n▫️ Edición crítica: Imad Taha Farra\n▪️ Editorial: Dar al-Sahaba lil-Turath\n▫️ Fecha de publicación: 1408 H\n▪️ Lugar de publicación: Tanta, Egipto\n▫️ Edición: 1\n▪️ Número de volúmenes: 1\n▫️ Páginas: 100\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Teología y doctrinas religiosas\n▪️ Subcategoría: Monoteísmo&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nLa parole de sincérité et l&#039;explication de son sens\n\n▪️ Auteur : al-Hafiz Ibn Rajab al-Hanbali\n▫️ Édition critique : Imad Taha Farra\n▪️ Éditeur : Dar al-Sahaba lil-Turath\n▫️ Date de publication : 1408 H\n▪️ Lieu de publication : Tanta, Égypte\n▫️ Édition : 1\n▪️ Nombre de volumes : 1\n▫️ Pages : 100\n▪️ Type de document : Livre\n▫️ Catégorie principale : Croyance, doctrines et religions\n▪️ Sous-catégorie : Unicité divine&quot;,&quot;id&quot;:&quot;▫️ Judul: \nKalimat Ikhlas dan Penjelasan Maknanya\n\n▪️ Penulis: Al-Hafizh Ibnu Rajab Al-Hanbali\n▫️ Pentahkik: Imad Thaha Furrah\n▪️ Penerbit: Dar Ash-Shahabah li At-Turats\n▫️ Tahun terbit: 1408 H\n▪️ Tempat terbit: Thanta, Mesir\n▫️ Cetakan: 1\n▪️ Jumlah jilid: 1\n▫️ Halaman: 100\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Akidah, mazhab, dan agama\n▪️ Subkategori: Tauhid&quot;,&quot;ja&quot;:&quot;▫️ 書名: \n純粋な信仰告白とその意味の確定\n\n▪️ 著者: ハーフィズ・イブン・ラジャブ・アル＝ハンバリー\n▫️ 校訂者: イマード・ターハー・フッラ\n▪️ 出版社: ダール・アッ＝サハーバ・リッ＝トゥラース\n▫️ 出版年: ヒジュラ暦1408年\n▪️ 出版地: タンタ、エジプト\n▫️ 版: 1\n▪️ 巻数: 1\n▫️ ページ数: 100\n▪️ 資料の種類: 書籍\n▫️ 主分類: 教義・学派・宗教\n▪️ 下位分類: タウヒード&quot;,&quot;ru&quot;:&quot;▫️ Название: \nСлово искренности и разъяснение его смысла\n\n▪️ Автор: хафиз Ибн Раджаб аль-Ханбали\n▫️ Тахкик: Имад Таха Фарра\n▪️ Издательство: Дар ас-Сахаба ли-т-Турас\n▫️ Дата издания: 1408 г. х.\n▪️ Место издания: Танта, Египет\n▫️ Издание: 1\n▪️ Количество томов: 1\n▫️ Страницы: 100\n▪️ Тип материала: Книга\n▫️ Основная категория: Вероубеждение, учения и религии\n▪️ Подкатегория: Единобожие&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nKalimat al-Ikhlas wa Tahqiq Ma&#039;naha (Neno la Ikhlasi na ufafanuzi wa maana yake)\n\n▪️ Mwandishi: al-Hafiz Ibn Rajab al-Hanbali\n▫️ Mhakiki: Imad Taha Farra\n▪️ Mchapishaji: Dar al-Sahaba lil-Turath\n▫️ Tarehe ya kuchapishwa: 1408H\n▪️ Mahali pa kuchapishwa: Tanta, Misri\n▫️ Toleo: 1\n▪️ Idadi ya juzuu: 1\n▫️ Kurasa: 100\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Aqida, madhehebu na dini\n▪️ Kundi dogo: Tauhidi&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nİhlâs Kelimesi ve Anlamının Tahkiki\n\n▪️ Yazar: Hâfız İbn Receb el-Hanbelî\n▫️ Tahkik eden: İmâd Tâhâ Furre\n▪️ Yayınevi: Dar al-Sahaba li al-Turath\n▫️ Yayın tarihi: 1408 H\n▪️ Yayın yeri: Tanta, Mısır\n▫️ Baskı: 1\n▪️ Cilt sayısı: 1\n▫️ Sayfa: 100\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Akide, mezhepler ve dinler\n▪️ Alt kategori: Tevhid&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nكلمة الاخلاص وتحقيق معناها\n\n▪️ مصنف: الحافظ ابن رجب الحنبلي\n▫️ محقق: عماد طه فرة\n▪️ ناشر: دار الصحابة للتراث\n▫️ تاریخِ اشاعت: 1408ھ\n▪️ مقامِ اشاعت: طنطا، مصر\n▫️ طبع: 1\n▪️ جلدیں: 1\n▫️ صفحات: 100\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: عقیدہ، مسالک اور مذاہب\n▪️ ذیلی زمرہ: توحید&quot;,&quot;zh&quot;:&quot;▫️ 书名：\n《清真言及其含义考释》\n\n▪️ 作者：哈菲兹·伊本·拉杰卜·汉百里\n▫️ 校勘者：伊马德·塔哈·富拉\n▪️ 出版社：圣门弟子遗产出版社\n▫️ 出版日期：伊历1408年\n▪️ 出版地：坦塔，埃及\n▫️ 版次：1\n▪️ 册数：1\n▫️ 页数：100\n▪️ 资料类型：图书\n▫️ 主分类：信仰、教派与宗教\n▪️ 子分类：认主独一&quot;}" data-original="**▫️ العنوان: 
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../catalogue.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Resources</span>
+    </a>
+
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <img
+            src="../../catalogue/1048/104897.jpg"
+            alt=""
+            class="aspect-[3/4] w-full rounded-xl border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+          />
+        
+        <div class="mt-4 flex flex-col gap-2">
+                                <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/Aqidah/104897_Aqidah02240_%D9%83%D9%84%D9%85%D8%A9_%D8%A7%D9%84%D8%A5%D8%AE%D9%84%D8%A7%D8%B5_%D9%88%D8%AA%D8%AD%D9%82%D9%8A%D9%82_%D9%85%D8%B9%D9%86%D8%A7%D9%87%D8%A7_%D9%84%D8%A7%D8%A8%D9%86_%D8%B1%D8%AC%D8%A8_%D8%A7%D9%84%D8%AD%D9%86%D8%A8%D9%84%D9%8A_pdf__%D8%A7%D9%84%D8%B9%D9%82%D9%8A%D8%AF.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T175948Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=17f16b73ad4293b89cdbbafc29f29bd28fd6c8201fed703f06fd02d48e5487df" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" rel="noopener">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z"/>
+  <path d="M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Download</span>
+    </a>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></p>                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;The Word of Sincerity and Its Meaning&quot;,&quot;es&quot;:&quot;La palabra de la sinceridad y la aclaración de su significado (Kalimat al-Ikhlas)&quot;,&quot;fr&quot;:&quot;La parole de sincérité et l&#039;explication de son sens&quot;,&quot;id&quot;:&quot;Kalimat Ikhlas dan Penjelasan Maknanya&quot;,&quot;ja&quot;:&quot;純粋な信仰告白とその意味の確定&quot;,&quot;ru&quot;:&quot;Слово искренности и разъяснение его смысла&quot;,&quot;sw&quot;:&quot;Kalimat al-Ikhlas wa Tahqiq Ma&#039;naha (Neno la Ikhlasi na ufafanuzi wa maana yake)&quot;,&quot;tr&quot;:&quot;İhlâs Kelimesi ve Anlamının Tahkiki&quot;,&quot;zh&quot;:&quot;《清真言及其含义考释》&quot;}" data-original="كلمة الاخلاص وتحقيق معناها">كلمة الاخلاص وتحقيق معناها</span></h1>
+
+                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1" lang="ar" dir="rtl" data-arabic-original="data-arabic-original" data-flux-text >كلمة الاخلاص وتحقيق معناها</p>        
+                              <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Authors">Authors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/216/21663.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Rajab Al-Hanbali&quot;,&quot;es&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;id&quot;:&quot;Ibnu Rajab Al-Hanbali&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ・アル＝ハンバリー&quot;,&quot;ru&quot;:&quot;Ибн Раджаб аль-Ханбали&quot;,&quot;sw&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;İbn Receb el-Hanbelî&quot;,&quot;zh&quot;:&quot;伊本·拉哲卜·罕百里&quot;}" data-original="ابن رجب الحنبلي">ابن رجب الحنبلي</span></a></p>                                        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Editors">Editors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/31953/3195361.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Imad Taha Farrah&quot;,&quot;es&quot;:&quot;Imad Taha Farrah&quot;,&quot;fr&quot;:&quot;Imad Taha Farrah&quot;,&quot;id&quot;:&quot;Imad Taha Farrah&quot;,&quot;ja&quot;:&quot;イマード・ターハー・ファッラ&quot;,&quot;ru&quot;:&quot;Имад Таха Фарра&quot;,&quot;sw&quot;:&quot;Imad Taha Farrah&quot;,&quot;tr&quot;:&quot;İmâd Taha Ferre&quot;,&quot;zh&quot;:&quot;伊马德·塔哈·法拉&quot;}" data-original="عماد طه فرة">عماد طه فرة</span></a></p>                                        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Publishers">Publishers</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../publishers/898/89823.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Sahaba for Heritage&quot;,&quot;es&quot;:&quot;Dar al-Sahabah li-l-Turath&quot;,&quot;fr&quot;:&quot;Dar al-Sahaba li al-Turath&quot;,&quot;id&quot;:&quot;Dar Ash-Shahabah li At-Turats&quot;,&quot;ja&quot;:&quot;ダール・アッ＝サハーバ・リッ＝トゥラース&quot;,&quot;ru&quot;:&quot;Дар ас-Сахаба ли-т-турас&quot;,&quot;sw&quot;:&quot;Dar as-Sahaba lit-Turath&quot;,&quot;tr&quot;:&quot;Dârü&#039;s-sahâbe li&#039;t-türâs&quot;,&quot;zh&quot;:&quot;圣门弟子遗产出版社&quot;}" data-original="دار الصحابة للتراث">دار الصحابة للتراث</span></a></p>                  
+                  <div class="mt-6 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+            <dl class="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[fit-content(12rem)_1fr]">
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Published">Published</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;1408 AH&quot;,&quot;es&quot;:&quot;1408 H&quot;,&quot;fr&quot;:&quot;1408 H&quot;,&quot;id&quot;:&quot;1408 H&quot;,&quot;ja&quot;:&quot;ヒジュラ暦1408年&quot;,&quot;ru&quot;:&quot;1408 г. х.&quot;,&quot;sw&quot;:&quot;1408H&quot;,&quot;tr&quot;:&quot;1408 H&quot;,&quot;ur&quot;:&quot;1408ھ&quot;,&quot;zh&quot;:&quot;伊历1408年&quot;}" data-original="1408ه">1408ه</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Country">Country</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Tanta, Egypt&quot;,&quot;es&quot;:&quot;Tanta, Egipto&quot;,&quot;fr&quot;:&quot;Tanta, Égypte&quot;,&quot;id&quot;:&quot;Tanta, Mesir&quot;,&quot;ja&quot;:&quot;タンタ、エジプト&quot;,&quot;ru&quot;:&quot;Танта, Египет&quot;,&quot;sw&quot;:&quot;Tanta, Misri&quot;,&quot;tr&quot;:&quot;Tanta, Mısır&quot;,&quot;zh&quot;:&quot;坦塔，埃及&quot;}" data-original="طنطا، مصر">طنطا، مصر</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Edition">Edition</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">1</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Volumes">Volumes</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">1</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Pages">Pages</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">100</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Type">Type</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Category">Category</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Theology, Sects, and Religions&quot;,&quot;es&quot;:&quot;Credo, escuelas y religiones&quot;,&quot;fr&quot;:&quot;Croyance, courants doctrinaux et religions&quot;,&quot;id&quot;:&quot;Akidah, Mazhab, dan Agama&quot;,&quot;ja&quot;:&quot;信条・学派・宗教&quot;,&quot;ru&quot;:&quot;Вероубеждение, течения и религии&quot;,&quot;sw&quot;:&quot;Aqida, madhehebu na dini&quot;,&quot;tr&quot;:&quot;İnanç, Mezhepler ve Dinler&quot;,&quot;ur&quot;:&quot;عقیدہ، مذاہب اور ادیان&quot;,&quot;zh&quot;:&quot;信仰、教派与宗教&quot;}" data-original="العقيدة والمذاهب والأديان">العقيدة والمذاهب والأديان</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Subcategory">Subcategory</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Monotheism&quot;,&quot;es&quot;:&quot;Unicidad de Allah&quot;,&quot;fr&quot;:&quot;Tawhid&quot;,&quot;id&quot;:&quot;Tauhid&quot;,&quot;ja&quot;:&quot;タウヒード&quot;,&quot;ru&quot;:&quot;Единобожие&quot;,&quot;sw&quot;:&quot;Tawhidi&quot;,&quot;tr&quot;:&quot;Tevhid&quot;,&quot;ur&quot;:&quot;توحید&quot;,&quot;zh&quot;:&quot;认主独一&quot;}" data-original="التوحيد">التوحيد</span>
+                </dd>
+                          </dl>
+          </div>
+        
+                  <div class="mt-4 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Description</div>
+            <p class="text-sm leading-relaxed whitespace-pre-line text-zinc-800 dark:text-zinc-100" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: The Word of Sincerity and Its Meaning\n\n▪️ Author: Al-Hafiz Ibn Rajab Al-Hanbali\n▫️ Editor: Imad Taha Farrah\n▪️ Publisher: Dar Al-Sahaba for Heritage\n▫️ Publish Date: 1408 AH\n▪️ Publish Country: Tanta, Egypt\n▫️ Edition: 1\n▪️ Number of Volumes: 1\n▫️ Pages: 100\n▪️ Type of Material: Book\n▫️ Main Category: Theology, Sects, and Religions\n▪️ Sub Category: Monotheism&quot;,&quot;es&quot;:&quot;▫️ Título: \nLa palabra de la sinceridad y la aclaración de su significado (Kalimat al-Ikhlas)\n\n▪️ Autor: al-Hafiz Ibn Rajab al-Hanbali\n▫️ Edición crítica: Imad Taha Farra\n▪️ Editorial: Dar al-Sahaba lil-Turath\n▫️ Fecha de publicación: 1408 H\n▪️ Lugar de publicación: Tanta, Egipto\n▫️ Edición: 1\n▪️ Número de volúmenes: 1\n▫️ Páginas: 100\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Teología y doctrinas religiosas\n▪️ Subcategoría: Monoteísmo&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nLa parole de sincérité et l&#039;explication de son sens\n\n▪️ Auteur : al-Hafiz Ibn Rajab al-Hanbali\n▫️ Édition critique : Imad Taha Farra\n▪️ Éditeur : Dar al-Sahaba lil-Turath\n▫️ Date de publication : 1408 H\n▪️ Lieu de publication : Tanta, Égypte\n▫️ Édition : 1\n▪️ Nombre de volumes : 1\n▫️ Pages : 100\n▪️ Type de document : Livre\n▫️ Catégorie principale : Croyance, doctrines et religions\n▪️ Sous-catégorie : Unicité divine&quot;,&quot;id&quot;:&quot;▫️ Judul: \nKalimat Ikhlas dan Penjelasan Maknanya\n\n▪️ Penulis: Al-Hafizh Ibnu Rajab Al-Hanbali\n▫️ Pentahkik: Imad Thaha Furrah\n▪️ Penerbit: Dar Ash-Shahabah li At-Turats\n▫️ Tahun terbit: 1408 H\n▪️ Tempat terbit: Thanta, Mesir\n▫️ Cetakan: 1\n▪️ Jumlah jilid: 1\n▫️ Halaman: 100\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Akidah, mazhab, dan agama\n▪️ Subkategori: Tauhid&quot;,&quot;ja&quot;:&quot;▫️ 書名: \n純粋な信仰告白とその意味の確定\n\n▪️ 著者: ハーフィズ・イブン・ラジャブ・アル＝ハンバリー\n▫️ 校訂者: イマード・ターハー・フッラ\n▪️ 出版社: ダール・アッ＝サハーバ・リッ＝トゥラース\n▫️ 出版年: ヒジュラ暦1408年\n▪️ 出版地: タンタ、エジプト\n▫️ 版: 1\n▪️ 巻数: 1\n▫️ ページ数: 100\n▪️ 資料の種類: 書籍\n▫️ 主分類: 教義・学派・宗教\n▪️ 下位分類: タウヒード&quot;,&quot;ru&quot;:&quot;▫️ Название: \nСлово искренности и разъяснение его смысла\n\n▪️ Автор: хафиз Ибн Раджаб аль-Ханбали\n▫️ Тахкик: Имад Таха Фарра\n▪️ Издательство: Дар ас-Сахаба ли-т-Турас\n▫️ Дата издания: 1408 г. х.\n▪️ Место издания: Танта, Египет\n▫️ Издание: 1\n▪️ Количество томов: 1\n▫️ Страницы: 100\n▪️ Тип материала: Книга\n▫️ Основная категория: Вероубеждение, учения и религии\n▪️ Подкатегория: Единобожие&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nKalimat al-Ikhlas wa Tahqiq Ma&#039;naha (Neno la Ikhlasi na ufafanuzi wa maana yake)\n\n▪️ Mwandishi: al-Hafiz Ibn Rajab al-Hanbali\n▫️ Mhakiki: Imad Taha Farra\n▪️ Mchapishaji: Dar al-Sahaba lil-Turath\n▫️ Tarehe ya kuchapishwa: 1408H\n▪️ Mahali pa kuchapishwa: Tanta, Misri\n▫️ Toleo: 1\n▪️ Idadi ya juzuu: 1\n▫️ Kurasa: 100\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Aqida, madhehebu na dini\n▪️ Kundi dogo: Tauhidi&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nİhlâs Kelimesi ve Anlamının Tahkiki\n\n▪️ Yazar: Hâfız İbn Receb el-Hanbelî\n▫️ Tahkik eden: İmâd Tâhâ Furre\n▪️ Yayınevi: Dar al-Sahaba li al-Turath\n▫️ Yayın tarihi: 1408 H\n▪️ Yayın yeri: Tanta, Mısır\n▫️ Baskı: 1\n▪️ Cilt sayısı: 1\n▫️ Sayfa: 100\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Akide, mezhepler ve dinler\n▪️ Alt kategori: Tevhid&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nكلمة الاخلاص وتحقيق معناها\n\n▪️ مصنف: الحافظ ابن رجب الحنبلي\n▫️ محقق: عماد طه فرة\n▪️ ناشر: دار الصحابة للتراث\n▫️ تاریخِ اشاعت: 1408ھ\n▪️ مقامِ اشاعت: طنطا، مصر\n▫️ طبع: 1\n▪️ جلدیں: 1\n▫️ صفحات: 100\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: عقیدہ، مسالک اور مذاہب\n▪️ ذیلی زمرہ: توحید&quot;,&quot;zh&quot;:&quot;▫️ 书名：\n《清真言及其含义考释》\n\n▪️ 作者：哈菲兹·伊本·拉杰卜·汉百里\n▫️ 校勘者：伊马德·塔哈·富拉\n▪️ 出版社：圣门弟子遗产出版社\n▫️ 出版日期：伊历1408年\n▪️ 出版地：坦塔，埃及\n▫️ 版次：1\n▪️ 册数：1\n▫️ 页数：100\n▪️ 资料类型：图书\n▫️ 主分类：信仰、教派与宗教\n▪️ 子分类：认主独一&quot;}" data-original="**▫️ العنوان: 
 كلمة الاخلاص وتحقيق معناها**
 
 ▪️ المؤلف: #الحافظ_ابن_رجب_الحنبلي
@@ -190,28 +214,10 @@
 ▪️ التصنيف الفرعي: #التوحيد
 
 ۪</p>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
-      >
-        <span data-t="Close">Close</span>
-      </button>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="items"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>المعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,133 +70,120 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
-    </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <div class="book-head">
-          <img
-        class="cover"
-        src="../../catalogue/1949/194936.jpg"
-        alt=""
-      />
-    
-    <div class="book-head-text">
-      <h1 class="page-title">
-        <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Indexed Dictionary or the Editing of the Chains of Narration of Famous Books and Dispersed Parts&quot;,&quot;es&quot;:&quot;El diccionario indexado o la depuración de las cadenas de transmisión de los libros célebres y los opúsculos dispersos&quot;,&quot;fr&quot;:&quot;Al-mu&#039;jam al-mufahras aw tahrir asanid al-kutub al-mashhura wa-al-ajza al-manthura&quot;,&quot;id&quot;:&quot;Al-Mu&#039;jam Al-Mufahras atau Tahdzib Sanad-Sanad Kitab-Kitab Terkenal dan Juz-Juz yang Tersebar&quot;,&quot;ja&quot;:&quot;索引付き人名録――著名な書物および分冊資料の伝承経路の整理&quot;,&quot;ru&quot;:&quot;Алфавитный указатель, или уточнение иснадов известных книг и отдельных частей сочинений&quot;,&quot;sw&quot;:&quot;Al-Mujam al-Mufahras (Kamusi Yenye Fahirisi), au Kuhariri Minyororo ya Upokezi ya Vitabu Maarufu na Vijitabu Vilivyotawanyika&quot;,&quot;tr&quot;:&quot;el-Mu‘cemü’l-müfehres veya meşhur kitapların ve dağınık cüzlerin senedlerinin düzenlenmesi&quot;,&quot;ur&quot;:&quot;المعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة (فہرست وار معجم یا مشہور کتابوں اور منتشر اجزاء کی اسناد کی تحقیق)&quot;,&quot;zh&quot;:&quot;《索引辞典：或著名典籍与散见篇章传述链考订》&quot;}" data-original="المعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة">المعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة</span>
-      </h1>
-
-                        <p class="credits">
-            <span data-t="Authors">Authors</span>:
-                                        <a href="../../authors/009/921.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ahmad ibn Ali ibn Hajar Al-Asqalani&quot;,&quot;es&quot;:&quot;Ahmad ibn Ali ibn Hajar al-Asqalani&quot;,&quot;fr&quot;:&quot;Ahmad ibn Ali ibn Hajar al-Asqalani&quot;,&quot;id&quot;:&quot;Ahmad bin Ali bin Hajar Al-Asqalani&quot;,&quot;ja&quot;:&quot;アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー&quot;,&quot;ru&quot;:&quot;Ахмад ибн Али ибн Хаджар аль-Аскаляни&quot;,&quot;sw&quot;:&quot;Ahmad bin Ali bin Hajar Al-Asqalani&quot;,&quot;tr&quot;:&quot;Ahmed b. Ali b. Hacer el-Askalânî&quot;,&quot;zh&quot;:&quot;艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼&quot;}" data-original="أحمد بن علي بن حجر العسقلاني">أحمد بن علي بن حجر العسقلاني</span>
-              </a>
-                                    </p>
-                                <p class="credits">
-            <span data-t="Editors">Editors</span>:
-                                        <a href="../../authors/398/39851.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Muhammad Shakur Mahmoud Al-Haji Amrir Al-Mayadini&quot;,&quot;es&quot;:&quot;Muhammad Shakur Mahmoud al-Haji Amrir al-Mayadini&quot;,&quot;fr&quot;:&quot;Muhammad Shakur Mahmoud al-Haji Amrir al-Mayadini&quot;,&quot;id&quot;:&quot;Muhammad Syakur Mahmud Al-Haji Amrir Al-Mayadini&quot;,&quot;ja&quot;:&quot;ムハンマド・シャクール・マフムード・アル＝ハージー・アムリール・アル＝マヤーディーニー&quot;,&quot;ru&quot;:&quot;Мухаммад Шакур Махмуд аль-Хаджи Амрир аль-Маядини&quot;,&quot;sw&quot;:&quot;Muhammad Shakur Mahmoud Al-Haji Amrir Al-Mayadini&quot;,&quot;tr&quot;:&quot;Muhammed Şekûr Mahmûd el-Hâcî Amrîr el-Meyâdînî&quot;,&quot;zh&quot;:&quot;穆罕默德·舒库尔·马哈茂德·哈吉·阿姆里尔·马亚迪尼&quot;}" data-original="محمد شكور محمود الحاجي أمرير المياديني">محمد شكور محمود الحاجي أمرير المياديني</span>
-              </a>
-                                    </p>
-                                <p class="credits">
-            <span data-t="Publishers">Publishers</span>:
-                                        <a href="../../publishers/897/89738.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Risalah Foundation&quot;,&quot;es&quot;:&quot;Fundación al-Risalah&quot;,&quot;fr&quot;:&quot;Fondation al-Risalah&quot;,&quot;id&quot;:&quot;Yayasan Ar-Risalah&quot;,&quot;ja&quot;:&quot;アッ＝リサーラ財団&quot;,&quot;ru&quot;:&quot;Фонд ар-Рисаля&quot;,&quot;sw&quot;:&quot;Muassasat al-Risala&quot;,&quot;tr&quot;:&quot;er-Risâle Kurumu&quot;,&quot;zh&quot;:&quot;使命出版社&quot;}" data-original="مؤسسة الرسالة">مؤسسة الرسالة</span>
-              </a>
-                                    </p>
-              
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/hadeeth/194936_hadeeth0009_%D8%A7%D9%84%D9%85%D8%B9%D8%AC%D9%85_%D8%A7%D9%84%D9%85%D9%81%D9%87%D8%B1%D8%B3_%D8%A7%D8%A8%D9%86_%D8%AD%D8%AC%D8%B1_%D8%A7%D9%84%D8%AD%D8%A7%D8%AC%D9%8A_%D8%A7%D9%85%D8%B1%D9%8A%D8%B1_%D8%B7_%D8%A7%D9%84%D8%B1%D8%B3%D8%A7%D9%84%D8%A9.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T102706Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=1703b0a9677f359438e07ccb17faac308f2e34ec4d8a657a9db0f7f34603be78"
-            rel="noopener"
-            target="_blank"
-          >
-            <span data-t="Download">Download</span>
-          </a>
-          <span class="muted"><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></span>
-                      </p>
-    </div>
-  </div>
-
-      <section class="panel">
-      <dl class="book-card">
-                  <div>
-            <dt><span data-t="Published">Published</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;1418 AH \/ 1998 CE&quot;,&quot;es&quot;:&quot;1418H 1998&quot;,&quot;fr&quot;:&quot;1418H 1998&quot;,&quot;id&quot;:&quot;1418 H 1998 M&quot;,&quot;ja&quot;:&quot;ヒジュラ暦1418年 西暦1998年&quot;,&quot;ru&quot;:&quot;1418 г. х. \/ 1998 г.&quot;,&quot;sw&quot;:&quot;1418 H 1998 CE&quot;,&quot;tr&quot;:&quot;1418 H 1998 M&quot;,&quot;ur&quot;:&quot;1418ھ 1998ء&quot;,&quot;zh&quot;:&quot;伊历1418年 公元1998年&quot;}" data-original="1418هـ 1998م">1418هـ 1998م</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Country">Country</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Beirut, Lebanon&quot;,&quot;es&quot;:&quot;Beirut, Líbano&quot;,&quot;fr&quot;:&quot;Beyrouth, Liban&quot;,&quot;id&quot;:&quot;Beirut, Lebanon&quot;,&quot;ja&quot;:&quot;ベイルート、レバノン&quot;,&quot;ru&quot;:&quot;Бейрут, Ливан&quot;,&quot;sw&quot;:&quot;Beirut, Lebanoni&quot;,&quot;tr&quot;:&quot;Beyrut, Lübnan&quot;,&quot;ur&quot;:&quot;بیروت، لبنان&quot;,&quot;zh&quot;:&quot;贝鲁特，黎巴嫩&quot;}" data-original="بيروت، لبنان">بيروت، لبنان</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Edition">Edition</span></dt>
-            <dd><span dir="auto">1</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Volumes">Volumes</span></dt>
-            <dd><span dir="auto">1</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Pages">Pages</span></dt>
-            <dd><span dir="auto">681</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Type">Type</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Category">Category</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Hadith and Its Sciences&quot;,&quot;es&quot;:&quot;Hadiz y sus ciencias&quot;,&quot;fr&quot;:&quot;Hadith et sciences du hadith&quot;,&quot;id&quot;:&quot;Hadis dan Ilmu-Ilmunya&quot;,&quot;ja&quot;:&quot;ハディース・ハディース学&quot;,&quot;ru&quot;:&quot;Хадис и хадисоведческие науки&quot;,&quot;sw&quot;:&quot;Hadithi na elimu zake&quot;,&quot;tr&quot;:&quot;Hadis ve Hadis İlimleri&quot;,&quot;ur&quot;:&quot;حدیث اور علومِ حدیث&quot;,&quot;zh&quot;:&quot;圣训与圣训学&quot;}" data-original="الحديث وعلومه">الحديث وعلومه</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Subcategory">Subcategory</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentaries&quot;,&quot;es&quot;:&quot;Comentarios&quot;,&quot;fr&quot;:&quot;Commentaires&quot;,&quot;id&quot;:&quot;Syarah&quot;,&quot;ja&quot;:&quot;注釈&quot;,&quot;ru&quot;:&quot;Комментарии&quot;,&quot;sw&quot;:&quot;Sharh&quot;,&quot;tr&quot;:&quot;Şerhler&quot;,&quot;zh&quot;:&quot;注释&quot;}" data-original="شروحات">شروحات</span></dd>
-          </div>
-              </dl>
-    </section>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
-      <section class="panel">
-      <h2><span data-t="Description">Description</span></h2>
-      <p class="caption" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: The Indexed Dictionary or the Editing of the Chains of Narration of Famous Books and Dispersed Parts\n▪️ Author: Ahmad ibn Muhammad Ali ibn Hajar al-Asqalani\n▫️ Editor: Muhammad Shakur Mahmoud al-Haji Amrir al-Maydini\n▪️ Publisher: Al-Risalah Foundation\n▫️ Publish Date: 1418 AH \/ 1998 CE\n▪️ Publish Country: Beirut, Lebanon\n▫️ Edition: 1\n▪️ Number of Parts: 1\n▫️ Pages: 681\n▪️ Type of Material: Book\n▫️ Main Category: Hadith and Its Sciences\n▪️ Sub Category: Commentaries&quot;,&quot;es&quot;:&quot;**▫️ Título: \nEl diccionario indexado o la depuración de las cadenas de transmisión de los libros célebres y los opúsculos dispersos**\n\n▪️ Autor: Ahmad ibn Muhammad Ali ibn Hajar al-Asqalani\n▫️ Edición crítica: Muhammad Shakur Mahmud al-Haji Amir al-Miyadini\n▪️ Editorial: Mu&#039;assasat al-Risala\n▫️ Fecha de publicación: 1418H 1998\n▪️ Lugar de publicación: Beirut, Líbano\n▫️ Edición: 1\n▪️ Número de volúmenes: 1\n▫️ Páginas: 681\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Hadiz y sus ciencias\n▪️ Subcategoría: Comentarios&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nAl-mu&#039;jam al-mufahras aw tahrir asanid al-kutub al-mashhura wa-al-ajza al-manthura (Répertoire indexé ou vérification des chaînes de transmission des livres célèbres et des fascicules dispersés)\n\n▪️ Auteur : Ahmad ibn Muhammad Ali ibn Hajar al-Asqalani\n▫️ Édition critique : Muhammad Shakur Mahmud al-Haji Amrir al-Miyadini\n▪️ Éditeur : Mu&#039;assasat al-Risala\n▫️ Date de publication : 1418H 1998\n▪️ Lieu de publication : Beyrouth, Liban\n▫️ Édition : 1\n▪️ Nombre de volumes : 1\n▫️ Pages : 681\n▪️ Type de document : Livre\n▫️ Catégorie principale : Hadith et ses sciences\n▪️ Sous-catégorie : Commentaires&quot;,&quot;id&quot;:&quot;▫️ Judul: \nAl-Mu&#039;jam Al-Mufahras (Kamus Berindeks) atau Tahdzib Sanad-Sanad Kitab-Kitab Terkenal dan Juz-Juz yang Tersebar\n\n▪️ Penulis: Ahmad bin Muhammad Ali bin Hajar Al-Asqalani\n▫️ Pentahkik: Muhammad Syakur Mahmud Al-Haji Amrir Al-Miyadini\n▪️ Penerbit: Mu&#039;assasat ar-Risala\n▫️ Tahun terbit: 1418 H 1998 M\n▪️ Tempat terbit: Beirut, Lebanon\n▫️ Cetakan: 1\n▪️ Jumlah jilid: 1\n▫️ Halaman: 681\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Hadis dan ilmu-ilmunya\n▪️ Subkategori: Syarah&quot;,&quot;ja&quot;:&quot;▫️ 書名：\n索引付き人名録――著名な書物および分冊資料の伝承経路の整理\n\n▪️ 著者：アフマド・イブン・ムハンマド・アリー・イブン・ハジャル・アル＝アスカラーニー\n▫️ 校訂者：ムハンマド・シャクール・マフムード・アル＝ハージー・アムリール・アル＝ミヤーディーニー\n▪️ 出版社：ムアッササト・アッ＝リサーラ\n▫️ 出版年：ヒジュラ暦1418年 西暦1998年\n▪️ 出版地：ベイルート、レバノン\n▫️ 版：1\n▪️ 巻数：1\n▫️ ページ数：681\n▪️ 資料の種類：書籍\n▫️ 主分類：ハディース・ハディース諸学\n▪️ 下位分類：注釈書&quot;,&quot;ru&quot;:&quot;▫️ Название: \nАлфавитный указатель, или уточнение иснадов известных книг и отдельных частей сочинений\n\n▪️ Автор: Ахмад ибн Мухаммад Али ибн Хаджар аль-Аскаляни\n▫️ Тахкик: Мухаммад Шакур Махмуд аль-Хаджи Амрир аль-Миядини\n▪️ Издательство: Муассасат ар-Рисаля\n▫️ Дата издания: 1418 г. х. \/ 1998 г.\n▪️ Место издания: Бейрут, Ливан\n▫️ Издание: 1\n▪️ Количество томов: 1\n▫️ Страницы: 681\n▪️ Тип материала: книга\n▫️ Основная категория: хадисы и хадисоведение\n▪️ Подкатегория: комментарии&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nAl-Mujam al-Mufahras (Kamusi Yenye Fahirisi), au Kuhariri Minyororo ya Upokezi ya Vitabu Maarufu na Vijitabu Vilivyotawanyika\n\n▪️ Mwandishi: Ahmad bin Muhammad Ali bin Hajar al-Asqalani\n▫️ Mhakiki: Muhammad Shukur Mahmud al-Haji Amir al-Miyadini\n▪️ Mchapishaji: Mu&#039;assasat al-Risala\n▫️ Tarehe ya kuchapishwa: 1418 H 1998 CE\n▪️ Mahali pa kuchapishwa: Beirut, Lebanon\n▫️ Toleo: 1\n▪️ Idadi ya juzuu: 1\n▫️ Kurasa: 681\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Hadithi na elimu zake\n▪️ Kundi dogo: Sharh&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nel-Mu‘cemü’l-müfehres veya meşhur kitapların ve dağınık cüzlerin senedlerinin düzenlenmesi\n\n▪️ Yazar: Ahmed b. Muhammed Ali b. Hacer el-Askalânî\n▫️ Tahkik eden: Muhammed Şükür Mahmud el-Hâcî Emrîr el-Meydânî\n▪️ Yayınevi: Mu&#039;assasat al-Risala\n▫️ Yayın tarihi: 1418 H 1998 M\n▪️ Yayın yeri: Beyrut, Lübnan\n▫️ Baskı: 1\n▪️ Cilt sayısı: 1\n▫️ Sayfa: 681\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Hadis ve ilimleri\n▪️ Alt kategori: Şerhler&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nالمعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة (فہرست وار معجم یا مشہور کتابوں اور منتشر اجزاء کی اسناد کی تحقیق)\n\n▪️ مصنف: أحمد بن محمد علي بن حجر العسقلاني\n▫️ محقق: محمد شكور محمود الحاجي اميرير المياديني\n▪️ ناشر: مؤسسة الرسالة\n▫️ تاریخِ اشاعت: 1418ھ 1998ء\n▪️ مقامِ اشاعت: بیروت، لبنان\n▫️ طبع: 1\n▪️ جلدیں: 1\n▫️ صفحات: 681\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: حدیث اور علومِ حدیث\n▪️ ذیلی زمرہ: شروحات&quot;,&quot;zh&quot;:&quot;▫️ 书名：\n《索引辞典：或著名典籍与散见篇章传述链考订》\n\n▪️ 作者：艾哈迈德·本·穆罕默德·阿里·本·哈杰尔·阿斯卡拉尼\n▫️ 校勘者：穆罕默德·舒库尔·马哈茂德·哈吉·阿姆里尔·迈亚迪尼\n▪️ 出版社：利萨莱出版社\n▫️ 出版日期：伊历1418年 公元1998年\n▪️ 出版地：贝鲁特，黎巴嫩\n▫️ 版次：1\n▪️ 册数：1\n▫️ 页数：681\n▪️ 资料类型：图书\n▫️ 主分类：圣训与圣训学\n▪️ 子分类：注释&quot;}" data-original="**▫️ العنوان: 
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../catalogue.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Resources</span>
+    </a>
+
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <img
+            src="../../catalogue/1949/194936.jpg"
+            alt=""
+            class="aspect-[3/4] w-full rounded-xl border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+          />
+        
+        <div class="mt-4 flex flex-col gap-2">
+                                <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/hadeeth/194936_hadeeth0009_%D8%A7%D9%84%D9%85%D8%B9%D8%AC%D9%85_%D8%A7%D9%84%D9%85%D9%81%D9%87%D8%B1%D8%B3_%D8%A7%D8%A8%D9%86_%D8%AD%D8%AC%D8%B1_%D8%A7%D9%84%D8%AD%D8%A7%D8%AC%D9%8A_%D8%A7%D9%85%D8%B1%D9%8A%D8%B1_%D8%B7_%D8%A7%D9%84%D8%B1%D8%B3%D8%A7%D9%84%D8%A9.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T180149Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=6b77c72c0329c0edc0b322844fe8f37675ad02eb0e67d9f5749ec681f6191654" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" rel="noopener">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z"/>
+  <path d="M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Download</span>
+    </a>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></p>                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;The Indexed Dictionary or the Editing of the Chains of Narration of Famous Books and Dispersed Parts&quot;,&quot;es&quot;:&quot;El diccionario indexado o la depuración de las cadenas de transmisión de los libros célebres y los opúsculos dispersos&quot;,&quot;fr&quot;:&quot;Al-mu&#039;jam al-mufahras aw tahrir asanid al-kutub al-mashhura wa-al-ajza al-manthura&quot;,&quot;id&quot;:&quot;Al-Mu&#039;jam Al-Mufahras atau Tahdzib Sanad-Sanad Kitab-Kitab Terkenal dan Juz-Juz yang Tersebar&quot;,&quot;ja&quot;:&quot;索引付き人名録――著名な書物および分冊資料の伝承経路の整理&quot;,&quot;ru&quot;:&quot;Алфавитный указатель, или уточнение иснадов известных книг и отдельных частей сочинений&quot;,&quot;sw&quot;:&quot;Al-Mujam al-Mufahras (Kamusi Yenye Fahirisi), au Kuhariri Minyororo ya Upokezi ya Vitabu Maarufu na Vijitabu Vilivyotawanyika&quot;,&quot;tr&quot;:&quot;el-Mu‘cemü’l-müfehres veya meşhur kitapların ve dağınık cüzlerin senedlerinin düzenlenmesi&quot;,&quot;ur&quot;:&quot;المعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة (فہرست وار معجم یا مشہور کتابوں اور منتشر اجزاء کی اسناد کی تحقیق)&quot;,&quot;zh&quot;:&quot;《索引辞典：或著名典籍与散见篇章传述链考订》&quot;}" data-original="المعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة">المعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة</span></h1>
+
+                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1" lang="ar" dir="rtl" data-arabic-original="data-arabic-original" data-flux-text >المعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة</p>        
+                              <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Authors">Authors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/009/921.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ahmad ibn Ali ibn Hajar Al-Asqalani&quot;,&quot;es&quot;:&quot;Ahmad ibn Ali ibn Hajar al-Asqalani&quot;,&quot;fr&quot;:&quot;Ahmad ibn Ali ibn Hajar al-Asqalani&quot;,&quot;id&quot;:&quot;Ahmad bin Ali bin Hajar Al-Asqalani&quot;,&quot;ja&quot;:&quot;アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー&quot;,&quot;ru&quot;:&quot;Ахмад ибн Али ибн Хаджар аль-Аскаляни&quot;,&quot;sw&quot;:&quot;Ahmad bin Ali bin Hajar Al-Asqalani&quot;,&quot;tr&quot;:&quot;Ahmed b. Ali b. Hacer el-Askalânî&quot;,&quot;zh&quot;:&quot;艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼&quot;}" data-original="أحمد بن علي بن حجر العسقلاني">أحمد بن علي بن حجر العسقلاني</span></a></p>                                        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Editors">Editors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/398/39851.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Muhammad Shakur Mahmoud Al-Haji Amrir Al-Mayadini&quot;,&quot;es&quot;:&quot;Muhammad Shakur Mahmoud al-Haji Amrir al-Mayadini&quot;,&quot;fr&quot;:&quot;Muhammad Shakur Mahmoud al-Haji Amrir al-Mayadini&quot;,&quot;id&quot;:&quot;Muhammad Syakur Mahmud Al-Haji Amrir Al-Mayadini&quot;,&quot;ja&quot;:&quot;ムハンマド・シャクール・マフムード・アル＝ハージー・アムリール・アル＝マヤーディーニー&quot;,&quot;ru&quot;:&quot;Мухаммад Шакур Махмуд аль-Хаджи Амрир аль-Маядини&quot;,&quot;sw&quot;:&quot;Muhammad Shakur Mahmoud Al-Haji Amrir Al-Mayadini&quot;,&quot;tr&quot;:&quot;Muhammed Şekûr Mahmûd el-Hâcî Amrîr el-Meyâdînî&quot;,&quot;zh&quot;:&quot;穆罕默德·舒库尔·马哈茂德·哈吉·阿姆里尔·马亚迪尼&quot;}" data-original="محمد شكور محمود الحاجي أمرير المياديني">محمد شكور محمود الحاجي أمرير المياديني</span></a></p>                                        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Publishers">Publishers</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../publishers/897/89738.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Risalah Foundation&quot;,&quot;es&quot;:&quot;Fundación al-Risalah&quot;,&quot;fr&quot;:&quot;Fondation al-Risalah&quot;,&quot;id&quot;:&quot;Yayasan Ar-Risalah&quot;,&quot;ja&quot;:&quot;アッ＝リサーラ財団&quot;,&quot;ru&quot;:&quot;Фонд ар-Рисаля&quot;,&quot;sw&quot;:&quot;Muassasat al-Risala&quot;,&quot;tr&quot;:&quot;er-Risâle Kurumu&quot;,&quot;zh&quot;:&quot;使命出版社&quot;}" data-original="مؤسسة الرسالة">مؤسسة الرسالة</span></a></p>                  
+                  <div class="mt-6 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+            <dl class="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[fit-content(12rem)_1fr]">
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Published">Published</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;1418 AH \/ 1998 CE&quot;,&quot;es&quot;:&quot;1418H 1998&quot;,&quot;fr&quot;:&quot;1418H 1998&quot;,&quot;id&quot;:&quot;1418 H 1998 M&quot;,&quot;ja&quot;:&quot;ヒジュラ暦1418年 西暦1998年&quot;,&quot;ru&quot;:&quot;1418 г. х. \/ 1998 г.&quot;,&quot;sw&quot;:&quot;1418 H 1998 CE&quot;,&quot;tr&quot;:&quot;1418 H 1998 M&quot;,&quot;ur&quot;:&quot;1418ھ 1998ء&quot;,&quot;zh&quot;:&quot;伊历1418年 公元1998年&quot;}" data-original="1418هـ 1998م">1418هـ 1998م</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Country">Country</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Beirut, Lebanon&quot;,&quot;es&quot;:&quot;Beirut, Líbano&quot;,&quot;fr&quot;:&quot;Beyrouth, Liban&quot;,&quot;id&quot;:&quot;Beirut, Lebanon&quot;,&quot;ja&quot;:&quot;ベイルート、レバノン&quot;,&quot;ru&quot;:&quot;Бейрут, Ливан&quot;,&quot;sw&quot;:&quot;Beirut, Lebanoni&quot;,&quot;tr&quot;:&quot;Beyrut, Lübnan&quot;,&quot;ur&quot;:&quot;بیروت، لبنان&quot;,&quot;zh&quot;:&quot;贝鲁特，黎巴嫩&quot;}" data-original="بيروت، لبنان">بيروت، لبنان</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Edition">Edition</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">1</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Volumes">Volumes</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">1</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Pages">Pages</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">681</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Type">Type</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Category">Category</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Hadith and Its Sciences&quot;,&quot;es&quot;:&quot;Hadiz y sus ciencias&quot;,&quot;fr&quot;:&quot;Hadith et sciences du hadith&quot;,&quot;id&quot;:&quot;Hadis dan Ilmu-Ilmunya&quot;,&quot;ja&quot;:&quot;ハディース・ハディース学&quot;,&quot;ru&quot;:&quot;Хадис и хадисоведческие науки&quot;,&quot;sw&quot;:&quot;Hadithi na elimu zake&quot;,&quot;tr&quot;:&quot;Hadis ve Hadis İlimleri&quot;,&quot;ur&quot;:&quot;حدیث اور علومِ حدیث&quot;,&quot;zh&quot;:&quot;圣训与圣训学&quot;}" data-original="الحديث وعلومه">الحديث وعلومه</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Subcategory">Subcategory</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentaries&quot;,&quot;es&quot;:&quot;Comentarios&quot;,&quot;fr&quot;:&quot;Commentaires&quot;,&quot;id&quot;:&quot;Syarah&quot;,&quot;ja&quot;:&quot;注釈&quot;,&quot;ru&quot;:&quot;Комментарии&quot;,&quot;sw&quot;:&quot;Sharh&quot;,&quot;tr&quot;:&quot;Şerhler&quot;,&quot;zh&quot;:&quot;注释&quot;}" data-original="شروحات">شروحات</span>
+                </dd>
+                          </dl>
+          </div>
+        
+                  <div class="mt-4 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Description</div>
+            <p class="text-sm leading-relaxed whitespace-pre-line text-zinc-800 dark:text-zinc-100" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: The Indexed Dictionary or the Editing of the Chains of Narration of Famous Books and Dispersed Parts\n▪️ Author: Ahmad ibn Muhammad Ali ibn Hajar al-Asqalani\n▫️ Editor: Muhammad Shakur Mahmoud al-Haji Amrir al-Maydini\n▪️ Publisher: Al-Risalah Foundation\n▫️ Publish Date: 1418 AH \/ 1998 CE\n▪️ Publish Country: Beirut, Lebanon\n▫️ Edition: 1\n▪️ Number of Parts: 1\n▫️ Pages: 681\n▪️ Type of Material: Book\n▫️ Main Category: Hadith and Its Sciences\n▪️ Sub Category: Commentaries&quot;,&quot;es&quot;:&quot;**▫️ Título: \nEl diccionario indexado o la depuración de las cadenas de transmisión de los libros célebres y los opúsculos dispersos**\n\n▪️ Autor: Ahmad ibn Muhammad Ali ibn Hajar al-Asqalani\n▫️ Edición crítica: Muhammad Shakur Mahmud al-Haji Amir al-Miyadini\n▪️ Editorial: Mu&#039;assasat al-Risala\n▫️ Fecha de publicación: 1418H 1998\n▪️ Lugar de publicación: Beirut, Líbano\n▫️ Edición: 1\n▪️ Número de volúmenes: 1\n▫️ Páginas: 681\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Hadiz y sus ciencias\n▪️ Subcategoría: Comentarios&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nAl-mu&#039;jam al-mufahras aw tahrir asanid al-kutub al-mashhura wa-al-ajza al-manthura (Répertoire indexé ou vérification des chaînes de transmission des livres célèbres et des fascicules dispersés)\n\n▪️ Auteur : Ahmad ibn Muhammad Ali ibn Hajar al-Asqalani\n▫️ Édition critique : Muhammad Shakur Mahmud al-Haji Amrir al-Miyadini\n▪️ Éditeur : Mu&#039;assasat al-Risala\n▫️ Date de publication : 1418H 1998\n▪️ Lieu de publication : Beyrouth, Liban\n▫️ Édition : 1\n▪️ Nombre de volumes : 1\n▫️ Pages : 681\n▪️ Type de document : Livre\n▫️ Catégorie principale : Hadith et ses sciences\n▪️ Sous-catégorie : Commentaires&quot;,&quot;id&quot;:&quot;▫️ Judul: \nAl-Mu&#039;jam Al-Mufahras (Kamus Berindeks) atau Tahdzib Sanad-Sanad Kitab-Kitab Terkenal dan Juz-Juz yang Tersebar\n\n▪️ Penulis: Ahmad bin Muhammad Ali bin Hajar Al-Asqalani\n▫️ Pentahkik: Muhammad Syakur Mahmud Al-Haji Amrir Al-Miyadini\n▪️ Penerbit: Mu&#039;assasat ar-Risala\n▫️ Tahun terbit: 1418 H 1998 M\n▪️ Tempat terbit: Beirut, Lebanon\n▫️ Cetakan: 1\n▪️ Jumlah jilid: 1\n▫️ Halaman: 681\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Hadis dan ilmu-ilmunya\n▪️ Subkategori: Syarah&quot;,&quot;ja&quot;:&quot;▫️ 書名：\n索引付き人名録――著名な書物および分冊資料の伝承経路の整理\n\n▪️ 著者：アフマド・イブン・ムハンマド・アリー・イブン・ハジャル・アル＝アスカラーニー\n▫️ 校訂者：ムハンマド・シャクール・マフムード・アル＝ハージー・アムリール・アル＝ミヤーディーニー\n▪️ 出版社：ムアッササト・アッ＝リサーラ\n▫️ 出版年：ヒジュラ暦1418年 西暦1998年\n▪️ 出版地：ベイルート、レバノン\n▫️ 版：1\n▪️ 巻数：1\n▫️ ページ数：681\n▪️ 資料の種類：書籍\n▫️ 主分類：ハディース・ハディース諸学\n▪️ 下位分類：注釈書&quot;,&quot;ru&quot;:&quot;▫️ Название: \nАлфавитный указатель, или уточнение иснадов известных книг и отдельных частей сочинений\n\n▪️ Автор: Ахмад ибн Мухаммад Али ибн Хаджар аль-Аскаляни\n▫️ Тахкик: Мухаммад Шакур Махмуд аль-Хаджи Амрир аль-Миядини\n▪️ Издательство: Муассасат ар-Рисаля\n▫️ Дата издания: 1418 г. х. \/ 1998 г.\n▪️ Место издания: Бейрут, Ливан\n▫️ Издание: 1\n▪️ Количество томов: 1\n▫️ Страницы: 681\n▪️ Тип материала: книга\n▫️ Основная категория: хадисы и хадисоведение\n▪️ Подкатегория: комментарии&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nAl-Mujam al-Mufahras (Kamusi Yenye Fahirisi), au Kuhariri Minyororo ya Upokezi ya Vitabu Maarufu na Vijitabu Vilivyotawanyika\n\n▪️ Mwandishi: Ahmad bin Muhammad Ali bin Hajar al-Asqalani\n▫️ Mhakiki: Muhammad Shukur Mahmud al-Haji Amir al-Miyadini\n▪️ Mchapishaji: Mu&#039;assasat al-Risala\n▫️ Tarehe ya kuchapishwa: 1418 H 1998 CE\n▪️ Mahali pa kuchapishwa: Beirut, Lebanon\n▫️ Toleo: 1\n▪️ Idadi ya juzuu: 1\n▫️ Kurasa: 681\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Hadithi na elimu zake\n▪️ Kundi dogo: Sharh&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nel-Mu‘cemü’l-müfehres veya meşhur kitapların ve dağınık cüzlerin senedlerinin düzenlenmesi\n\n▪️ Yazar: Ahmed b. Muhammed Ali b. Hacer el-Askalânî\n▫️ Tahkik eden: Muhammed Şükür Mahmud el-Hâcî Emrîr el-Meydânî\n▪️ Yayınevi: Mu&#039;assasat al-Risala\n▫️ Yayın tarihi: 1418 H 1998 M\n▪️ Yayın yeri: Beyrut, Lübnan\n▫️ Baskı: 1\n▪️ Cilt sayısı: 1\n▫️ Sayfa: 681\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Hadis ve ilimleri\n▪️ Alt kategori: Şerhler&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nالمعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة (فہرست وار معجم یا مشہور کتابوں اور منتشر اجزاء کی اسناد کی تحقیق)\n\n▪️ مصنف: أحمد بن محمد علي بن حجر العسقلاني\n▫️ محقق: محمد شكور محمود الحاجي اميرير المياديني\n▪️ ناشر: مؤسسة الرسالة\n▫️ تاریخِ اشاعت: 1418ھ 1998ء\n▪️ مقامِ اشاعت: بیروت، لبنان\n▫️ طبع: 1\n▪️ جلدیں: 1\n▫️ صفحات: 681\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: حدیث اور علومِ حدیث\n▪️ ذیلی زمرہ: شروحات&quot;,&quot;zh&quot;:&quot;▫️ 书名：\n《索引辞典：或著名典籍与散见篇章传述链考订》\n\n▪️ 作者：艾哈迈德·本·穆罕默德·阿里·本·哈杰尔·阿斯卡拉尼\n▫️ 校勘者：穆罕默德·舒库尔·马哈茂德·哈吉·阿姆里尔·迈亚迪尼\n▪️ 出版社：利萨莱出版社\n▫️ 出版日期：伊历1418年 公元1998年\n▪️ 出版地：贝鲁特，黎巴嫩\n▫️ 版次：1\n▪️ 册数：1\n▫️ 页数：681\n▪️ 资料类型：图书\n▫️ 主分类：圣训与圣训学\n▪️ 子分类：注释&quot;}" data-original="**▫️ العنوان: 
 المعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة**
 
 ▪️ المؤلف: #أحمد_بن_محمد_علي_بن_حجر_العسقلاني
@@ -190,28 +214,10 @@
 ▪️ التصنيف الفرعي: #شروحات
 
 ۪</p>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
-      >
-        <span data-t="Close">Close</span>
-      </button>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

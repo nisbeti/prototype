@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>دار السلام للنشر والتوزيع</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,194 +70,351 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Salam for Publishing and Distribution&quot;,&quot;es&quot;:&quot;Dar al-Salam para la edición y distribución&quot;,&quot;fr&quot;:&quot;Dar al-Salam pour l&#039;édition et la distribution&quot;,&quot;id&quot;:&quot;Dar As-Salam untuk Penerbitan dan Distribusi&quot;,&quot;ja&quot;:&quot;ダール・アッ＝サラーム・リンナシュル・ワッタウズィー&quot;,&quot;ru&quot;:&quot;Дар ас-Салям для издательства и распространения&quot;,&quot;sw&quot;:&quot;Dar al-Salam lil-Nashr wal-Tawzi&quot;,&quot;tr&quot;:&quot;Dârüsselâm Yayın ve Dağıtım&quot;,&quot;zh&quot;:&quot;和平出版与发行社&quot;}" data-original="دار السلام للنشر والتوزيع">دار السلام للنشر والتوزيع</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/1381/138187.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1381/138187.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Objectives from the Evidence of the Rules - Dar Al-Salam&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (El logro de la meta a partir de las pruebas de las normas jurídicas) - Dar al-Salam&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Le but recherché à partir des preuves des règles juridiques) - Dar al-Salam&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Dar as-Salam)&quot;,&quot;ja&quot;:&quot;法規定の根拠に基づく『ブルーグ・アル＝マラーム』―ダール・アッ＝サラーム版&quot;,&quot;ru&quot;:&quot;«Булуг аль-марам» из доказательств правовых постановлений — Дар ас-Салям&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia lengo kutokana na dalili za hukumu) — Dar al-Salam&quot;,&quot;tr&quot;:&quot;Bulûğu’l-merâm min edilleti’l-ahkâm (Ahkâm Delillerinden Bulûğu’l-merâm) – Dar al-Salam&quot;,&quot;zh&quot;:&quot;《律例证据纲要》——达尔·萨拉姆出版社版&quot;}" data-original="بلوغ المرام من أدلة الأحكام- دار السلام">بلوغ المرام من أدلة الأحكام- دار السلام</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Salam for Publishing and Distribution&quot;,&quot;es&quot;:&quot;Dar al-Salam para la edición y distribución&quot;,&quot;fr&quot;:&quot;Dar al-Salam pour l&#039;édition et la distribution&quot;,&quot;id&quot;:&quot;Dar As-Salam untuk Penerbitan dan Distribusi&quot;,&quot;ja&quot;:&quot;ダール・アッ＝サラーム・リンナシュル・ワッタウズィー&quot;,&quot;ru&quot;:&quot;Дар ас-Салям для издательства и распространения&quot;,&quot;sw&quot;:&quot;Dar al-Salam lil-Nashr wal-Tawzi&quot;,&quot;tr&quot;:&quot;Dârüsselâm Yayın ve Dağıtım&quot;,&quot;zh&quot;:&quot;和平出版与发行社&quot;}" data-original="دار السلام للنشر والتوزيع">دار السلام للنشر والتوزيع</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/1381/138187.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Objectives from the Evidence of the Rules - Dar Al-Salam&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (El logro de la meta a partir de las pruebas de las normas jurídicas) - Dar al-Salam&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Le but recherché à partir des preuves des règles juridiques) - Dar al-Salam&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Dar as-Salam)&quot;,&quot;ja&quot;:&quot;法規定の根拠に基づく『ブルーグ・アル＝マラーム』―ダール・アッ＝サラーム版&quot;,&quot;ru&quot;:&quot;«Булуг аль-марам» из доказательств правовых постановлений — Дар ас-Салям&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia lengo kutokana na dalili za hukumu) — Dar al-Salam&quot;,&quot;tr&quot;:&quot;Bulûğu’l-merâm min edilleti’l-ahkâm (Ahkâm Delillerinden Bulûğu’l-merâm) – Dar al-Salam&quot;,&quot;zh&quot;:&quot;《律例证据纲要》——达尔·萨拉姆出版社版&quot;}" data-original="بلوغ المرام من أدلة الأحكام- دار السلام">بلوغ المرام من أدلة الأحكام- دار السلام</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار السلام للنشر والتوزيع</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1382/138222.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Gardens of the Righteous - Dar Al-Salam&quot;,&quot;es&quot;:&quot;Riyad al-Salihin (Jardines de los justos) — Dar al-Salam&quot;,&quot;fr&quot;:&quot;Riyad al-Salihin (Les jardins des vertueux) — Dar al-Salam&quot;,&quot;id&quot;:&quot;Riyadh Ash-Shalihin (Taman Orang-Orang Saleh) – Dar as-Salam&quot;,&quot;ja&quot;:&quot;リヤード・アッ＝サーリヒーン—ダール・アッ＝サラーム版&quot;,&quot;ru&quot;:&quot;Рияд ас-салихин — Дар ас-Салям&quot;,&quot;sw&quot;:&quot;Riyad al-Salihin (Bustani za watu wema) - Dar al-Salam&quot;,&quot;tr&quot;:&quot;Riyâzü&#039;s-sâlihîn (Salihlerin bahçeleri) – Dar al-Salam&quot;,&quot;ur&quot;:&quot;رياض الصالحين (نیک لوگوں کے باغات) — دار السلام&quot;,&quot;zh&quot;:&quot;《善人园圃——和平之家出版社版》&quot;}" data-original="رياض الصالحين- دار السلام">رياض الصالحين- دار السلام</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">دار السلام للنشر والتوزيع</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1386/138629.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Fath al-Bari: Explanation of Sahih al-Bukhari - Dar al-Salam - Parts&quot;,&quot;es&quot;:&quot;Fath al-Bari: comentario de Sahih al-Bujari — Dar al-Salam, varios volúmenes&quot;,&quot;fr&quot;:&quot;Fath al-Bari (Commentaire du Sahih al-Bukhari) - al-Salam - plusieurs volumes&quot;,&quot;id&quot;:&quot;Fath al-Bari: Syarah Shahih Al-Bukhari – Dar as-Salam, beberapa jilid&quot;,&quot;ja&quot;:&quot;ファトフ・アル＝バーリー（サヒーフ・アル＝ブハーリー注解）―サラーム版・分冊&quot;,&quot;ru&quot;:&quot;Фатх аль-Бари: комментарий к «Сахиху» аль-Бухари — ас-Салям, тома&quot;,&quot;sw&quot;:&quot;Fath al-Bari Sharh Sahih al-Bukhari (Ufunguzi wa Muumba, maelezo ya Sahih al-Bukhari) - Dar al-Salam, juzuu&quot;,&quot;tr&quot;:&quot;Fethu’l-Bârî şerhu Sahîhi’l-Buhârî (Buhârî’nin Sahîh’inin şerhi) - Selâm baskısı, ciltler&quot;,&quot;zh&quot;:&quot;《巴里之启示：〈布哈里圣训实录〉注释》—和平出版社分册版&quot;}" data-original="فتح الباري شرح صحيح البخاري -السلام- أجزاء">فتح الباري شرح صحيح البخاري -السلام- أجزاء</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار السلام للنشر والتوزيع</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1386/138653.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Guidance of the Traveler: An Introduction to Fath al-Bari, Explanation of Sahih al-Bukhari&quot;,&quot;es&quot;:&quot;Hady al-Sari: introducción a Fath al-Bari, comentario de Sahih al-Bujari&quot;,&quot;fr&quot;:&quot;Hady al-Sari : introduction au Fath al-Bari, commentaire du Sahih al-Bukhari&quot;,&quot;id&quot;:&quot;Petunjuk bagi Pengembara: Mukadimah Fath al-Bari, Syarah Shahih Al-Bukhari&quot;,&quot;ja&quot;:&quot;『サヒーフ・アル＝ブハーリー』注解『ファトフ・アル＝バーリー』序説『ハディー・アッ＝サーリー』&quot;,&quot;ru&quot;:&quot;Худа ас-сари: предисловие к «Фатх аль-Бари», комментарию к «Сахиху» аль-Бухари&quot;,&quot;sw&quot;:&quot;Hady al-Sari: Utangulizi wa Fath al-Bari, sharh ya Sahih al-Bukhari&quot;,&quot;tr&quot;:&quot;Fethu’l-Bârî’nin mukaddimesi Hedyü’s-sârî: Sahîh-i Buhârî şerhi&quot;,&quot;zh&quot;:&quot;《行旅者指南：〈法特赫·巴里〉导论——〈布哈里圣训实录〉注释》&quot;}" data-original="هدي الساري مقدمة فتح الباري شرح صحيح البخاري">هدي الساري مقدمة فتح الباري شرح صحيح البخاري</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي حجر العسقلاني</td>
-        <td dir="auto">دار السلام للنشر والتوزيع</td>
-        <td dir="auto">1421هـ 2000م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1404/140430.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Gift of the Benefactor in Explaining Sahih Muslim, the Authentic and Concise Collection of the Sunnah, Transmitted by Trustworthy Narrators from the Messenger of Allah ﷺ - Parts&quot;,&quot;es&quot;:&quot;Minhat al-Mun&#039;im (El don del Benefactor), comentario del Sahih Muslim, la colección auténtica y concisa de tradiciones transmitidas por narradores fiables de otros narradores fiables, desde el Mensajero de Allah ﷺ —volúmenes&quot;,&quot;fr&quot;:&quot;Minhat al-Mun&#039;im (Le don du Bienfaiteur) : commentaire du Sahih Muslim, le recueil concis authentique des traditions transmis par un rapporteur fiable d&#039;un autre rapporteur fiable, d&#039;après le Messager d&#039;Allah ﷺ — volumes&quot;,&quot;id&quot;:&quot;Minnat Al-Mun&#039;im (Anugerah Sang Pemberi Nikmat) dalam mensyarah Shahih Muslim, kitab ringkas yang sahih dari sunan, diriwayatkan oleh periwayat tepercaya dari periwayat tepercaya dari Rasulullah ﷺ — beberapa jilid&quot;,&quot;ja&quot;:&quot;『サヒーフ・ムスリム』注解『ミンナト・アル＝ムニイム』――公正な伝承者から公正な伝承者を経て使徒 ﷺ に伝えられた、簡潔で真正な伝承集&quot;,&quot;ru&quot;:&quot;Миннат аль-Мун&#039;им: комментарий к «Сахиху» Муслима — краткому достоверному сборнику преданий, переданных надёжными передатчиками от надёжных передатчиков от Посланника Аллаха ﷺ (в нескольких томах)&quot;,&quot;sw&quot;:&quot;Minnat al-Mun&#039;im fi Sharh Sahih Muslim al-Musnad al-Sahih al-Mukhtasar min al-Sunan bi-Naql al-Adl an al-Adl an Rasul Allah ﷺ – juzuu&quot;,&quot;tr&quot;:&quot;Münʿim’in Minhâ’sı: Müslim’in Sahîh’inin, Adil Ravinin Adil Raviden Resulullah ﷺ’tan Nakliyle Rivayet Ettiği Muhtasar Müsned Hadisler Kitabının Şerhi&quot;,&quot;ur&quot;:&quot;منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- أجزاء (صحیح مسلم کی شرح میں منۃ المنعم — جلدیں)&quot;,&quot;zh&quot;:&quot;《恩典普施者：〈穆斯林圣训实录〉注释——圣训正典精选，依据可靠传述者辗转传自真主使者 ﷺ》——分册版&quot;}" data-original="منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- أجزاء">منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- أجزاء</span>
-          </a>
-        </td>
-        <td dir="auto">مسلم بن الحجاج بن مسلم القشيري النيسابوري</td>
-        <td dir="auto">دار السلام للنشر والتوزيع</td>
-        <td dir="auto">1420هـ 1999م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1433/143315.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Objective from the Evidence of the Rules with the Commentary of the Gift to the Generous&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (La consecución de la meta mediante las pruebas de las normas), con el comentario It&#039;haf al-Kiram (Obsequio a los nobles)&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (La réalisation du but par les preuves des règles), avec le commentaire Ithaf al-Kiram (L&#039;hommage aux généreux)&quot;,&quot;id&quot;:&quot;Bulugh Al-Maram min Adillati Al-Ahkam (Pencapaian Tujuan melalui Dalil-dalil Hukum), beserta komentar Ithaf Al-Kiram (Persembahan bagi Orang-orang Mulia)&quot;,&quot;ja&quot;:&quot;法規定の根拠に基づく『ブルーグ・アル＝マラーム』――『イッティハーフ・アル＝キラーム』注解付き&quot;,&quot;ru&quot;:&quot;Достижение цели на основании доказательств правовых постановлений с комментарием «Итхаф аль-кирам»&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram (Kufikia lengo kupitia dalili za hukumu), pamoja na maelezo yake Ithaf al-Kiram (Zawadi kwa wakarimu)&quot;,&quot;tr&quot;:&quot;Hükümlerin Delillerinden Merâmın Elde Edilmesi (Bulûğu’l-Merâm), İthâfü’l-Kirâm Şerhiyle&quot;,&quot;zh&quot;:&quot;《达到愿望：教法判例证据》及其注释《尊贵者的馈赠》&quot;}" data-original="بلوغ المرام من أدلة الأحكام مع تعليقه إتحاف الكرام">بلوغ المرام من أدلة الأحكام مع تعليقه إتحاف الكرام</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار السلام</td>
-        <td dir="auto">1424هـ 2004م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1447/144787.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Gift of the Benefactor in Explaining Sahih Muslim: The Authentic, Concise Compilation of the Sunnah Transmitted by Trustworthy Narrators from the Messenger of Allah ﷺ - Integrated&quot;,&quot;es&quot;:&quot;Minat al-Mun&#039;im fi Sharh Sahih Muslim al-Musnad al-Sahih al-Mukhtasar min al-Sunan bi-Naql al-Adl an al-Adl an Rasul Allah ﷺ (El favor del Benefactor: comentario del Sahih de Muslim, compendio auténtico de tradiciones transmitidas por narradores fiables, del Mensajero de Allah ﷺ) - edición integrada&quot;,&quot;fr&quot;:&quot;Minhat al-mun&#039;im fi sharh Sahih Muslim (Le don du Bienfaiteur : commentaire du *Sahih Muslim*), le recueil abrégé authentique des traditions transmis par des transmetteurs fiables — édition intégrée&quot;,&quot;id&quot;:&quot;Minat Al-Mun‘im fi Syarh Shahih Muslim (Anugerah Sang Pemberi Nikmat dalam Syarah Shahih Muslim) — Edisi gabungan&quot;,&quot;ja&quot;:&quot;ムスリムのサヒーフ注釈『ミナト・アル＝ムニイム』――合本版&quot;,&quot;ru&quot;:&quot;«Миннат аль-муним фи шарх Сахих Муслим» (Благодеяние Благодетеля, комментарий к «Сахиху» Муслима) — объединенное издание&quot;,&quot;sw&quot;:&quot;Minnat al-Mun&#039;im fi Sharh Sahih Muslim (Neema ya Mneemeshaji katika ufafanuzi wa Sahih Muslim) - Juzuu zote pamoja&quot;,&quot;tr&quot;:&quot;Minetü&#039;l-mün&#039;im fî şerhi Sahîhi Müslim (Müslim&#039;in Sahîh&#039;inin şerhi) - birleştirilmiş&quot;,&quot;ur&quot;:&quot;منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- مدمجة (صحیح مسلم، یعنی سنتوں سے منتخب مختصر مسند صحیح، کی شرح میں منة المنعم — یک جلدی)&quot;,&quot;zh&quot;:&quot;《恩主的恩典：〈穆斯林圣训实录〉注释——由公正者传自公正者的简明圣训集》（合订本）&quot;}" data-original="منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- مدمجة">منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- مدمجة</span>
-          </a>
-        </td>
-        <td dir="auto">مسلم بن الحجاج بن مسلم القشيري النيسابوري</td>
-        <td dir="auto">دار السلام للنشر والتوزيع</td>
-        <td dir="auto">1420هـ 1999م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1453/145392.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Reminder of Blessings in the Explanation of Sahih Muslim&quot;,&quot;es&quot;:&quot;Munabbih al-Ni&#039;am fi Sharh Sahih Muslim (Recordatorio de las bendiciones al comentar Sahih Muslim)&quot;,&quot;fr&quot;:&quot;Munabbih al-niam fi sharh Sahih Muslim (L&#039;éveil des bienfaits, commentaire du Sahih Muslim)&quot;,&quot;id&quot;:&quot;Munabbih an-Ni&#039;am fi Syarh Shahih Muslim [Pengingat Nikmat dalam Mengomentari Shahih Muslim]&quot;,&quot;ja&quot;:&quot;『サヒーフ・ムスリム』注解における恩恵の喚起&quot;,&quot;ru&quot;:&quot;«Мунбих ан-ниам» — комментарий к «Сахиху» Муслима&quot;,&quot;sw&quot;:&quot;Munabbih al-Niam fi Sharh Sahih Muslim (Kikumbusho cha neema katika sharh ya Sahih Muslim)&quot;,&quot;tr&quot;:&quot;Münebbihü’n-niam fî Şerhi Sahîh-i Müslim&quot;,&quot;ur&quot;:&quot;منبه النعم في شرح صحيح مسلم (صحیح مسلم کی شرح میں نعمتوں کی یاد دہانی)&quot;,&quot;zh&quot;:&quot;《穆斯林圣训实录注释中的恩典提示》&quot;}" data-original="منبه النعم في شرح صحيح مسلم">منبه النعم في شرح صحيح مسلم</span>
-          </a>
-        </td>
-        <td dir="auto">مسلم بن الحجاج القشيري النيسابوري</td>
-        <td dir="auto">دار السلام</td>
-        <td dir="auto">1420هـ 1999م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2377/237770.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Sahih Muslim - Dar Al-Salam&quot;,&quot;es&quot;:&quot;Sahih Muslim (La colección auténtica de Muslim) - Dar al-Salam&quot;,&quot;fr&quot;:&quot;Sahih Muslim - Dar al-Salam (Le recueil authentique de Muslim)&quot;,&quot;id&quot;:&quot;Shahih Muslim – Darussalam&quot;,&quot;ja&quot;:&quot;サヒーフ・ムスリム――ダール・アッ＝サラーム版&quot;,&quot;ru&quot;:&quot;Сахих Муслим — Дар ас-Салам&quot;,&quot;sw&quot;:&quot;Sahih Muslim - Dar al-Salam (Sahih Muslim)&quot;,&quot;tr&quot;:&quot;Sahîh-i Müslim - Dar al-Salam&quot;,&quot;zh&quot;:&quot;《穆斯林圣训实录》——和平出版社版&quot;}" data-original="صحيح مسلم- دار السلام">صحيح مسلم- دار السلام</span>
-          </a>
-        </td>
-        <td dir="auto">مسلم بن الحجاج بن مسلم القشيري النيسابوري</td>
-        <td dir="auto">دار السلام للنشر والتوزيع</td>
-        <td dir="auto">1421هـ 2000م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2502/250204.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Sahih Muslim - Corrected&quot;,&quot;es&quot;:&quot;Sahih Muslim (Hadices auténticos de Muslim) - edición revisada&quot;,&quot;fr&quot;:&quot;Sahih Muslim (Le recueil authentique de Muslim), édition corrigée&quot;,&quot;id&quot;:&quot;Shahih Muslim — Edisi yang Dikoreksi&quot;,&quot;ja&quot;:&quot;ムスリムの真正集――校訂版&quot;,&quot;ru&quot;:&quot;Сахих Муслима — исправленное издание&quot;,&quot;sw&quot;:&quot;Sahih Muslim — Toleo Lililohakikiwa&quot;,&quot;tr&quot;:&quot;Sahîh-i Müslim - Sahih Neşir&quot;,&quot;zh&quot;:&quot;《穆斯林圣训实录》（校订本）&quot;}" data-original="صحيح مسلم- مصححة">صحيح مسلم- مصححة</span>
-          </a>
-        </td>
-        <td dir="auto">مسلم بن الحجاج القشيري</td>
-        <td dir="auto">دار السلام للنشر والتوزيع</td>
-        <td dir="auto">1430هـ 2009م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        بلوغ المرام من أدلة الأحكام- دار السلام
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1382/138222.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1382/138222.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Gardens of the Righteous - Dar Al-Salam&quot;,&quot;es&quot;:&quot;Riyad al-Salihin (Jardines de los justos) — Dar al-Salam&quot;,&quot;fr&quot;:&quot;Riyad al-Salihin (Les jardins des vertueux) — Dar al-Salam&quot;,&quot;id&quot;:&quot;Riyadh Ash-Shalihin (Taman Orang-Orang Saleh) – Dar as-Salam&quot;,&quot;ja&quot;:&quot;リヤード・アッ＝サーリヒーン—ダール・アッ＝サラーム版&quot;,&quot;ru&quot;:&quot;Рияд ас-салихин — Дар ас-Салям&quot;,&quot;sw&quot;:&quot;Riyad al-Salihin (Bustani za watu wema) - Dar al-Salam&quot;,&quot;tr&quot;:&quot;Riyâzü&#039;s-sâlihîn (Salihlerin bahçeleri) – Dar al-Salam&quot;,&quot;ur&quot;:&quot;رياض الصالحين (نیک لوگوں کے باغات) — دار السلام&quot;,&quot;zh&quot;:&quot;《善人园圃——和平之家出版社版》&quot;}" data-original="رياض الصالحين- دار السلام">رياض الصالحين- دار السلام</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        رياض الصالحين- دار السلام
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1386/138629.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1386/138629.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Fath al-Bari: Explanation of Sahih al-Bukhari - Dar al-Salam - Parts&quot;,&quot;es&quot;:&quot;Fath al-Bari: comentario de Sahih al-Bujari — Dar al-Salam, varios volúmenes&quot;,&quot;fr&quot;:&quot;Fath al-Bari (Commentaire du Sahih al-Bukhari) - al-Salam - plusieurs volumes&quot;,&quot;id&quot;:&quot;Fath al-Bari: Syarah Shahih Al-Bukhari – Dar as-Salam, beberapa jilid&quot;,&quot;ja&quot;:&quot;ファトフ・アル＝バーリー（サヒーフ・アル＝ブハーリー注解）―サラーム版・分冊&quot;,&quot;ru&quot;:&quot;Фатх аль-Бари: комментарий к «Сахиху» аль-Бухари — ас-Салям, тома&quot;,&quot;sw&quot;:&quot;Fath al-Bari Sharh Sahih al-Bukhari (Ufunguzi wa Muumba, maelezo ya Sahih al-Bukhari) - Dar al-Salam, juzuu&quot;,&quot;tr&quot;:&quot;Fethu’l-Bârî şerhu Sahîhi’l-Buhârî (Buhârî’nin Sahîh’inin şerhi) - Selâm baskısı, ciltler&quot;,&quot;zh&quot;:&quot;《巴里之启示：〈布哈里圣训实录〉注释》—和平出版社分册版&quot;}" data-original="فتح الباري شرح صحيح البخاري -السلام- أجزاء">فتح الباري شرح صحيح البخاري -السلام- أجزاء</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        فتح الباري شرح صحيح البخاري -السلام- أجزاء
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1386/138653.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1386/138653.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Guidance of the Traveler: An Introduction to Fath al-Bari, Explanation of Sahih al-Bukhari&quot;,&quot;es&quot;:&quot;Hady al-Sari: introducción a Fath al-Bari, comentario de Sahih al-Bujari&quot;,&quot;fr&quot;:&quot;Hady al-Sari : introduction au Fath al-Bari, commentaire du Sahih al-Bukhari&quot;,&quot;id&quot;:&quot;Petunjuk bagi Pengembara: Mukadimah Fath al-Bari, Syarah Shahih Al-Bukhari&quot;,&quot;ja&quot;:&quot;『サヒーフ・アル＝ブハーリー』注解『ファトフ・アル＝バーリー』序説『ハディー・アッ＝サーリー』&quot;,&quot;ru&quot;:&quot;Худа ас-сари: предисловие к «Фатх аль-Бари», комментарию к «Сахиху» аль-Бухари&quot;,&quot;sw&quot;:&quot;Hady al-Sari: Utangulizi wa Fath al-Bari, sharh ya Sahih al-Bukhari&quot;,&quot;tr&quot;:&quot;Fethu’l-Bârî’nin mukaddimesi Hedyü’s-sârî: Sahîh-i Buhârî şerhi&quot;,&quot;zh&quot;:&quot;《行旅者指南：〈法特赫·巴里〉导论——〈布哈里圣训实录〉注释》&quot;}" data-original="هدي الساري مقدمة فتح الباري شرح صحيح البخاري">هدي الساري مقدمة فتح الباري شرح صحيح البخاري</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        هدي الساري مقدمة فتح الباري شرح صحيح البخاري
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1404/140430.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1404/140430.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Gift of the Benefactor in Explaining Sahih Muslim, the Authentic and Concise Collection of the Sunnah, Transmitted by Trustworthy Narrators from the Messenger of Allah ﷺ - Parts&quot;,&quot;es&quot;:&quot;Minhat al-Mun&#039;im (El don del Benefactor), comentario del Sahih Muslim, la colección auténtica y concisa de tradiciones transmitidas por narradores fiables de otros narradores fiables, desde el Mensajero de Allah ﷺ —volúmenes&quot;,&quot;fr&quot;:&quot;Minhat al-Mun&#039;im (Le don du Bienfaiteur) : commentaire du Sahih Muslim, le recueil concis authentique des traditions transmis par un rapporteur fiable d&#039;un autre rapporteur fiable, d&#039;après le Messager d&#039;Allah ﷺ — volumes&quot;,&quot;id&quot;:&quot;Minnat Al-Mun&#039;im (Anugerah Sang Pemberi Nikmat) dalam mensyarah Shahih Muslim, kitab ringkas yang sahih dari sunan, diriwayatkan oleh periwayat tepercaya dari periwayat tepercaya dari Rasulullah ﷺ — beberapa jilid&quot;,&quot;ja&quot;:&quot;『サヒーフ・ムスリム』注解『ミンナト・アル＝ムニイム』――公正な伝承者から公正な伝承者を経て使徒 ﷺ に伝えられた、簡潔で真正な伝承集&quot;,&quot;ru&quot;:&quot;Миннат аль-Мун&#039;им: комментарий к «Сахиху» Муслима — краткому достоверному сборнику преданий, переданных надёжными передатчиками от надёжных передатчиков от Посланника Аллаха ﷺ (в нескольких томах)&quot;,&quot;sw&quot;:&quot;Minnat al-Mun&#039;im fi Sharh Sahih Muslim al-Musnad al-Sahih al-Mukhtasar min al-Sunan bi-Naql al-Adl an al-Adl an Rasul Allah ﷺ – juzuu&quot;,&quot;tr&quot;:&quot;Münʿim’in Minhâ’sı: Müslim’in Sahîh’inin, Adil Ravinin Adil Raviden Resulullah ﷺ’tan Nakliyle Rivayet Ettiği Muhtasar Müsned Hadisler Kitabının Şerhi&quot;,&quot;ur&quot;:&quot;منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- أجزاء (صحیح مسلم کی شرح میں منۃ المنعم — جلدیں)&quot;,&quot;zh&quot;:&quot;《恩典普施者：〈穆斯林圣训实录〉注释——圣训正典精选，依据可靠传述者辗转传自真主使者 ﷺ》——分册版&quot;}" data-original="منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- أجزاء">منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- أجزاء</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- أجزاء
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      مسلم بن الحجاج بن مسلم القشيري النيسابوري
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1433/143315.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1433/143315.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Objective from the Evidence of the Rules with the Commentary of the Gift to the Generous&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (La consecución de la meta mediante las pruebas de las normas), con el comentario It&#039;haf al-Kiram (Obsequio a los nobles)&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (La réalisation du but par les preuves des règles), avec le commentaire Ithaf al-Kiram (L&#039;hommage aux généreux)&quot;,&quot;id&quot;:&quot;Bulugh Al-Maram min Adillati Al-Ahkam (Pencapaian Tujuan melalui Dalil-dalil Hukum), beserta komentar Ithaf Al-Kiram (Persembahan bagi Orang-orang Mulia)&quot;,&quot;ja&quot;:&quot;法規定の根拠に基づく『ブルーグ・アル＝マラーム』――『イッティハーフ・アル＝キラーム』注解付き&quot;,&quot;ru&quot;:&quot;Достижение цели на основании доказательств правовых постановлений с комментарием «Итхаф аль-кирам»&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram (Kufikia lengo kupitia dalili za hukumu), pamoja na maelezo yake Ithaf al-Kiram (Zawadi kwa wakarimu)&quot;,&quot;tr&quot;:&quot;Hükümlerin Delillerinden Merâmın Elde Edilmesi (Bulûğu’l-Merâm), İthâfü’l-Kirâm Şerhiyle&quot;,&quot;zh&quot;:&quot;《达到愿望：教法判例证据》及其注释《尊贵者的馈赠》&quot;}" data-original="بلوغ المرام من أدلة الأحكام مع تعليقه إتحاف الكرام">بلوغ المرام من أدلة الأحكام مع تعليقه إتحاف الكرام</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        بلوغ المرام من أدلة الأحكام مع تعليقه إتحاف الكرام
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1447/144787.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1447/144787.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Gift of the Benefactor in Explaining Sahih Muslim: The Authentic, Concise Compilation of the Sunnah Transmitted by Trustworthy Narrators from the Messenger of Allah ﷺ - Integrated&quot;,&quot;es&quot;:&quot;Minat al-Mun&#039;im fi Sharh Sahih Muslim al-Musnad al-Sahih al-Mukhtasar min al-Sunan bi-Naql al-Adl an al-Adl an Rasul Allah ﷺ (El favor del Benefactor: comentario del Sahih de Muslim, compendio auténtico de tradiciones transmitidas por narradores fiables, del Mensajero de Allah ﷺ) - edición integrada&quot;,&quot;fr&quot;:&quot;Minhat al-mun&#039;im fi sharh Sahih Muslim (Le don du Bienfaiteur : commentaire du *Sahih Muslim*), le recueil abrégé authentique des traditions transmis par des transmetteurs fiables — édition intégrée&quot;,&quot;id&quot;:&quot;Minat Al-Mun‘im fi Syarh Shahih Muslim (Anugerah Sang Pemberi Nikmat dalam Syarah Shahih Muslim) — Edisi gabungan&quot;,&quot;ja&quot;:&quot;ムスリムのサヒーフ注釈『ミナト・アル＝ムニイム』――合本版&quot;,&quot;ru&quot;:&quot;«Миннат аль-муним фи шарх Сахих Муслим» (Благодеяние Благодетеля, комментарий к «Сахиху» Муслима) — объединенное издание&quot;,&quot;sw&quot;:&quot;Minnat al-Mun&#039;im fi Sharh Sahih Muslim (Neema ya Mneemeshaji katika ufafanuzi wa Sahih Muslim) - Juzuu zote pamoja&quot;,&quot;tr&quot;:&quot;Minetü&#039;l-mün&#039;im fî şerhi Sahîhi Müslim (Müslim&#039;in Sahîh&#039;inin şerhi) - birleştirilmiş&quot;,&quot;ur&quot;:&quot;منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- مدمجة (صحیح مسلم، یعنی سنتوں سے منتخب مختصر مسند صحیح، کی شرح میں منة المنعم — یک جلدی)&quot;,&quot;zh&quot;:&quot;《恩主的恩典：〈穆斯林圣训实录〉注释——由公正者传自公正者的简明圣训集》（合订本）&quot;}" data-original="منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- مدمجة">منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- مدمجة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        منة المنعم في شرح صحيح مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ- مدمجة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      مسلم بن الحجاج بن مسلم القشيري النيسابوري
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1453/145392.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1453/145392.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Reminder of Blessings in the Explanation of Sahih Muslim&quot;,&quot;es&quot;:&quot;Munabbih al-Ni&#039;am fi Sharh Sahih Muslim (Recordatorio de las bendiciones al comentar Sahih Muslim)&quot;,&quot;fr&quot;:&quot;Munabbih al-niam fi sharh Sahih Muslim (L&#039;éveil des bienfaits, commentaire du Sahih Muslim)&quot;,&quot;id&quot;:&quot;Munabbih an-Ni&#039;am fi Syarh Shahih Muslim [Pengingat Nikmat dalam Mengomentari Shahih Muslim]&quot;,&quot;ja&quot;:&quot;『サヒーフ・ムスリム』注解における恩恵の喚起&quot;,&quot;ru&quot;:&quot;«Мунбих ан-ниам» — комментарий к «Сахиху» Муслима&quot;,&quot;sw&quot;:&quot;Munabbih al-Niam fi Sharh Sahih Muslim (Kikumbusho cha neema katika sharh ya Sahih Muslim)&quot;,&quot;tr&quot;:&quot;Münebbihü’n-niam fî Şerhi Sahîh-i Müslim&quot;,&quot;ur&quot;:&quot;منبه النعم في شرح صحيح مسلم (صحیح مسلم کی شرح میں نعمتوں کی یاد دہانی)&quot;,&quot;zh&quot;:&quot;《穆斯林圣训实录注释中的恩典提示》&quot;}" data-original="منبه النعم في شرح صحيح مسلم">منبه النعم في شرح صحيح مسلم</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        منبه النعم في شرح صحيح مسلم
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      مسلم بن الحجاج القشيري النيسابوري
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2377/237770.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2377/237770.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Sahih Muslim - Dar Al-Salam&quot;,&quot;es&quot;:&quot;Sahih Muslim (La colección auténtica de Muslim) - Dar al-Salam&quot;,&quot;fr&quot;:&quot;Sahih Muslim - Dar al-Salam (Le recueil authentique de Muslim)&quot;,&quot;id&quot;:&quot;Shahih Muslim – Darussalam&quot;,&quot;ja&quot;:&quot;サヒーフ・ムスリム――ダール・アッ＝サラーム版&quot;,&quot;ru&quot;:&quot;Сахих Муслим — Дар ас-Салам&quot;,&quot;sw&quot;:&quot;Sahih Muslim - Dar al-Salam (Sahih Muslim)&quot;,&quot;tr&quot;:&quot;Sahîh-i Müslim - Dar al-Salam&quot;,&quot;zh&quot;:&quot;《穆斯林圣训实录》——和平出版社版&quot;}" data-original="صحيح مسلم- دار السلام">صحيح مسلم- دار السلام</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        صحيح مسلم- دار السلام
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      مسلم بن الحجاج بن مسلم القشيري النيسابوري
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2502/250204.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2502/250204.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Sahih Muslim - Corrected&quot;,&quot;es&quot;:&quot;Sahih Muslim (Hadices auténticos de Muslim) - edición revisada&quot;,&quot;fr&quot;:&quot;Sahih Muslim (Le recueil authentique de Muslim), édition corrigée&quot;,&quot;id&quot;:&quot;Shahih Muslim — Edisi yang Dikoreksi&quot;,&quot;ja&quot;:&quot;ムスリムの真正集――校訂版&quot;,&quot;ru&quot;:&quot;Сахих Муслима — исправленное издание&quot;,&quot;sw&quot;:&quot;Sahih Muslim — Toleo Lililohakikiwa&quot;,&quot;tr&quot;:&quot;Sahîh-i Müslim - Sahih Neşir&quot;,&quot;zh&quot;:&quot;《穆斯林圣训实录》（校订本）&quot;}" data-original="صحيح مسلم- مصححة">صحيح مسلم- مصححة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        صحيح مسلم- مصححة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      مسلم بن الحجاج القشيري
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

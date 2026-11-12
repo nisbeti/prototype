@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>الدار السلفية للعلوم الشرعية</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,124 +70,148 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Dar Al-Salafiyyah for Islamic Sciences&quot;,&quot;es&quot;:&quot;Al-Dar Al-Salafiyyah para las Ciencias Islámicas&quot;,&quot;fr&quot;:&quot;Dar al-Salafiyyah des sciences islamiques&quot;,&quot;id&quot;:&quot;Ad-Dar As-Salafiyah untuk Ilmu-Ilmu Syar&#039;i&quot;,&quot;ja&quot;:&quot;アル＝ダール・アッ＝サラフィーヤ、イスラーム諸学出版所&quot;,&quot;ru&quot;:&quot;Ад-дар ас-салафийя ли-ль-&#039;улум аш-шар&#039;ийя&quot;,&quot;tr&quot;:&quot;es-Selefiyye Şer‘î İlimler Yayınevi&quot;,&quot;zh&quot;:&quot;萨拉菲教法科学之家&quot;}" data-original="الدار السلفية للعلوم الشرعية">الدار السلفية للعلوم الشرعية</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/2107/210768.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2107/210768.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;30 Questions and Answers on the Rulings of Prostration of Forgetfulness - Colored&quot;,&quot;es&quot;:&quot;30 preguntas y respuestas sobre las normas de la prosternación por olvido, ilustrado&quot;,&quot;fr&quot;:&quot;30 questions-réponses sur les règles de la prosternation de l&#039;oubli - en couleurs&quot;,&quot;id&quot;:&quot;30 Tanya Jawab tentang Hukum Sujud Sahwi—Berwarna&quot;,&quot;ja&quot;:&quot;忘失の礼拝跪拝の規定に関する30の質疑応答—カラー版&quot;,&quot;ru&quot;:&quot;30 вопросов и ответов о правилах суджуда ас-сахв (исправительного земного поклона) — цветное издание&quot;,&quot;sw&quot;:&quot;Maswali na majibu 30 kuhusu hukumu za kusujudu kwa kusahau – toleo la rangi&quot;,&quot;tr&quot;:&quot;Sehiv secdesinin hükümlerine dair 30 soru ve cevap – Renkli&quot;,&quot;zh&quot;:&quot;关于疏忽叩头教法规例的30问30答——彩色版&quot;}" data-original="30 سؤال وجواب في أحكام سجود السهو- ملون">30 سؤال وجواب في أحكام سجود السهو- ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Dar Al-Salafiyyah for Islamic Sciences&quot;,&quot;es&quot;:&quot;Al-Dar Al-Salafiyyah para las Ciencias Islámicas&quot;,&quot;fr&quot;:&quot;Dar al-Salafiyyah des sciences islamiques&quot;,&quot;id&quot;:&quot;Ad-Dar As-Salafiyah untuk Ilmu-Ilmu Syar&#039;i&quot;,&quot;ja&quot;:&quot;アル＝ダール・アッ＝サラフィーヤ、イスラーム諸学出版所&quot;,&quot;ru&quot;:&quot;Ад-дар ас-салафийя ли-ль-&#039;улум аш-шар&#039;ийя&quot;,&quot;tr&quot;:&quot;es-Selefiyye Şer‘î İlimler Yayınevi&quot;,&quot;zh&quot;:&quot;萨拉菲教法科学之家&quot;}" data-original="الدار السلفية للعلوم الشرعية">الدار السلفية للعلوم الشرعية</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/2107/210768.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;30 Questions and Answers on the Rulings of Prostration of Forgetfulness - Colored&quot;,&quot;es&quot;:&quot;30 preguntas y respuestas sobre las normas de la prosternación por olvido, ilustrado&quot;,&quot;fr&quot;:&quot;30 questions-réponses sur les règles de la prosternation de l&#039;oubli - en couleurs&quot;,&quot;id&quot;:&quot;30 Tanya Jawab tentang Hukum Sujud Sahwi—Berwarna&quot;,&quot;ja&quot;:&quot;忘失の礼拝跪拝の規定に関する30の質疑応答—カラー版&quot;,&quot;ru&quot;:&quot;30 вопросов и ответов о правилах суджуда ас-сахв (исправительного земного поклона) — цветное издание&quot;,&quot;sw&quot;:&quot;Maswali na majibu 30 kuhusu hukumu za kusujudu kwa kusahau – toleo la rangi&quot;,&quot;tr&quot;:&quot;Sehiv secdesinin hükümlerine dair 30 soru ve cevap – Renkli&quot;,&quot;zh&quot;:&quot;关于疏忽叩头教法规例的30问30答——彩色版&quot;}" data-original="30 سؤال وجواب في أحكام سجود السهو- ملون">30 سؤال وجواب في أحكام سجود السهو- ملون</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">الدار السلفية للعلوم الشرعية</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2107/210769.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;100 Questions and Answers on the Rulings of Menstruation, Postpartum Bleeding, and Nifas - Colored&quot;,&quot;es&quot;:&quot;100 preguntas y respuestas sobre las normas de la menstruación, la metrorragia y el puerperio, ilustrado&quot;,&quot;fr&quot;:&quot;100 questions-réponses sur les règles des menstrues, des métrorragies et des lochies - en couleurs&quot;,&quot;id&quot;:&quot;100 Tanya Jawab tentang Hukum Haid, Istihadhah, dan Nifas—Berwarna&quot;,&quot;ja&quot;:&quot;月経・不正出血・産褥に関する100の質疑応答—カラー版&quot;,&quot;ru&quot;:&quot;100 вопросов и ответов о правилах менструации, истихады и послеродового кровотечения — цветное издание&quot;,&quot;sw&quot;:&quot;Maswali na majibu 100 kuhusu hukumu za hedhi, istihadha na nifasi – toleo la rangi&quot;,&quot;tr&quot;:&quot;Hayız, istihâza ve nifas hükümlerine dair 100 soru ve cevap – Renkli&quot;,&quot;zh&quot;:&quot;关于月经、非经期出血及产后血教法规例的100问100答——彩色版&quot;}" data-original="100 سؤال وجواب في أحكام الحيض والاستحاضة والنفاس- ملون">100 سؤال وجواب في أحكام الحيض والاستحاضة والنفاس- ملون</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">الدار السلفية للعلوم الشرعية</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2107/210788.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Rules of Prostration for Forgetfulness and Recitation - Colored&quot;,&quot;es&quot;:&quot;Normas sobre las postraciones por olvido y de recitación, edición a color&quot;,&quot;fr&quot;:&quot;Règles de la prosternation de l&#039;oubli et de la récitation - en couleur&quot;,&quot;id&quot;:&quot;Hukum Sujud Sahwi dan Sujud Tilawah—Berwarna&quot;,&quot;ja&quot;:&quot;忘却のサジュダおよび読誦のサジュダの規定（カラー版）&quot;,&quot;ru&quot;:&quot;Правила суджуда забывчивости и чтения Корана — цветное издание&quot;,&quot;sw&quot;:&quot;Hukumu za sijda ya kusahau na sijda ya usomaji - yenye rangi&quot;,&quot;tr&quot;:&quot;Sehiv secdesi ve tilavet secdesinin hükümleri – Renkli&quot;,&quot;ur&quot;:&quot;سجدۂ سہو اور سجدۂ تلاوت کے احکام — رنگین&quot;,&quot;zh&quot;:&quot;礼拜中遗忘及诵经叩头的教法律例（彩色版）&quot;}" data-original="أحكام سجود السهو والتلاوة- ملون">أحكام سجود السهو والتلاوة- ملون</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">الدار السلفية للعلوم الشرعية</td>
-        <td dir="auto"></td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        30 سؤال وجواب في أحكام سجود السهو- ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2107/210769.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2107/210769.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;100 Questions and Answers on the Rulings of Menstruation, Postpartum Bleeding, and Nifas - Colored&quot;,&quot;es&quot;:&quot;100 preguntas y respuestas sobre las normas de la menstruación, la metrorragia y el puerperio, ilustrado&quot;,&quot;fr&quot;:&quot;100 questions-réponses sur les règles des menstrues, des métrorragies et des lochies - en couleurs&quot;,&quot;id&quot;:&quot;100 Tanya Jawab tentang Hukum Haid, Istihadhah, dan Nifas—Berwarna&quot;,&quot;ja&quot;:&quot;月経・不正出血・産褥に関する100の質疑応答—カラー版&quot;,&quot;ru&quot;:&quot;100 вопросов и ответов о правилах менструации, истихады и послеродового кровотечения — цветное издание&quot;,&quot;sw&quot;:&quot;Maswali na majibu 100 kuhusu hukumu za hedhi, istihadha na nifasi – toleo la rangi&quot;,&quot;tr&quot;:&quot;Hayız, istihâza ve nifas hükümlerine dair 100 soru ve cevap – Renkli&quot;,&quot;zh&quot;:&quot;关于月经、非经期出血及产后血教法规例的100问100答——彩色版&quot;}" data-original="100 سؤال وجواب في أحكام الحيض والاستحاضة والنفاس- ملون">100 سؤال وجواب في أحكام الحيض والاستحاضة والنفاس- ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        100 سؤال وجواب في أحكام الحيض والاستحاضة والنفاس- ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2107/210788.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2107/210788.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Rules of Prostration for Forgetfulness and Recitation - Colored&quot;,&quot;es&quot;:&quot;Normas sobre las postraciones por olvido y de recitación, edición a color&quot;,&quot;fr&quot;:&quot;Règles de la prosternation de l&#039;oubli et de la récitation - en couleur&quot;,&quot;id&quot;:&quot;Hukum Sujud Sahwi dan Sujud Tilawah—Berwarna&quot;,&quot;ja&quot;:&quot;忘却のサジュダおよび読誦のサジュダの規定（カラー版）&quot;,&quot;ru&quot;:&quot;Правила суджуда забывчивости и чтения Корана — цветное издание&quot;,&quot;sw&quot;:&quot;Hukumu za sijda ya kusahau na sijda ya usomaji - yenye rangi&quot;,&quot;tr&quot;:&quot;Sehiv secdesi ve tilavet secdesinin hükümleri – Renkli&quot;,&quot;ur&quot;:&quot;سجدۂ سہو اور سجدۂ تلاوت کے احکام — رنگین&quot;,&quot;zh&quot;:&quot;礼拜中遗忘及诵经叩头的教法律例（彩色版）&quot;}" data-original="أحكام سجود السهو والتلاوة- ملون">أحكام سجود السهو والتلاوة- ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        أحكام سجود السهو والتلاوة- ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

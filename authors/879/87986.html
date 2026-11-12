@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="authors"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>عبد الله القاضي</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,134 +70,177 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../authors.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Authors</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Abdullah Al-Qadi&quot;,&quot;es&quot;:&quot;Abdullah al-Qadi&quot;,&quot;fr&quot;:&quot;Abd Allah al-Qadi&quot;,&quot;id&quot;:&quot;Abdullah Al-Qadi&quot;,&quot;ja&quot;:&quot;アブドゥッラー・アル＝カーディー&quot;,&quot;ru&quot;:&quot;Абдуллах аль-Кади&quot;,&quot;sw&quot;:&quot;Abdullah al-Qadi&quot;,&quot;tr&quot;:&quot;Abdullah el-Kādî&quot;,&quot;zh&quot;:&quot;阿卜杜拉·卡迪&quot;}" data-original="عبد الله القاضي">عبد الله القاضي</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Author
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/551/55140.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/551/55140.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Rules of Endings and Related Matters&quot;,&quot;es&quot;:&quot;Las normas sobre los anillos y cuestiones relacionadas&quot;,&quot;fr&quot;:&quot;Les règles relatives aux fins et questions connexes&quot;,&quot;id&quot;:&quot;Hukum-Hukum Penutup dan Hal-Hal yang Berkaitan Dengannya&quot;,&quot;ja&quot;:&quot;結末に関する規定とその関連事項&quot;,&quot;ru&quot;:&quot;Положения о завершениях и связанных с ними вопросах&quot;,&quot;sw&quot;:&quot;Hukumu za Pete na Mambo Yanayohusiana Nazo&quot;,&quot;tr&quot;:&quot;Son hükümler ve bunlarla ilgili konular&quot;,&quot;ur&quot;:&quot;أحكام الخواتيم وما يتعلق بها (انگوٹھیوں کے احکام اور ان سے متعلق امور)&quot;,&quot;zh&quot;:&quot;《临终事项及相关问题的教法规制》&quot;}" data-original="أحكام الخواتيم وما يتعلق بها">أحكام الخواتيم وما يتعلق بها</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Abdullah Al-Qadi&quot;,&quot;es&quot;:&quot;Abdullah al-Qadi&quot;,&quot;fr&quot;:&quot;Abd Allah al-Qadi&quot;,&quot;id&quot;:&quot;Abdullah Al-Qadi&quot;,&quot;ja&quot;:&quot;アブドゥッラー・アル＝カーディー&quot;,&quot;ru&quot;:&quot;Абдуллах аль-Кади&quot;,&quot;sw&quot;:&quot;Abdullah al-Qadi&quot;,&quot;tr&quot;:&quot;Abdullah el-Kādî&quot;,&quot;zh&quot;:&quot;阿卜杜拉·卡迪&quot;}" data-original="عبد الله القاضي">عبد الله القاضي</span></h1>
-  <p class="muted">
-    <span data-t="Author">Author</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/551/55140.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Rules of Endings and Related Matters&quot;,&quot;es&quot;:&quot;Las normas sobre los anillos y cuestiones relacionadas&quot;,&quot;fr&quot;:&quot;Les règles relatives aux fins et questions connexes&quot;,&quot;id&quot;:&quot;Hukum-Hukum Penutup dan Hal-Hal yang Berkaitan Dengannya&quot;,&quot;ja&quot;:&quot;結末に関する規定とその関連事項&quot;,&quot;ru&quot;:&quot;Положения о завершениях и связанных с ними вопросах&quot;,&quot;sw&quot;:&quot;Hukumu za Pete na Mambo Yanayohusiana Nazo&quot;,&quot;tr&quot;:&quot;Son hükümler ve bunlarla ilgili konular&quot;,&quot;ur&quot;:&quot;أحكام الخواتيم وما يتعلق بها (انگوٹھیوں کے احکام اور ان سے متعلق امور)&quot;,&quot;zh&quot;:&quot;《临终事项及相关问题的教法规制》&quot;}" data-original="أحكام الخواتيم وما يتعلق بها">أحكام الخواتيم وما يتعلق بها</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن أحمد بن رجب الحنبلي</td>
-        <td dir="auto">دار الكتب العلمية</td>
-        <td dir="auto">1405هـ 1985م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1381/138137.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Book of the Rulings on Seals and Related Matters - By Al-Qadi&quot;,&quot;es&quot;:&quot;Kitab ahkam al-khawatim wa ma yata&#039;allaq biha (Libro de las disposiciones sobre los finales y cuestiones relacionadas) — edición de al-Qadi&quot;,&quot;fr&quot;:&quot;Kitab ahkam al-khawatim wa ma yataallaq biha (Les dispositions relatives aux conclusions et les questions qui s&#039;y rapportent) – éd. al-Qadi&quot;,&quot;id&quot;:&quot;Kitab Ahkam Al-Khawatim wa ma Yata&#039;allaq biha (Kitab Hukum-Hukum Penutup dan Hal-Hal yang Berkaitan Dengannya) – Tahkik Al-Qadhi&quot;,&quot;ja&quot;:&quot;結末に関する諸規定とその関連事項の書—カーディー校訂&quot;,&quot;ru&quot;:&quot;Книга о постановлениях, касающихся завершений, и связанных с ними вопросах, издание аль-Кади&quot;,&quot;sw&quot;:&quot;Kitab Ahkam al-Khawatim wa ma Yata&#039;allaq biha (Kitabu cha Hukumu za Mwisho na Yanayohusiana Nazo) - Tahkiki ya al-Qadi&quot;,&quot;tr&quot;:&quot;Kitâbü ahkâmi’l-havâtim ve mâ yeteallaku bihâ (Sonlar ve Bunlarla İlgili Hükümler) – Kâdî neşri&quot;,&quot;ur&quot;:&quot;كتاب أحكام الخواتيم وما يتعلق بها- ت. القاضي (اختتام کے احکام اور ان سے متعلق امور کی کتاب — تحقیق: القاضي)&quot;,&quot;zh&quot;:&quot;《〈结局的律例及相关事项〉——卡迪校勘版》&quot;}" data-original="كتاب أحكام الخواتيم وما يتعلق بها- ت. القاضي">كتاب أحكام الخواتيم وما يتعلق بها- ت. القاضي</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن البغدادي بن رجب الحنبلي</td>
-        <td dir="auto">دار الكتب العلمية</td>
-        <td dir="auto">1907هـ 1987م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1381/138139.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Book of the Rulings on Endings and Related Matters - Scientific&quot;,&quot;es&quot;:&quot;Kitab ahkam al-khawatim wa ma yata&#039;allaq biha (Libro de las disposiciones sobre los finales y cuestiones relacionadas) — edición científica&quot;,&quot;fr&quot;:&quot;Kitab ahkam al-khawatim wa ma yataallaq biha (Les dispositions relatives aux conclusions et les questions qui s&#039;y rapportent) – éd. al-Ilmiyya&quot;,&quot;id&quot;:&quot;Kitab Ahkam Al-Khawatim wa ma Yata&#039;allaq biha (Kitab Hukum-Hukum Penutup dan Hal-Hal yang Berkaitan Dengannya) – Al-Ilmiyyah&quot;,&quot;ja&quot;:&quot;結末に関する諸規定とその関連事項の書—アル＝イルミーヤ版&quot;,&quot;ru&quot;:&quot;Книга о постановлениях, касающихся завершений, и связанных с ними вопросах, издание «Аль-Ильмийя»&quot;,&quot;sw&quot;:&quot;Kitab Ahkam al-Khawatim wa ma Yata&#039;allaq biha (Kitabu cha Hukumu za Mwisho na Yanayohusiana Nazo) - Al-Ilmiyya&quot;,&quot;tr&quot;:&quot;Kitâbü ahkâmi’l-havâtim ve mâ yeteallaku bihâ (Sonlar ve Bunlarla İlgili Hükümler) – el-İlmiyye baskısı&quot;,&quot;ur&quot;:&quot;كتاب أحكام الخواتيم وما يتعلق بها- العلمية (اختتام کے احکام اور ان سے متعلق امور کی کتاب — العلمیہ)&quot;,&quot;zh&quot;:&quot;《〈结局的律例及相关事项〉——科学出版社版》&quot;}" data-original="كتاب أحكام الخواتيم وما يتعلق بها- العلمية">كتاب أحكام الخواتيم وما يتعلق بها- العلمية</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن البغدادي بن رجب الحنبلي</td>
-        <td dir="auto">دار الكتب العلمية</td>
-        <td dir="auto">1905هـ 1985م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1455/145514.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Continuation of the Foundation by His Excellency Muhammad ibn Idris&quot;,&quot;es&quot;:&quot;Tawali al-tasis li-maali Muhammad ibn Idris (Sucesión de los cimientos para la gloria de Muhammad ibn Idris)&quot;,&quot;fr&quot;:&quot;La succession des fondations en l&#039;honneur de Muhammad ibn Idris&quot;,&quot;id&quot;:&quot;Tawali at-Ta&#039;sis li Ma&#039;ali Muhammad bin Idris [Jejak Pendirian tentang Keutamaan Muhammad bin Idris]&quot;,&quot;ja&quot;:&quot;タワーリー・アッ＝タアスィース・リ・マアーリー・ムハンマド・イブン・イドリース&quot;,&quot;ru&quot;:&quot;Последовательное изложение основоположений: о достоинствах Мухаммада ибн Идриса&quot;,&quot;sw&quot;:&quot;Tawali al-Ta&#039;sis li-Ma&#039;ali Muhammad bin Idris (Mfululizo wa ujenzi wa heshima ya Muhammad bin Idris)&quot;,&quot;tr&quot;:&quot;Tevâli’t-Te’sîs li-Meâlî Muhammed b. İdrîs (Muhammed b. İdrîs’in Yüce Makamlarına Dair)&quot;,&quot;ur&quot;:&quot;توالي التأسيس لمعالي محمد بن إدريس (محمد بن ادریس کے بلند اوصاف کے بیان میں توالی التأسيس)&quot;,&quot;zh&quot;:&quot;《为穆罕默德·本·伊德里斯的崇高品格续立基础》&quot;}" data-original="توالي التأسيس لمعالي محمد بن إدريس">توالي التأسيس لمعالي محمد بن إدريس</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار الكتب العلمية</td>
-        <td dir="auto">1406هــ 1986م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        أحكام الخواتيم وما يتعلق بها
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن أحمد بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1381/138137.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1381/138137.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Book of the Rulings on Seals and Related Matters - By Al-Qadi&quot;,&quot;es&quot;:&quot;Kitab ahkam al-khawatim wa ma yata&#039;allaq biha (Libro de las disposiciones sobre los finales y cuestiones relacionadas) — edición de al-Qadi&quot;,&quot;fr&quot;:&quot;Kitab ahkam al-khawatim wa ma yataallaq biha (Les dispositions relatives aux conclusions et les questions qui s&#039;y rapportent) – éd. al-Qadi&quot;,&quot;id&quot;:&quot;Kitab Ahkam Al-Khawatim wa ma Yata&#039;allaq biha (Kitab Hukum-Hukum Penutup dan Hal-Hal yang Berkaitan Dengannya) – Tahkik Al-Qadhi&quot;,&quot;ja&quot;:&quot;結末に関する諸規定とその関連事項の書—カーディー校訂&quot;,&quot;ru&quot;:&quot;Книга о постановлениях, касающихся завершений, и связанных с ними вопросах, издание аль-Кади&quot;,&quot;sw&quot;:&quot;Kitab Ahkam al-Khawatim wa ma Yata&#039;allaq biha (Kitabu cha Hukumu za Mwisho na Yanayohusiana Nazo) - Tahkiki ya al-Qadi&quot;,&quot;tr&quot;:&quot;Kitâbü ahkâmi’l-havâtim ve mâ yeteallaku bihâ (Sonlar ve Bunlarla İlgili Hükümler) – Kâdî neşri&quot;,&quot;ur&quot;:&quot;كتاب أحكام الخواتيم وما يتعلق بها- ت. القاضي (اختتام کے احکام اور ان سے متعلق امور کی کتاب — تحقیق: القاضي)&quot;,&quot;zh&quot;:&quot;《〈结局的律例及相关事项〉——卡迪校勘版》&quot;}" data-original="كتاب أحكام الخواتيم وما يتعلق بها- ت. القاضي">كتاب أحكام الخواتيم وما يتعلق بها- ت. القاضي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        كتاب أحكام الخواتيم وما يتعلق بها- ت. القاضي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن البغدادي بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1381/138139.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1381/138139.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Book of the Rulings on Endings and Related Matters - Scientific&quot;,&quot;es&quot;:&quot;Kitab ahkam al-khawatim wa ma yata&#039;allaq biha (Libro de las disposiciones sobre los finales y cuestiones relacionadas) — edición científica&quot;,&quot;fr&quot;:&quot;Kitab ahkam al-khawatim wa ma yataallaq biha (Les dispositions relatives aux conclusions et les questions qui s&#039;y rapportent) – éd. al-Ilmiyya&quot;,&quot;id&quot;:&quot;Kitab Ahkam Al-Khawatim wa ma Yata&#039;allaq biha (Kitab Hukum-Hukum Penutup dan Hal-Hal yang Berkaitan Dengannya) – Al-Ilmiyyah&quot;,&quot;ja&quot;:&quot;結末に関する諸規定とその関連事項の書—アル＝イルミーヤ版&quot;,&quot;ru&quot;:&quot;Книга о постановлениях, касающихся завершений, и связанных с ними вопросах, издание «Аль-Ильмийя»&quot;,&quot;sw&quot;:&quot;Kitab Ahkam al-Khawatim wa ma Yata&#039;allaq biha (Kitabu cha Hukumu za Mwisho na Yanayohusiana Nazo) - Al-Ilmiyya&quot;,&quot;tr&quot;:&quot;Kitâbü ahkâmi’l-havâtim ve mâ yeteallaku bihâ (Sonlar ve Bunlarla İlgili Hükümler) – el-İlmiyye baskısı&quot;,&quot;ur&quot;:&quot;كتاب أحكام الخواتيم وما يتعلق بها- العلمية (اختتام کے احکام اور ان سے متعلق امور کی کتاب — العلمیہ)&quot;,&quot;zh&quot;:&quot;《〈结局的律例及相关事项〉——科学出版社版》&quot;}" data-original="كتاب أحكام الخواتيم وما يتعلق بها- العلمية">كتاب أحكام الخواتيم وما يتعلق بها- العلمية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        كتاب أحكام الخواتيم وما يتعلق بها- العلمية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن البغدادي بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1455/145514.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1455/145514.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Continuation of the Foundation by His Excellency Muhammad ibn Idris&quot;,&quot;es&quot;:&quot;Tawali al-tasis li-maali Muhammad ibn Idris (Sucesión de los cimientos para la gloria de Muhammad ibn Idris)&quot;,&quot;fr&quot;:&quot;La succession des fondations en l&#039;honneur de Muhammad ibn Idris&quot;,&quot;id&quot;:&quot;Tawali at-Ta&#039;sis li Ma&#039;ali Muhammad bin Idris [Jejak Pendirian tentang Keutamaan Muhammad bin Idris]&quot;,&quot;ja&quot;:&quot;タワーリー・アッ＝タアスィース・リ・マアーリー・ムハンマド・イブン・イドリース&quot;,&quot;ru&quot;:&quot;Последовательное изложение основоположений: о достоинствах Мухаммада ибн Идриса&quot;,&quot;sw&quot;:&quot;Tawali al-Ta&#039;sis li-Ma&#039;ali Muhammad bin Idris (Mfululizo wa ujenzi wa heshima ya Muhammad bin Idris)&quot;,&quot;tr&quot;:&quot;Tevâli’t-Te’sîs li-Meâlî Muhammed b. İdrîs (Muhammed b. İdrîs’in Yüce Makamlarına Dair)&quot;,&quot;ur&quot;:&quot;توالي التأسيس لمعالي محمد بن إدريس (محمد بن ادریس کے بلند اوصاف کے بیان میں توالی التأسيس)&quot;,&quot;zh&quot;:&quot;《为穆罕默德·本·伊德里斯的崇高品格续立基础》&quot;}" data-original="توالي التأسيس لمعالي محمد بن إدريس">توالي التأسيس لمعالي محمد بن إدريس</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        توالي التأسيس لمعالي محمد بن إدريس
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>دار ابن كثير</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,204 +70,380 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Ibn Kathir&quot;,&quot;es&quot;:&quot;Dar Ibn Kathir&quot;,&quot;fr&quot;:&quot;Dar Ibn Kathir&quot;,&quot;id&quot;:&quot;Dar Ibnu Katsir&quot;,&quot;ja&quot;:&quot;ダール・イブン・カスィール&quot;,&quot;ru&quot;:&quot;Дар Ибн Касир&quot;,&quot;sw&quot;:&quot;Dar Ibn Kathir&quot;,&quot;tr&quot;:&quot;Dârü İbn Kesîr&quot;,&quot;zh&quot;:&quot;伊本·凯西尔出版社&quot;}" data-original="دار ابن كثير">دار ابن كثير</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/977/97793.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/977/97793.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Subtle Points of Knowledge Regarding the Functions of the Year&quot;,&quot;es&quot;:&quot;Lata&#039;if al-Ma&#039;arif fi-ma li-Mawasimi al-Am min al-Waza&#039;if (Sutilezas de los conocimientos: prácticas para las estaciones del año)&quot;,&quot;fr&quot;:&quot;Lataif al-Maarif fima li-Mawasim al-Am min al-Wazaif (Les subtilités des connaissances sur les dévotions propres aux saisons de l&#039;année)&quot;,&quot;id&quot;:&quot;Latha’if al-Ma‘arif fima li-Mawasim al-‘Am min al-Wazha’if (Berbagai Pelajaran tentang Amalan pada Momen-Momen Sepanjang Tahun)&quot;,&quot;ja&quot;:&quot;年ごとの時節にふさわしい務めについての知識の妙味&quot;,&quot;ru&quot;:&quot;Тонкости познания о том, какие дела подобают временам года&quot;,&quot;sw&quot;:&quot;Lata&#039;if al-Maarif fima li-Mawsim al-Am min al-Waza&#039;if (Maarifa ya Kina kuhusu Ibada za Misimu ya Mwaka)&quot;,&quot;tr&quot;:&quot;Letâifü’l-Meârif fîmâ li-Mevâsimi’l-Âm mine’l-Vezâif (Yılın Mevsimlerine Dair Güzel Bilgiler ve Görevler)&quot;,&quot;ur&quot;:&quot;لطائف المعارف فيما لمواسم العام من الوظائف (سال کے مختلف موسموں کے اعمال سے متعلق لطائفِ معارف)&quot;,&quot;zh&quot;:&quot;《知识妙趣：全年时节的功修》&quot;}" data-original="لطائف المعارف فيما لمواسم العام من الوظائف">لطائف المعارف فيما لمواسم العام من الوظائف</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Ibn Kathir&quot;,&quot;es&quot;:&quot;Dar Ibn Kathir&quot;,&quot;fr&quot;:&quot;Dar Ibn Kathir&quot;,&quot;id&quot;:&quot;Dar Ibnu Katsir&quot;,&quot;ja&quot;:&quot;ダール・イブン・カスィール&quot;,&quot;ru&quot;:&quot;Дар Ибн Касир&quot;,&quot;sw&quot;:&quot;Dar Ibn Kathir&quot;,&quot;tr&quot;:&quot;Dârü İbn Kesîr&quot;,&quot;zh&quot;:&quot;伊本·凯西尔出版社&quot;}" data-original="دار ابن كثير">دار ابن كثير</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/977/97793.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Subtle Points of Knowledge Regarding the Functions of the Year&quot;,&quot;es&quot;:&quot;Lata&#039;if al-Ma&#039;arif fi-ma li-Mawasimi al-Am min al-Waza&#039;if (Sutilezas de los conocimientos: prácticas para las estaciones del año)&quot;,&quot;fr&quot;:&quot;Lataif al-Maarif fima li-Mawasim al-Am min al-Wazaif (Les subtilités des connaissances sur les dévotions propres aux saisons de l&#039;année)&quot;,&quot;id&quot;:&quot;Latha’if al-Ma‘arif fima li-Mawasim al-‘Am min al-Wazha’if (Berbagai Pelajaran tentang Amalan pada Momen-Momen Sepanjang Tahun)&quot;,&quot;ja&quot;:&quot;年ごとの時節にふさわしい務めについての知識の妙味&quot;,&quot;ru&quot;:&quot;Тонкости познания о том, какие дела подобают временам года&quot;,&quot;sw&quot;:&quot;Lata&#039;if al-Maarif fima li-Mawsim al-Am min al-Waza&#039;if (Maarifa ya Kina kuhusu Ibada za Misimu ya Mwaka)&quot;,&quot;tr&quot;:&quot;Letâifü’l-Meârif fîmâ li-Mevâsimi’l-Âm mine’l-Vezâif (Yılın Mevsimlerine Dair Güzel Bilgiler ve Görevler)&quot;,&quot;ur&quot;:&quot;لطائف المعارف فيما لمواسم العام من الوظائف (سال کے مختلف موسموں کے اعمال سے متعلق لطائفِ معارف)&quot;,&quot;zh&quot;:&quot;《知识妙趣：全年时节的功修》&quot;}" data-original="لطائف المعارف فيما لمواسم العام من الوظائف">لطائف المعارف فيما لمواسم العام من الوظائف</span>
-          </a>
-        </td>
-        <td dir="auto">زين الدين أبو الفرج عبد الرحمن بن أحمد بن رجب الحنبلي الدمشقي</td>
-        <td dir="auto">دار ابن كثير</td>
-        <td dir="auto">1420 - 1999</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1360/136023.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Clarification of the Etiquettes of the Carriers of the Quran&quot;,&quot;es&quot;:&quot;Al-Tibyan sobre la etiqueta de quienes estudian el Quran&quot;,&quot;fr&quot;:&quot;Al-Tibyan fi adab hamalat al-Quran (L&#039;exposé sur les convenances des porteurs du Quran)&quot;,&quot;id&quot;:&quot;At-Tibyan fi Adab Hamalat Al-Qur&#039;an [Penjelasan tentang Adab Para Pengemban Al-Qur&#039;an]&quot;,&quot;ja&quot;:&quot;クルアーン携持者の礼儀作法に関する『アッ＝ティビヤーン』&quot;,&quot;ru&quot;:&quot;Ат-Тибьян об этикете носителей Корана&quot;,&quot;sw&quot;:&quot;Al-Tibyan fi Adab Hamalat al-Quran (Ufafanuzi kuhusu adabu za wabebaji wa Quran)&quot;,&quot;tr&quot;:&quot;Kur&#039;an Hamillerinin Âdâbı Hakkında et-Tibyân&quot;,&quot;zh&quot;:&quot;《〈古兰经持诵者礼仪〉》&quot;}" data-original="التبيان في آداب حملة القرآن">التبيان في آداب حملة القرآن</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">دار ابن كثير</td>
-        <td dir="auto">1986م 1407هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1377/137774.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths of Al-Nawawi in Authentic Prophetic Narrations - Dar Ibn Kathir&quot;,&quot;es&quot;:&quot;Comentario de los cuarenta hadices de al-Nawawi sobre los hadices proféticos auténticos - Dar Ibn Kathir&quot;,&quot;fr&quot;:&quot;Commentaire des quarante hadiths de Nawawi sur les hadiths prophétiques authentiques - Dar Ibn Kathir&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah tentang Hadis-Hadis Nabi yang Sahih - Dar Ibnu Katsir&quot;,&quot;ja&quot;:&quot;『アン＝ナワウィーの四十ハディース』の真正な預言者伝承に関する解説—ダール・イブン・カスィール&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» из достоверных пророческих хадисов — Дар Ибн Касир&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya fi al-Ahadith al-Sahiha al-Nabawiyya (Ufafanuzi wa Hadithi Arubaini za Nawawi Zilizothibiti za Mtume) – Dar Ibn Kathir&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-Erbaʿîn en-Neveviyye fi&#039;l-ehâdîsi&#039;n-nebeviyye es-sahîha (Nevevî&#039;nin Kırk Hadis&#039;inin sahih nebevî hadisler şerhi) - Dar Ibn Kathir&quot;,&quot;zh&quot;:&quot;《《努瓦维四十段圣训注释：圣训正典》—伊本·凯西尔出版社&quot;}" data-original="شرح الأربعين النووية في الأحاديث الصحيحة النبوية- دار ابن كثير">شرح الأربعين النووية في الأحاديث الصحيحة النبوية- دار ابن كثير</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">دار ابن كثير</td>
-        <td dir="auto">1411هـ 1990م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1446/144631.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Results of Ideas in the Verification of the Hadiths of Remembrance - by Al-Salafi&quot;,&quot;es&quot;:&quot;Nata&#039;ij al-afkar fi takhrij ahadith al-adhkar (Conclusiones reflexivas sobre la documentación de los hadices de las invocaciones) — ed. al-Salafi&quot;,&quot;fr&quot;:&quot;Nata&#039;ij al-afkar fi takhrij ahadith al-adhkar (Résultats de la réflexion sur la référence des hadiths des invocations) — éd. al-Salafi&quot;,&quot;id&quot;:&quot;Nata&#039;ij al-Afkar fi Takhrij Ahadits al-Adzkar - Tahkik al-Salafi [Hasil-hasil Pemikiran dalam Penelusuran Hadis-hadis Zikir]&quot;,&quot;ja&quot;:&quot;ナターイジュ・アル＝アフカール（アズカルのハディースの出典特定）―サラフィー校訂版&quot;,&quot;ru&quot;:&quot;Натаидж аль-афкар фи тахридж ахадис аль-азкар — тахкик ас-Салафи&quot;,&quot;sw&quot;:&quot;Nataij al-Afkar (Matokeo ya Tafakuri) katika Kuhakiki Hadithi za al-Adhkar — tahkiki ya al-Salafi&quot;,&quot;tr&quot;:&quot;Netâicü’l-efkâr fî tahrîci ehâdîsi’l-ezkâr (Zikir Hadislerinin Tahrici) - thk. es-Selefî&quot;,&quot;zh&quot;:&quot;《思想成果：圣训祈祷集圣训考证——萨拉菲校勘本》&quot;}" data-original="نتائج الأفكار في تخريج أحاديث الأذكار- ت. السلفي">نتائج الأفكار في تخريج أحاديث الأذكار- ت. السلفي</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار ابن كثير</td>
-        <td dir="auto">1416هـ 1996م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1461/146190.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Riyad as-Salihin - Translated by Maher al-Fahl&quot;,&quot;es&quot;:&quot;Riyad al-Salihin (Los jardines de los justos), ed. Maher al-Fahl&quot;,&quot;fr&quot;:&quot;Les Jardins des vertueux — édition critique de Mahir al-Fahl&quot;,&quot;id&quot;:&quot;Riyadh Ash-Shalihin (Taman Orang-Orang Saleh) — tahkik Mahir Al-Fahl&quot;,&quot;ja&quot;:&quot;『リヤード・アッ＝サーリヒーン』―校訂：マーヒル・アル＝ファフル&quot;,&quot;ru&quot;:&quot;«Сады праведных» — тахкик Махира аль-Фахля&quot;,&quot;sw&quot;:&quot;Bustani za Watu Wema — uhakiki wa Mahir al-Fahl&quot;,&quot;tr&quot;:&quot;Riyâzü’s-sâlihîn - Tahkik: Mâhir el-Fahl&quot;,&quot;ur&quot;:&quot;رياض الصالحين- ت. ماهر الفحل (ریاض الصالحین—ماہر الفحل کی تحقیق)&quot;,&quot;zh&quot;:&quot;《善人的花园》（校勘者：马希尔·法赫勒）&quot;}" data-original="رياض الصالحين- ت. ماهر الفحل">رياض الصالحين- ت. ماهر الفحل</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">دار ابن كثير</td>
-        <td dir="auto">1428هـ 2007م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1464/146463.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Collection of Sciences and Judgments in Explaining Fifty Hadiths from the Comprehensive Sayings - Dar Ibn Kathir&quot;,&quot;es&quot;:&quot;Compendio de las ciencias y las sentencias, comentario de cincuenta hadices de las máximas concisas, Dar Ibn Kathir&quot;,&quot;fr&quot;:&quot;Jami&#039; al-ulum wa-l-hikam fi sharh khamsin hadithan min jawami&#039; al-kalim (Synthèse des sciences et des sagesses, commentaire de cinquante paroles concises) — Dar Ibn Kathir&quot;,&quot;id&quot;:&quot;Jami&#039; al-Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim [Kompilasi Ilmu dan Hikmah dalam Menjelaskan Lima Puluh Hadis Pilihan] — Dar Ibnu Katsir&quot;,&quot;ja&quot;:&quot;『諸学と格言の集成―簡潔な言葉の総合的ハディース50篇の解説』―ダール・イブン・カスィール版&quot;,&quot;ru&quot;:&quot;Собрание наук и мудростей в комментарии к пятидесяти хадисам из кратких назидательных изречений — Дар Ибн Касир&quot;,&quot;sw&quot;:&quot;Jami al-Ulum wa-al-Hikam (Mkusanyiko wa elimu na hikima) katika ufafanuzi wa hadithi hamsini kati ya maneno yenye hikima - Dar Ibn Kathir&quot;,&quot;tr&quot;:&quot;Câmiu’l-Ulûm ve’l-Hikem fî Şerhi Ham­sîne Hadîsen min Cevâmi‘i’l-Kelim (Özlü Sözlerden Elli Hadisin Şerhinde İlimler ve Hikmetler Derlemesi) - Dar Ibn Kathir&quot;,&quot;ur&quot;:&quot;جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- دار ابن كثير (علوم و حکمتوں کا جامع، جامع کلمات کی پچاس احادیث کی شرح — دار ابن کثیر)&quot;,&quot;zh&quot;:&quot;《知识与智慧汇编：阐释五十则精辟圣训》——伊本·凯西尔出版社版&quot;}" data-original="جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- دار ابن كثير">جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- دار ابن كثير</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن البغدادي بن رجب الحنبلي</td>
-        <td dir="auto">دار ابن كثير</td>
-        <td dir="auto">1429هــ 2008م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1484/148437.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Parts of the Musnad of Imam Ahmad ibn Hanbal, titled Parts of the Musnad with the Parts of the Hanbali Musnad&quot;,&quot;es&quot;:&quot;Índices del Musnad del imán Ahmad ibn Hanbal, titulado Itraf al-Musnad al-Mu&#039;tali bi-Atraf al-Musnad al-Hanbali&quot;,&quot;fr&quot;:&quot;Les extraits du Musnad de l’imam Ahmad ibn Hanbal, intitulés Itraf al-Musnad al-Mutali bi-Atraf al-Musnad al-Hanbali (Recueil des extraits du Musnad hanbalite)&quot;,&quot;id&quot;:&quot;Athraf Musnad Imam Ahmad bin Hanbal, yang dikenal sebagai Ithraf Al-Musnad Al-Mu&#039;tali bi Athraf Al-Musnad Al-Hanbali&quot;,&quot;ja&quot;:&quot;アフマド・イブン・ハンバルのムスナドの伝承末尾集成：『ムスナド・アル＝ハンバリーの伝承末尾を集めた、ムスナド高揚の末尾集成』の名で知られる&quot;,&quot;ru&quot;:&quot;Атраф «Муснада» имама Ахмада ибн Ханбаля, известного как «Итраф аль-муснад аль-му&#039;тали би-атраф аль-муснад аль-ханбали»&quot;,&quot;sw&quot;:&quot;Atraf Musnad al-Imam Ahmad bin Hanbal, unaojulikana kama Itraf al-Musnad al-Mu&#039;tali bi-Atraf al-Musnad al-Hanbali (Faharasa za Musnad ya Imam Ahmad bin Hanbal)&quot;,&quot;tr&quot;:&quot;İmâm Ahmed b. Hanbel’in Müsned’inin Tarafları: Müsnedü’l-Hanbelî’nin Yükselen Tarafları adıyla bilinen eser&quot;,&quot;zh&quot;:&quot;《艾哈迈德·本·罕百勒〈圣训集〉的传述线索：又名〈汉百里圣训集传述线索汇编〉》&quot;}" data-original="أطراف مسند الإمام أحمد بن حنبل المسمى إطراف المسند المعتلي بأطراف المسند الحنبلي">أطراف مسند الإمام أحمد بن حنبل المسمى إطراف المسند المعتلي بأطراف المسند الحنبلي</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار ابن كثير • دار الكلم الطيب</td>
-        <td dir="auto">1414هـ 1993م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1583/158322.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Delights of Knowledge Regarding the Functions of the Year&quot;,&quot;es&quot;:&quot;Lataif al-Maarif (Sutilezas del conocimiento sobre las obligaciones de las estaciones del año)&quot;,&quot;fr&quot;:&quot;Lata&#039;if al-Ma&#039;arif fima li-mawasim al-am min al-waza&#039;if (Les bonnes œuvres propres aux saisons de l’année)&quot;,&quot;id&quot;:&quot;Lata&#039;if al-Ma&#039;arif fi ma li-Mawasimi al-&#039;Am min al-Waza&#039;if [Keindahan Pengetahuan tentang Amalan-Amalan pada Musim-Musim Sepanjang Tahun]&quot;,&quot;ja&quot;:&quot;ラターイフ・アル＝マアーリフ――一年の季節にまつわる務めについて&quot;,&quot;ru&quot;:&quot;Латаиф аль-ма‘ариф фима ли-мавсим аль-‘амм мин аль-вазаиф (Тонкости знаний о делах, относящихся к временам года)&quot;,&quot;sw&quot;:&quot;Latayif al-Ma&#039;arif fima li-Mawasimi al-Am min al-Waza&#039;if (Vionjo vya maarifa kuhusu wajibu wa nyakati za mwaka)&quot;,&quot;tr&quot;:&quot;Letâifü&#039;l-maârif fîmâ li-mevâsimi&#039;l-âm mine&#039;l-vezâif (Yılın mevsimlerinde yapılacak işler hakkında)&quot;,&quot;zh&quot;:&quot;《知识妙趣：一年四季的功修安排》&quot;}" data-original="لطائف المعارف فيما لموإسم العام من الوظائف">لطائف المعارف فيما لموإسم العام من الوظائف</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن أحمد بن رجب الحنبلي الدمشقي</td>
-        <td dir="auto">دار ابن كثير</td>
-        <td dir="auto">1421، 2001</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1810/181096.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Sessions on the Biography of the Prophet ﷺ&quot;,&quot;es&quot;:&quot;Sesiones sobre la biografía del Profeta ﷺ&quot;,&quot;fr&quot;:&quot;Séances consacrées à la biographie du Prophète ﷺ&quot;,&quot;id&quot;:&quot;Majelis-majelis tentang Sirah Nabi ﷺ&quot;,&quot;ja&quot;:&quot;預言者 ﷺ の生涯をめぐる講話集&quot;,&quot;ru&quot;:&quot;Уроки о жизнеописании Пророка ﷺ&quot;,&quot;sw&quot;:&quot;Mikutano kuhusu wasifu wa Mtume ﷺ&quot;,&quot;tr&quot;:&quot;Peygamber ﷺ’in Siyerinden Meclisler&quot;,&quot;zh&quot;:&quot;《先知 ﷺ 生平讲座》&quot;}" data-original="مجالس في سيرة النبي ﷺ">مجالس في سيرة النبي ﷺ</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن أحمد بن رجب الحنبلي</td>
-        <td dir="auto">دار ابن كثير للطباعة والنشر</td>
-        <td dir="auto">1408هـ 1988م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2081/208102.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Remembrances from the Words of the Best of the Chosen - 2nd Edition&quot;,&quot;es&quot;:&quot;Al-Adhkar: de las palabras del señor de los mejores (2.ª ed.)&quot;,&quot;fr&quot;:&quot;Al-Adhkar (Les invocations), d&#039;après les paroles du meilleur des hommes - 2e édition&quot;,&quot;id&quot;:&quot;Al-Adzkar min Kalami Sayyid al-Abrar (Zikir-Zikir dari Sabda Pemimpin Orang-Orang Saleh) – Cetakan 2&quot;,&quot;ja&quot;:&quot;最良の人の言葉からのズィクル――第2版&quot;,&quot;ru&quot;:&quot;Азкары из речей господина лучших людей — 2-е издание&quot;,&quot;sw&quot;:&quot;Al-Adhkar (Dua na adhkari kutoka kwa maneno ya bwana wa watu wema) — toleo la 2&quot;,&quot;tr&quot;:&quot;el-Ezkâr: Hayırlıların Efendisinin Sözlerinden – 2. Baskı&quot;,&quot;zh&quot;:&quot;《圣训纪念词：来自至善者的言辞》——第二版&quot;}" data-original="الأذكار من كلام سيد الأبرار- ط 2">الأذكار من كلام سيد الأبرار- ط 2</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">دار ابن كثير</td>
-        <td dir="auto">1417هـ 1997م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2475/247547.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Al-Dhikr Al-Nawawi - By Ibn Kathir&quot;,&quot;es&quot;:&quot;Al-Adhkar al-Nawawiyya (Las invocaciones de al-Nawawi) — edición de Ibn Kathir&quot;,&quot;fr&quot;:&quot;Al-Adhkar al-Nawawiyya (Les invocations d&#039;al-Nawawi) – éd. Ibn Kathir&quot;,&quot;id&quot;:&quot;Al-Adzkar An-Nawawiyah (Zikir-Zikir An-Nawawi) — cetakan Ibnu Katsir&quot;,&quot;ja&quot;:&quot;ナワウィーの祈願集―イブン・カスィール版&quot;,&quot;ru&quot;:&quot;Поминания ан-Навави — издательство Ибн Касира&quot;,&quot;sw&quot;:&quot;Al-Adhkar al-Nawawiyya (Dhikr za Nawawi) – toleo la Ibn Kathir&quot;,&quot;tr&quot;:&quot;el-Eẕkârü&#039;n-Neveviyye (Nevevî&#039;nin Zikirleri) – İbn Kesîr baskısı&quot;,&quot;ur&quot;:&quot;الأذكار النووية- ط ابن كثير (نووی کے اذکار، ابن کثیر ایڈیشن)&quot;,&quot;zh&quot;:&quot;《脑威祈祷录》—伊本·凯西尔版&quot;}" data-original="الأذكار النووية- ط ابن كثير">الأذكار النووية- ط ابن كثير</span>
-          </a>
-        </td>
-        <td dir="auto">محيي الدين يحيى بن شرف النووي</td>
-        <td dir="auto">دار ابن كثير</td>
-        <td dir="auto">1410هـ 1990م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        لطائف المعارف فيما لمواسم العام من الوظائف
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      زين الدين أبو الفرج عبد الرحمن بن أحمد بن رجب الحنبلي الدمشقي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1360/136023.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1360/136023.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Clarification of the Etiquettes of the Carriers of the Quran&quot;,&quot;es&quot;:&quot;Al-Tibyan sobre la etiqueta de quienes estudian el Quran&quot;,&quot;fr&quot;:&quot;Al-Tibyan fi adab hamalat al-Quran (L&#039;exposé sur les convenances des porteurs du Quran)&quot;,&quot;id&quot;:&quot;At-Tibyan fi Adab Hamalat Al-Qur&#039;an [Penjelasan tentang Adab Para Pengemban Al-Qur&#039;an]&quot;,&quot;ja&quot;:&quot;クルアーン携持者の礼儀作法に関する『アッ＝ティビヤーン』&quot;,&quot;ru&quot;:&quot;Ат-Тибьян об этикете носителей Корана&quot;,&quot;sw&quot;:&quot;Al-Tibyan fi Adab Hamalat al-Quran (Ufafanuzi kuhusu adabu za wabebaji wa Quran)&quot;,&quot;tr&quot;:&quot;Kur&#039;an Hamillerinin Âdâbı Hakkında et-Tibyân&quot;,&quot;zh&quot;:&quot;《〈古兰经持诵者礼仪〉》&quot;}" data-original="التبيان في آداب حملة القرآن">التبيان في آداب حملة القرآن</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        التبيان في آداب حملة القرآن
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1377/137774.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1377/137774.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths of Al-Nawawi in Authentic Prophetic Narrations - Dar Ibn Kathir&quot;,&quot;es&quot;:&quot;Comentario de los cuarenta hadices de al-Nawawi sobre los hadices proféticos auténticos - Dar Ibn Kathir&quot;,&quot;fr&quot;:&quot;Commentaire des quarante hadiths de Nawawi sur les hadiths prophétiques authentiques - Dar Ibn Kathir&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah tentang Hadis-Hadis Nabi yang Sahih - Dar Ibnu Katsir&quot;,&quot;ja&quot;:&quot;『アン＝ナワウィーの四十ハディース』の真正な預言者伝承に関する解説—ダール・イブン・カスィール&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» из достоверных пророческих хадисов — Дар Ибн Касир&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya fi al-Ahadith al-Sahiha al-Nabawiyya (Ufafanuzi wa Hadithi Arubaini za Nawawi Zilizothibiti za Mtume) – Dar Ibn Kathir&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-Erbaʿîn en-Neveviyye fi&#039;l-ehâdîsi&#039;n-nebeviyye es-sahîha (Nevevî&#039;nin Kırk Hadis&#039;inin sahih nebevî hadisler şerhi) - Dar Ibn Kathir&quot;,&quot;zh&quot;:&quot;《《努瓦维四十段圣训注释：圣训正典》—伊本·凯西尔出版社&quot;}" data-original="شرح الأربعين النووية في الأحاديث الصحيحة النبوية- دار ابن كثير">شرح الأربعين النووية في الأحاديث الصحيحة النبوية- دار ابن كثير</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح الأربعين النووية في الأحاديث الصحيحة النبوية- دار ابن كثير
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1446/144631.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1446/144631.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Results of Ideas in the Verification of the Hadiths of Remembrance - by Al-Salafi&quot;,&quot;es&quot;:&quot;Nata&#039;ij al-afkar fi takhrij ahadith al-adhkar (Conclusiones reflexivas sobre la documentación de los hadices de las invocaciones) — ed. al-Salafi&quot;,&quot;fr&quot;:&quot;Nata&#039;ij al-afkar fi takhrij ahadith al-adhkar (Résultats de la réflexion sur la référence des hadiths des invocations) — éd. al-Salafi&quot;,&quot;id&quot;:&quot;Nata&#039;ij al-Afkar fi Takhrij Ahadits al-Adzkar - Tahkik al-Salafi [Hasil-hasil Pemikiran dalam Penelusuran Hadis-hadis Zikir]&quot;,&quot;ja&quot;:&quot;ナターイジュ・アル＝アフカール（アズカルのハディースの出典特定）―サラフィー校訂版&quot;,&quot;ru&quot;:&quot;Натаидж аль-афкар фи тахридж ахадис аль-азкар — тахкик ас-Салафи&quot;,&quot;sw&quot;:&quot;Nataij al-Afkar (Matokeo ya Tafakuri) katika Kuhakiki Hadithi za al-Adhkar — tahkiki ya al-Salafi&quot;,&quot;tr&quot;:&quot;Netâicü’l-efkâr fî tahrîci ehâdîsi’l-ezkâr (Zikir Hadislerinin Tahrici) - thk. es-Selefî&quot;,&quot;zh&quot;:&quot;《思想成果：圣训祈祷集圣训考证——萨拉菲校勘本》&quot;}" data-original="نتائج الأفكار في تخريج أحاديث الأذكار- ت. السلفي">نتائج الأفكار في تخريج أحاديث الأذكار- ت. السلفي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        نتائج الأفكار في تخريج أحاديث الأذكار- ت. السلفي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1461/146190.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1461/146190.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Riyad as-Salihin - Translated by Maher al-Fahl&quot;,&quot;es&quot;:&quot;Riyad al-Salihin (Los jardines de los justos), ed. Maher al-Fahl&quot;,&quot;fr&quot;:&quot;Les Jardins des vertueux — édition critique de Mahir al-Fahl&quot;,&quot;id&quot;:&quot;Riyadh Ash-Shalihin (Taman Orang-Orang Saleh) — tahkik Mahir Al-Fahl&quot;,&quot;ja&quot;:&quot;『リヤード・アッ＝サーリヒーン』―校訂：マーヒル・アル＝ファフル&quot;,&quot;ru&quot;:&quot;«Сады праведных» — тахкик Махира аль-Фахля&quot;,&quot;sw&quot;:&quot;Bustani za Watu Wema — uhakiki wa Mahir al-Fahl&quot;,&quot;tr&quot;:&quot;Riyâzü’s-sâlihîn - Tahkik: Mâhir el-Fahl&quot;,&quot;ur&quot;:&quot;رياض الصالحين- ت. ماهر الفحل (ریاض الصالحین—ماہر الفحل کی تحقیق)&quot;,&quot;zh&quot;:&quot;《善人的花园》（校勘者：马希尔·法赫勒）&quot;}" data-original="رياض الصالحين- ت. ماهر الفحل">رياض الصالحين- ت. ماهر الفحل</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        رياض الصالحين- ت. ماهر الفحل
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1464/146463.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1464/146463.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Collection of Sciences and Judgments in Explaining Fifty Hadiths from the Comprehensive Sayings - Dar Ibn Kathir&quot;,&quot;es&quot;:&quot;Compendio de las ciencias y las sentencias, comentario de cincuenta hadices de las máximas concisas, Dar Ibn Kathir&quot;,&quot;fr&quot;:&quot;Jami&#039; al-ulum wa-l-hikam fi sharh khamsin hadithan min jawami&#039; al-kalim (Synthèse des sciences et des sagesses, commentaire de cinquante paroles concises) — Dar Ibn Kathir&quot;,&quot;id&quot;:&quot;Jami&#039; al-Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim [Kompilasi Ilmu dan Hikmah dalam Menjelaskan Lima Puluh Hadis Pilihan] — Dar Ibnu Katsir&quot;,&quot;ja&quot;:&quot;『諸学と格言の集成―簡潔な言葉の総合的ハディース50篇の解説』―ダール・イブン・カスィール版&quot;,&quot;ru&quot;:&quot;Собрание наук и мудростей в комментарии к пятидесяти хадисам из кратких назидательных изречений — Дар Ибн Касир&quot;,&quot;sw&quot;:&quot;Jami al-Ulum wa-al-Hikam (Mkusanyiko wa elimu na hikima) katika ufafanuzi wa hadithi hamsini kati ya maneno yenye hikima - Dar Ibn Kathir&quot;,&quot;tr&quot;:&quot;Câmiu’l-Ulûm ve’l-Hikem fî Şerhi Ham­sîne Hadîsen min Cevâmi‘i’l-Kelim (Özlü Sözlerden Elli Hadisin Şerhinde İlimler ve Hikmetler Derlemesi) - Dar Ibn Kathir&quot;,&quot;ur&quot;:&quot;جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- دار ابن كثير (علوم و حکمتوں کا جامع، جامع کلمات کی پچاس احادیث کی شرح — دار ابن کثیر)&quot;,&quot;zh&quot;:&quot;《知识与智慧汇编：阐释五十则精辟圣训》——伊本·凯西尔出版社版&quot;}" data-original="جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- دار ابن كثير">جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- دار ابن كثير</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- دار ابن كثير
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن البغدادي بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1484/148437.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1484/148437.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Parts of the Musnad of Imam Ahmad ibn Hanbal, titled Parts of the Musnad with the Parts of the Hanbali Musnad&quot;,&quot;es&quot;:&quot;Índices del Musnad del imán Ahmad ibn Hanbal, titulado Itraf al-Musnad al-Mu&#039;tali bi-Atraf al-Musnad al-Hanbali&quot;,&quot;fr&quot;:&quot;Les extraits du Musnad de l’imam Ahmad ibn Hanbal, intitulés Itraf al-Musnad al-Mutali bi-Atraf al-Musnad al-Hanbali (Recueil des extraits du Musnad hanbalite)&quot;,&quot;id&quot;:&quot;Athraf Musnad Imam Ahmad bin Hanbal, yang dikenal sebagai Ithraf Al-Musnad Al-Mu&#039;tali bi Athraf Al-Musnad Al-Hanbali&quot;,&quot;ja&quot;:&quot;アフマド・イブン・ハンバルのムスナドの伝承末尾集成：『ムスナド・アル＝ハンバリーの伝承末尾を集めた、ムスナド高揚の末尾集成』の名で知られる&quot;,&quot;ru&quot;:&quot;Атраф «Муснада» имама Ахмада ибн Ханбаля, известного как «Итраф аль-муснад аль-му&#039;тали би-атраф аль-муснад аль-ханбали»&quot;,&quot;sw&quot;:&quot;Atraf Musnad al-Imam Ahmad bin Hanbal, unaojulikana kama Itraf al-Musnad al-Mu&#039;tali bi-Atraf al-Musnad al-Hanbali (Faharasa za Musnad ya Imam Ahmad bin Hanbal)&quot;,&quot;tr&quot;:&quot;İmâm Ahmed b. Hanbel’in Müsned’inin Tarafları: Müsnedü’l-Hanbelî’nin Yükselen Tarafları adıyla bilinen eser&quot;,&quot;zh&quot;:&quot;《艾哈迈德·本·罕百勒〈圣训集〉的传述线索：又名〈汉百里圣训集传述线索汇编〉》&quot;}" data-original="أطراف مسند الإمام أحمد بن حنبل المسمى إطراف المسند المعتلي بأطراف المسند الحنبلي">أطراف مسند الإمام أحمد بن حنبل المسمى إطراف المسند المعتلي بأطراف المسند الحنبلي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        أطراف مسند الإمام أحمد بن حنبل المسمى إطراف المسند المعتلي بأطراف المسند الحنبلي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1583/158322.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1583/158322.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Delights of Knowledge Regarding the Functions of the Year&quot;,&quot;es&quot;:&quot;Lataif al-Maarif (Sutilezas del conocimiento sobre las obligaciones de las estaciones del año)&quot;,&quot;fr&quot;:&quot;Lata&#039;if al-Ma&#039;arif fima li-mawasim al-am min al-waza&#039;if (Les bonnes œuvres propres aux saisons de l’année)&quot;,&quot;id&quot;:&quot;Lata&#039;if al-Ma&#039;arif fi ma li-Mawasimi al-&#039;Am min al-Waza&#039;if [Keindahan Pengetahuan tentang Amalan-Amalan pada Musim-Musim Sepanjang Tahun]&quot;,&quot;ja&quot;:&quot;ラターイフ・アル＝マアーリフ――一年の季節にまつわる務めについて&quot;,&quot;ru&quot;:&quot;Латаиф аль-ма‘ариф фима ли-мавсим аль-‘амм мин аль-вазаиф (Тонкости знаний о делах, относящихся к временам года)&quot;,&quot;sw&quot;:&quot;Latayif al-Ma&#039;arif fima li-Mawasimi al-Am min al-Waza&#039;if (Vionjo vya maarifa kuhusu wajibu wa nyakati za mwaka)&quot;,&quot;tr&quot;:&quot;Letâifü&#039;l-maârif fîmâ li-mevâsimi&#039;l-âm mine&#039;l-vezâif (Yılın mevsimlerinde yapılacak işler hakkında)&quot;,&quot;zh&quot;:&quot;《知识妙趣：一年四季的功修安排》&quot;}" data-original="لطائف المعارف فيما لموإسم العام من الوظائف">لطائف المعارف فيما لموإسم العام من الوظائف</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        لطائف المعارف فيما لموإسم العام من الوظائف
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن أحمد بن رجب الحنبلي الدمشقي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1810/181096.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1810/181096.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Sessions on the Biography of the Prophet ﷺ&quot;,&quot;es&quot;:&quot;Sesiones sobre la biografía del Profeta ﷺ&quot;,&quot;fr&quot;:&quot;Séances consacrées à la biographie du Prophète ﷺ&quot;,&quot;id&quot;:&quot;Majelis-majelis tentang Sirah Nabi ﷺ&quot;,&quot;ja&quot;:&quot;預言者 ﷺ の生涯をめぐる講話集&quot;,&quot;ru&quot;:&quot;Уроки о жизнеописании Пророка ﷺ&quot;,&quot;sw&quot;:&quot;Mikutano kuhusu wasifu wa Mtume ﷺ&quot;,&quot;tr&quot;:&quot;Peygamber ﷺ’in Siyerinden Meclisler&quot;,&quot;zh&quot;:&quot;《先知 ﷺ 生平讲座》&quot;}" data-original="مجالس في سيرة النبي ﷺ">مجالس في سيرة النبي ﷺ</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        مجالس في سيرة النبي ﷺ
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن أحمد بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2081/208102.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2081/208102.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Remembrances from the Words of the Best of the Chosen - 2nd Edition&quot;,&quot;es&quot;:&quot;Al-Adhkar: de las palabras del señor de los mejores (2.ª ed.)&quot;,&quot;fr&quot;:&quot;Al-Adhkar (Les invocations), d&#039;après les paroles du meilleur des hommes - 2e édition&quot;,&quot;id&quot;:&quot;Al-Adzkar min Kalami Sayyid al-Abrar (Zikir-Zikir dari Sabda Pemimpin Orang-Orang Saleh) – Cetakan 2&quot;,&quot;ja&quot;:&quot;最良の人の言葉からのズィクル――第2版&quot;,&quot;ru&quot;:&quot;Азкары из речей господина лучших людей — 2-е издание&quot;,&quot;sw&quot;:&quot;Al-Adhkar (Dua na adhkari kutoka kwa maneno ya bwana wa watu wema) — toleo la 2&quot;,&quot;tr&quot;:&quot;el-Ezkâr: Hayırlıların Efendisinin Sözlerinden – 2. Baskı&quot;,&quot;zh&quot;:&quot;《圣训纪念词：来自至善者的言辞》——第二版&quot;}" data-original="الأذكار من كلام سيد الأبرار- ط 2">الأذكار من كلام سيد الأبرار- ط 2</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الأذكار من كلام سيد الأبرار- ط 2
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2475/247547.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2475/247547.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Al-Dhikr Al-Nawawi - By Ibn Kathir&quot;,&quot;es&quot;:&quot;Al-Adhkar al-Nawawiyya (Las invocaciones de al-Nawawi) — edición de Ibn Kathir&quot;,&quot;fr&quot;:&quot;Al-Adhkar al-Nawawiyya (Les invocations d&#039;al-Nawawi) – éd. Ibn Kathir&quot;,&quot;id&quot;:&quot;Al-Adzkar An-Nawawiyah (Zikir-Zikir An-Nawawi) — cetakan Ibnu Katsir&quot;,&quot;ja&quot;:&quot;ナワウィーの祈願集―イブン・カスィール版&quot;,&quot;ru&quot;:&quot;Поминания ан-Навави — издательство Ибн Касира&quot;,&quot;sw&quot;:&quot;Al-Adhkar al-Nawawiyya (Dhikr za Nawawi) – toleo la Ibn Kathir&quot;,&quot;tr&quot;:&quot;el-Eẕkârü&#039;n-Neveviyye (Nevevî&#039;nin Zikirleri) – İbn Kesîr baskısı&quot;,&quot;ur&quot;:&quot;الأذكار النووية- ط ابن كثير (نووی کے اذکار، ابن کثیر ایڈیشن)&quot;,&quot;zh&quot;:&quot;《脑威祈祷录》—伊本·凯西尔版&quot;}" data-original="الأذكار النووية- ط ابن كثير">الأذكار النووية- ط ابن كثير</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الأذكار النووية- ط ابن كثير
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محيي الدين يحيى بن شرف النووي
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

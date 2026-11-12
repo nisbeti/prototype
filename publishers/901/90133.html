@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>مكتبة الصحابة بطنطا</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,144 +70,206 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Sahaba Library in Tanta&quot;,&quot;es&quot;:&quot;Biblioteca al-Sahaba en Tanta&quot;,&quot;fr&quot;:&quot;Maktabat al-Sahaba à Tanta&quot;,&quot;id&quot;:&quot;Perpustakaan Sahabat di Tanta&quot;,&quot;ja&quot;:&quot;タンターのアル＝サハーバ図書館&quot;,&quot;ru&quot;:&quot;Библиотека ас-Сахаба в Танте&quot;,&quot;sw&quot;:&quot;Maktaba ya al-Sahaba huko Tanta&quot;,&quot;tr&quot;:&quot;Tanta&#039;daki Mektebetü&#039;s-Sahâbe&quot;,&quot;zh&quot;:&quot;坦塔圣门弟子图书馆&quot;}" data-original="مكتبة الصحابة بطنطا">مكتبة الصحابة بطنطا</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/472/47222.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/472/47222.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;A Treatise on the Description of the Prophet&#039;s Prayer ﷺ&quot;,&quot;es&quot;:&quot;Tratado sobre la descripción de la oración del Profeta ﷺ&quot;,&quot;fr&quot;:&quot;Traité sur la description de la prière du Prophète ﷺ&quot;,&quot;id&quot;:&quot;Risalah tentang Tata Cara Salat Nabi ﷺ&quot;,&quot;ja&quot;:&quot;預言者 ﷺ の礼拝の仕方に関する論考&quot;,&quot;ru&quot;:&quot;Послание о том, как Пророк ﷺ совершал молитву&quot;,&quot;sw&quot;:&quot;Risala kuhusu namna Mtume ﷺ alivyokuwa akiswali&quot;,&quot;tr&quot;:&quot;Hz. Peygamber’in ﷺ Namaz Kılış Şekli Hakkında Bir Risale&quot;,&quot;zh&quot;:&quot;《先知 ﷺ 礼拜方式论》&quot;}" data-original="رسالة في صفة صلاة النبي ﷺ">رسالة في صفة صلاة النبي ﷺ</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Sahaba Library in Tanta&quot;,&quot;es&quot;:&quot;Biblioteca al-Sahaba en Tanta&quot;,&quot;fr&quot;:&quot;Maktabat al-Sahaba à Tanta&quot;,&quot;id&quot;:&quot;Perpustakaan Sahabat di Tanta&quot;,&quot;ja&quot;:&quot;タンターのアル＝サハーバ図書館&quot;,&quot;ru&quot;:&quot;Библиотека ас-Сахаба в Танте&quot;,&quot;sw&quot;:&quot;Maktaba ya al-Sahaba huko Tanta&quot;,&quot;tr&quot;:&quot;Tanta&#039;daki Mektebetü&#039;s-Sahâbe&quot;,&quot;zh&quot;:&quot;坦塔圣门弟子图书馆&quot;}" data-original="مكتبة الصحابة بطنطا">مكتبة الصحابة بطنطا</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/472/47222.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;A Treatise on the Description of the Prophet&#039;s Prayer ﷺ&quot;,&quot;es&quot;:&quot;Tratado sobre la descripción de la oración del Profeta ﷺ&quot;,&quot;fr&quot;:&quot;Traité sur la description de la prière du Prophète ﷺ&quot;,&quot;id&quot;:&quot;Risalah tentang Tata Cara Salat Nabi ﷺ&quot;,&quot;ja&quot;:&quot;預言者 ﷺ の礼拝の仕方に関する論考&quot;,&quot;ru&quot;:&quot;Послание о том, как Пророк ﷺ совершал молитву&quot;,&quot;sw&quot;:&quot;Risala kuhusu namna Mtume ﷺ alivyokuwa akiswali&quot;,&quot;tr&quot;:&quot;Hz. Peygamber’in ﷺ Namaz Kılış Şekli Hakkında Bir Risale&quot;,&quot;zh&quot;:&quot;《先知 ﷺ 礼拜方式论》&quot;}" data-original="رسالة في صفة صلاة النبي ﷺ">رسالة في صفة صلاة النبي ﷺ</span>
-          </a>
-        </td>
-        <td dir="auto">عبد العزيز بن باز • محمد صالح العثيمين</td>
-        <td dir="auto">مكتبة الصحابة</td>
-        <td dir="auto">1407 هــ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/970/97032.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Etiquette of the Scholar, the Student, the Mufti, and the Inquirer, and the Virtue of the Seeker of Knowledge&quot;,&quot;es&quot;:&quot;Adab al-alim wa-l-mutaallim wa-l-mufti wa-l-mustafti wa-fadl talib al-ilm (La etiqueta del sabio, el estudiante, quien emite una fetua y quien la solicita, y el mérito del buscador del conocimiento)&quot;,&quot;fr&quot;:&quot;Les règles de conduite du savant, de l’étudiant, du mufti et du demandeur de fatwa, et le mérite de la quête du savoir&quot;,&quot;id&quot;:&quot;Adab Ulama, Penuntut Ilmu, Mufti, dan Peminta Fatwa serta Keutamaan Menuntut Ilmu&quot;,&quot;ja&quot;:&quot;学者・学ぶ者・法的見解を示す者・求める者の作法と、知識を求める者の徳&quot;,&quot;ru&quot;:&quot;Этика учёного, учащегося, муфтия и вопрошающего; достоинство искателя знания&quot;,&quot;sw&quot;:&quot;Adabu za mwanazuoni, mwanafunzi, mtoa fatwa na mwenye kuuliza fatwa, na ubora wa mtafutaji wa elimu&quot;,&quot;tr&quot;:&quot;Âlim, Öğrenci, Müftü ve Fetva Sorana Dair Âdâb ve İlim Talebesinin Fazileti&quot;,&quot;ur&quot;:&quot;عالم، متعلم، مفتی اور مستفتی کے آداب اور علم کے طالب کی فضیلت&quot;,&quot;zh&quot;:&quot;学者、求学者、教法解答者与请教者的礼仪及求知的美德&quot;}" data-original="آداب العالم والمتعلم والمفتى والمستفتى وفضل طالب العلم">آداب العالم والمتعلم والمفتى والمستفتى وفضل طالب العلم</span>
-          </a>
-        </td>
-        <td dir="auto">النووى</td>
-        <td dir="auto">مكتبة الصحابة</td>
-        <td dir="auto">1408 -1987</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1088/108821.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Refinement of the Horrors of the Graves and the Conditions of Their Inhabitants Until the Resurrection&quot;,&quot;es&quot;:&quot;Compendio de los horrores de las tumbas y de la situación de sus moradores hasta la Resurrección&quot;,&quot;fr&quot;:&quot;Édition abrégée des terreurs des tombes et de la condition de leurs habitants jusqu&#039;à la Résurrection&quot;,&quot;id&quot;:&quot;Ringkasan tentang Dahsyatnya Alam Kubur dan Keadaan Penghuninya hingga Hari Kebangkitan&quot;,&quot;ja&quot;:&quot;墓の恐怖と、復活までの墓の住人の状態を整える&quot;,&quot;ru&quot;:&quot;Изложение ужасов могил и положения их обитателей вплоть до воскресения&quot;,&quot;sw&quot;:&quot;Muhtasari wa vitisho vya makaburi na hali za watu wake hadi kufufuliwa&quot;,&quot;tr&quot;:&quot;Kabirlerin dehşetini ve kabir ehlinin dirilişe kadarki hâllerini özetleme&quot;,&quot;ur&quot;:&quot;تهذيب أهوال القبور وأحوال أهلها إلى النشور (قبروں کے ہول اور ان کے مکینوں کے احوال، قیامت تک)&quot;,&quot;zh&quot;:&quot;《修订〈坟墓的恐怖及其居民复活前的境况〉》&quot;}" data-original="تهذيب أهوال القبور وأحوال أهلها إلى النشور">تهذيب أهوال القبور وأحوال أهلها إلى النشور</span>
-          </a>
-        </td>
-        <td dir="auto">زين الدين عبد الرحمن بن رجب الحنبلي</td>
-        <td dir="auto">مكتبة الصحابة</td>
-        <td dir="auto">1406هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1381/138196.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Warning to the Minds: Explanation of the Essentials of Judgments by Al-Maqdisi&quot;,&quot;es&quot;:&quot;Tanbih al-Afham: comentario de Umdat al-Ahkam del maqdisí&quot;,&quot;fr&quot;:&quot;Éclaircissement des esprits : commentaire de Umdat al-Ahkam d&#039;al-Maqdisi&quot;,&quot;id&quot;:&quot;Tanbih al-Afham: Syarah &#039;Umdat al-Ahkam karya Al-Maqdisi&quot;,&quot;ja&quot;:&quot;アル＝マクディスィーの『ウムダト・アル＝アフカーム』注解『タンビーフ・アル＝アフハーム』&quot;,&quot;ru&quot;:&quot;Танбих аль-афхам: комментарий к «Умдат аль-ахкам» аль-Макдиси&quot;,&quot;sw&quot;:&quot;Tanbih al-Afham Sharh Umdat al-Ahkam lil-Maqdisi (Kuwazindua wenye ufahamu: ufafanuzi wa Umdat al-Ahkam cha al-Maqdisi)&quot;,&quot;tr&quot;:&quot;Tenbîhü’l-efhâm: el-Makdisî’nin Umdetü’l-ahkâm Şerhi&quot;,&quot;zh&quot;:&quot;《启发理解：麦格迪西〈律例纲要〉注释》&quot;}" data-original="تنبيه الأفهام شرح عمدة الأحكام للمقدسي">تنبيه الأفهام شرح عمدة الأحكام للمقدسي</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مكتبة الصحابة • مكتبة التابعين</td>
-        <td dir="auto">1426هـ 2005م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2080/208082.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Refinement of the Horrors of the Graves and the Conditions of Their Inhabitants Until Resurrection&quot;,&quot;es&quot;:&quot;Compendio de los horrores de las tumbas y la situación de sus habitantes hasta la resurrección (Tahdhib Ahwal al-Qubur wa-Ahwal Ahliha ila al-Nushur)&quot;,&quot;fr&quot;:&quot;Révision des terreurs des tombes et de la condition de leurs habitants jusqu&#039;à la résurrection&quot;,&quot;id&quot;:&quot;Penyuntingan Kengerian Kubur dan Keadaan Penghuninya hingga Kebangkitan&quot;,&quot;ja&quot;:&quot;墓の恐怖と復活までの墓の住人の境遇の要約&quot;,&quot;ru&quot;:&quot;Сокращённое изложение ужасов могил и положения их обитателей до Воскресения&quot;,&quot;sw&quot;:&quot;Kufupisha mambo ya kutisha ya makaburi na hali za watu wake hadi kufufuliwa&quot;,&quot;tr&quot;:&quot;Kabir Dehşetleri ve Kabir Ehlinin Dirilişe Kadarki Hâllerinin Özeti&quot;,&quot;ur&quot;:&quot;تهذيب أهوال القبور وأحوال أهلها الى النشور (قبروں کی ہولناکیوں اور اہلِ قبور کے حشر تک کے احوال کا خلاصہ)&quot;,&quot;zh&quot;:&quot;《润饰坟墓的恐怖及其居民复活前的境况》&quot;}" data-original="تهذيب أهوال القبور وأحوال أهلها الى النشور">تهذيب أهوال القبور وأحوال أهلها الى النشور</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن رجب الحنبلي</td>
-        <td dir="auto">مكتبة الصحابة</td>
-        <td dir="auto">1406هـ 1986م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        رسالة في صفة صلاة النبي ﷺ
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد العزيز بن باز • محمد صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/970/97032.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/970/97032.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Etiquette of the Scholar, the Student, the Mufti, and the Inquirer, and the Virtue of the Seeker of Knowledge&quot;,&quot;es&quot;:&quot;Adab al-alim wa-l-mutaallim wa-l-mufti wa-l-mustafti wa-fadl talib al-ilm (La etiqueta del sabio, el estudiante, quien emite una fetua y quien la solicita, y el mérito del buscador del conocimiento)&quot;,&quot;fr&quot;:&quot;Les règles de conduite du savant, de l’étudiant, du mufti et du demandeur de fatwa, et le mérite de la quête du savoir&quot;,&quot;id&quot;:&quot;Adab Ulama, Penuntut Ilmu, Mufti, dan Peminta Fatwa serta Keutamaan Menuntut Ilmu&quot;,&quot;ja&quot;:&quot;学者・学ぶ者・法的見解を示す者・求める者の作法と、知識を求める者の徳&quot;,&quot;ru&quot;:&quot;Этика учёного, учащегося, муфтия и вопрошающего; достоинство искателя знания&quot;,&quot;sw&quot;:&quot;Adabu za mwanazuoni, mwanafunzi, mtoa fatwa na mwenye kuuliza fatwa, na ubora wa mtafutaji wa elimu&quot;,&quot;tr&quot;:&quot;Âlim, Öğrenci, Müftü ve Fetva Sorana Dair Âdâb ve İlim Talebesinin Fazileti&quot;,&quot;ur&quot;:&quot;عالم، متعلم، مفتی اور مستفتی کے آداب اور علم کے طالب کی فضیلت&quot;,&quot;zh&quot;:&quot;学者、求学者、教法解答者与请教者的礼仪及求知的美德&quot;}" data-original="آداب العالم والمتعلم والمفتى والمستفتى وفضل طالب العلم">آداب العالم والمتعلم والمفتى والمستفتى وفضل طالب العلم</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        آداب العالم والمتعلم والمفتى والمستفتى وفضل طالب العلم
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      النووى
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1088/108821.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1088/108821.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Refinement of the Horrors of the Graves and the Conditions of Their Inhabitants Until the Resurrection&quot;,&quot;es&quot;:&quot;Compendio de los horrores de las tumbas y de la situación de sus moradores hasta la Resurrección&quot;,&quot;fr&quot;:&quot;Édition abrégée des terreurs des tombes et de la condition de leurs habitants jusqu&#039;à la Résurrection&quot;,&quot;id&quot;:&quot;Ringkasan tentang Dahsyatnya Alam Kubur dan Keadaan Penghuninya hingga Hari Kebangkitan&quot;,&quot;ja&quot;:&quot;墓の恐怖と、復活までの墓の住人の状態を整える&quot;,&quot;ru&quot;:&quot;Изложение ужасов могил и положения их обитателей вплоть до воскресения&quot;,&quot;sw&quot;:&quot;Muhtasari wa vitisho vya makaburi na hali za watu wake hadi kufufuliwa&quot;,&quot;tr&quot;:&quot;Kabirlerin dehşetini ve kabir ehlinin dirilişe kadarki hâllerini özetleme&quot;,&quot;ur&quot;:&quot;تهذيب أهوال القبور وأحوال أهلها إلى النشور (قبروں کے ہول اور ان کے مکینوں کے احوال، قیامت تک)&quot;,&quot;zh&quot;:&quot;《修订〈坟墓的恐怖及其居民复活前的境况〉》&quot;}" data-original="تهذيب أهوال القبور وأحوال أهلها إلى النشور">تهذيب أهوال القبور وأحوال أهلها إلى النشور</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تهذيب أهوال القبور وأحوال أهلها إلى النشور
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      زين الدين عبد الرحمن بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1381/138196.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1381/138196.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Warning to the Minds: Explanation of the Essentials of Judgments by Al-Maqdisi&quot;,&quot;es&quot;:&quot;Tanbih al-Afham: comentario de Umdat al-Ahkam del maqdisí&quot;,&quot;fr&quot;:&quot;Éclaircissement des esprits : commentaire de Umdat al-Ahkam d&#039;al-Maqdisi&quot;,&quot;id&quot;:&quot;Tanbih al-Afham: Syarah &#039;Umdat al-Ahkam karya Al-Maqdisi&quot;,&quot;ja&quot;:&quot;アル＝マクディスィーの『ウムダト・アル＝アフカーム』注解『タンビーフ・アル＝アフハーム』&quot;,&quot;ru&quot;:&quot;Танбих аль-афхам: комментарий к «Умдат аль-ахкам» аль-Макдиси&quot;,&quot;sw&quot;:&quot;Tanbih al-Afham Sharh Umdat al-Ahkam lil-Maqdisi (Kuwazindua wenye ufahamu: ufafanuzi wa Umdat al-Ahkam cha al-Maqdisi)&quot;,&quot;tr&quot;:&quot;Tenbîhü’l-efhâm: el-Makdisî’nin Umdetü’l-ahkâm Şerhi&quot;,&quot;zh&quot;:&quot;《启发理解：麦格迪西〈律例纲要〉注释》&quot;}" data-original="تنبيه الأفهام شرح عمدة الأحكام للمقدسي">تنبيه الأفهام شرح عمدة الأحكام للمقدسي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تنبيه الأفهام شرح عمدة الأحكام للمقدسي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2080/208082.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2080/208082.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Refinement of the Horrors of the Graves and the Conditions of Their Inhabitants Until Resurrection&quot;,&quot;es&quot;:&quot;Compendio de los horrores de las tumbas y la situación de sus habitantes hasta la resurrección (Tahdhib Ahwal al-Qubur wa-Ahwal Ahliha ila al-Nushur)&quot;,&quot;fr&quot;:&quot;Révision des terreurs des tombes et de la condition de leurs habitants jusqu&#039;à la résurrection&quot;,&quot;id&quot;:&quot;Penyuntingan Kengerian Kubur dan Keadaan Penghuninya hingga Kebangkitan&quot;,&quot;ja&quot;:&quot;墓の恐怖と復活までの墓の住人の境遇の要約&quot;,&quot;ru&quot;:&quot;Сокращённое изложение ужасов могил и положения их обитателей до Воскресения&quot;,&quot;sw&quot;:&quot;Kufupisha mambo ya kutisha ya makaburi na hali za watu wake hadi kufufuliwa&quot;,&quot;tr&quot;:&quot;Kabir Dehşetleri ve Kabir Ehlinin Dirilişe Kadarki Hâllerinin Özeti&quot;,&quot;ur&quot;:&quot;تهذيب أهوال القبور وأحوال أهلها الى النشور (قبروں کی ہولناکیوں اور اہلِ قبور کے حشر تک کے احوال کا خلاصہ)&quot;,&quot;zh&quot;:&quot;《润饰坟墓的恐怖及其居民复活前的境况》&quot;}" data-original="تهذيب أهوال القبور وأحوال أهلها الى النشور">تهذيب أهوال القبور وأحوال أهلها الى النشور</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تهذيب أهوال القبور وأحوال أهلها الى النشور
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن رجب الحنبلي
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

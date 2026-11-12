@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../../"
+  data-section="books"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>فتح الباري لابن رجب</title>
   <link
-    rel="stylesheet"
-    href="../../../assets/reader.css"
+    rel="icon"
+    href="../../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,151 +70,624 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../../assets/reader.js"
+    src="../../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../../index.html"
-      lang="ar"
-    >
-      باحث
-    </a>
-    <nav class="site-nav">
-      <a href="../../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
 
-  <main class="site-main">
-      <div class="reader-head">
-    <a
-      class="button"
-      href="../../../books/033/3315/index.html"
-    >
-      <span data-t="Book">Book</span>
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section
+    class="w-full"
+    x-data="staticReader(JSON.parse('{\u0022rtl\u0022:true,\u0022previous\u0022:{\u0022href\u0022:\u0022..\\\/..\\\/..\\\/books\\\/033\\\/3315\\\/1819.html#p1857\u0022,\u0022number\u0022:258},\u0022next\u0022:{\u0022href\u0022:\u0022..\\\/..\\\/..\\\/books\\\/033\\\/3315\\\/1875.html#p1875\u0022,\u0022number\u0022:275}}'))"
+  >
+    <div class="mb-4 grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 sm:grid-cols-[auto_minmax(0,1fr)_auto]">
+      <div class="contents">
+        <a href="../../../books/033/3315/index.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 self-start">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Book</span>
     </a>
-    <div class="reader-title">
-      <strong
-        lang="ar"
-        dir="rtl"
-      >
-        فتح الباري لابن رجب
-      </strong>
-                        <button
+
+        <div class="min-w-0 flex-1">
+          <div class="flex min-w-0 flex-wrap items-baseline gap-x-3">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 min-w-0" dir="auto" lang="ar" data-flux-heading><div
+    class="contents"
+    x-data
+    x-on:click="$el.querySelector('button[disabled]') || $dispatch('modal-show', { name: 'book-card' })"
+        data-flux-modal-trigger
+>
+    <button
+                    type="button"
+                    class="max-w-full cursor-pointer text-start hover:underline"
+                    data-test="book-card-toggle"
+                  >
+                    فتح الباري لابن رجب
+                  </button>
+</div></div>
+
+                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 min-w-0 basis-full sm:basis-auto" dir="auto" lang="ar" data-flux-text ><div
+    class="contents"
+    x-data
+    x-on:click="$el.querySelector('button[disabled]') || $dispatch('modal-show', { name: 'author-card' })"
+        data-flux-modal-trigger
+>
+    <button
+                      type="button"
+                      class="max-w-full cursor-pointer text-start hover:underline"
+                      data-test="author-card-toggle"
+                    >
+                      ابن رجب الحنبلي
+                    </button>
+</div></p>                      </div>
+
+          
+          <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Fath al-Bari: Commentary on Sahih al-Bukhari&quot;,&quot;es&quot;:&quot;Fath al-Bari (La victoria del Creador), comentario de Sahih al-Bukhari&quot;,&quot;fr&quot;:&quot;Fath al-Bari (L&#039;illumination du Créateur), commentaire du Sahih al-Bukhari&quot;,&quot;id&quot;:&quot;Fath al-Bari: Syarah Shahih Al-Bukhari [Penjelasan Shahih Al-Bukhari]&quot;,&quot;ja&quot;:&quot;ファトフ・アル＝バーリー：サヒーフ・アル＝ブハーリー注釈&quot;,&quot;ru&quot;:&quot;Фатх аль-Бари: комментарий к «Сахиху» аль-Бухари&quot;,&quot;sw&quot;:&quot;Fath al-Bari (Ufunguzi wa Muumba), ufafanuzi wa Sahih al-Bukhari&quot;,&quot;tr&quot;:&quot;Fethu’l-bârî: Sahîh-i Buhârî Şerhi&quot;,&quot;ur&quot;:&quot;فتح الباري شرح صحيح البخاري (صحیح بخاری کی شرح، فتح الباری)&quot;,&quot;zh&quot;:&quot;《布哈里圣训实录之注释：法特赫·巴里》&quot;}" data-original=""></span></p>        </div>
+      </div>
+
+      <div class="col-start-2 flex flex-wrap items-center gap-2 sm:col-start-3">
+        <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 w-8 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-data="" x-on:click="$store.passageMarks.toggle()" x-bind:aria-pressed="$store.passageMarks.on" x-bind:title="$store.passageMarks.on ? $t('Hide similar passages') : $t('Show similar passages')" aria-label="Hide similar passages" data-test="passage-marks-toggle">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" x-show="$store.passageMarks.on" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M8.914 6.025a.75.75 0 0 1 1.06 0 3.5 3.5 0 0 1 0 4.95l-2 2a3.5 3.5 0 0 1-5.396-4.402.75.75 0 0 1 1.251.827 2 2 0 0 0 3.085 2.514l2-2a2 2 0 0 0 0-2.828.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+  <path fill-rule="evenodd" d="M7.086 9.975a.75.75 0 0 1-1.06 0 3.5 3.5 0 0 1 0-4.95l2-2a3.5 3.5 0 0 1 5.396 4.402.75.75 0 0 1-1.251-.827 2 2 0 0 0-3.085-2.514l-2 2a2 2 0 0 0 0 2.828.75.75 0 0 1 0 1.06Z" clip-rule="evenodd"/>
+</svg>
+
+                  <svg class="shrink-0 [:where(&amp;)]:size-4" x-show="!$store.passageMarks.on" x-cloak="x-cloak" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M3.28 2.22a.75.75 0 0 0-1.06 1.06l10.5 10.5a.75.75 0 1 0 1.06-1.06l-2.999-3a3.5 3.5 0 0 0-.806-3.695.75.75 0 0 0-1.06 1.061c.374.374.569.861.584 1.352L7.116 6.055l1.97-1.97a2 2 0 0 1 3.208 2.3.75.75 0 0 0 1.346.662 3.501 3.501 0 0 0-5.615-4.022l-1.97 1.97L3.28 2.22ZM3.705 9.616a.75.75 0 0 0-1.345-.663 3.501 3.501 0 0 0 5.615 4.022l.379-.379a.75.75 0 0 0-1.061-1.06l-.379.378a2 2 0 0 1-3.209-2.298Z"/>
+</svg>
+    </button>
+
+        <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 w-8 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-data="" x-show="$store.readAloud.supported" x-cloak="x-cloak" x-on:mousedown.prevent="x-on:mousedown.prevent" x-on:click="$store.readAloud.toggle('ar', $store.preferences.readAloudSpeed / 100)" x-bind:aria-pressed="$store.readAloud.speaking" aria-label="Read aloud" title="Read aloud" data-test="read-aloud">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" x-show="!$store.readAloud.speaking" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M7.557 2.066A.75.75 0 0 1 8 2.75v10.5a.75.75 0 0 1-1.248.56L3.59 11H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.59l3.162-2.81a.75.75 0 0 1 .805-.124ZM12.95 3.05a.75.75 0 1 0-1.06 1.06 5.5 5.5 0 0 1 0 7.78.75.75 0 1 0 1.06 1.06 7 7 0 0 0 0-9.9Z"/>
+  <path d="M10.828 5.172a.75.75 0 1 0-1.06 1.06 2.5 2.5 0 0 1 0 3.536.75.75 0 1 0 1.06 1.06 4 4 0 0 0 0-5.656Z"/>
+</svg>
+
+                  <svg class="shrink-0 [:where(&amp;)]:size-4" x-show="$store.readAloud.speaking" x-cloak="x-cloak" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <rect width="10" height="10" x="3" y="3" rx="1.5"/>
+</svg>
+    </button>
+
+        <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-data="" x-on:click="$store.reading.toggle()" data-shortcut="r ق" data-test="reading-mode-toggle">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M2.75 9a.75.75 0 0 1 .75.75v1.69l2.22-2.22a.75.75 0 0 1 1.06 1.06L4.56 12.5h1.69a.75.75 0 0 1 0 1.5h-3.5a.75.75 0 0 1-.75-.75v-3.5A.75.75 0 0 1 2.75 9ZM2.75 7a.75.75 0 0 0 .75-.75V4.56l2.22 2.22a.75.75 0 0 0 1.06-1.06L4.56 3.5h1.69a.75.75 0 0 0 0-1.5h-3.5a.75.75 0 0 0-.75.75v3.5c0 .414.336.75.75.75ZM13.25 9a.75.75 0 0 0-.75.75v1.69l-2.22-2.22a.75.75 0 1 0-1.06 1.06l2.22 2.22H9.75a.75.75 0 0 0 0 1.5h3.5a.75.75 0 0 0 .75-.75v-3.5a.75.75 0 0 0-.75-.75ZM13.25 7a.75.75 0 0 1-.75-.75V4.56l-2.22 2.22a.75.75 0 1 1-1.06-1.06l2.22-2.22H9.75a.75.75 0 0 1 0-1.5h3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-.75.75Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Reading mode</span>
+    </button>
+
+        
+                  <div
+    class="contents"
+    x-data
+    x-on:click="$el.querySelector('button[disabled]') || $dispatch('modal-show', { name: 'book-contents' })"
+        data-flux-modal-trigger
+>
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" data-shortcut="c ف" data-test="contents-toggle" x-data="" x-on:click="$dispatch('load-contents')">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M3 4.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6.25 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 7.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 11.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM4 12.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Contents</span>
+    </button>
+</div>
+              </div>
+    </div>
+
+    <ui-modal  data-flux-modal>
+    
+    <dialog
+        wire:ignore.self 
+        class="fixed m-0 p-8 min-w-[100%] overflow-y-auto mt-auto [--flux-flyout-translate:translateY(50px)] border-t bg-white dark:bg-zinc-800 border-transparent dark:border-zinc-700 max-h-[70vh] p-0!"
+         data-modal="book-card"          data-flux-flyout                         x-data="fluxModal('book-card', null)"
+                x-on:modal-show.document="handleShow($event)"
+        x-on:modal-close.document="handleClose($event)"
+    >
+                    <div class="mx-auto max-w-3xl" dir="rtl" lang="ar">
+    <div
+      class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-zinc-200 bg-white px-6 py-3 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 min-w-0 truncate text-2xl!" data-flux-heading>فتح الباري لابن رجب</div>
+
+      <ui-close data-flux-modal-close >
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]    shrink-0" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" data-test="book-card-close">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Close</span>
+    </button>
+</ui-close>
+    </div>
+
+    <div class="px-6 pt-4 pb-8"><dl
+  class="text-2xl leading-loose grid gap-x-6 gap-y-3 sm:grid-cols-[fit-content(12rem)_1fr]"
+  dir="auto"
+>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Title&quot;,&quot;es&quot;:&quot;Título&quot;,&quot;fr&quot;:&quot;Titre&quot;,&quot;id&quot;:&quot;Judul&quot;,&quot;ja&quot;:&quot;書名&quot;,&quot;ru&quot;:&quot;Название&quot;,&quot;sw&quot;:&quot;Jina la kitabu&quot;,&quot;tr&quot;:&quot;Kitap adı&quot;,&quot;ur&quot;:&quot;نام کتاب&quot;,&quot;zh&quot;:&quot;书名&quot;}" data-original="الكتاب">الكتاب</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Fath al-Bari: Commentary on Sahih al-Bukhari&quot;,&quot;es&quot;:&quot;Fath al-Bari (La victoria del Creador), comentario de Sahih al-Bukhari&quot;,&quot;fr&quot;:&quot;Fath al-Bari (L&#039;illumination du Créateur), commentaire du Sahih al-Bukhari&quot;,&quot;id&quot;:&quot;Fath al-Bari: Syarah Shahih Al-Bukhari [Penjelasan Shahih Al-Bukhari]&quot;,&quot;ja&quot;:&quot;ファトフ・アル＝バーリー：サヒーフ・アル＝ブハーリー注釈&quot;,&quot;ru&quot;:&quot;Фатх аль-Бари: комментарий к «Сахиху» аль-Бухари&quot;,&quot;sw&quot;:&quot;Fath al-Bari (Ufunguzi wa Muumba), ufafanuzi wa Sahih al-Bukhari&quot;,&quot;tr&quot;:&quot;Fethu’l-bârî: Sahîh-i Buhârî Şerhi&quot;,&quot;ur&quot;:&quot;فتح الباري شرح صحيح البخاري (صحیح بخاری کی شرح، فتح الباری)&quot;,&quot;zh&quot;:&quot;《布哈里圣训实录之注释：法特赫·巴里》&quot;}" data-original="فتح الباري شرح صحيح البخاري">فتح الباري شرح صحيح البخاري</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Author&quot;,&quot;es&quot;:&quot;Autor&quot;,&quot;fr&quot;:&quot;Auteur&quot;,&quot;id&quot;:&quot;Penulis&quot;,&quot;ja&quot;:&quot;著者&quot;,&quot;ru&quot;:&quot;Автор&quot;,&quot;sw&quot;:&quot;Mwandishi&quot;,&quot;tr&quot;:&quot;Yazar&quot;,&quot;ur&quot;:&quot;مصنف&quot;,&quot;zh&quot;:&quot;作者&quot;}" data-original="المؤلف">المؤلف</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Zayn al-Din Abd al-Rahman ibn Ahmad ibn Rajab ibn al-Hasan al-Salami al-Baghdadi, later al-Dimashqi, al-Hanbali (d. 795 AH)&quot;,&quot;es&quot;:&quot;Zayn al-Din Abd al-Rahman ibn Ahmad ibn Rajab ibn al-Hasan al-Salami al-Baghdadi, luego al-Dimashqi, al-Hanbali (fallecido en 795 H)&quot;,&quot;fr&quot;:&quot;Zayn al-Din Abd al-Rahman ibn Ahmad ibn Rajab ibn al-Hasan al-Salami al-Baghdadi, puis al-Dimashqi, al-Hanbali (m. 795 H)&quot;,&quot;id&quot;:&quot;Zainuddin Abdurrahman bin Ahmad bin Rajab bin Al-Hasan as-Salami al-Baghdadi, kemudian ad-Dimasyqi al-Hanbali (w. 795 H)&quot;,&quot;ja&quot;:&quot;ザインッディーン・アブドゥッラフマーン・イブン・アフマド・イブン・ラジャブ・イブン・アル＝ハサン・アッ＝サラーミー・アル＝バグダーディー、のちのダマスカスのハンバリー派（ヒジュラ暦795年没）&quot;,&quot;ru&quot;:&quot;Зайн ад-Дин Абд ар-Рахман ибн Ахмад ибн Раджаб ибн аль-Хасан ас-Салями аль-Багдади, затем ад-Димашки аль-Ханбали (ум. 795 г. х.)&quot;,&quot;sw&quot;:&quot;Zayn al-Din Abdulrahman bin Ahmad bin Rajab bin al-Hasan al-Salami al-Baghdadi, kisha al-Dimashqi al-Hanbali (alifariki 795 H)&quot;,&quot;tr&quot;:&quot;Zeynüddin Abdurrahman b. Ahmed b. Receb b. Hasan es-Selâmî el-Bağdâdî, ardından ed-Dımaşkī el-Hanbelî (ö. 795 H)&quot;,&quot;ur&quot;:&quot;زين الدين عبد الرحمن بن أحمد بن رجب بن الحسن، السَلامي، البغدادي، ثم الدمشقي، الحنبلي (ت ٧٩٥ ھ)&quot;,&quot;zh&quot;:&quot;宰因丁·阿卜杜·拉赫曼·本·艾哈迈德·本·拉杰卜·本·哈桑·萨拉米·巴格达迪，后居大马士革，罕百里（卒于伊历795年）&quot;}" data-original="زين الدين عبد الرحمن بن أحمد بن رجب بن الحسن، السَلامي، البغدادي، ثم الدمشقي، الحنبلي (ت ٧٩٥ هـ)">زين الدين عبد الرحمن بن أحمد بن رجب بن الحسن، السَلامي، البغدادي، ثم الدمشقي، الحنبلي (ت ٧٩٥ هـ)</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Editor&quot;,&quot;es&quot;:&quot;Edición crítica&quot;,&quot;fr&quot;:&quot;Édition critique&quot;,&quot;id&quot;:&quot;Pentahkik&quot;,&quot;ja&quot;:&quot;校訂者&quot;,&quot;ru&quot;:&quot;Тахкик&quot;,&quot;sw&quot;:&quot;Mhakiki&quot;,&quot;tr&quot;:&quot;Tahkik eden&quot;,&quot;ur&quot;:&quot;محقق&quot;,&quot;zh&quot;:&quot;校勘者&quot;}" data-original="تحقيق">تحقيق</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Mahmud ibn Sha&#039;ban ibn Abd al-Maqsud, Majdi ibn Abd al-Khaliq al-Shafi&#039;i, Ibrahim ibn Isma&#039;il al-Qadi, al-Sayyid Izzat al-Mursi, Muhammad ibn Awad al-Manqush, Salah ibn Salim al-Musrati, Ala ibn Mustafa ibn Hammam, Sabri ibn Abd al-Khaliq al-Shafi&#039;i&quot;,&quot;es&quot;:&quot;Mahmud ibn Shaban ibn Abd al-Maqsud, Majdi ibn Abd al-Khaliq al-Shafi&#039;i, Ibrahim ibn Isma&#039;il al-Qadi, al-Sayyid Izzat al-Mursi, Muhammad ibn Awad al-Manqush, Salah ibn Salim al-Misrati, Ala ibn Mustafa ibn Hammam, Sabri ibn Abd al-Khaliq al-Shafi&#039;i&quot;,&quot;fr&quot;:&quot;Mahmud ibn Sha&#039;ban ibn Abd al-Maqsud, Majdi ibn Abd al-Khaliq al-Shafi&#039;i, Ibrahim ibn Isma&#039;il al-Qadi, al-Sayyid Izzat al-Mursi, Muhammad ibn Awad al-Manqush, Salah ibn Salim al-Misrati, Ala ibn Mustafa ibn Hammam, Sabri ibn Abd al-Khaliq al-Shafi&#039;i&quot;,&quot;id&quot;:&quot;Mahmud bin Sya&#039;ban bin Abdul Maqshud, Majdi bin Abdul Khaliq asy-Syafi&#039;i, Ibrahim bin Isma&#039;il al-Qadhi, as-Sayyid Izzat al-Mursi, Muhammad bin Awwadh al-Manqusy, Shalah bin Salim al-Mashrati, Ala&#039; bin Musthafa bin Hammam, Shabri bin Abdul Khaliq asy-Syafi&#039;i&quot;,&quot;ja&quot;:&quot;マフムード・イブン・シャアバーン・イブン・アブド・アル＝マクスード、マジュディー・イブン・アブド・アル＝ハーリク・アッ＝シャーフィイー、イブラーヒーム・イブン・イスマーイール・アル＝カーディー、アッ＝サイイド・イッザト・アル＝ムルスィー、ムハンマド・イブン・アワド・アル＝マンジュース、サラーフ・イブン・サーリム・アル＝ミスラーター、アラー・イブン・ムスタファー・イブン・ハンマーム、サブリー・イブン・アブド・アル＝ハーリク・アッ＝シャーフィイー&quot;,&quot;ru&quot;:&quot;Махмуд ибн Ша‘бан ибн Абд аль-Максуд; Маджди ибн Абд аль-Халик аш-Шафи‘и; Ибрахим ибн Исма‘ил аль-Кади; ас-Сайид Иззат аль-Мурси; Мухаммад ибн Авад аль-Манкнуш; Салах ибн Салим аль-Мисрати; Аля ибн Мустафа ибн Хаммам; Сабри ибн Абд аль-Халик аш-Шафи‘и&quot;,&quot;sw&quot;:&quot;Mahmud bin Sha&#039;ban bin Abdul Maqsud, Majdi bin Abdul Khaliq al-Shafi&#039;i, Ibrahim bin Ismail al-Qadi, al-Sayyid Izzat al-Mursi, Muhammad bin Awad al-Manqush, Salah bin Salim al-Misrati, Ala bin Mustafa bin Hammam, Sabri bin Abdul Khaliq al-Shafi&#039;i&quot;,&quot;tr&quot;:&quot;Mahmûd b. Şa‘bân b. Abdülmaksûd, Mecdî b. Abdülhâlık eş-Şâfiî, İbrâhim b. İsmâil el-Kādî, Seyyid İzzet el-Mürsî, Muhammed b. Avad el-Menkūş, Salâh b. Sâlim el-Mısrâtî, Alâ b. Mustafa b. Hemmâm, Sabrî b. Abdülhâlık eş-Şâfiî&quot;,&quot;zh&quot;:&quot;马哈茂德·本·沙阿班·本·阿卜杜·马克苏德、马吉迪·本·阿卜杜·哈利克·沙斐仪、易卜拉欣·本·伊斯马仪·卡迪、赛义德·伊扎特·穆尔西、穆罕默德·本·阿瓦德·曼古什、萨拉赫·本·萨利姆·米斯拉提、阿拉·本·穆斯塔法·本·哈马姆、萨布里·本·阿卜杜·哈利克·沙斐仪&quot;}" data-original="محمود بن شعبان بن عبد المقصود، مجدي بن عبد الخالق الشافعي، إبراهيم بن إسماعيل القاضي، السيد عزت المرسي، محمد بن عوض المنقوش، صلاح بن سالم المصراتي، علاء بن مصطفى بن همام، صبري بن عبد الخالق الشافعي">محمود بن شعبان بن عبد المقصود، مجدي بن عبد الخالق الشافعي، إبراهيم بن إسماعيل القاضي، السيد عزت المرسي، محمد بن عوض المنقوش، صلاح بن سالم المصراتي، علاء بن مصطفى بن همام، صبري بن عبد الخالق الشافعي</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Publisher&quot;,&quot;es&quot;:&quot;Editorial&quot;,&quot;fr&quot;:&quot;Éditeur&quot;,&quot;id&quot;:&quot;Penerbit&quot;,&quot;ja&quot;:&quot;出版社&quot;,&quot;ru&quot;:&quot;Издательство&quot;,&quot;sw&quot;:&quot;Mchapishaji&quot;,&quot;tr&quot;:&quot;Yayınevi&quot;,&quot;ur&quot;:&quot;ناشر&quot;,&quot;zh&quot;:&quot;出版社&quot;}" data-original="الناشر">الناشر</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Maktabat al-Ghuraba al-Athariyya - Madinah.&quot;,&quot;es&quot;:&quot;Maktabat al-Ghuraba al-Athariyya - Medina&quot;,&quot;fr&quot;:&quot;Maktabat al-Ghuraba al-Athariyya - Médine.&quot;,&quot;id&quot;:&quot;Maktabat al-Ghuraba&#039; al-Atsariyya - Madinah Nabawiyah.&quot;,&quot;ja&quot;:&quot;マクタバト・アル＝グラバー・アル＝アサリーヤ－預言者の町マディーナ&quot;,&quot;ru&quot;:&quot;Библиотека «аль-Гураба аль-Асария» — Медина&quot;,&quot;sw&quot;:&quot;Maktabat al-Ghuraba al-Athariyya - Madina.&quot;,&quot;tr&quot;:&quot;Mektebetü’l-Gurabâi’l-Eseriyye - Medine&quot;,&quot;zh&quot;:&quot;麦地那圣城古迹图书馆。&quot;}" data-original="مكتبة الغرباء الأثرية - المدينة النبوية.">مكتبة الغرباء الأثرية - المدينة النبوية.</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Rights&quot;,&quot;es&quot;:&quot;Derechos&quot;,&quot;fr&quot;:&quot;Droits&quot;,&quot;ru&quot;:&quot;حقوق&quot;,&quot;sw&quot;:&quot;Haki&quot;,&quot;tr&quot;:&quot;Haklar&quot;,&quot;zh&quot;:&quot;权利方&quot;}" data-original="الحقوق">الحقوق</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Maktab Tahqiq Dar al-Haramayn - Cairo&quot;,&quot;es&quot;:&quot;Maktab Tahqiq Dar al-Haramayn - El Cairo&quot;,&quot;fr&quot;:&quot;Maktab Tahqiq Dar al-Haramayn - Le Caire&quot;,&quot;id&quot;:&quot;Maktab Tahkik Dar al-Haramain - Kairo&quot;,&quot;ja&quot;:&quot;ダール・アル＝ハラマイン校訂局－カイロ&quot;,&quot;ru&quot;:&quot;Редакция тахкика Дар аль-Харамайн — Каир&quot;,&quot;sw&quot;:&quot;Ofisi ya Uhakiki ya Dar al-Haramayn - Kairo&quot;,&quot;tr&quot;:&quot;Mektebü Tahkīki Dâri’l-Haremeyn - Kahire&quot;,&quot;zh&quot;:&quot;达尔·哈拉曼校勘办公室——开罗&quot;}" data-original="مكتب تحقيق دار الحرمين - القاهرة">مكتب تحقيق دار الحرمين - القاهرة</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Edition&quot;,&quot;es&quot;:&quot;Edición&quot;,&quot;fr&quot;:&quot;Édition&quot;,&quot;id&quot;:&quot;Cetakan&quot;,&quot;ja&quot;:&quot;版&quot;,&quot;ru&quot;:&quot;Издание&quot;,&quot;sw&quot;:&quot;Toleo&quot;,&quot;tr&quot;:&quot;Baskı&quot;,&quot;ur&quot;:&quot;طبع&quot;,&quot;zh&quot;:&quot;版次&quot;}" data-original="الطبعة">الطبعة</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;First, 1417 AH - 1996 CE&quot;,&quot;es&quot;:&quot;Primera, 1417 H - 1996&quot;,&quot;fr&quot;:&quot;Première, 1417 H - 1996&quot;,&quot;id&quot;:&quot;Pertama, 1417 H - 1996 M&quot;,&quot;ja&quot;:&quot;初版、ヒジュラ暦1417年－西暦1996年&quot;,&quot;ru&quot;:&quot;Первое, 1417 г. х. — 1996 г.&quot;,&quot;sw&quot;:&quot;La kwanza, 1417 H - 1996 M&quot;,&quot;tr&quot;:&quot;Birinci baskı, 1417 H - 1996&quot;,&quot;ur&quot;:&quot;پہلا، ١٤١٧ ھ - ١٩٩٦ ء&quot;,&quot;zh&quot;:&quot;第一版，伊历1417年／公元1996年&quot;}" data-original="الأولى، ١٤١٧ هـ - ١٩٩٦ م">الأولى، ١٤١٧ هـ - ١٩٩٦ م</span>
+          </dd>
+          <dd
+      class="min-w-0 sm:col-span-2 text-zinc-500 dark:text-zinc-400"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The page numbering matches the print edition&quot;,&quot;es&quot;:&quot;La paginación coincide con la edición impresa&quot;,&quot;fr&quot;:&quot;La pagination correspond à l&#039;édition imprimée&quot;,&quot;id&quot;:&quot;Penomoran halaman sesuai dengan edisi cetak&quot;,&quot;ja&quot;:&quot;ページ番号は印刷版と一致&quot;,&quot;ru&quot;:&quot;Нумерация страниц соответствует печатному изданию&quot;,&quot;sw&quot;:&quot;Kurasa zimehesabiwa sawa na nakala iliyochapishwa&quot;,&quot;tr&quot;:&quot;Sayfa numaraları basılı nüshaya uygundur&quot;,&quot;ur&quot;:&quot;صفحات کی ترقیم مطبوعہ نسخے کے مطابق ہے&quot;,&quot;zh&quot;:&quot;页码与纸质版一致&quot;}" data-original="ترقيم الكتاب موافق للمطبوع">ترقيم الكتاب موافق للمطبوع</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Author page&quot;,&quot;es&quot;:&quot;Página del autor&quot;,&quot;fr&quot;:&quot;Page de l&#039;auteur&quot;,&quot;id&quot;:&quot;Halaman penulis&quot;,&quot;ja&quot;:&quot;著者ページ&quot;,&quot;ru&quot;:&quot;Страница автора&quot;,&quot;sw&quot;:&quot;Ukurasa wa mwandishi&quot;,&quot;tr&quot;:&quot;Yazar sayfası&quot;,&quot;ur&quot;:&quot;مصنف کا صفحہ&quot;,&quot;zh&quot;:&quot;作者页面&quot;}" data-original="صفحة المؤلف">صفحة المؤلف</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <div
+    class="contents"
+    x-data
+    x-on:click="$el.querySelector('button[disabled]') || $dispatch('modal-show', { name: 'author-card' })"
+        data-flux-modal-trigger
+>
+    <button
             type="button"
-            class="link-button"
-            lang="ar"
-            data-open-card="author-card"
+            class="cursor-pointer text-start underline decoration-zinc-400 underline-offset-4 hover:decoration-current"
           >
-            ابن رجب الحنبلي
+            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;es&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;id&quot;:&quot;Ibnu Rajab al-Hanbali&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ・アル＝ハンバリー&quot;,&quot;ru&quot;:&quot;Ибн Раджаб аль-Ханбали&quot;,&quot;sw&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;İbn Receb el-Hanbelî&quot;,&quot;zh&quot;:&quot;伊本·拉杰卜·罕百里&quot;}" data-original="ابن رجب الحنبلي">ابن رجب الحنبلي</span>
           </button>
-                    <span class="muted translated-only" dir="auto" data-tr="{&quot;en&quot;:&quot;Fath al-Bari: Commentary on Sahih al-Bukhari&quot;,&quot;es&quot;:&quot;Fath al-Bari (La victoria del Creador), comentario de Sahih al-Bukhari&quot;,&quot;fr&quot;:&quot;Fath al-Bari (L&#039;illumination du Créateur), commentaire du Sahih al-Bukhari&quot;,&quot;id&quot;:&quot;Fath al-Bari: Syarah Shahih Al-Bukhari [Penjelasan Shahih Al-Bukhari]&quot;,&quot;ja&quot;:&quot;ファトフ・アル＝バーリー：サヒーフ・アル＝ブハーリー注釈&quot;,&quot;ru&quot;:&quot;Фатх аль-Бари: комментарий к «Сахиху» аль-Бухари&quot;,&quot;sw&quot;:&quot;Fath al-Bari (Ufunguzi wa Muumba), ufafanuzi wa Sahih al-Bukhari&quot;,&quot;tr&quot;:&quot;Fethu’l-bârî: Sahîh-i Buhârî Şerhi&quot;,&quot;ur&quot;:&quot;فتح الباري شرح صحيح البخاري (صحیح بخاری کی شرح، فتح الباری)&quot;,&quot;zh&quot;:&quot;《布哈里圣训实录之注释：法特赫·巴里》&quot;}" data-original=""></span>
-    </div>
-    <div class="reader-tools">
-      <button
-        type="button"
-        class="button"
-        data-read-aloud
-        hidden
-        aria-label="Read aloud" title="Read aloud" data-ta="{&quot;aria-label&quot;:&quot;Read aloud&quot;,&quot;title&quot;:&quot;Read aloud&quot;}"
-      >
-        🔊
-      </button>
-      <button
-        type="button"
-        class="button"
-        data-toggle-passages
-        aria-label="Show or hide similar passages" title="Show or hide similar passages" data-ta="{&quot;aria-label&quot;:&quot;Show or hide similar passages&quot;,&quot;title&quot;:&quot;Show or hide similar passages&quot;}"
-      >
-        🔗
-      </button>
-      <a
-        class="button"
-        href="../../../books/033/3315/index.html#contents"
-      >
-        <span data-t="Contents">Contents</span>
-      </a>
-    </div>
+</div>
+          </dd>
+  </dl></div>
   </div>
 
-      <template id="author-card">
-      <div
-        class="card-text"
-        lang="ar"
-        dir="rtl"
-      >
-        
+                        </dialog>
+</ui-modal>
+
+  <ui-modal  data-flux-modal>
+    
+    <dialog
+        wire:ignore.self 
+        class="fixed m-0 p-8 min-w-[100%] overflow-y-auto mt-auto [--flux-flyout-translate:translateY(50px)] border-t bg-white dark:bg-zinc-800 border-transparent dark:border-zinc-700 max-h-[70vh] p-0!"
+         data-modal="author-card"          data-flux-flyout                         x-data="fluxModal('author-card', null)"
+                x-on:modal-show.document="handleShow($event)"
+        x-on:modal-close.document="handleClose($event)"
+    >
+                    <div class="mx-auto max-w-3xl" dir="rtl" lang="ar">
+    <div
+      class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-zinc-200 bg-white px-6 py-3 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 min-w-0 truncate text-2xl!" data-flux-heading>ابن رجب الحنبلي</div>
+
+      <ui-close data-flux-modal-close >
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]    shrink-0" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" data-test="author-card-close">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Close</span>
+    </button>
+</ui-close>
+    </div>
+
+    <div class="px-6 pt-4 pb-8"><div
+      class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+      lang="ar"
+      data-no-translate
+    >
+      
 ابن رجب الحنبلي (٧٣٦ - ٧٩٥ هـ، ١٣٣٦ - ١٣٩٣ م).زين الدين عبد الرحمن بن أحمد بن رجب بن الحسن، السَلامي، البغدادي، ثم الدمشقي، الحنبلي، الواعظ. الإمام الحافظ، المحدّث، الفقيه، ولد في بغداد وسمع من أبي الفتح الميدومي.له مصنفات عديدة، منها:• شرح الترمذي• شرح علل الترمذي• طبقات الحنابلة• فتح الباري شرح صحيح البخاري لم يتمه• جامع العلوم والحكم شرح خمسين حديثًا من جوامع الكلم؛• التوحيدوغيرها.نشأ وتوفي بدمشق.نقلا عنالموسوعة العربية العالمية http://www.mawsoah.net
 <hr>
 <ul><li>أحكام الاختلاف في رؤية هلال ذي الحجة</li><li>أحكام الخواتيم</li><li>أسباب المغفرة</li><li>أهوال القبور وأحوال أهلها إلى النشور</li><li>اختيار الأولى في شرح حديث اختصام الملأ الأعلى - ت الدوسري</li><li>اختيار الأولى في شرح حديث اختصام الملأ الأعلى - ضمن مجموع رسائل ابن رجب</li><li>استنشاق نسيم الأنس من نفحات رياض القدس</li><li>الاستخراج لأحكام الخراج</li><li>البشارة العظمى للمؤمن بأن حظه من النار الحمى</li><li>التخويف من النار والتعريف بحال دار البوار</li><li>التخويف من النار والتعريف بحال دار البوار</li><li>الحكم الجديرة بالإذاعة - ت الأرنؤوط</li><li>الحكم الجديرة بالإذاعة - ضمن مجموع رسائل ابن رجب</li><li>الذل والانكسار للعزيز الجبار</li><li>الرد على من اتبع غير المذاهب الأربعة</li><li>الفرق بين النصيحة والتعيير</li><li>الفرق بين النصيحة والتعيير</li><li>القاعدة الذهبية لا ضرر ولا ضرار</li><li>القول الصواب في تزويج أمهات أولاد الغياب</li><li>الكلام على قوله تعالى {إنما يخشى الله من عباده العلماء}</li><li>المحجة في سير الدلجة</li><li>بيان فضل علم السلف على علم الخلف</li><li>تسلية نفوس النساء والرجال عند فقد الأطفال</li><li>تسلية نفوس النساء والرجال عند فقد الأطفال</li><li>تفسير ابن رجب الحنبلي</li><li>تفسير سورة الإخلاص</li><li>تفسير سورة الفاتحة لابن رجب</li><li>تفسير سورة النصر</li><li>جامع العلوم والحكم - ت أبي النور</li><li>جامع العلوم والحكم - ت الأرنؤوط</li><li>جامع العلوم والحكم - ت الفحل</li><li>جزء فيه الكلام على حديث يتبع الميت ثلاث</li><li>جزء من الكلام على حديث شداد بن أوس «إذا كنز الناس الذهب والفضة»</li><li>ذم الخمر</li><li>ذم قسوة القلب</li><li>ذيل طبقات الحنابلة - لابن رجب - ت العثيمين</li><li>ذيل طبقات الحنابلة - لابن رجب - ت الفقي</li><li>رسالة في رؤية هلال ذي الحجة</li><li>سيرة عبد الملك بن عمر بن عبد العزيز</li><li>شرح حديث «إن أغبط أوليائي»</li><li>شرح حديث «لبيك اللهم لبيك»</li><li>شرح حديث «ما ذئبان جائعان»</li><li>شرح حديث «مثل الإسلام»</li><li>شرح حديث عمار بن ياسر - رضي الله عنه -</li><li>شرح حديث لبيك اللهم لبيك</li><li>شرح علل الترمذي</li><li>صدقة السر وفضلها</li><li>غاية النفع في شرح حديث «تمثيل المؤمن بخامة الزرع»</li><li>فتح الباري لابن رجب</li><li>فضائل الشام</li><li>فضل علم السلف على علم الخلف</li><li>قاعدة في إخراج الزكاة على الفور</li><li>قواعد ابن رجب - ت مشهور</li><li>قواعد ابن رجب - ط الخانجي</li><li>قواعد ابن رجب - ط ركائز</li><li>كشف الكربة في وصف أهل الغربة</li><li>كشف الكربة في وصف حال أهل الغربة</li><li>كلمة الإخلاص وتحقيق معناها - ضمن رسائل ابن رجب</li><li>كلمة الإخلاص وتحقيق معناها - ط المكتب الإسلامي</li><li>لطائف المعارف فيما لمواسم العام من الوظائف - ت السواس</li><li>لطائف المعارف فيما لمواسم العام من الوظائف - ت عامر</li><li>لطائف المعارف فيما لمواسم العام من الوظائف - ت عوض الله</li><li>لطائف المعارف فيما لمواسم العام من الوظائف - ط ابن حزم</li><li>مجموع رسائل ابن رجب</li><li>مختصر في معاملة الظالم السارق</li><li>مقدمة تشتمل على أن جميع الرسل كان دينهم الإسلام</li><li>نزهة الأسماع في مسألة السماع «أحكام الغناء والمعازف»</li><li>نور الاقتباس في مشكاة وصية النبي - صلى الله عليه وسلم - لابن عباس</li><li>ورثة الأنبياء شرح حديث أبي الدرداء</li></ul>
 
-      </div>
-    </template>
-  
-  <div
-    class="reader"
-    data-reader
-    data-parts="9"
-    data-previous="../../../books/033/3315/1819.html#p1857"
-    data-next="../../../books/033/3315/1875.html#p1875"
-    lang="ar"
-    dir="rtl"
+    </div></div>
+  </div>
+
+                        </dialog>
+</ui-modal>
+
+<ui-modal  data-flux-modal>
+    
+    <dialog
+        wire:ignore.self 
+        class="fixed m-0 p-8 min-w-[100%] overflow-y-auto mt-auto [--flux-flyout-translate:translateY(50px)] border-t bg-white dark:bg-zinc-800 border-transparent dark:border-zinc-700 max-h-[70vh] p-0!"
+         data-modal="passage"          data-flux-flyout                         x-data="fluxModal('passage', null)"
+                x-on:modal-show.document="handleShow($event)"
+        x-on:modal-close.document="handleClose($event)"
+    >
+                    <div class="mx-auto max-w-3xl" dir="rtl" lang="ar">
+    <div
+      class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-zinc-200 bg-white px-6 py-3 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 min-w-0 truncate text-2xl!" data-flux-heading>Also in other books</div>
+
+      <ui-close data-flux-modal-close >
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]    shrink-0" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" data-test="passage-close">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Close</span>
+    </button>
+</ui-close>
+    </div>
+
+    <div class="px-6 pt-4 pb-8"><div
+    x-data="staticPassageSheet"
+    x-on:passage.window="show($event.detail)"
+    data-test="passage-sheet"
   >
-          <section
-        class="page"
-        id="p1858"
-        data-page
-        data-number="259"
-        data-part="4"
-              >
-        <div
-          class="page-text"
-          data-reader-body
+    <div
+      class="mb-4 flex gap-2 overflow-x-auto pb-1"
+      x-show="items.length > 1"
+      role="tablist"
+    >
+      <template
+        x-for="(entry, index) in items"
+        :key="index"
+      >
+        <button
+          type="button"
+          class="shrink-0 rounded-full border px-3 py-1 text-sm"
+          role="tab"
+          x-bind:class="
+            index === at
+              ? 'border-zinc-800 bg-zinc-800 text-white dark:border-white dark:bg-white dark:text-zinc-800'
+              : 'border-zinc-200 hover:bg-zinc-100 dark:border-zinc-600 dark:hover:bg-zinc-700'
+          "
+          x-bind:aria-selected="index === at"
+          x-on:click="at = index"
+          x-text="entry.name + ' · ' + entry.others.toLocaleString()"
+        ></button>
+      </template>
+    </div>
+
+    <template x-if="item">
+      <div class="space-y-5">
+        <div class="space-y-3">
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-base [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" x-text="item.label" data-flux-heading></div>
+
+          <p
+            class="rounded-lg bg-zinc-50 px-4 py-2 text-xl leading-loose text-zinc-800 dark:bg-zinc-700/50 dark:text-zinc-100"
+            lang="ar"
+            dir="rtl"
+            x-show="item.text"
+            x-text="item.text"
+          ></p>
+        </div>
+
+        <template x-if="item.quran">
+          <div class="space-y-2">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>The Qur&#039;an</div>
+            <a
+              class="block rounded-lg bg-zinc-50 px-4 py-2 hover:bg-zinc-100 dark:bg-zinc-700/50 dark:hover:bg-zinc-700"
+              :href="item.quran.url"
+            >
+              <p
+                class="text-2xl leading-loose"
+                lang="ar"
+                dir="rtl"
+                x-text="item.quran.text"
+              ></p>
+              <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1" x-text="item.quran.label" data-flux-text ></p>            </a>
+          </div>
+        </template>
+
+        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-text="item.count" data-flux-text ></p>
+        <ul
+          class="divide-y divide-zinc-200 border-y border-zinc-200 dark:divide-zinc-700 dark:border-zinc-700"
+          x-show="item.rows.length"
         >
-          <div>
+          <template
+            x-for="(row, index) in item.rows"
+            :key="index"
+          >
+            <li class="py-2">
+              <div class="flex items-start justify-between gap-3">
+                <a
+                  class="min-w-0 flex-1"
+                  :class="row.url ? 'hover:underline' : 'pointer-events-none opacity-60'"
+                  :href="row.url"
+                  :title="row.url ? null : $t('Not in this edition')"
+                  dir="auto"
+                >
+                  <span
+                    class="block text-lg font-semibold"
+                    x-text="row.title"
+                  ></span>
+                  <span
+                    class="block text-zinc-500 dark:text-zinc-400"
+                    x-text="row.author"
+                  ></span>
+                </a>
+                <div class="shrink-0 text-end text-sm text-zinc-500 dark:text-zinc-400">
+                  <bdi
+                    class="block"
+                    x-text="row.died"
+                  ></bdi>
+                  <span
+                    class="block text-emerald-700 dark:text-emerald-400"
+                    x-show="row.number"
+                    x-text="$t('Hadith :number', { number: row.number })"
+                  ></span>
+                </div>
+              </div>
+
+              <div
+                class="mt-2 flex flex-wrap gap-2"
+                x-show="row.editions.length"
+              >
+                <template
+                  x-for="(edition, position) in row.editions"
+                  :key="position"
+                >
+                  <a
+                    class="rounded-full border border-zinc-200 px-3 py-0.5 text-sm hover:bg-zinc-100 dark:border-zinc-600 dark:hover:bg-zinc-700"
+                    :class="edition.url ? '' : 'pointer-events-none opacity-60'"
+                    :href="edition.url"
+                    dir="auto"
+                    x-text="edition.label"
+                  ></a>
+                </template>
+              </div>
+            </li>
+          </template>
+        </ul>
+
+        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="item.more > 0" x-text="moreLabel(item.more)" data-flux-text ></p>      </div>
+    </template>
+  </div></div>
+  </div>
+
+                        </dialog>
+</ui-modal>
+
+    <div class="flex flex-wrap items-center justify-between gap-2">
+  <div class="flex group/button [&amp;&gt;[data-flux-input]:last-child:not(:first-child)&gt;[data-flux-group-target]:not([data-invalid])]:border-s-0 [&amp;&gt;[data-flux-input]:not(:first-child):not(:last-child)&gt;[data-flux-group-target]:not([data-invalid])]:border-s-0 [&amp;&gt;[data-flux-input]:has(+[data-flux-input-group-suffix])&gt;[data-flux-group-target]:not([data-invalid])]:border-e-0 [&amp;&gt;*:last-child:not(:first-child)&gt;[data-flux-group-target]:not([data-invalid])]:border-s-0 [&amp;&gt;*:not(:first-child):not(:last-child)&gt;[data-flux-group-target]:not([data-invalid])]:border-s-0 [&amp;&gt;*:has(+[data-flux-input-group-suffix])&gt;[data-flux-group-target]:not([data-invalid])]:border-e-0 [&amp;&gt;[data-flux-group-target]:last-child:not(:first-child)]:border-s-0 [&amp;&gt;[data-flux-group-target]:not(:first-child):not(:last-child)]:border-s-0 [&amp;&gt;[data-flux-group-target]:has(+[data-flux-input-group-suffix])]:border-e-0 [&amp;&gt;[data-flux-group-target]:not(:first-child):not(:last-child)]:rounded-none [&amp;&gt;[data-flux-group-target]:first-child:not(:last-child)]:rounded-e-none [&amp;&gt;[data-flux-group-target]:last-child:not(:first-child)]:rounded-s-none [&amp;&gt;*:not(:first-child):not(:last-child):not(:only-child)&gt;[data-flux-group-target]]:rounded-none [&amp;&gt;*:first-child:not(:last-child)&gt;[data-flux-group-target]]:rounded-e-none [&amp;&gt;*:last-child:not(:first-child)&gt;[data-flux-group-target]]:rounded-s-none [&amp;&gt;*:not(:first-child):not(:last-child):not(:only-child)&gt;[data-flux-input]&gt;[data-flux-group-target]]:rounded-none [&amp;&gt;*:first-child:not(:last-child)&gt;[data-flux-input]&gt;[data-flux-group-target]]:rounded-e-none [&amp;&gt;*:last-child:not(:first-child)&gt;[data-flux-input]&gt;[data-flux-group-target]]:rounded-s-none [&amp;&gt;*:not(:first-child):not(:last-child):not(:only-child)&gt;:is([data-flux-tooltip],ui-time-picker-trigger)&gt;[data-flux-group-target]]:rounded-none [&amp;&gt;*:first-child:not(:last-child)&gt;:is([data-flux-tooltip],ui-time-picker-trigger)&gt;[data-flux-group-target]]:rounded-e-none [&amp;&gt;*:last-child:not(:first-child)&gt;:is([data-flux-tooltip],ui-time-picker-trigger)&gt;[data-flux-group-target]]:rounded-s-none [&amp;&gt;*:last-child:not(:first-child)&gt;:is([data-flux-tooltip],ui-time-picker-trigger)&gt;[data-flux-group-target]:not([data-invalid])]:border-s-0 [&amp;&gt;*:not(:first-child):not(:last-child)&gt;:is([data-flux-tooltip],ui-time-picker-trigger)&gt;[data-flux-group-target]:not([data-invalid])]:border-s-0 [&amp;&gt;*:has(+[data-flux-input-group-suffix])&gt;:is([data-flux-tooltip],ui-time-picker-trigger)&gt;[data-flux-group-target]:not([data-invalid])]:border-e-0" dir="rtl" data-flux-button-group>
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white" data-flux-button="data-flux-button" x-on:click="step(-1)" x-bind:disabled="!hasPrevious" data-shortcut="p س arrowright" data-test="previous-page">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span><span x-text="previousNumber"></span></span>
+    </button>
+
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-3 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white" data-flux-button="data-flux-button" disabled="disabled">
+        <span x-text="pageLabel"></span>
+    </button>
+
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-3 pe-2 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white" data-flux-button="data-flux-button" x-on:click="step(1)" x-bind:disabled="!hasNext" data-shortcut="n ت arrowleft" data-test="next-page">
+        <span><span x-text="nextNumber"></span></span>
+        
+        
+                    
+                        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+    </button>
+</div>
+
+      <ui-dropdown position="bottom start"  data-flux-dropdown>
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-3 pe-2 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white" data-flux-button="data-flux-button" data-test="part-menu">
+        <span><span x-text="partLabel"></span></span>
+        
+        
+                    
+                        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+    </button>
+
+      <ui-menu
+    class="[:where(&amp;)]:min-w-48 p-[.3125rem] rounded-lg shadow-xs border border-zinc-200 dark:border-zinc-600 bg-white dark:bg-zinc-700 focus:outline-hidden"
+    popover="manual"
+    data-flux-menu
+>
+    <a href="../../../books/033/3315/1.html#p1" data-flux-menu-item="data-flux-menu-item" class="flex items-center px-2 py-1.5 w-full focus:outline-hidden select-none rounded-md text-start text-sm font-medium [&amp;[disabled]]:opacity-50 text-zinc-800 data-active:bg-zinc-50 dark:text-white dark:data-active:bg-zinc-600 **:data-flux-menu-item-icon:text-zinc-400 dark:**:data-flux-menu-item-icon:text-white/60 [&amp;[data-active]_[data-flux-menu-item-icon]]:text-current">
+        <div class="w-7 hidden [[data-flux-menu]:has(>[data-flux-menu-item-has-icon])_&]:block"></div>
+    
+    <span data-t="Part :name" data-r="{&quot;name&quot;:&quot;1&quot;}">Part 1</span>
+                          <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text >(5–389)</p>
+    </a>
+                  <a href="../../../books/033/3315/471.html#p471" data-flux-menu-item="data-flux-menu-item" class="flex items-center px-2 py-1.5 w-full focus:outline-hidden select-none rounded-md text-start text-sm font-medium [&amp;[disabled]]:opacity-50 text-zinc-800 data-active:bg-zinc-50 dark:text-white dark:data-active:bg-zinc-600 **:data-flux-menu-item-icon:text-zinc-400 dark:**:data-flux-menu-item-icon:text-white/60 [&amp;[data-active]_[data-flux-menu-item-icon]]:text-current">
+        <div class="w-7 hidden [[data-flux-menu]:has(>[data-flux-menu-item-has-icon])_&]:block"></div>
+    
+    <span data-t="Part :name" data-r="{&quot;name&quot;:&quot;2&quot;}">Part 2</span>
+                          <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text >(5–459)</p>
+    </a>
+                  <a href="../../../books/033/3315/1008.html#p1008" data-flux-menu-item="data-flux-menu-item" class="flex items-center px-2 py-1.5 w-full focus:outline-hidden select-none rounded-md text-start text-sm font-medium [&amp;[disabled]]:opacity-50 text-zinc-800 data-active:bg-zinc-50 dark:text-white dark:data-active:bg-zinc-600 **:data-flux-menu-item-icon:text-zinc-400 dark:**:data-flux-menu-item-icon:text-white/60 [&amp;[data-active]_[data-flux-menu-item-icon]]:text-current">
+        <div class="w-7 hidden [[data-flux-menu]:has(>[data-flux-menu-item-has-icon])_&]:block"></div>
+    
+    <span data-t="Part :name" data-r="{&quot;name&quot;:&quot;3&quot;}">Part 3</span>
+                          <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text >(5–446)</p>
+    </a>
+                  <a href="../../../books/033/3315/1556.html#p1556" data-flux-menu-item="data-flux-menu-item" class="flex items-center px-2 py-1.5 w-full focus:outline-hidden select-none rounded-md text-start text-sm font-medium [&amp;[disabled]]:opacity-50 text-zinc-800 data-active:bg-zinc-50 dark:text-white dark:data-active:bg-zinc-600 **:data-flux-menu-item-icon:text-zinc-400 dark:**:data-flux-menu-item-icon:text-white/60 [&amp;[data-active]_[data-flux-menu-item-icon]]:text-current">
+        <div class="w-7 hidden [[data-flux-menu]:has(>[data-flux-menu-item-has-icon])_&]:block"></div>
+    
+    <span data-t="Part :name" data-r="{&quot;name&quot;:&quot;4&quot;}">Part 4</span>
+                          <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text >(5–455)</p>
+    </a>
+                  <a href="../../../books/033/3315/2092.html#p2092" data-flux-menu-item="data-flux-menu-item" class="flex items-center px-2 py-1.5 w-full focus:outline-hidden select-none rounded-md text-start text-sm font-medium [&amp;[disabled]]:opacity-50 text-zinc-800 data-active:bg-zinc-50 dark:text-white dark:data-active:bg-zinc-600 **:data-flux-menu-item-icon:text-zinc-400 dark:**:data-flux-menu-item-icon:text-white/60 [&amp;[data-active]_[data-flux-menu-item-icon]]:text-current">
+        <div class="w-7 hidden [[data-flux-menu]:has(>[data-flux-menu-item-has-icon])_&]:block"></div>
+    
+    <span data-t="Part :name" data-r="{&quot;name&quot;:&quot;5&quot;}">Part 5</span>
+                          <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text >(5–461)</p>
+    </a>
+                  <a href="../../../books/033/3315/2615.html#p2615" data-flux-menu-item="data-flux-menu-item" class="flex items-center px-2 py-1.5 w-full focus:outline-hidden select-none rounded-md text-start text-sm font-medium [&amp;[disabled]]:opacity-50 text-zinc-800 data-active:bg-zinc-50 dark:text-white dark:data-active:bg-zinc-600 **:data-flux-menu-item-icon:text-zinc-400 dark:**:data-flux-menu-item-icon:text-white/60 [&amp;[data-active]_[data-flux-menu-item-icon]]:text-current">
+        <div class="w-7 hidden [[data-flux-menu]:has(>[data-flux-menu-item-has-icon])_&]:block"></div>
+    
+    <span data-t="Part :name" data-r="{&quot;name&quot;:&quot;6&quot;}">Part 6</span>
+                          <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text >(5–459)</p>
+    </a>
+                  <a href="../../../books/033/3315/3173.html#p3173" data-flux-menu-item="data-flux-menu-item" class="flex items-center px-2 py-1.5 w-full focus:outline-hidden select-none rounded-md text-start text-sm font-medium [&amp;[disabled]]:opacity-50 text-zinc-800 data-active:bg-zinc-50 dark:text-white dark:data-active:bg-zinc-600 **:data-flux-menu-item-icon:text-zinc-400 dark:**:data-flux-menu-item-icon:text-white/60 [&amp;[data-active]_[data-flux-menu-item-icon]]:text-current">
+        <div class="w-7 hidden [[data-flux-menu]:has(>[data-flux-menu-item-has-icon])_&]:block"></div>
+    
+    <span data-t="Part :name" data-r="{&quot;name&quot;:&quot;7&quot;}">Part 7</span>
+                          <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text >(5–449)</p>
+    </a>
+                  <a href="../../../books/033/3315/3706.html#p3706" data-flux-menu-item="data-flux-menu-item" class="flex items-center px-2 py-1.5 w-full focus:outline-hidden select-none rounded-md text-start text-sm font-medium [&amp;[disabled]]:opacity-50 text-zinc-800 data-active:bg-zinc-50 dark:text-white dark:data-active:bg-zinc-600 **:data-flux-menu-item-icon:text-zinc-400 dark:**:data-flux-menu-item-icon:text-white/60 [&amp;[data-active]_[data-flux-menu-item-icon]]:text-current">
+        <div class="w-7 hidden [[data-flux-menu]:has(>[data-flux-menu-item-has-icon])_&]:block"></div>
+    
+    <span data-t="Part :name" data-r="{&quot;name&quot;:&quot;8&quot;}">Part 8</span>
+                          <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text >(5–464)</p>
+    </a>
+                  <a href="../../../books/033/3315/4260.html#p4260" data-flux-menu-item="data-flux-menu-item" class="flex items-center px-2 py-1.5 w-full focus:outline-hidden select-none rounded-md text-start text-sm font-medium [&amp;[disabled]]:opacity-50 text-zinc-800 data-active:bg-zinc-50 dark:text-white dark:data-active:bg-zinc-600 **:data-flux-menu-item-icon:text-zinc-400 dark:**:data-flux-menu-item-icon:text-white/60 [&amp;[data-active]_[data-flux-menu-item-icon]]:text-current">
+        <div class="w-7 hidden [[data-flux-menu]:has(>[data-flux-menu-item-has-icon])_&]:block"></div>
+    
+    <span data-t="Part :name" data-r="{&quot;name&quot;:&quot;9&quot;}">Part 9</span>
+    </a>
+</ui-menu>
+</ui-dropdown>
+  </div>
+
+    <div>
+      <div
+        class="reader"
+        dir="rtl"
+        x-ref="track"
+        x-on:scroll.passive="scrolled()"
+        x-on:scrollend="settle()"
+        data-test="reader"
+      >
+        
+                  <div
+  class="reader-slide"
+  data-reader-slide
+  data-edge="previous"
+  data-loading
+>
+  <div
+    class="reader-loading text-zinc-400 dark:text-zinc-500"
+    role="status"
+  >
+    <svg class="shrink-0 [:where(&amp;)]:size-6 animate-spin size-8" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true" data-slot="icon">
+    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+</svg>
+          </div>
+</div>
+        
+                  <div
+            class="reader-slide"
+            id="p1858"
+            data-reader-slide
+            data-id="1858"
+            data-number="259"
+            data-part="4"
+             data-current           >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1"><span>١٢ - باب</p>
 <p id="p2">تأخير الظهر إلى العصر</span></p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1859"
-        data-page
-        data-number="259"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1859"
+            data-reader-slide
+            data-id="1859"
+            data-number="259"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">٥٤٣ – حدثنا أبو النعمان: ثنا حماد بن زيد، عن عمرو - وهو: ابن دينار - عن جابر بن زيد، عن ابن عباس، أن النبي صلى الله عليه وسلم <span class="passage" data-kind="hadith" data-passages="3101" role="button" tabindex="0">صلى بالمدينة</span><span class="passage" data-kind="hadith" data-passages="3101" role="button" tabindex="0"> سبعا وثمانيا الظهر والعصر والمغرب والعشاء</span>.</p>
 <p id="p2"><span class="passage" data-kind="hadith" data-passages="3101" role="button" tabindex="0">فقال أيوب: لعله في ليلة مطيرة؟ قال: عسى</span>.</p>
 <p id="p3"><span class="passage" data-kind="hadith" data-passages="3101" role="button" tabindex="0">وخرجه</span><span class="passage" data-kind="hadith" data-passages="3101" role="button" tabindex="0"> مسلم من طريق حماد - أيضا -، ولم يذكر فيه قول أيوب</span>.</p>
@@ -186,20 +696,24 @@
 <p id="p6">وخرجه النسائي عن قتيبة، عن سفيان، وأدرج تفسيره في الحديث.</p>
 <p id="p7">قال ابن عبد البر: الصحيح: أن هذا ليس من الحديث، إنما هو من ظن أبي الشعثاء وعمرو بن دينار.</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1860"
-        data-page
-        data-number="260"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1860"
+            data-reader-slide
+            data-id="1860"
+            data-number="260"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">ورواه محمد بن مسلم الطائفي، عن عمرو بن دينار، وزاد في حديثه: &quot; من غير مرضٍ ولا علة&quot;.</p>
 <p id="p2">خرجه من طريقه الطبراني.</p>
 <p id="p3">ومحمد بن مسلم، ليس بذاك الحافظ.</p>
@@ -210,20 +724,24 @@
 <p id="p8"><span class="passage" data-kind="hadith" data-passages="4545" role="button" tabindex="0">وخرجه مسلم – أيضا - من طريق زهير، عن أبي الزبير - بمثله، وزاد: قال ابن عباس: أراد أن لا يحرج أحداً من أمته</span>.</p>
 <p id="p9"><span class="passage" data-kind="hadith" data-passages="4545" role="button" tabindex="0">وخرجه – أيضا - من طريق قرة، عن أبي الزبير، وذكر فيه: أن ذلك كان في سفرةٍ سافرها في غزوة تبوك</span>، وذكر فيه قول ابن عباس: أراد</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1861"
-        data-page
-        data-number="261"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1861"
+            data-reader-slide
+            data-id="1861"
+            data-number="261"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">أن لا يحرج أمته.</p>
 <p id="p2">وخرج - أيضا - من طريق الأعمش، عن حبيب بن أبي ثابت، عن سعيد بن جبير، عن ابن عباس، قال: جمع رسول الله صلى الله عليه وسلم بين الظهر والعصر، والمغرب والعشاء بالمدينة، في غير خوف ولا مطر. قلت لابن عباس: لم فعل ذلك؟ قال: كيلا يحرج أمته.</p>
 <p id="p3">وقد اختلف على الأعمش في إسناد هذا الحديث، وفي لفظه - أيضا -:</p>
@@ -234,40 +752,48 @@
 <p id="p8">وكذلك تكلم فيها ابن عبد البر.</p>
 <p id="p9">وروينا من طريق عبد الحميد بن مهدي البالسي: حدثنا المعافي بن سليمان الجزري: ثنا محمد بن سلمة: ثنا أبو عبد الرحيم، عن</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1862"
-        data-page
-        data-number="262"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1862"
+            data-reader-slide
+            data-id="1862"
+            data-number="262"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">زيد بن [أبي أنيسة، عن] أبي الزبير، عن سعيد بن جبير، عن ابن عباس، قال: صليت مع رسول الله صلى الله عليه وسلم بالمدينة من غير مطر ولا قر الظهر والعصر جمعاً. قلت له: لم فعل ذلك؟ قال ابن عباس: أراد أن لا يحرج أمته.</p>
 <p id="p2">وعن زيد، عن عمرو بن دينار، عن أبي الشعثاء، عن ابن عباس – مثله.</p>
 <p id="p3">ولكن؛ عبد الحميد هذا، قال فيه الحافظ عبد العزيز النخشبي: عنده مناكير.</p>
 <p id="p4">وأمارواية عبد الله بن شقيق، فمن طريق الزبير بن الخريت، عن عبد الله بن شقيق، قال: <span class="passage" data-kind="hadith" data-passages="4872" role="button" tabindex="0">خطبنا ابن عباس يوما بعد العصر حتى غربت الشمس وبدت النجوم</span><span class="passage" data-kind="hadith" data-passages="4872" role="button" tabindex="0">، وجعل الناس يقولون: الصلاة الصلاة. قال فجاءه رجل من بني تميم</span><span class="passage" data-kind="hadith" data-passages="4872" role="button" tabindex="0">، لايفتر ولا ينثني: الصلاة الصلاة. فقال ابن عباس: أتعلمني السنة لا أم لك؟ ثم قال</span><span class="passage" data-kind="hadith" data-passages="4872 526" data-deep role="button" tabindex="0">: رأيت رسول الله صلى الله عليه وسلم جمع بين الظهر والعصر والمغرب والعشاء</span>.</p>
 <p id="p5"><span class="passage" data-kind="hadith" data-passages="4872" role="button" tabindex="0">قال</span><span class="passage" data-kind="hadith" data-passages="4872" role="button" tabindex="0"> عبد الله بن شقيق: فحاك في صدري من ذلك شيء فأتيت أبا هريرة، فسألته فصدق</span><span class="passage" data-kind="hadith" data-passages="4872" role="button" tabindex="0"> مقالته</span>.</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1863"
-        data-page
-        data-number="263"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1863"
+            data-reader-slide
+            data-id="1863"
+            data-number="263"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1"><span class="passage" data-kind="hadith" data-passages="4872" role="button" tabindex="0">خرجه مسلم</span>.</p>
 <p id="p2"><span class="passage" data-kind="hadith" data-passages="4872" role="button" tabindex="0">وخرجه - أيضا - من رواية عمران بن حدير، عن عبد لله بن شقيق، قال: قال</span><span class="passage" data-kind="hadith" data-passages="4872 14401" data-deep role="button" tabindex="0"> رجل لابن عباس: الصلاة، فسكت، ثم قال: الصلاة، فسكت، ثم قال: الصلاة، فسكت، ثم قال: لا أم لك</span><span class="passage" data-kind="hadith" data-passages="4872 14401" data-deep role="button" tabindex="0">، تعلمنا الصلاة؟ ! كنا نجمع بين الصلاتين على عهد رسول الله</span> صلى الله عليه وسلم.</p>
 <p id="p3">وأمارواية عكرمة، فمن طريق الحكم بن أبان، عن عكرمة، عن ابن عباس، قال: صلى رسول الله صلى الله عليه وسلم مقيما غير مسافر سبعاً وثمانياً.</p>
@@ -278,20 +804,24 @@
 <p id="p8">وعبد الرحمان، فيه ضعف.</p>
 <p id="p9">وأمارواية صالح مولى التوأمة، فذكرها أبو داود تعليقاً. وفيها: من</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1864"
-        data-page
-        data-number="264"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1864"
+            data-reader-slide
+            data-id="1864"
+            data-number="264"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">غير مطر.</p>
 <p id="p2">وخرجها الإمام أحمد من طريق داود بن قيس، عن صالح مولى التوأمة، عن ابن عباس، قال: جمع رسول الله صلى الله عليه وسلم بين الظهر والعصر، والمغرب والعشاء، في غير مطر ولا سفر. قالوا: يا أبن عباس، ما أراد بذلك؟ قال: التوسع على الامة.</p>
 <p id="p3">وصالح، مختلف في أمره، وفي سماعه من ابن عباس - أيضا.</p>
@@ -300,20 +830,24 @@
 <p id="p6">قال الدارقطني: عبد الملك وابو حذيفة مجهولان. وعبد الرحمان بن علقمة لا تصح صحبته ولا يعرف.</p>
 <p id="p7">وقد اختلفت مسالك العلماء في حديث ابن عباس هذا، في الجمع من غير خوف ولا سفر، ولهم فيه مسالك متعددة:</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1865"
-        data-page
-        data-number="265"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1865"
+            data-reader-slide
+            data-id="1865"
+            data-number="265"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">المسلك الاول: أنه منسوخ بالإجماع على خلافه، وقد حكى الترمذي في آخر &quot; كتابه&quot; أنه لم يقل به أحد من العلماء.</p>
 <p id="p2">وهؤلاء لا يقولون: إن الإجماع ينسخ، كما يحكى عن بعضهم، وإنما يقولون: هو يدل على وجود نص ناسخ.</p>
 <p id="p3">المسلك الثاني: معارضته بما يخالفه، وقد عارضه الإمام أحمد بأحاديث المواقيت، وقوله: &quot; الوقت ما بين هذين&quot;، وبحديث أبي ذر في الأمراء الذين يؤخرون الصلاة عن وقتها، وأمره بالصلاة في الوقت، ولو كان الجمع جائزاً من غير عذر لم يحتج إلى ذلك، فإن أولئك الأمراء كانوا يجمعون لغير عذرٍ، ولم يكونوا يؤخرون صلاة النهار إلى الليل، ولا صلاة الليل إلى النهار.</p>
@@ -322,20 +856,24 @@
 <p id="p6"><span class="passage" data-kind="hadith" data-passages="413654 4613" data-deep role="button" tabindex="0">وخرجه أبو داود، وعنده: &quot; إنما</span><span class="passage" data-kind="hadith" data-passages="413654 4613" data-deep role="button" tabindex="0"> التفريط في اليقظة أن تؤخر صلاة حتى يدخل وقت صلاة اخرى</span>&quot;.</p>
 <p id="p7"><span class="passage" data-kind="hadith" data-passages="413654 4613" data-deep role="button" tabindex="0">وقد عارض</span><span class="passage" data-kind="hadith" data-passages="413654" role="button" tabindex="0"> بعضهم حديث ابن عباس هذا بحديث آخر يروى عنه، وقد أشار إلى هذه المعارضة الترمذي وابن شاهين، وهو من رواية حنش، عن عكرمة، عن ابن عباس، عن النبي صلى الله عليه وسلم، قال</span><span class="passage" data-kind="hadith" data-passages="413654 5557 413655" data-deep role="button" tabindex="0">: &quot; من جمع بين</span></p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1866"
-        data-page
-        data-number="266"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1866"
+            data-reader-slide
+            data-id="1866"
+            data-number="266"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1"><span class="passage" data-kind="hadith" data-passages="413654 5557 413655" data-deep role="button" tabindex="0">صلاتين من غير عذر فقد أتى بابا من ابواب الكبائر</span>&quot;.</p>
 <p id="p2"><span class="passage" data-kind="hadith" data-passages="413655" role="button" tabindex="0">خرجه الترمذي</span>.</p>
 <p id="p3"><span class="passage" data-kind="hadith" data-passages="413655" role="button" tabindex="0">وقال: حنش هذا هو أبو علي الرحبي، وهو حسين بن قيس، وهو ضعيف عند أهل الحديث، ضعفه أحمد وغيره، والعمل على هذا عند أهل العلم</span>.</p>
@@ -350,20 +888,24 @@
 <p id="p12">وروي وكيع، عن سفيان، عن هشام، عن رجل، عن أبي العالية، عن عمر بن الخطاب، قال: <span class="passage" data-kind="hadith" data-passages="5557" role="button" tabindex="0">الجمع بين الصلاتين من غير عذر من الكبائر</span>.</p>
 <p id="p13"><span class="passage" data-kind="hadith" data-passages="5557" role="button" tabindex="0">وعن أبي هلال الراسبي، عن حنظلة السدوسي، عن أبي موسى، قال: الجمع بين الصلاتين من غير عذر من الكبائر</span>.</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1867"
-        data-page
-        data-number="267"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1867"
+            data-reader-slide
+            data-id="1867"
+            data-number="267"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">المسلك الثالث: حمله على أن النبي صلى الله عليه وسلم أخر الظهر إلى آخر وقتها، فوقعت في آخر جزء من الوقت، وقدم العصر في أول وقتها، فصلاها في أول جزء من الوقت، فوقعت الصلاتان مجموعتين في الصورة، وفي المعنى كل صلاة وقعت في وقتها، وفعل هذا ليبين جواز تأخير الصلاة [إلى] آخر وقتها.</p>
 <p id="p2">وقد روي من حديث معاذ بن جبل، أن جمع النبي صلى الله عليه وسلم بين الصلاتين بتبوك كان على هذا الوجه - أيضا.</p>
 <p id="p3">خرجه الطبراني في " أوسطه" بإسناد في ضعف.</p>
@@ -373,20 +915,24 @@
 <p id="p7">ومن ذهب إلى هذا المسلك فإنه يطعن في رواية من روى: " من غير خوف ولا مطر" كما قاله البزار وابن عبد البر وغيرهما.</p>
 <p id="p8">ومن حمل الحديث على هذا فإنه يلزم من قوله جواز الجمع في الحضر للمطر بين الظهر والعصر والمغرب والعشاء، وقد اختلف في ذلك:</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1868"
-        data-page
-        data-number="268"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1868"
+            data-reader-slide
+            data-id="1868"
+            data-number="268"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">فأماالجمع بين العشاءين للمطر، فقد روي عن ابن عمر.</p>
 <p id="p2">روى مالك، عن نافع، أن ابن عمر كان يجمع في الليلة المطيرة.</p>
 <p id="p3">وقد رويناه من طريق سفيان بن بشير، عن مالك، عن نافع، عن ابن عمر - مرفوعاً -، ولا يصح رفعه.</p>
@@ -400,20 +946,24 @@
 <p id="p11">والمشهور عنه الأول.</p>
 <p id="p12">وأصل هذا: أن الأمراء بالمدينة كانوا يجمعون في الليلة المطيرة، فيؤخرون المغرب ويجمعون بينها وبين العشاء قبل مغيب الشفق،</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1869"
-        data-page
-        data-number="269"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1869"
+            data-reader-slide
+            data-id="1869"
+            data-number="269"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">وكان ابن عمر يجمع معهم، وقد علم شدة متابعة ابن عمر للسنة، فلو كان ذلك محدثا لم يوافقهم عليه البتة.</p>
 <p id="p2">وقد نص على ان جمع المطر يكون على هذا الوجه المذكور قبل مغيب الشفق: مالك وأحمد وإسحاق.</p>
 <p id="p3">وقيل لأحمد: فيجمع بينهما بعد مغيب الشفق؟ قال: لا، إلا قبل، كما فعل ابن عمر. وقال: يجمع إذا اختلط الظلام.</p>
@@ -422,20 +972,24 @@
 <p id="p6">المسلك الخامس: أن الذي نقله ابن عباس عن النبي صلى الله عليه وسلم إنما كان في السفر لا في الحضر، كما في رواية قرة، عن أبي الزبير، عن سعيد بن جبير، عن ابن عباس، أن ذلك كان في غزوة تبوك، وقد خرجه مسلم كما تقدم.</p>
 <p id="p7">وكذلك روى عبد الكريم، عن مجاهد وسعيد بن جبير وعطاء وطاوس، أخبروه عن ابن عباس، أنه أخبرهم، أن رسول الله صلى الله عليه وسلم كان يجمع بين المغرب والعشاء في السفر من غير أن يعجله شيء، ولا يطلبه عدو،</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1870"
-        data-page
-        data-number="270"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1870"
+            data-reader-slide
+            data-id="1870"
+            data-number="270"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">ولا يخاف شيئا.</p>
 <p id="p2">ولكن؛ عبد الكريم هذا، هو: أبو أمية، وهو ضعيف جداً.</p>
 <p id="p3">وأكثر رواة حديث ابن عباس ذكروا أن جمعه كان بالمدينة، وهم أكثر وأحفظ.</p>
@@ -448,20 +1002,24 @@
 <p id="p10">واستدل من أباح الجمع للمريض، <span class="passage" data-kind="passage" data-passages="79954" role="button" tabindex="0">بأمر النبي صلى الله عليه وسلم المستحاضة أن</span><span class="passage" data-kind="passage" data-passages="79954" role="button" tabindex="0"> تجمع بين الصلاتين بغسل واحد</span><span class="passage" data-kind="passage" data-passages="79954" role="button" tabindex="0">؛ لمشقة الغسل عليها لكل صلاة</span>، وذلك ما روي عن النبي صلى الله عليه وسلم من حديث حمنة بنت جحش وعائشة وأسماء بنت عميس، وفي أسانيدها بعض شيء.</p>
 <p id="p11">وأمر به: علي وابن عباس، وهو قول عطاء والنخعي والأوزاعي وأحمد وإسحاق.</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1871"
-        data-page
-        data-number="271"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1871"
+            data-reader-slide
+            data-id="1871"
+            data-number="271"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">والمسلك السابع: أن جمعه كان لشغل، وفي رواية حبيب بن أبي حبيب، عن عمرو بن هرم، عن جابر بن زيد، عن ابن عباس، أنه جمع من شغل، كما خرجه النسائي وقد سبق.</p>
 <p id="p2">وكذلك في حديث عبد الرحمان بن علقمة، أن وفد ثقيف شغلوا النبي صلى الله عليه وسلم.</p>
 <p id="p3">وخرج النسائي من رواية سالم، عن ابن عمر، أنه لما استصرخ على امرأته صفية أسرع السير، وجمع بين الظهر والعصر والمغرب والعشاء، ثم قال: قال رسول الله صلى الله عليه وسلم ?: &quot; <span class="passage" data-kind="hadith" data-passages="413656" role="button" tabindex="0">إذا حضر أحدكم أمراً يخشى فوته</span> فيصلي هذه الصلاة&quot;.</p>
@@ -472,20 +1030,24 @@
 <p id="p8">وعن ابن سيرين: لا بأس بالجمع بين الصلاتين للحاجة والشيء مالم يتخذ عادة.</p>
 <p id="p9">المسلك الثامن: حمل الحديث على ظاهره، وأنه يجوز الجمع بين</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1872"
-        data-page
-        data-number="272"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1872"
+            data-reader-slide
+            data-id="1872"
+            data-number="272"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">الصلاتين في الحضر لغير عذر بالكلية، وحكي ذلك عن ابن عباس وابن سيرين، وعن أشهب صاحب مالك.</p>
 <p id="p2">وروى ابن وهب وغيره، عن مالك أن آخر وقت الظهر والعصر غروب الشمس.</p>
 <p id="p3">قال ابن عبد البر: وهذا محمول عند أصحابه على أهل الضرورات كحائض تطهرت، ومغمى عليه يفيق.</p>
@@ -496,20 +1058,24 @@
 <p id="p8">وحكي عن أهل الحجاز جملة.</p>
 <p id="p9">وعده الأوزاعي مما يجتنب من أقوالهم، فروى الحاكم، عن الأصم: أخبرنا العباس بن الوليد البيروتي: ثنا أبو عبد الله بن بحر، قال: سمعت الأوزاعي يقول: يجتنب من قول أهل العراق: شرب المسكر، والأكل عند الفجر في رمضان، ولا جمعة إلا في سبعة أمصار، وتأخير صلاة العصر حتى يكون ظل كل شيء أربعة امثاله، والفرار يوم الزحف. ومن قول <span class="passage" data-kind="hadith" data-passages="52295" role="button" tabindex="0">أهل الحجاز: استماع الملاهي، والجمع بين الصلاتين من غير عذر</span>، والمتعة بالنساء، والدرهم بالدرهمين والدينار بالدينارين، وإتيان النساء</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1873"
-        data-page
-        data-number="273"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1873"
+            data-reader-slide
+            data-id="1873"
+            data-number="273"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">في أدبارهن.</p>
 <p id="p2">قال الأثرم في &quot; كتاب العلل&quot;: قلت لأبي عبد الله – يعني: أحمد – أي شيء تقول في حديث ابن عباس، أن النبي صلى الله عليه وسلم صلى ثمانياً جميعاً وسبعاً جميعاً، من غير خوف ولا سفر؟</p>
 <p id="p3">فقال: ابن عباس كما ترى قد أثبت هذا - أو صححه -، وغيره يقول - ابن عمر ومعاذٌ وغير واحدٍ -، يقولون: إنه في السفر. فقلت: أيفعله الأنسان؟ فقال: إنما فعله لئلا يحرج أمته.</p>
@@ -519,81 +1085,210 @@
 <p id="p7">وقد اختلف العلماء في جواز تأخير الصلاة عن وقتها بالكلية، وإن لم تكن مما تجمع، كتأخير صلاة الصبح حتى تطلع الشمس، والعصر حتى تغرب الشمس، إذا اشتد الخوف.</p>
 <p id="p8">وفيه عن أحمد روايتان.</p>
 </div>
-        </div>
-      </section>
-          <section
-        class="page"
-        id="p1874"
-        data-page
-        data-number="274"
-        data-part="4"
-         hidden       >
-        <div
-          class="page-text"
-          data-reader-body
-        >
-          <div>
+              </div>
+            </div>
+          </div>
+                  <div
+            class="reader-slide"
+            id="p1874"
+            data-reader-slide
+            data-id="1874"
+            data-number="274"
+            data-part="4"
+                      >
+            <div class="reader-card my-4 rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800">
+              <div
+                class="text-2xl leading-loose text-zinc-800 dark:text-zinc-100"
+                dir="rtl"
+                 lang="ar"                 data-reader-body
+              >
+                <div>
 <p id="p1">فتأخير الصلاتين المحموعتين إلى وقت الثانية وتقديمها في أول وقت الأولى إذا احتيج إلى ذلك في الخوف أولى بالجواز، بل لاينبغي أن يكون في جوازه خلاف عند من يبيح الجمع للسفر والمرض والمطر، ونحو ذلك من الأعذار الخفيفة.</p>
 <p id="p2">وعن أحمد روايتان في جواز الفطر في الحضر للقتال، ومن أصحابنا من طردهما في قصر الصلاة - أيضا.</p>
 <p id="p3">وقد حكى ابو عبيد في " غريبه" عن عثمان بن عفان – -رضي الله عنه- جواز قصر الصلاة في الحضر للخوف.</p>
 <p id="p4">فالجمع أولى بالجواز. والله أعلم.</p>
 </div>
-        </div>
-      </section>
-      </div>
-
-  
-  <nav
-    class="pager"
-    dir="rtl"
+              </div>
+            </div>
+          </div>
+        
+                  <div
+  class="reader-slide"
+  data-reader-slide
+  data-edge="next"
+  data-loading
+>
+  <div
+    class="reader-loading text-zinc-400 dark:text-zinc-500"
+    role="status"
   >
-    <button
-      type="button"
-      class="button"
-      data-step="-1"
-    >
-      <span data-t="Previous">Previous</span>
-    </button>
-    <span
-      class="page-number"
-      data-page-number
-    ></span>
-    <button
-      type="button"
-      class="button"
-      data-step="1"
-    >
-      <span data-t="Next">Next</span>
-    </button>
-  </nav>
+    <svg class="shrink-0 [:where(&amp;)]:size-6 animate-spin size-8" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true" data-slot="icon">
+    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+</svg>
+          </div>
+</div>
+              </div>
 
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 w-8 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white       reader-chrome top-3 right-3 z-60" data-flux-button="data-flux-button" aria-label="Exit reading mode" x-on:click="$store.reading.toggle()" data-test="reading-mode-exit">
+        <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M3.28 2.22a.75.75 0 0 0-1.06 1.06L5.44 6.5H2.75a.75.75 0 0 0 0 1.5h4.5A.75.75 0 0 0 8 7.25v-4.5a.75.75 0 0 0-1.5 0v2.69L3.28 2.22ZM13.5 2.75a.75.75 0 0 0-1.5 0v4.5c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-2.69l3.22-3.22a.75.75 0 0 0-1.06-1.06L13.5 5.44V2.75ZM3.28 17.78l3.22-3.22v2.69a.75.75 0 0 0 1.5 0v-4.5a.75.75 0 0 0-.75-.75h-4.5a.75.75 0 0 0 0 1.5h2.69l-3.22 3.22a.75.75 0 1 0 1.06 1.06ZM13.5 14.56l3.22 3.22a.75.75 0 1 0 1.06-1.06l-3.22-3.22h2.69a.75.75 0 0 0 0-1.5h-4.5a.75.75 0 0 0-.75.75v4.5a.75.75 0 0 0 1.5 0v-2.69Z"/>
+</svg>
+    </button>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 w-8 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white       reader-chrome top-3 right-14 z-60" data-flux-button="data-flux-button" x-show="$store.readAloud.supported" x-cloak="x-cloak" x-on:mousedown.prevent="x-on:mousedown.prevent" x-on:click="$store.readAloud.toggle('ar', $store.preferences.readAloudSpeed / 100)" x-bind:aria-pressed="$store.readAloud.speaking" aria-label="Read aloud" title="Read aloud">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" x-show="!$store.readAloud.speaking" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M7.557 2.066A.75.75 0 0 1 8 2.75v10.5a.75.75 0 0 1-1.248.56L3.59 11H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.59l3.162-2.81a.75.75 0 0 1 .805-.124ZM12.95 3.05a.75.75 0 1 0-1.06 1.06 5.5 5.5 0 0 1 0 7.78.75.75 0 1 0 1.06 1.06 7 7 0 0 0 0-9.9Z"/>
+  <path d="M10.828 5.172a.75.75 0 1 0-1.06 1.06 2.5 2.5 0 0 1 0 3.536.75.75 0 1 0 1.06 1.06 4 4 0 0 0 0-5.656Z"/>
+</svg>
+
+                <svg class="shrink-0 [:where(&amp;)]:size-4" x-show="$store.readAloud.speaking" x-cloak="x-cloak" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <rect width="10" height="10" x="3" y="3" rx="1.5"/>
+</svg>
+    </button>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 w-10 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white       reader-chrome reader-nav top-1/2 left-3 z-60 -translate-y-1/2" data-flux-button="data-flux-button" x-on:click="move('left')" data-test="reader-left">
+        <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M11.78 5.22a.75.75 0 0 1 0 1.06L8.06 10l3.72 3.72a.75.75 0 1 1-1.06 1.06l-4.25-4.25a.75.75 0 0 1 0-1.06l4.25-4.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+    </button>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 w-10 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white       reader-chrome reader-nav top-1/2 right-3 z-60 -translate-y-1/2" data-flux-button="data-flux-button" x-on:click="move('right')" data-test="reader-right">
+        <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+    </button>
+
+      <div
+        class="reader-chrome pointer-events-none bottom-2 left-1/2 z-60 -translate-x-1/2 text-xs text-zinc-500"
+        x-text="pageLabel"
+        data-test="reader-number"
+      ></div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-2">
+  <div class="flex group/button [&amp;&gt;[data-flux-input]:last-child:not(:first-child)&gt;[data-flux-group-target]:not([data-invalid])]:border-s-0 [&amp;&gt;[data-flux-input]:not(:first-child):not(:last-child)&gt;[data-flux-group-target]:not([data-invalid])]:border-s-0 [&amp;&gt;[data-flux-input]:has(+[data-flux-input-group-suffix])&gt;[data-flux-group-target]:not([data-invalid])]:border-e-0 [&amp;&gt;*:last-child:not(:first-child)&gt;[data-flux-group-target]:not([data-invalid])]:border-s-0 [&amp;&gt;*:not(:first-child):not(:last-child)&gt;[data-flux-group-target]:not([data-invalid])]:border-s-0 [&amp;&gt;*:has(+[data-flux-input-group-suffix])&gt;[data-flux-group-target]:not([data-invalid])]:border-e-0 [&amp;&gt;[data-flux-group-target]:last-child:not(:first-child)]:border-s-0 [&amp;&gt;[data-flux-group-target]:not(:first-child):not(:last-child)]:border-s-0 [&amp;&gt;[data-flux-group-target]:has(+[data-flux-input-group-suffix])]:border-e-0 [&amp;&gt;[data-flux-group-target]:not(:first-child):not(:last-child)]:rounded-none [&amp;&gt;[data-flux-group-target]:first-child:not(:last-child)]:rounded-e-none [&amp;&gt;[data-flux-group-target]:last-child:not(:first-child)]:rounded-s-none [&amp;&gt;*:not(:first-child):not(:last-child):not(:only-child)&gt;[data-flux-group-target]]:rounded-none [&amp;&gt;*:first-child:not(:last-child)&gt;[data-flux-group-target]]:rounded-e-none [&amp;&gt;*:last-child:not(:first-child)&gt;[data-flux-group-target]]:rounded-s-none [&amp;&gt;*:not(:first-child):not(:last-child):not(:only-child)&gt;[data-flux-input]&gt;[data-flux-group-target]]:rounded-none [&amp;&gt;*:first-child:not(:last-child)&gt;[data-flux-input]&gt;[data-flux-group-target]]:rounded-e-none [&amp;&gt;*:last-child:not(:first-child)&gt;[data-flux-input]&gt;[data-flux-group-target]]:rounded-s-none [&amp;&gt;*:not(:first-child):not(:last-child):not(:only-child)&gt;:is([data-flux-tooltip],ui-time-picker-trigger)&gt;[data-flux-group-target]]:rounded-none [&amp;&gt;*:first-child:not(:last-child)&gt;:is([data-flux-tooltip],ui-time-picker-trigger)&gt;[data-flux-group-target]]:rounded-e-none [&amp;&gt;*:last-child:not(:first-child)&gt;:is([data-flux-tooltip],ui-time-picker-trigger)&gt;[data-flux-group-target]]:rounded-s-none [&amp;&gt;*:last-child:not(:first-child)&gt;:is([data-flux-tooltip],ui-time-picker-trigger)&gt;[data-flux-group-target]:not([data-invalid])]:border-s-0 [&amp;&gt;*:not(:first-child):not(:last-child)&gt;:is([data-flux-tooltip],ui-time-picker-trigger)&gt;[data-flux-group-target]:not([data-invalid])]:border-s-0 [&amp;&gt;*:has(+[data-flux-input-group-suffix])&gt;:is([data-flux-tooltip],ui-time-picker-trigger)&gt;[data-flux-group-target]:not([data-invalid])]:border-e-0" dir="rtl" data-flux-button-group>
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white" data-flux-button="data-flux-button" x-on:click="step(-1)" x-bind:disabled="!hasPrevious" data-shortcut="p س arrowright" data-test="previous-page">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span><span x-text="previousNumber"></span></span>
+    </button>
+
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-3 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white" data-flux-button="data-flux-button" disabled="disabled">
+        <span x-text="pageLabel"></span>
+    </button>
+
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-3 pe-2 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white" data-flux-button="data-flux-button" x-on:click="step(1)" x-bind:disabled="!hasNext" data-shortcut="n ت arrowleft" data-test="next-page">
+        <span><span x-text="nextNumber"></span></span>
+        
+        
+                    
+                        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+    </button>
+</div>
+
+  </div>
+  </section>
+
+      <ui-modal  data-flux-modal>
+    
+    <dialog
+        wire:ignore.self 
+        class="p-6 [:where(&amp;)]:max-w-xl [:where(&amp;)]:min-w-xs shadow-lg rounded-xl bg-white dark:bg-zinc-800 ring ring-black/5 dark:ring-zinc-700 shadow-lg rounded-xl max-w-2xl"
+         data-modal="book-contents"                                 x-data="fluxModal('book-contents', null)"
+                x-on:modal-show.document="handleShow($event)"
+        x-on:modal-close.document="handleClose($event)"
+    >
+                    <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-4" data-flux-heading>Contents</div>
+
+      <div
+  dir="rtl"
+  x-data="staticContents(JSON.parse('{\u0022src\u0022:\u0022contents.js\u0022,\u0022pageId\u0022:1858}'))"
+  x-on:load-contents.window="load()"
+  >
+  <div class="w-full relative block group/input mb-3" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd"/>
+</svg>
+
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="query" placeholder="Filter contents..." aria-label="Filter contents" data-test="contents-filter"
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="entries === null" data-flux-text >Loading…</p>
+  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mb-3" x-cloak="x-cloak" x-show="entries !== null && query.trim() !== '' && shown.length === 0" data-flux-text >No entries match.</p>
+  <div class="max-h-[70vh] overflow-y-auto">
+    <ul>
+      <template
+        x-for="(entry, index) in shown"
+        :key="index"
+      >
+        <li
+          class="relative py-0.5"
+          x-bind:style="`padding-inline-start: ${entry.d * 0.875}rem`"
+          x-bind:data-current="entry === entries[current] ? '' : null"
+        >
+          <template
+            x-for="level in entry.d"
+            :key="level"
+          >
+            <span
+              class="absolute inset-y-0 border-s border-zinc-300 dark:border-zinc-600"
+              x-bind:style="`inset-inline-start: ${(level - 1) * 0.875 + 0.25}rem`"
+              aria-hidden="true"
+            ></span>
+          </template>
+          <a
+            class="text-base text-zinc-700 underline decoration-zinc-800/20 underline-offset-[6px] hover:decoration-current dark:text-zinc-300 dark:decoration-white/20"
+            x-bind:class="
+              entry === entries[current] &&
+              'rounded bg-amber-100 px-1 font-semibold text-zinc-900 dark:bg-amber-900/40 dark:text-white'
+            "
+            x-bind:href="entry.h"
+            x-on:click="$flux.modal('book-contents').close()"
+            x-text="entry.t"
+            data-test="contents-entry"
+          ></a>
+        </li>
+      </template>
+    </ul>
+  </div>
+</div>
+
+                            <div class="absolute top-0 end-0 mt-4 me-4">
+                    <ui-close data-flux-modal-close >
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 w-8 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       text-zinc-400! hover:text-zinc-800! dark:text-zinc-500! dark:hover:text-white!" data-flux-button="data-flux-button" aria-label="Close modal">
+        <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M6.28 5.22a.75.75 0 0 0-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 1 0 1.06 1.06L10 11.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L11.06 10l3.72-3.72a.75.75 0 0 0-1.06-1.06L10 8.94 6.28 5.22Z"/>
+</svg>
+    </button>
+</ui-close>
+                </div>
+                        </dialog>
+</ui-modal>
+  
   <script
     type="application/json"
     data-sheets
   >
     {"passages":{"526":{"kind":"hadith","others":289,"text":"رأيت رسول الله صلى الله عليه وسلم جمع بين الظهر والعصر والمغرب والعشاء","rows":[{"title":"صحيح مسلم","author":"مسلم","death":261,"number":706,"href":null,"editions":[{"label":"ط التركية","href":null},{"label":"ت عبد الباقي","href":"books/003/353/1545.html#p1571"}]},{"title":"موطأ مالك","author":"مالك بن أنس","death":179,"number":478,"href":null,"editions":[{"label":"رواية يحيى - ت عبد الباقي","href":null},{"label":"رواية أبي مصعب الزهري","href":null},{"label":"رواية يحيى - ت الأعظمي","href":null}]},{"title":"موطأ ابن وهب الصغير","author":"ابن وهب","death":197,"number":null,"href":null,"editions":[]},{"title":"المصنف","author":"عبد الرزاق الصنعاني","death":211,"number":null,"href":null,"editions":[{"label":"عبد الرزاق - ط التأصيل الثانية","href":null},{"label":"عبد الرزاق - ت الأعظمي","href":null}]},{"title":"مسند أحمد - ت شاكر - ط دار الحديث","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"مسند أحمد - ط الرسالة","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"مسند الدارمي","author":"الدارمي","death":255,"number":null,"href":null,"editions":[{"label":"ت حسين أسد","href":null},{"label":"ت الزهراني","href":null}]},{"title":"سنن أبي داود","author":"أبو داود","death":275,"number":1220,"href":null,"editions":[{"label":"ط دهلي مع عون المعبود","href":null},{"label":"ت محيي الدين عبد الحميد","href":null},{"label":"ت الأرنؤوط","href":null}]},{"title":"مسند حديث مالك لإسماعيل القاضي","author":"القاضي إسماعيل المالكي","death":282,"number":null,"href":null,"editions":[]},{"title":"السنن الكبرى - النسائي - ط الرسالة","author":"النسائي","death":303,"number":null,"href":null,"editions":[]},{"title":"سنن النسائي","author":"النسائي","death":303,"number":587,"href":null,"editions":[{"label":"ط المصرية","href":null},{"label":"ط الرسالة","href":null}]},{"title":"مسند أبي يعلى - ت السناري","author":"أبو يعلى الموصلي","death":307,"number":null,"href":null,"editions":[]},{"title":"صحيح ابن خزيمة","author":"ابن خزيمة","death":311,"number":null,"href":null,"editions":[]},{"title":"صحيح ابن خزيمة ط 3","author":"ابن خزيمة","death":311,"number":null,"href":null,"editions":[]},{"title":"مختصر الأحكام = مستخرج الطوسي على جامع الترمذي","author":"علي بن نصر الطوسي","death":312,"number":null,"href":null,"editions":[]},{"title":"مستخرج أبي عوانة","author":"أبو عوانة","death":316,"number":null,"href":null,"editions":[{"label":"ط الجامعة الإسلامية","href":null},{"label":"ط المعرفة","href":null}]},{"title":"شرح معاني الآثار","author":"الطحاوي","death":321,"number":null,"href":null,"editions":[{"label":"ت البهرائجى","href":null},{"label":"ط مصر","href":null}]},{"title":"الجزء الأول من أمالي أبي إسحاق","author":"إبراهيم بن عبد الصمد","death":325,"number":null,"href":null,"editions":[]},{"title":"المسند للشاشي","author":"الشاشي","death":335,"number":null,"href":null,"editions":[]},{"title":"صحيح ابن حبان: التقاسيم والأنواع","author":"ابن حبان","death":354,"number":null,"href":null,"editions":[]}],"more":240},"1386":{"kind":"hadith","others":427,"text":"جمع بين الظهر والعصر والمغرب والعشاء من غير مرض ولا مطر فقيل لابن عباس ما أراد","rows":[{"title":"صحيح مسلم","author":"مسلم","death":261,"number":705,"href":null,"editions":[{"label":"ط التركية","href":null},{"label":"ت عبد الباقي","href":"books/003/353/1545.html#p1565"}]},{"title":"موطأ مالك - رواية أبي مصعب الزهري","author":"مالك بن أنس","death":179,"number":null,"href":null,"editions":[]},{"title":"مسند أبي داود الطيالسي","author":"الطيالسي","death":204,"number":2843,"href":null,"editions":[]},{"title":"المصنف","author":"عبد الرزاق الصنعاني","death":211,"number":null,"href":null,"editions":[{"label":"عبد الرزاق - ط التأصيل الثانية","href":null},{"label":"عبد الرزاق - ت الأعظمي","href":null}]},{"title":"المصنف","author":"أبو بكر بن أبي شيبة","death":235,"number":null,"href":null,"editions":[{"label":"ابن أبي شيبة - ت الشثري","href":null},{"label":"ابن أبي شيبة - ت الحوت","href":null}]},{"title":"مسند أحمد - ت شاكر - ط دار الحديث","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"مسند أحمد - ط الرسالة","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"المنتخب من مسند عبد بن حميد ت مصطفى العدوي","author":"عبد بن حميد","death":249,"number":null,"href":null,"editions":[{"label":"المنتخب من مسند عبد بن حميد ت مصطفى العدوي","href":null},{"label":"المنتخب من مسند عبد بن حميد ت صبحي السامرائي","href":null}]},{"title":"سنن ابن ماجه","author":"ابن ماجه","death":273,"number":null,"href":null,"editions":[{"label":"ت هادي","href":null},{"label":"ت عبد الباقي","href":null},{"label":"ت الأرنؤوط","href":null}]},{"title":"سنن أبي داود","author":"أبو داود","death":275,"number":1214,"href":null,"editions":[{"label":"ط دهلي مع عون المعبود","href":null},{"label":"ت محيي الدين عبد الحميد","href":null},{"label":"ت الأرنؤوط","href":null}]},{"title":"سنن الترمذي","author":"الترمذي","death":279,"number":187,"href":null,"editions":[{"label":"ط الرسالة","href":null},{"label":"ت شاكر","href":null},{"label":"ت بشار","href":null}]},{"title":"مسند الحارث بن أبي أسامة","author":"الحارث بن أبي أسامة","death":282,"number":null,"href":null,"editions":[]},{"title":"مسند البزار = البحر الزخار","author":"البزار","death":292,"number":null,"href":null,"editions":[]},{"title":"سنن النسائي","author":"النسائي","death":303,"number":603,"href":null,"editions":[{"label":"ط المصرية","href":null},{"label":"ط الرسالة","href":null}]},{"title":"صحيح ابن خزيمة","author":"ابن خزيمة","death":311,"number":null,"href":null,"editions":[]},{"title":"صحيح ابن خزيمة ط 3","author":"ابن خزيمة","death":311,"number":null,"href":null,"editions":[]},{"title":"مختصر الأحكام = مستخرج الطوسي على جامع الترمذي","author":"علي بن نصر الطوسي","death":312,"number":null,"href":null,"editions":[]},{"title":"حديث السراج","author":"أبو العباس السراج","death":313,"number":null,"href":null,"editions":[]},{"title":"مستخرج أبي عوانة","author":"أبو عوانة","death":316,"number":null,"href":null,"editions":[{"label":"ط الجامعة الإسلامية","href":null},{"label":"ط المعرفة","href":null}]},{"title":"جزء أبي عبد الله العطار","author":"محمد بن مخلد العطار","death":331,"number":null,"href":null,"editions":[]}],"more":366},"1766":{"kind":"hadith","others":259,"text":"ناموا عن صلاة الفجر حتى طلعت الشمس ليس في النوم تفريط إنما التفريط على من لم يصل الصلاة حتى يجيء وقت الصلاة الاخرى","rows":[{"title":"صحيح مسلم","author":"مسلم","death":261,"number":681,"href":null,"editions":[{"label":"ط التركية","href":null},{"label":"ت عبد الباقي","href":"books/003/353/1477.html#p1499"}]},{"title":"مسند ابن الجعد","author":"ابن الجعد","death":230,"number":null,"href":null,"editions":[]},{"title":"مسند أحمد - ط الرسالة","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"مسند الحارث بن أبي أسامة","author":"الحارث بن أبي أسامة","death":282,"number":null,"href":null,"editions":[]},{"title":"السنن الكبرى - النسائي - ط الرسالة","author":"النسائي","death":303,"number":null,"href":null,"editions":[]},{"title":"سنن النسائي","author":"النسائي","death":303,"number":846,"href":null,"editions":[{"label":"ط المصرية","href":null},{"label":"ط الرسالة","href":null}]},{"title":"المنتقى","author":"ابن الجارود","death":307,"number":171,"href":null,"editions":[{"label":"ابن الجارود - ت الحويني","href":null},{"label":"ابن الجارود - ط الثقافية","href":null}]},{"title":"حديث السراج","author":"أبو العباس السراج","death":313,"number":null,"href":null,"editions":[]},{"title":"مسند السراج","author":"أبو العباس السراج","death":313,"number":null,"href":null,"editions":[]},{"title":"مستخرج أبي عوانة","author":"أبو عوانة","death":316,"number":null,"href":null,"editions":[{"label":"ط الجامعة الإسلامية","href":null},{"label":"ط المعرفة","href":null}]},{"title":"مجموع فيه مصنفات أبي جعفر ابن البختري","author":"أبو جعفر ابن البختري","death":339,"number":null,"href":null,"editions":[]},{"title":"صحيح ابن حبان: التقاسيم والأنواع","author":"ابن حبان","death":354,"number":null,"href":null,"editions":[]},{"title":"سنن الدارقطني","author":"الدارقطني","death":385,"number":null,"href":null,"editions":[]},{"title":"الصحيح من الأخبار المجتمع على صحته - مخطوط","author":"أبو بكر الجوزقي","death":388,"number":null,"href":null,"editions":[]},{"title":"المسند المستخرج على صحيح مسلم لأبي نعيم","author":"أبو نعيم الأصبهاني","death":430,"number":null,"href":null,"editions":[]},{"title":"الاعتقاد للبيهقي","author":"أبو بكر البيهقي","death":458,"number":null,"href":null,"editions":[]},{"title":"السنن الصغير للبيهقي","author":"أبو بكر البيهقي","death":458,"number":null,"href":null,"editions":[]},{"title":"السنن الكبرى","author":"أبو بكر البيهقي","death":458,"number":null,"href":null,"editions":[{"label":"البيهقي - ط العلمية","href":null},{"label":"البيهقي - ت التركي","href":null}]},{"title":"معرفة السنن والآثار","author":"أبو بكر البيهقي","death":458,"number":null,"href":null,"editions":[]},{"title":"الجمع بين الصحيحين للحميدي","author":"أبو عبد الله الحميدي","death":488,"number":null,"href":null,"editions":[]}],"more":211},"3101":{"kind":"hadith","others":219,"text":"صلى بالمدينة سبعا وثمانيا الظهر والعصر والمغرب والعشاء","rows":[{"title":"صحيح مسلم","author":"مسلم","death":261,"number":705,"href":null,"editions":[{"label":"ط التركية","href":null},{"label":"ت عبد الباقي","href":"books/003/353/1545.html#p1568"}]},{"title":"السنن المأثورة للشافعي","author":"الشافعي","death":204,"number":null,"href":null,"editions":[]},{"title":"المصنف","author":"عبد الرزاق الصنعاني","death":211,"number":null,"href":null,"editions":[{"label":"عبد الرزاق - ط التأصيل الثانية","href":null},{"label":"عبد الرزاق - ت الأعظمي","href":null}]},{"title":"مسند الحميدي","author":"الحميدي","death":219,"number":null,"href":null,"editions":[]},{"title":"المصنف","author":"أبو بكر بن أبي شيبة","death":235,"number":null,"href":null,"editions":[{"label":"ابن أبي شيبة - ت الشثري","href":null},{"label":"ابن أبي شيبة - ت الحوت","href":null}]},{"title":"مسند أحمد - ت شاكر - ط دار الحديث","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"مسند أحمد - ط الرسالة","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"مسند الدارمي - ت الزهراني","author":"الدارمي","death":255,"number":null,"href":null,"editions":[]},{"title":"صحيح البخاري","author":"البخاري","death":256,"number":1174,"href":null,"editions":[{"label":"ت البغا","href":null},{"label":"ط التأصيل","href":null},{"label":"ن عطاءات العلم","href":null},{"label":"ط السلطانية","href":null}]},{"title":"سنن أبي داود","author":"أبو داود","death":275,"number":1214,"href":null,"editions":[{"label":"ط دهلي مع عون المعبود","href":null},{"label":"ت محيي الدين عبد الحميد","href":null},{"label":"ت الأرنؤوط","href":null}]},{"title":"مسند الحارث بن أبي أسامة","author":"الحارث بن أبي أسامة","death":282,"number":null,"href":null,"editions":[]},{"title":"مسند البزار = البحر الزخار","author":"البزار","death":292,"number":null,"href":null,"editions":[]},{"title":"السنن الكبرى - النسائي - ط الرسالة","author":"النسائي","death":303,"number":null,"href":null,"editions":[]},{"title":"سنن النسائي","author":"النسائي","death":303,"number":603,"href":null,"editions":[{"label":"ط المصرية","href":null},{"label":"ط الرسالة","href":null}]},{"title":"مسند أبي يعلى","author":"أبو يعلى الموصلي","death":307,"number":null,"href":null,"editions":[{"label":"ت السناري","href":null},{"label":"ت حسين أسد","href":null}]},{"title":"حديث السراج","author":"أبو العباس السراج","death":313,"number":null,"href":null,"editions":[]},{"title":"مستخرج أبي عوانة","author":"أبو عوانة","death":316,"number":null,"href":null,"editions":[{"label":"ط الجامعة الإسلامية","href":null},{"label":"ط المعرفة","href":null}]},{"title":"شرح معاني الآثار","author":"الطحاوي","death":321,"number":null,"href":null,"editions":[{"label":"ت البهرائجى","href":null},{"label":"ط مصر","href":null}]},{"title":"صحيح ابن حبان: التقاسيم والأنواع","author":"ابن حبان","death":354,"number":null,"href":null,"editions":[]},{"title":"المعجم الأوسط للطبراني","author":"الطبراني","death":360,"number":null,"href":null,"editions":[]}],"more":175},"4545":{"kind":"hadith","others":192,"text":"ابن عباس قال صلى لنا رسول الله صلى الله عليه وسلم الظهر والعصر جميعاً بالمدينة في غير خوفٍ ولا سفرٍ خرجه مسلم وخرجه أبو داود وزاد قال مالك أرى ذلك كان في مطرٍ وخرجه مسلم أيضا من طريق زهير عن أبي الزبير بمثله وزاد قال ابن عباس أراد أن لا يحرج أحداً من أمته وخرجه أيضا من طريق قرة عن أبي الزبير وذكر فيه أن ذلك كان في سفرةٍ سافرها في غزوة تبوك","rows":[{"title":"صحيح مسلم","author":"مسلم","death":261,"number":705,"href":null,"editions":[{"label":"ط التركية","href":null},{"label":"ت عبد الباقي","href":"books/003/353/1545.html#p1563"}]},{"title":"موطأ مالك","author":"مالك بن أنس","death":179,"number":480,"href":null,"editions":[{"label":"رواية يحيى - ت عبد الباقي","href":null},{"label":"رواية أبي مصعب الزهري","href":null},{"label":"رواية يحيى - ت الأعظمي","href":null}]},{"title":"السنن المأثورة للشافعي","author":"الشافعي","death":204,"number":null,"href":null,"editions":[]},{"title":"مسند ابن الجعد","author":"ابن الجعد","death":230,"number":null,"href":null,"editions":[]},{"title":"مسند أحمد - ت شاكر - ط دار الحديث","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"مسند أحمد - ط الرسالة","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"سنن أبي داود","author":"أبو داود","death":275,"number":1214,"href":null,"editions":[{"label":"ط دهلي مع عون المعبود","href":null},{"label":"ت محيي الدين عبد الحميد","href":null},{"label":"ت الأرنؤوط","href":null}]},{"title":"مسند حديث مالك لإسماعيل القاضي","author":"القاضي إسماعيل المالكي","death":282,"number":null,"href":null,"editions":[]},{"title":"السنن الكبرى - النسائي - ط الرسالة","author":"النسائي","death":303,"number":null,"href":null,"editions":[]},{"title":"سنن النسائي","author":"النسائي","death":303,"number":603,"href":null,"editions":[{"label":"ط المصرية","href":null},{"label":"ط الرسالة","href":null}]},{"title":"مسند أبي يعلى - ت السناري","author":"أبو يعلى الموصلي","death":307,"number":null,"href":null,"editions":[]},{"title":"صحيح ابن خزيمة","author":"ابن خزيمة","death":311,"number":null,"href":null,"editions":[]},{"title":"صحيح ابن خزيمة ط 3","author":"ابن خزيمة","death":311,"number":null,"href":null,"editions":[]},{"title":"حديث السراج","author":"أبو العباس السراج","death":313,"number":null,"href":null,"editions":[]},{"title":"مستخرج أبي عوانة","author":"أبو عوانة","death":316,"number":null,"href":null,"editions":[{"label":"ط الجامعة الإسلامية","href":null},{"label":"ط المعرفة","href":null}]},{"title":"شرح معاني الآثار","author":"الطحاوي","death":321,"number":null,"href":null,"editions":[{"label":"ت البهرائجى","href":null},{"label":"ط مصر","href":null}]},{"title":"صحيح ابن حبان: التقاسيم والأنواع","author":"ابن حبان","death":354,"number":null,"href":null,"editions":[]},{"title":"غرائب مالك بن أنس لابن المظفر","author":"ابن المظفر البزاز","death":379,"number":null,"href":null,"editions":[]},{"title":"مسند الموطأ للجوهري","author":"الجوهري، أبو القاسم","death":381,"number":null,"href":null,"editions":[]},{"title":"المسند المستخرج على صحيح مسلم لأبي نعيم","author":"أبو نعيم الأصبهاني","death":430,"number":null,"href":null,"editions":[]}],"more":157},"4613":{"kind":"hadith","others":218,"text":"ليس في النوم تفريط إنما التفريط على من لم يصل الصلاة حتى يجيء وقت الصلاة الاخرى خرجه مسلم وخرجه أبو داود وعنده إنما التفريط في اليقظة أن تؤخر صلاة حتى يدخل وقت صلاة اخرى","rows":[{"title":"سنن ابن ماجه","author":"ابن ماجه","death":273,"number":null,"href":null,"editions":[{"label":"ت هادي","href":null},{"label":"ت عبد الباقي","href":null},{"label":"ت الأرنؤوط","href":null}]},{"title":"سنن أبي داود","author":"أبو داود","death":275,"number":5228,"href":null,"editions":[{"label":"ط دهلي مع عون المعبود","href":null},{"label":"ت محيي الدين عبد الحميد","href":null},{"label":"ت الأرنؤوط","href":null}]},{"title":"سنن الترمذي","author":"الترمذي","death":279,"number":1894,"href":null,"editions":[{"label":"ط الرسالة","href":null},{"label":"ت شاكر","href":null},{"label":"ت بشار","href":null}]},{"title":"السنن الكبرى - النسائي - ط الرسالة","author":"النسائي","death":303,"number":null,"href":null,"editions":[]},{"title":"سنن النسائي","author":"النسائي","death":303,"number":846,"href":null,"editions":[{"label":"ط المصرية","href":null},{"label":"ط الرسالة","href":null}]},{"title":"صحيح ابن خزيمة","author":"ابن خزيمة","death":311,"number":null,"href":null,"editions":[]},{"title":"صحيح ابن خزيمة ط 3","author":"ابن خزيمة","death":311,"number":null,"href":null,"editions":[]},{"title":"شرح معاني الآثار","author":"الطحاوي","death":321,"number":null,"href":null,"editions":[{"label":"ت البهرائجى","href":null},{"label":"ط مصر","href":null}]},{"title":"صحيح ابن حبان: التقاسيم والأنواع","author":"ابن حبان","death":354,"number":null,"href":null,"editions":[]},{"title":"سنن الدارقطني","author":"الدارقطني","death":385,"number":null,"href":null,"editions":[]},{"title":"مصابيح السنة","author":"البغوي، أبو محمد","death":516,"number":null,"href":null,"editions":[]},{"title":"جامع الأصول","author":"ابن الأثير، مجد الدين أبو السعادات","death":606,"number":null,"href":null,"editions":[]},{"title":"السنن والأحكام عن المصطفى عليه أفضل الصلاة والسلام","author":"ضياء الدين المقدسي","death":643,"number":null,"href":null,"editions":[]},{"title":"مختصر سنن أبي داود للمنذري ت حلاق","author":"عبد العظيم المنذري","death":656,"number":null,"href":null,"editions":[]},{"title":"خلاصة الأحكام","author":"النووي","death":676,"number":null,"href":null,"editions":[]},{"title":"الإحسان في تقريب صحيح ابن حبان","author":"الأمير ابن بلبان الفارسي","death":739,"number":null,"href":null,"editions":[]},{"title":"مشكاة المصابيح","author":"الخطيب ولي الدين التبريزي","death":741,"number":null,"href":null,"editions":[]},{"title":"كشف المناهج والتناقيح في تخريج أحاديث المصابيح","author":"الصدر المناوي","death":803,"number":null,"href":null,"editions":[]},{"title":"هداية الرواة - مع تخريج المشكاة الثاني للألباني","author":"ابن حجر العسقلاني","death":852,"number":null,"href":null,"editions":[]},{"title":"الجامع الصغير وزيادته","author":"الجلال السيوطي","death":911,"number":null,"href":null,"editions":[]}],"more":176},"4872":{"kind":"hadith","others":117,"text":"ابن عباس أنه صلى بالبصرة الأولى والعصر ليس بينهما شيء والمغرب والعشاء ليس بينهما شيء فعل ذلك من شغلٍ","rows":[{"title":"صحيح مسلم","author":"مسلم","death":261,"number":705,"href":null,"editions":[{"label":"ط التركية","href":null},{"label":"ت عبد الباقي","href":"books/003/353/1545.html#p1569"}]},{"title":"مسند أبي داود الطيالسي","author":"الطيالسي","death":204,"number":2843,"href":null,"editions":[]},{"title":"مسند الشافعي - ترتيب السندي","author":"الشافعي","death":204,"number":null,"href":null,"editions":[]},{"title":"مسند إسحاق بن راهويه","author":"إسحاق بن راهويه","death":238,"number":null,"href":null,"editions":[]},{"title":"مسند أحمد - ت شاكر - ط دار الحديث","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"مسند أحمد - ط الرسالة","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"مسند البزار = البحر الزخار","author":"البزار","death":292,"number":null,"href":null,"editions":[]},{"title":"السنن الكبرى - النسائي - ط الرسالة","author":"النسائي","death":303,"number":null,"href":null,"editions":[]},{"title":"سنن النسائي","author":"النسائي","death":303,"number":603,"href":null,"editions":[{"label":"ط المصرية","href":null},{"label":"ط الرسالة","href":null}]},{"title":"مسند أبي يعلى - ت السناري","author":"أبو يعلى الموصلي","death":307,"number":null,"href":null,"editions":[]},{"title":"مستخرج أبي عوانة","author":"أبو عوانة","death":316,"number":null,"href":null,"editions":[{"label":"ط الجامعة الإسلامية","href":null},{"label":"ط المعرفة","href":null}]},{"title":"المعجم الكبير للطبراني","author":"الطبراني","death":360,"number":null,"href":null,"editions":[]},{"title":"فوائد أبي أحمد الحاكم","author":"أبو أحمد الحاكم","death":378,"number":null,"href":null,"editions":[]},{"title":"المخلصيات","author":"المخلص","death":393,"number":null,"href":null,"editions":[]},{"title":"المسند المستخرج على صحيح مسلم لأبي نعيم","author":"أبو نعيم الأصبهاني","death":430,"number":null,"href":null,"editions":[]},{"title":"حلية الأولياء وطبقات الأصفياء - ط السعادة","author":"أبو نعيم الأصبهاني","death":430,"number":null,"href":null,"editions":[]},{"title":"السنن الكبرى","author":"أبو بكر البيهقي","death":458,"number":null,"href":null,"editions":[{"label":"البيهقي - ط العلمية","href":null},{"label":"البيهقي - ت التركي","href":null}]},{"title":"الجمع بين الصحيحين للحميدي","author":"أبو عبد الله الحميدي","death":488,"number":null,"href":null,"editions":[]},{"title":"شرح السنة للبغوي","author":"البغوي، أبو محمد","death":516,"number":null,"href":null,"editions":[]},{"title":"الجمع بين الصحيحين لعبد الحق","author":"عبد الحق الإشبيلي","death":581,"number":null,"href":null,"editions":[]}],"more":91},"5557":{"kind":"hadith","others":197,"text":"من جمع بين صلاتين من غير عذر فقد أتى بابا من ابواب الكبائر","rows":[{"title":"المصنف - ابن أبي شيبة - ت الحوت","author":"أبو بكر بن أبي شيبة","death":235,"number":null,"href":null,"editions":[]},{"title":"مسند أحمد - ت شاكر - ط دار الحديث","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"ناسخ الحديث ومنسوخه للأثرم","author":"أبو بكر الأثرم","death":273,"number":null,"href":null,"editions":[]},{"title":"سنن الترمذي","author":"الترمذي","death":279,"number":188,"href":null,"editions":[{"label":"ط الرسالة","href":null},{"label":"ت شاكر","href":null},{"label":"ت بشار","href":null}]},{"title":"بغية الباحث عن زوائد مسند الحارث","author":"الحارث بن أبي أسامة","death":282,"number":null,"href":null,"editions":[]},{"title":"مسند الحارث بن أبي أسامة","author":"الحارث بن أبي أسامة","death":282,"number":null,"href":null,"editions":[]},{"title":"مسند أبي يعلى","author":"أبو يعلى الموصلي","death":307,"number":null,"href":null,"editions":[{"label":"ت السناري","href":null},{"label":"ت حسين أسد","href":null}]},{"title":"المعجم الكبير للطبراني","author":"الطبراني","death":360,"number":null,"href":null,"editions":[]},{"title":"سنن الدارقطني","author":"الدارقطني","death":385,"number":null,"href":null,"editions":[]},{"title":"المستدرك على الصحيحين","author":"أبو عبد الله الحاكم","death":405,"number":null,"href":null,"editions":[{"label":"ط المنهاج القويم","href":null},{"label":"ط الرسالة","href":null},{"label":"ط العلمية","href":null}]},{"title":"السنن الكبرى","author":"أبو بكر البيهقي","death":458,"number":null,"href":null,"editions":[{"label":"البيهقي - ط العلمية","href":null},{"label":"البيهقي - ت التركي","href":null}]},{"title":"ترتيب الأمالي الخميسية للشجري","author":"يحيى بن الحسين الشجري","death":499,"number":null,"href":null,"editions":[]},{"title":"الأحكام الوسطى","author":"عبد الحق الإشبيلي","death":581,"number":null,"href":null,"editions":[]},{"title":"التحقيق في أحاديث الخلاف","author":"ابن الجوزي","death":597,"number":null,"href":null,"editions":[]},{"title":"جامع الأصول","author":"ابن الأثير، مجد الدين أبو السعادات","death":606,"number":null,"href":null,"editions":[]},{"title":"الترغيب والترهيب","author":"عبد العظيم المنذري","death":656,"number":null,"href":null,"editions":[{"label":"المنذري - ط العلمية","href":null},{"label":"المنذري - ت عمارة","href":null}]},{"title":"خلاصة الأحكام","author":"النووي","death":676,"number":null,"href":null,"editions":[]},{"title":"برنامج التجيبي","author":"القاسم بن يوسف التجيبي","death":730,"number":null,"href":null,"editions":[]},{"title":"المهذب في اختصار السنن الكبير","author":"شمس الدين الذهبي","death":748,"number":null,"href":null,"editions":[]},{"title":"كشف المناهج والتناقيح في تخريج أحاديث المصابيح","author":"الصدر المناوي","death":803,"number":null,"href":null,"editions":[]}],"more":158},"14401":{"kind":"hadith","others":44,"text":"رجل لابن عباس الصلاة فسكت ثم قال الصلاة فسكت ثم قال الصلاة فسكت ثم قال لا أم لك تعلمنا الصلاة كنا نجمع بين الصلاتين على عهد رسول الله","rows":[{"title":"صحيح مسلم","author":"مسلم","death":261,"number":705,"href":null,"editions":[{"label":"ط التركية","href":null},{"label":"ت عبد الباقي","href":"books/003/353/1545.html#p1572"}]},{"title":"المصنف","author":"أبو بكر بن أبي شيبة","death":235,"number":null,"href":null,"editions":[{"label":"ابن أبي شيبة - ت الشثري","href":null},{"label":"ابن أبي شيبة - ت الحوت","href":null}]},{"title":"مسند أحمد - ت شاكر - ط دار الحديث","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"مسند أحمد - ط الرسالة","author":"أحمد بن حنبل","death":241,"number":null,"href":null,"editions":[]},{"title":"مسند الحارث بن أبي أسامة","author":"الحارث بن أبي أسامة","death":282,"number":null,"href":null,"editions":[]},{"title":"مسند أبي يعلى - ت السناري","author":"أبو يعلى الموصلي","death":307,"number":null,"href":null,"editions":[]},{"title":"الفوائد الشهير بالغيلانيات لأبي بكر الشافعي","author":"أبو بكر الشافعي","death":354,"number":null,"href":null,"editions":[]},{"title":"السنن الكبرى","author":"أبو بكر البيهقي","death":458,"number":null,"href":null,"editions":[{"label":"البيهقي - ط العلمية","href":null},{"label":"البيهقي - ت التركي","href":null}]},{"title":"الجمع بين الصحيحين للحميدي","author":"أبو عبد الله الحميدي","death":488,"number":null,"href":null,"editions":[]},{"title":"معجم الشيوخ لابن عساكر","author":"أبو القاسم ابن عساكر","death":571,"number":null,"href":null,"editions":[]},{"title":"جامع الأصول","author":"ابن الأثير، مجد الدين أبو السعادات","death":606,"number":null,"href":null,"editions":[]},{"title":"المهذب في اختصار السنن الكبير","author":"شمس الدين الذهبي","death":748,"number":null,"href":null,"editions":[]},{"title":"الجامع الكامل في الحديث الصحيح الشامل المرتب على أبواب الفقه","author":"محمد ضياء الرحمن الأعظمي","death":1441,"number":null,"href":null,"editions":[]},{"title":"الجامع الصحيح فيما كان على شرط الشيخين أو أحدهما ولم يخرجاه","author":"يوسف بن جودة الداودي","death":null,"number":null,"href":null,"editions":[]},{"title":"العتيق مصنف جامع لفتاوى أصحاب النبي صلى الله عليه وسلم","author":"محمد بن مبارك حكيمي","death":null,"number":null,"href":null,"editions":[]},{"title":"المسند المصنف المعلل","author":"مجموعة من المؤلفين","death":null,"number":null,"href":null,"editions":[]},{"title":"المسند الموضوعي الجامع للكتب العشرة","author":"صهيب عبد الجبار","death":null,"number":null,"href":null,"editions":[]},{"title":"صحيح الكتب التسعة وزوائده","author":"مجموعة من المؤلفين","death":null,"number":null,"href":null,"editions":[]},{"title":"إكمال المعلم بفوائد مسلم","author":"القاضي عياض","death":544,"number":null,"href":null,"editions":[]},{"title":"الإفصاح عن معاني الصحاح","author":"ابن هبيرة","death":560,"number":null,"href":null,"editions":[]}],"more":21},"29126":{"kind":"hadith","others":16,"text":"الملك بن محمد بن أبي بشير عن عبد الرحمان بن علقمة قال قدم وفد ثقيف على النبي صلى الله عليه وسلم فأهدوا","rows":[{"title":"جزء لوين","author":"لوين","death":245,"number":null,"href":null,"editions":[]},{"title":"الترغيب والترهيب","author":"إسماعيل التيمي الأصبهاني","death":535,"number":null,"href":null,"editions":[{"label":"إسماعيل الأصفهاني - ت شعبان","href":null},{"label":"إسماعيل الأصفهاني - ط اللؤلؤة","href":null}]},{"title":"المطالب العالية محققا","author":"ابن حجر العسقلاني","death":852,"number":null,"href":null,"editions":[]},{"title":"التاريخ الكبير للبخاري","author":"البخاري","death":256,"number":null,"href":null,"editions":[{"label":"ت الدباسي والنحال","href":null},{"label":"ت المعلمي اليماني","href":null}]},{"title":"التاريخ الكبير للبخاري بحواشي محمود خليل","author":"البخاري","death":256,"number":null,"href":null,"editions":[]},{"title":"معرفة الصحابة لأبي نعيم","author":"أبو نعيم الأصبهاني","death":430,"number":null,"href":null,"editions":[]},{"title":"تاريخ دمشق لابن عساكر","author":"أبو القاسم ابن عساكر","death":571,"number":null,"href":null,"editions":[]},{"title":"مختصر تاريخ دمشق","author":"ابن منظور","death":711,"number":null,"href":null,"editions":[]},{"title":"تهذيب الكمال في أسماء الرجال","author":"المزي، جمال الدين","death":742,"number":null,"href":null,"editions":[]},{"title":"تذهيب تهذيب الكمال في أسماء الرجال","author":"شمس الدين الذهبي","death":748,"number":null,"href":null,"editions":[]},{"title":"توضيح المشتبه","author":"ابن ناصر الدين الدمشقي","death":842,"number":null,"href":null,"editions":[]},{"title":"الإصابة في تمييز الصحابة","author":"ابن حجر العسقلاني","death":852,"number":null,"href":null,"editions":[]},{"title":"نهاية السول في رواة الستة الأصول - ت عبد المنعم إبراهيم","author":"سبط ابن العجمي","death":884,"number":null,"href":null,"editions":[]},{"title":"مرويات غزوة حنين وحصار الطائف","author":"إبراهيم بن إبراهيم قريبي","death":null,"number":null,"href":null,"editions":[]}],"more":0},"52295":{"kind":"hadith","others":17,"text":"أهل الحجاز استماع الملاهي والجمع بين الصلاتين من غير عذر","rows":[{"title":"مجموع فيه مصنفات أبي العباس الأصم وإسماعيل الصفار","author":"أبو العباس الأصم","death":346,"number":null,"href":null,"editions":[]},{"title":"السنن الكبرى","author":"أبو بكر البيهقي","death":458,"number":null,"href":null,"editions":[{"label":"البيهقي - ط العلمية","href":null},{"label":"البيهقي - ت التركي","href":null}]},{"title":"معرفة علوم الحديث للحاكم","author":"أبو عبد الله الحاكم","death":405,"number":null,"href":null,"editions":[]},{"title":"السماع لابن القيسراني","author":"ابن القيسراني محمد بن طاهر المقدسي","death":507,"number":null,"href":null,"editions":[]},{"title":"تاريخ دمشق لابن عساكر","author":"أبو القاسم ابن عساكر","death":571,"number":null,"href":null,"editions":[]},{"title":"مختصر تاريخ دمشق","author":"ابن منظور","death":711,"number":null,"href":null,"editions":[]},{"title":"تاريخ الإسلام","author":"شمس الدين الذهبي","death":748,"number":null,"href":null,"editions":[{"label":"ت تدمري","href":null},{"label":"ط التوفيقية","href":null},{"label":"ت بشار","href":null}]},{"title":"سير أعلام النبلاء","author":"شمس الدين الذهبي","death":748,"number":null,"href":null,"editions":[{"label":"ط الرسالة","href":null},{"label":"ط الحديث","href":null}]},{"title":"بهجة النفوس والأسرار في تاريخ دار هجرة النبي المختار","author":"المرجاني","death":770,"number":null,"href":null,"editions":[]},{"title":"المحاضرات والمحاورات","author":"الجلال السيوطي","death":911,"number":null,"href":null,"editions":[]},{"title":"مجموع فتاوى ومقالات متنوعة - ابن باز","author":"ابن باز","death":1420,"number":null,"href":null,"editions":[]},{"title":"حياة التابعين","author":"ياسر الحمداني","death":null,"number":null,"href":null,"editions":[]},{"title":"موسوعة أحكام الصلوات الخمس","author":"دبيان الدبيان","death":null,"number":null,"href":null,"editions":[]}],"more":0},"57382":{"kind":"passage","others":13,"text":"تأخير الصلاة الأولى إلى آخر وقتها وتقديم الثانية إلى أول وقتها","rows":[{"title":"إكمال المعلم بفوائد مسلم","author":"القاضي عياض","death":544,"number":null,"href":null,"editions":[]},{"title":"إحكام الأحكام شرح عمدة الأحكام","author":"ابن دقيق العيد","death":702,"number":null,"href":null,"editions":[]},{"title":"العدة في شرح العمدة في أحاديث الأحكام لابن العطار","author":"ابن العطار","death":724,"number":null,"href":null,"editions":[]},{"title":"الإعلام بفوائد عمدة الأحكام","author":"ابن الملقن","death":804,"number":null,"href":null,"editions":[]},{"title":"نخب الأفكار في تنقيح مباني الأخبار في شرح معاني الآثار","author":"بدر الدين العيني","death":855,"number":null,"href":null,"editions":[]},{"title":"كشف اللثام شرح عمدة الأحكام","author":"السفاريني","death":1188,"number":null,"href":null,"editions":[]},{"title":"توضيح الأحكام من بلوغ المرام","author":"عبد الله البسام","death":1423,"number":null,"href":null,"editions":[]},{"title":"شرح المحرر في الحديث - عبد الكريم الخضير","author":"عبد الكريم الخضير","death":null,"number":null,"href":null,"editions":[]},{"title":"شرح الموطأ - عبد الكريم الخضير","author":"عبد الكريم الخضير","death":null,"number":null,"href":null,"editions":[]},{"title":"شرح بلوغ المرام - عبد الكريم الخضير","author":"عبد الكريم الخضير","death":null,"number":null,"href":null,"editions":[]},{"title":"شرح سنن الترمذي - عبد الكريم الخضير","author":"عبد الكريم الخضير","death":null,"number":null,"href":null,"editions":[]},{"title":"شرح عمدة الأحكام - عبد الكريم الخضير","author":"عبد الكريم الخضير","death":null,"number":null,"href":null,"editions":[]},{"title":"مجموع فتاوى فضيلة الشيخ صالح بن فوزان","author":"صالح الفوزان","death":null,"number":null,"href":null,"editions":[]}],"more":0},"79954":{"kind":"passage","others":6,"text":"بأمر النبي صلى الله عليه وسلم المستحاضة أن تجمع بين الصلاتين بغسل واحد","rows":[{"title":"مجموع الفتاوى","author":"ابن تيمية","death":728,"number":null,"href":null,"editions":[]},{"title":"المنهل العذب المورود شرح سنن أبي داود","author":"السبكي، محمود خطاب","death":1352,"number":null,"href":null,"editions":[]},{"title":"تقريب فتاوى ابن تيمية","author":"أحمد بن ناصر الطيار","death":null,"number":null,"href":null,"editions":[]},{"title":"ديوان السنة - قسم الطهارة","author":"عدنان العرعور","death":null,"number":null,"href":null,"editions":[]},{"title":"مسالك الجلالة في اختصار المناهل الزلالة","author":"مختار بن العربي الجزائري","death":null,"number":null,"href":null,"editions":[]},{"title":"موسوعة أحكام الصلوات الخمس","author":"دبيان الدبيان","death":null,"number":null,"href":null,"editions":[]}],"more":0},"413654":{"kind":"hadith","others":1,"text":"ليس في النوم تفريط إنما التفريط على من لم يصل الصلاة حتى يجيء وقت الصلاة الاخرى خرجه مسلم وخرجه أبو داود وعنده إنما التفريط في اليقظة أن تؤخر صلاة حتى يدخل وقت صلاة اخرى وقد عارض بعضهم حديث ابن عباس هذا بحديث آخر يروى عنه وقد أشار إلى هذه المعارضة الترمذي وابن شاهين وهو من رواية حنش عن عكرمة عن ابن عباس عن النبي صلى الله عليه وسلم قال من جمع بين صلاتين من غير عذر فقد أتى بابا من ابواب الكبائر","rows":[{"title":"أحكام المجاهد بالنفس في سبيل الله عز وجل في الفقه الإسلامي","author":"مرعي الشهري","death":null,"number":null,"href":null,"editions":[]}],"more":0},"413655":{"kind":"hadith","others":1,"text":"من جمع بين صلاتين من غير عذر فقد أتى بابا من ابواب الكبائر خرجه الترمذي وقال حنش هذا هو أبو علي الرحبي وهو حسين بن قيس وهو ضعيف عند أهل الحديث ضعفه أحمد وغيره والعمل على هذا عند أهل العلم يعني","rows":[{"title":"فتاوى الشبكة الإسلامية","author":"مجموعة من المؤلفين","death":null,"number":null,"href":null,"editions":[]}],"more":0},"413656":{"kind":"hadith","others":1,"text":"إذا حضر أحدكم أمراً يخشى فوته","rows":[{"title":"شرح سنن النسائي المسمى شروق أنوار المنن الكبرى الإلهية بكشف أسرار السنن الصغرى النسائية","author":"محمد المختار الشنقيطي","death":1405,"number":null,"href":null,"editions":[]}],"more":0}},"quotes":[]}
   </script>
-  </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
-      >
-        <span data-t="Close">Close</span>
-      </button>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

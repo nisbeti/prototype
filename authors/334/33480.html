@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="authors"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>أحمد بن محمد بن عبد الكريم الأشموني</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,114 +70,119 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../authors.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Authors</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ahmad bin Muhammad bin Abdul Karim Al-Ashmoni&quot;,&quot;es&quot;:&quot;Ahmad ibn Muhammad ibn Abd al-Karim al-Ashmoni&quot;,&quot;fr&quot;:&quot;Ahmad ibn Muhammad ibn Abd al-Karim al-Ashmoni&quot;,&quot;id&quot;:&quot;Ahmad bin Muhammad bin Abdul Karim Al-Ashmuni&quot;,&quot;ja&quot;:&quot;アフマド・イブン・ムハンマド・イブン・アブドゥル・カリーム・アル＝アシュモーニー&quot;,&quot;ru&quot;:&quot;Ахмад ибн Мухаммад ибн Абд аль-Карим аль-Ашмуни&quot;,&quot;sw&quot;:&quot;Ahmad bin Muhammad bin Abdul Karim al-Ashmoni&quot;,&quot;tr&quot;:&quot;Ahmed b. Muhammed b. Abdülkerîm el-Eşmûnî&quot;,&quot;zh&quot;:&quot;艾哈迈德·本·穆罕默德·本·阿卜杜·卡里姆·阿什穆尼&quot;}" data-original="أحمد بن محمد بن عبد الكريم الأشموني">أحمد بن محمد بن عبد الكريم الأشموني</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Author
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/1357/135704.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1357/135704.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Beacon of Guidance in Explaining Pauses and Starts, along with The Clarification on the Etiquettes of the Carriers of the Quran by Al-Nawawi&quot;,&quot;es&quot;:&quot;Manar al-huda fi bayan al-waqf wa-al-ibtida (Faro de la guía sobre las pausas y los comienzos), junto con al-Tibyan fi adab hamalat al-Quran de al-Nawawi&quot;,&quot;fr&quot;:&quot;Manar al-Huda fi bayan al-waqf wa-l-ibtida, suivi de al-Tibyan fi adab hamalat al-Quran d&#039;al-Nawawi (Le phare de la guidance sur les arrêts et les reprises, accompagné de L&#039;éclaircissement sur les règles de conduite des porteurs du Quran)&quot;,&quot;id&quot;:&quot;Manar al-Huda fi Bayan al-Waqf wa al-Ibtida&#039; (Mercusuar Petunjuk tentang Penjelasan Waqaf dan Ibtida&#039;), bersama al-Tibyan fi Adab Hamalat al-Qur&#039;an karya An-Nawawi (Penjelasan tentang Adab Para Pengemban Al-Qur&#039;an)&quot;,&quot;ja&quot;:&quot;停止と開始を解説する『マナール・アル＝フダー』およびアン＝ナワウィー著『クルアーン担持者の作法に関するアッ＝ティビヤーン』&quot;,&quot;ru&quot;:&quot;Минарет руководства: разъяснение правил остановки и начала; вместе с ним — «Разъяснение о нравах носителей Корана» ан-Навави&quot;,&quot;sw&quot;:&quot;Manar al-Huda katika kueleza sehemu za kusimama na kuanza, pamoja na al-Tibyan kuhusu adabu za wabebaji wa Quran cha al-Nawawi&quot;,&quot;tr&quot;:&quot;Menârü&#039;l-Hüdâ fî Beyâni&#039;l-Vakf ve&#039;l-İbtidâ ve onunla birlikte Nevevî&#039;nin et-Tibyân fî Âdâbi Hameleti&#039;l-Kur&#039;ân&#039;ı&quot;,&quot;ur&quot;:&quot;منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي (وقف وابتدا کے بیان میں منار الہدیٰ، اس کے ساتھ نووی کی کتاب التبیان فی آداب حملۃ القرآن)&quot;,&quot;zh&quot;:&quot;《指引之灯：阐明停顿与起读；附诺威所著〈古兰经承载者礼仪详解〉》&quot;}" data-original="منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي">منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ahmad bin Muhammad bin Abdul Karim Al-Ashmoni&quot;,&quot;es&quot;:&quot;Ahmad ibn Muhammad ibn Abd al-Karim al-Ashmoni&quot;,&quot;fr&quot;:&quot;Ahmad ibn Muhammad ibn Abd al-Karim al-Ashmoni&quot;,&quot;id&quot;:&quot;Ahmad bin Muhammad bin Abdul Karim Al-Ashmuni&quot;,&quot;ja&quot;:&quot;アフマド・イブン・ムハンマド・イブン・アブドゥル・カリーム・アル＝アシュモーニー&quot;,&quot;ru&quot;:&quot;Ахмад ибн Мухаммад ибн Абд аль-Карим аль-Ашмуни&quot;,&quot;sw&quot;:&quot;Ahmad bin Muhammad bin Abdul Karim al-Ashmoni&quot;,&quot;tr&quot;:&quot;Ahmed b. Muhammed b. Abdülkerîm el-Eşmûnî&quot;,&quot;zh&quot;:&quot;艾哈迈德·本·穆罕默德·本·阿卜杜·卡里姆·阿什穆尼&quot;}" data-original="أحمد بن محمد بن عبد الكريم الأشموني">أحمد بن محمد بن عبد الكريم الأشموني</span></h1>
-  <p class="muted">
-    <span data-t="Author">Author</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/1357/135704.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Beacon of Guidance in Explaining Pauses and Starts, along with The Clarification on the Etiquettes of the Carriers of the Quran by Al-Nawawi&quot;,&quot;es&quot;:&quot;Manar al-huda fi bayan al-waqf wa-al-ibtida (Faro de la guía sobre las pausas y los comienzos), junto con al-Tibyan fi adab hamalat al-Quran de al-Nawawi&quot;,&quot;fr&quot;:&quot;Manar al-Huda fi bayan al-waqf wa-l-ibtida, suivi de al-Tibyan fi adab hamalat al-Quran d&#039;al-Nawawi (Le phare de la guidance sur les arrêts et les reprises, accompagné de L&#039;éclaircissement sur les règles de conduite des porteurs du Quran)&quot;,&quot;id&quot;:&quot;Manar al-Huda fi Bayan al-Waqf wa al-Ibtida&#039; (Mercusuar Petunjuk tentang Penjelasan Waqaf dan Ibtida&#039;), bersama al-Tibyan fi Adab Hamalat al-Qur&#039;an karya An-Nawawi (Penjelasan tentang Adab Para Pengemban Al-Qur&#039;an)&quot;,&quot;ja&quot;:&quot;停止と開始を解説する『マナール・アル＝フダー』およびアン＝ナワウィー著『クルアーン担持者の作法に関するアッ＝ティビヤーン』&quot;,&quot;ru&quot;:&quot;Минарет руководства: разъяснение правил остановки и начала; вместе с ним — «Разъяснение о нравах носителей Корана» ан-Навави&quot;,&quot;sw&quot;:&quot;Manar al-Huda katika kueleza sehemu za kusimama na kuanza, pamoja na al-Tibyan kuhusu adabu za wabebaji wa Quran cha al-Nawawi&quot;,&quot;tr&quot;:&quot;Menârü&#039;l-Hüdâ fî Beyâni&#039;l-Vakf ve&#039;l-İbtidâ ve onunla birlikte Nevevî&#039;nin et-Tibyân fî Âdâbi Hameleti&#039;l-Kur&#039;ân&#039;ı&quot;,&quot;ur&quot;:&quot;منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي (وقف وابتدا کے بیان میں منار الہدیٰ، اس کے ساتھ نووی کی کتاب التبیان فی آداب حملۃ القرآن)&quot;,&quot;zh&quot;:&quot;《指引之灯：阐明停顿与起读；附诺威所著〈古兰经承载者礼仪详解〉》&quot;}" data-original="منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي">منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن محمد عبد الكريم الأشموني • يحيى بن شرف النووي</td>
-        <td dir="auto">دار المصحف</td>
-        <td dir="auto">1983م 1403هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1357/135705.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Beacon of Guidance in Explaining Pausing and Starting, along with The Clarification on the Etiquettes of the Carriers of the Quran by Al-Nawawi&quot;,&quot;es&quot;:&quot;Manar al-huda fi bayan al-waqf wa-al-ibtida (Faro de la guía sobre las pausas y los comienzos), junto con al-Tibyan fi adab hamalat al-Quran de al-Nawawi&quot;,&quot;fr&quot;:&quot;Manar al-Huda fi bayan al-waqf wa-l-ibtida, suivi de al-Tibyan fi adab hamalat al-Quran d&#039;al-Nawawi (Le phare de la guidance sur les arrêts et les reprises, accompagné de L&#039;éclaircissement sur les règles de conduite des porteurs du Quran)&quot;,&quot;id&quot;:&quot;Manar al-Huda fi Bayan al-Waqf wa al-Ibtida&#039; (Mercusuar Petunjuk tentang Penjelasan Waqaf dan Ibtida&#039;), bersama al-Tibyan fi Adab Hamalat al-Qur&#039;an karya An-Nawawi (Penjelasan tentang Adab Para Pengemban Al-Qur&#039;an)&quot;,&quot;ja&quot;:&quot;停止と開始を解説する『マナール・アル＝フダー』およびアン＝ナワウィー著『クルアーン担持者の作法に関するアッ＝ティビヤーン』&quot;,&quot;ru&quot;:&quot;Минарет руководства: разъяснение правил остановки и начала; вместе с ним — «Разъяснение о нравах носителей Корана» ан-Навави&quot;,&quot;sw&quot;:&quot;Manar al-Huda katika kueleza sehemu za kusimama na kuanza, pamoja na al-Tibyan kuhusu adabu za wabebaji wa Quran cha al-Nawawi&quot;,&quot;tr&quot;:&quot;Menârü&#039;l-Hüdâ fî Beyâni&#039;l-Vakf ve&#039;l-İbtidâ ve onunla birlikte Nevevî&#039;nin et-Tibyân fî Âdâbi Hameleti&#039;l-Kur&#039;ân&#039;ı&quot;,&quot;ur&quot;:&quot;منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي (وقف وابتدا کے بیان میں منار الہدیٰ، اس کے ساتھ نووی کی کتاب التبیان فی آداب حملۃ القرآن)&quot;,&quot;zh&quot;:&quot;《指引之灯：阐明停顿与起读；附诺威所著〈古兰经承载者礼仪详解〉》&quot;}" data-original="منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي">منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن محمد عبد الكريم الأشموني • يحيى بن شرف النووي</td>
-        <td dir="auto">المطبعة الخيرية</td>
-        <td dir="auto">1307هـ</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن محمد عبد الكريم الأشموني • يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1357/135705.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1357/135705.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Beacon of Guidance in Explaining Pausing and Starting, along with The Clarification on the Etiquettes of the Carriers of the Quran by Al-Nawawi&quot;,&quot;es&quot;:&quot;Manar al-huda fi bayan al-waqf wa-al-ibtida (Faro de la guía sobre las pausas y los comienzos), junto con al-Tibyan fi adab hamalat al-Quran de al-Nawawi&quot;,&quot;fr&quot;:&quot;Manar al-Huda fi bayan al-waqf wa-l-ibtida, suivi de al-Tibyan fi adab hamalat al-Quran d&#039;al-Nawawi (Le phare de la guidance sur les arrêts et les reprises, accompagné de L&#039;éclaircissement sur les règles de conduite des porteurs du Quran)&quot;,&quot;id&quot;:&quot;Manar al-Huda fi Bayan al-Waqf wa al-Ibtida&#039; (Mercusuar Petunjuk tentang Penjelasan Waqaf dan Ibtida&#039;), bersama al-Tibyan fi Adab Hamalat al-Qur&#039;an karya An-Nawawi (Penjelasan tentang Adab Para Pengemban Al-Qur&#039;an)&quot;,&quot;ja&quot;:&quot;停止と開始を解説する『マナール・アル＝フダー』およびアン＝ナワウィー著『クルアーン担持者の作法に関するアッ＝ティビヤーン』&quot;,&quot;ru&quot;:&quot;Минарет руководства: разъяснение правил остановки и начала; вместе с ним — «Разъяснение о нравах носителей Корана» ан-Навави&quot;,&quot;sw&quot;:&quot;Manar al-Huda katika kueleza sehemu za kusimama na kuanza, pamoja na al-Tibyan kuhusu adabu za wabebaji wa Quran cha al-Nawawi&quot;,&quot;tr&quot;:&quot;Menârü&#039;l-Hüdâ fî Beyâni&#039;l-Vakf ve&#039;l-İbtidâ ve onunla birlikte Nevevî&#039;nin et-Tibyân fî Âdâbi Hameleti&#039;l-Kur&#039;ân&#039;ı&quot;,&quot;ur&quot;:&quot;منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي (وقف وابتدا کے بیان میں منار الہدیٰ، اس کے ساتھ نووی کی کتاب التبیان فی آداب حملۃ القرآن)&quot;,&quot;zh&quot;:&quot;《指引之灯：阐明停顿与起读；附诺威所著〈古兰经承载者礼仪详解〉》&quot;}" data-original="منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي">منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        منار الهدى في بيان الوقف والابتداء ومعه التبيان في آداب حملة القرآن للنووي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن محمد عبد الكريم الأشموني • يحيى بن شرف النووي
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

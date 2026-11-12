@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>دار القلم</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,124 +70,152 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Qalam&quot;,&quot;es&quot;:&quot;Dar al-Qalam&quot;,&quot;fr&quot;:&quot;Dar al-Qalam&quot;,&quot;id&quot;:&quot;Dar Al-Qalam&quot;,&quot;ja&quot;:&quot;ダール・アル＝カラム&quot;,&quot;ru&quot;:&quot;Дар аль-Калам&quot;,&quot;sw&quot;:&quot;Dar al-Qalam&quot;,&quot;tr&quot;:&quot;Dârü&#039;l-Kalem&quot;,&quot;zh&quot;:&quot;笔出版社&quot;}" data-original="دار القلم">دار القلم</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/609/60922.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <div
+      class="flex aspect-[3/4] w-full flex-col items-center justify-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-6 size-8" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+            </div>
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Editing the Terms of Notification in the Language of Jurisprudence&quot;,&quot;es&quot;:&quot;Explicación de los términos de al-Tanbih: el lenguaje del derecho islámico&quot;,&quot;fr&quot;:&quot;Tahrir alfaz al-Tanbih: le vocabulaire du droit musulman&quot;,&quot;id&quot;:&quot;Penjelasan istilah-istilah At-Tanbih: bahasa fikih&quot;,&quot;ja&quot;:&quot;『タンビーフ』の語句解説――フィクフの用語&quot;,&quot;ru&quot;:&quot;Тахрир альфаз ат-Танбих (Разъяснение терминов «Танбиха»): язык фикха&quot;,&quot;sw&quot;:&quot;Kuhariri maneno ya Al-Tanbih: lugha ya fiqhi&quot;,&quot;tr&quot;:&quot;Tenbîh’in lafızlarını açıklama: Fıkıh dili&quot;,&quot;zh&quot;:&quot;《〈提醒〉用语释义：法学术语》&quot;}" data-original="تحرير ألفاظ التنبيه لغة الفقه">تحرير ألفاظ التنبيه لغة الفقه</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
+        تحرير ألفاظ التنبيه لغة الفقه
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/625/62558.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <div
+      class="flex aspect-[3/4] w-full flex-col items-center justify-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-6 size-8" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
 
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Qalam&quot;,&quot;es&quot;:&quot;Dar al-Qalam&quot;,&quot;fr&quot;:&quot;Dar al-Qalam&quot;,&quot;id&quot;:&quot;Dar Al-Qalam&quot;,&quot;ja&quot;:&quot;ダール・アル＝カラム&quot;,&quot;ru&quot;:&quot;Дар аль-Калам&quot;,&quot;sw&quot;:&quot;Dar al-Qalam&quot;,&quot;tr&quot;:&quot;Dârü&#039;l-Kalem&quot;,&quot;zh&quot;:&quot;笔出版社&quot;}" data-original="دار القلم">دار القلم</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/609/60922.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Editing the Terms of Notification in the Language of Jurisprudence&quot;,&quot;es&quot;:&quot;Explicación de los términos de al-Tanbih: el lenguaje del derecho islámico&quot;,&quot;fr&quot;:&quot;Tahrir alfaz al-Tanbih: le vocabulaire du droit musulman&quot;,&quot;id&quot;:&quot;Penjelasan istilah-istilah At-Tanbih: bahasa fikih&quot;,&quot;ja&quot;:&quot;『タンビーフ』の語句解説――フィクフの用語&quot;,&quot;ru&quot;:&quot;Тахрир альфаз ат-Танбих (Разъяснение терминов «Танбиха»): язык фикха&quot;,&quot;sw&quot;:&quot;Kuhariri maneno ya Al-Tanbih: lugha ya fiqhi&quot;,&quot;tr&quot;:&quot;Tenbîh’in lafızlarını açıklama: Fıkıh dili&quot;,&quot;zh&quot;:&quot;《〈提醒〉用语释义：法学术语》&quot;}" data-original="تحرير ألفاظ التنبيه لغة الفقه">تحرير ألفاظ التنبيه لغة الفقه</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">دار القلم</td>
-        <td dir="auto">1408هـ 1988م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/625/62558.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Liberation of Alerting Expressions or the Language of Jurisprudence - Colored&quot;,&quot;es&quot;:&quot;Aclaración de los términos de al-Tanbih, o el lenguaje del derecho islámico - ilustrado&quot;,&quot;fr&quot;:&quot;Tahrir alfaz al-Tanbih aw lughat al-fiqh (Éclaircissement du vocabulaire d’al-Tanbih, ou langue du droit musulman) - en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Istilah-Istilah At-Tanbih atau Bahasa Fikih — Berwarna&quot;,&quot;ja&quot;:&quot;『タンビーフ』用語の整理、または法学用語—彩色版&quot;,&quot;ru&quot;:&quot;Уточнение терминов «ат-Танбих», или язык фикха (цветное издание)&quot;,&quot;sw&quot;:&quot;Tahrir Alfaz al-Tanbih aw Lughat al-Fiqh (Ufafanuzi wa maneno ya Tanbih au lugha ya fiqhi) - yenye rangi&quot;,&quot;tr&quot;:&quot;Tenkīhu elfâzi&#039;t-Tenbîh ev lügati&#039;l-fıkh (Tenbîh&#039;in Lafızlarını Açıklama veya Fıkıh Dili) - Renkli&quot;,&quot;zh&quot;:&quot;《校订〈提示〉中的术语，亦即法学语言——彩印本》&quot;}" data-original="تحرير ألفاظ التنبيه أو لغة الفقه- ملون">تحرير ألفاظ التنبيه أو لغة الفقه- ملون</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">دار القلم</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1382/138283.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Summary of the Book of the Righteous from the Words of the Master of the Messengers - Dar Al-Qalam&quot;,&quot;es&quot;:&quot;Resumen del libro Riyad al-Salihin (Los jardines de los justos), de los dichos del Señor de los Mensajeros — Dar al-Qalam&quot;,&quot;fr&quot;:&quot;Mukhtasar Kitab Riyad al-Salihin min Kalam Sayyid al-Mursalin (Abrégé du Livre des Jardins des vertueux, d&#039;après les paroles du Seigneur des envoyés) - Dar al-Qalam&quot;,&quot;id&quot;:&quot;Ringkasan Kitab Riyadhus Shalihin dari Sabda Pemimpin Para Rasul — Dar Al-Qalam&quot;,&quot;ja&quot;:&quot;使徒たちの長の言葉による「リアード・アッ＝サーリヒーン」抄録—ダール・アル＝カラム版&quot;,&quot;ru&quot;:&quot;Краткое изложение книги «Рияд ас-салихин» изречений Господина посланников — Дар аль-Калям&quot;,&quot;sw&quot;:&quot;Mukhtasar Kitab Riyadh al-Salihin min Kalam Sayyid al-Mursalin (Muhtasari wa Kitabu Riyadh al-Salihin kutoka Maneno ya Bwana wa Mitume) - Dar al-Qalam&quot;,&quot;tr&quot;:&quot;Muhtasar Kitâbü Riyâzü’s-sâlihîn min kelâmi seyyidi’l-mürselîn (Resullerin Efendisi’nin Sözlerinden Sâlihlerin Bahçeleri Kitabı’nın Özeti) - Dar al-Qalam&quot;,&quot;zh&quot;:&quot;《先知圣使言论中的义人花园节选》—笔之屋出版社&quot;}" data-original="مختصر كتاب رياض الصالحين من كلام سيد المرسلين - دار القلم">مختصر كتاب رياض الصالحين من كلام سيد المرسلين - دار القلم</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">دار القلم</td>
-        <td dir="auto">1405هـ 1985م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+            </div>
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Liberation of Alerting Expressions or the Language of Jurisprudence - Colored&quot;,&quot;es&quot;:&quot;Aclaración de los términos de al-Tanbih, o el lenguaje del derecho islámico - ilustrado&quot;,&quot;fr&quot;:&quot;Tahrir alfaz al-Tanbih aw lughat al-fiqh (Éclaircissement du vocabulaire d’al-Tanbih, ou langue du droit musulman) - en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Istilah-Istilah At-Tanbih atau Bahasa Fikih — Berwarna&quot;,&quot;ja&quot;:&quot;『タンビーフ』用語の整理、または法学用語—彩色版&quot;,&quot;ru&quot;:&quot;Уточнение терминов «ат-Танбих», или язык фикха (цветное издание)&quot;,&quot;sw&quot;:&quot;Tahrir Alfaz al-Tanbih aw Lughat al-Fiqh (Ufafanuzi wa maneno ya Tanbih au lugha ya fiqhi) - yenye rangi&quot;,&quot;tr&quot;:&quot;Tenkīhu elfâzi&#039;t-Tenbîh ev lügati&#039;l-fıkh (Tenbîh&#039;in Lafızlarını Açıklama veya Fıkıh Dili) - Renkli&quot;,&quot;zh&quot;:&quot;《校订〈提示〉中的术语，亦即法学语言——彩印本》&quot;}" data-original="تحرير ألفاظ التنبيه أو لغة الفقه- ملون">تحرير ألفاظ التنبيه أو لغة الفقه- ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        تحرير ألفاظ التنبيه أو لغة الفقه- ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1382/138283.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1382/138283.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Summary of the Book of the Righteous from the Words of the Master of the Messengers - Dar Al-Qalam&quot;,&quot;es&quot;:&quot;Resumen del libro Riyad al-Salihin (Los jardines de los justos), de los dichos del Señor de los Mensajeros — Dar al-Qalam&quot;,&quot;fr&quot;:&quot;Mukhtasar Kitab Riyad al-Salihin min Kalam Sayyid al-Mursalin (Abrégé du Livre des Jardins des vertueux, d&#039;après les paroles du Seigneur des envoyés) - Dar al-Qalam&quot;,&quot;id&quot;:&quot;Ringkasan Kitab Riyadhus Shalihin dari Sabda Pemimpin Para Rasul — Dar Al-Qalam&quot;,&quot;ja&quot;:&quot;使徒たちの長の言葉による「リアード・アッ＝サーリヒーン」抄録—ダール・アル＝カラム版&quot;,&quot;ru&quot;:&quot;Краткое изложение книги «Рияд ас-салихин» изречений Господина посланников — Дар аль-Калям&quot;,&quot;sw&quot;:&quot;Mukhtasar Kitab Riyadh al-Salihin min Kalam Sayyid al-Mursalin (Muhtasari wa Kitabu Riyadh al-Salihin kutoka Maneno ya Bwana wa Mitume) - Dar al-Qalam&quot;,&quot;tr&quot;:&quot;Muhtasar Kitâbü Riyâzü’s-sâlihîn min kelâmi seyyidi’l-mürselîn (Resullerin Efendisi’nin Sözlerinden Sâlihlerin Bahçeleri Kitabı’nın Özeti) - Dar al-Qalam&quot;,&quot;zh&quot;:&quot;《先知圣使言论中的义人花园节选》—笔之屋出版社&quot;}" data-original="مختصر كتاب رياض الصالحين من كلام سيد المرسلين - دار القلم">مختصر كتاب رياض الصالحين من كلام سيد المرسلين - دار القلم</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        مختصر كتاب رياض الصالحين من كلام سيد المرسلين - دار القلم
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

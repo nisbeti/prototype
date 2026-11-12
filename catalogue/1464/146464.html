@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="items"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط دار السلام</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,133 +70,120 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
-    </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <div class="book-head">
-          <img
-        class="cover"
-        src="../../catalogue/1464/146464.jpg"
-        alt=""
-      />
-    
-    <div class="book-head-text">
-      <h1 class="page-title">
-        <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Collection of Sciences and Judgments in Explaining Fifty Hadiths from the Comprehensive Sayings - Dar Al-Salam&quot;,&quot;es&quot;:&quot;Compendio de las ciencias y las sentencias, comentario de cincuenta hadices de las máximas concisas, edición de Dar al-Salam&quot;,&quot;fr&quot;:&quot;Jami&#039; al-ulum wa-l-hikam fi sharh khamsin hadithan min jawami&#039; al-kalim (Synthèse des sciences et des sagesses, commentaire de cinquante paroles concises) — éd. Dar al-Salam&quot;,&quot;id&quot;:&quot;Jami&#039; al-Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim [Kompilasi Ilmu dan Hikmah dalam Menjelaskan Lima Puluh Hadis Pilihan] — Edisi Darussalam&quot;,&quot;ja&quot;:&quot;『諸学と格言の集成―簡潔な言葉の総合的ハディース50篇の解説』―ダール・アッ＝サラーム版&quot;,&quot;ru&quot;:&quot;Собрание наук и мудростей в комментарии к пятидесяти хадисам из кратких назидательных изречений — издание Дар ас-Салам&quot;,&quot;sw&quot;:&quot;Jami al-Ulum wa-al-Hikam (Mkusanyiko wa elimu na hikima) katika ufafanuzi wa hadithi hamsini kati ya maneno yenye hikima - chapa ya Dar al-Salam&quot;,&quot;tr&quot;:&quot;Câmiu’l-Ulûm ve’l-Hikem fî Şerhi Ham­sîne Hadîsen min Cevâmi‘i’l-Kelim (Özlü Sözlerden Elli Hadisin Şerhinde İlimler ve Hikmetler Derlemesi) - Dar al-Salam baskısı&quot;,&quot;ur&quot;:&quot;جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم (علوم و حکمتوں کا جامع، جامع کلمات کی پچاس احادیث کی شرح)&quot;,&quot;zh&quot;:&quot;《知识与智慧汇编：阐释五十则精辟圣训》——和平之家出版社版&quot;}" data-original="جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط دار السلام">جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط دار السلام</span>
-      </h1>
-
-                        <p class="credits">
-            <span data-t="Authors">Authors</span>:
-                                        <a href="../../authors/216/21663.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Rajab Al-Hanbali&quot;,&quot;es&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;id&quot;:&quot;Ibnu Rajab Al-Hanbali&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ・アル＝ハンバリー&quot;,&quot;ru&quot;:&quot;Ибн Раджаб аль-Ханбали&quot;,&quot;sw&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;İbn Receb el-Hanbelî&quot;,&quot;zh&quot;:&quot;伊本·拉哲卜·罕百里&quot;}" data-original="ابن رجب الحنبلي">ابن رجب الحنبلي</span>
-              </a>
-                                    </p>
-                                <p class="credits">
-            <span data-t="Editors">Editors</span>:
-                                        <a href="../../authors/414/41448.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Muhammad Al-Ahmadi Abu Al-Noor&quot;,&quot;es&quot;:&quot;Muhammad al-Ahmadi Abu al-Noor&quot;,&quot;fr&quot;:&quot;Muhammad al-Ahmadi Abu al-Nour&quot;,&quot;id&quot;:&quot;Muhammad Al-Ahmadi Abu An-Nur&quot;,&quot;ja&quot;:&quot;ムハンマド・アル＝アフマディー・アブー・アン＝ヌール&quot;,&quot;ru&quot;:&quot;Мухаммад аль-Ахмади Абу ан-Нур&quot;,&quot;sw&quot;:&quot;Muhammad al-Ahmadi Abu al-Nur&quot;,&quot;tr&quot;:&quot;Muhammed el-Ahmedî Ebü&#039;n-Nûr&quot;,&quot;zh&quot;:&quot;穆罕默德·艾哈迈迪·阿布·努尔&quot;}" data-original="محمد الأحمدي أبو النور">محمد الأحمدي أبو النور</span>
-              </a>
-                                    </p>
-                                <p class="credits">
-            <span data-t="Publishers">Publishers</span>:
-                                        <a href="../../publishers/899/89956.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Salam&quot;,&quot;es&quot;:&quot;Dar al-Salam&quot;,&quot;fr&quot;:&quot;Dar al-Salam&quot;,&quot;id&quot;:&quot;Dar As-Salam&quot;,&quot;ja&quot;:&quot;ダール・アッ＝サラーム&quot;,&quot;ru&quot;:&quot;Дар ас-Салям&quot;,&quot;sw&quot;:&quot;Dar al-Salam&quot;,&quot;tr&quot;:&quot;Dârü&#039;s-Selâm&quot;,&quot;zh&quot;:&quot;和平出版社&quot;}" data-original="دار السلام">دار السلام</span>
-              </a>
-                                    </p>
-              
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/hadeeth/146464_hadeeth2181_%D8%AC%D8%A7%D9%85%D8%B9_%D8%A7%D9%84%D8%B9%D9%84%D9%88%D9%85_%D9%88%D8%A7%D9%84%D8%AD%D9%83%D9%85_%D8%A7%D8%A8%D9%86_%D8%B1%D8%AC%D8%A8_%D8%AA_%D8%A3%D8%A8%D9%88_%D8%A7%D9%84%D9%86%D9%88%D8%B1_%D8%B7_%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85_pdf.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T102644Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=1b3d24f111161929f2a4f509ac61ee6d94797bbbc8dcbe9d4b87626f2a266ec3"
-            rel="noopener"
-            target="_blank"
-          >
-            <span data-t="Download">Download</span>
-          </a>
-          <span class="muted"><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></span>
-                      </p>
-    </div>
-  </div>
-
-      <section class="panel">
-      <dl class="book-card">
-                  <div>
-            <dt><span data-t="Published">Published</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;1424 AH \/ 2004 CE&quot;,&quot;es&quot;:&quot;1424 H 2004&quot;,&quot;fr&quot;:&quot;1424 H 2004&quot;,&quot;id&quot;:&quot;1424 H 2004 M&quot;,&quot;ja&quot;:&quot;ヒジュラ暦1424年／西暦2004年&quot;,&quot;ru&quot;:&quot;1424 г. х. 2004 г.&quot;,&quot;sw&quot;:&quot;1424H 2004&quot;,&quot;tr&quot;:&quot;1424 H 2004&quot;,&quot;ur&quot;:&quot;1424ھ 2004ء&quot;,&quot;zh&quot;:&quot;伊历1424年／公元2004年&quot;}" data-original="1424هـ 2004م">1424هـ 2004م</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Country">Country</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Cairo, Egypt&quot;,&quot;es&quot;:&quot;El Cairo, Egipto&quot;,&quot;fr&quot;:&quot;Le Caire, Égypte&quot;,&quot;id&quot;:&quot;Kairo, Mesir&quot;,&quot;ja&quot;:&quot;エジプト、カイロ&quot;,&quot;ru&quot;:&quot;Каир, Египет&quot;,&quot;sw&quot;:&quot;Kairo, Misri&quot;,&quot;tr&quot;:&quot;Kahire, Mısır&quot;,&quot;ur&quot;:&quot;قاہرہ، مصر&quot;,&quot;zh&quot;:&quot;埃及，开罗&quot;}" data-original="القاهرة، مصر">القاهرة، مصر</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Edition">Edition</span></dt>
-            <dd><span dir="auto">2</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Volumes">Volumes</span></dt>
-            <dd><span dir="auto">3</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Pages">Pages</span></dt>
-            <dd><span dir="auto">1458</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Type">Type</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Category">Category</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Hadith and Its Sciences&quot;,&quot;es&quot;:&quot;Hadiz y sus ciencias&quot;,&quot;fr&quot;:&quot;Hadith et sciences du hadith&quot;,&quot;id&quot;:&quot;Hadis dan Ilmu-Ilmunya&quot;,&quot;ja&quot;:&quot;ハディース・ハディース学&quot;,&quot;ru&quot;:&quot;Хадис и хадисоведческие науки&quot;,&quot;sw&quot;:&quot;Hadithi na elimu zake&quot;,&quot;tr&quot;:&quot;Hadis ve Hadis İlimleri&quot;,&quot;ur&quot;:&quot;حدیث اور علومِ حدیث&quot;,&quot;zh&quot;:&quot;圣训与圣训学&quot;}" data-original="الحديث وعلومه">الحديث وعلومه</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Subcategory">Subcategory</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentaries&quot;,&quot;es&quot;:&quot;Comentarios&quot;,&quot;fr&quot;:&quot;Commentaires&quot;,&quot;id&quot;:&quot;Syarah&quot;,&quot;ja&quot;:&quot;注釈&quot;,&quot;ru&quot;:&quot;Комментарии&quot;,&quot;sw&quot;:&quot;Sharh&quot;,&quot;tr&quot;:&quot;Şerhler&quot;,&quot;zh&quot;:&quot;注释&quot;}" data-original="شروحات">شروحات</span></dd>
-          </div>
-              </dl>
-    </section>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
-      <section class="panel">
-      <h2><span data-t="Description">Description</span></h2>
-      <p class="caption" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: The Collection of Sciences and Judgments in Explaining Fifty Hadiths from the Comprehensive Sayings - Dar Al-Salam\n\n▪️ Author: Abdul Rahman Al-Baghdadi Ibn Rajab Al-Hanbali\n▫️ Editor: Muhammad Al-Ahmadi Abu Al-Noor\n▪️ Publisher: Dar Al-Salam\n▫️ Publish Date: 1424 AH \/ 2004 CE\n▪️ Publish Country: Cairo, Egypt\n▫️ Edition: 2\n▪️ Number of Volumes: 3\n▫️ Pages: 1458\n▪️ Type of Material: Book\n▫️ Main Category: Hadith and Its Sciences\n▪️ Sub Category: Commentaries&quot;,&quot;es&quot;:&quot;▫️ Título: \nCompendio de las ciencias y las sentencias, comentario de cincuenta hadices de las máximas concisas, edición de Dar al-Salam\n\n▪️ Autor: Abd al-Rahman al-Baghdadi ibn Rajab al-Hanbali\n▫️ Edición crítica: Muhammad al-Ahmadi Abu al-Nur\n▪️ Editorial: Dar al-Salam\n▫️ Fecha de publicación: 1424 H 2004\n▪️ Lugar de publicación: El Cairo, Egipto\n▫️ Edición: 2\n▪️ Número de volúmenes: 3\n▫️ Páginas: 1458\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Hadiz y sus ciencias\n▪️ Subcategoría: Comentarios&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nJami&#039; al-ulum wa-l-hikam fi sharh khamsin hadithan min jawami&#039; al-kalim (Synthèse des sciences et des sagesses, commentaire de cinquante paroles concises) — éd. Dar al-Salam\n\n▪️ Auteur : Abd al-Rahman al-Baghdadi ibn Rajab al-Hanbali\n▫️ Édition critique : Muhammad al-Ahmadi Abu al-Nur\n▪️ Éditeur : Dar al-Salam\n▫️ Date de publication : 1424 H 2004\n▪️ Lieu de publication : Le Caire, Égypte\n▫️ Édition : 2\n▪️ Nombre de volumes : 3\n▫️ Pages : 1458\n▪️ Type de document : Livre\n▫️ Catégorie principale : Hadith et ses sciences\n▪️ Sous-catégorie : Commentaires&quot;,&quot;id&quot;:&quot;▫️ Judul: \nJami&#039; al-Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim [Kompilasi Ilmu dan Hikmah dalam Menjelaskan Lima Puluh Hadis Pilihan] — Edisi Darussalam\n\n▪️ Penulis: Abdurrahman Al-Baghdadi bin Rajab Al-Hanbali\n▫️ Pentahkik: Muhammad Al-Ahmadi Abu An-Nur\n▪️ Penerbit: Darussalam\n▫️ Tahun terbit: 1424 H 2004 M\n▪️ Tempat terbit: Kairo, Mesir\n▫️ Cetakan: 2\n▪️ Jumlah jilid: 3\n▫️ Halaman: 1458\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Hadis dan ilmunya\n▪️ Subkategori: Syarah&quot;,&quot;ja&quot;:&quot;▫️ 書名：\n『諸学と格言の集成―簡潔な言葉の総合的ハディース50篇の解説』―ダール・アッ＝サラーム版\n\n▪️ 著者：アブドゥッラフマーン・アル＝バグダーディー、イブン・ラジャブ・アル＝ハンバリー\n▫️ 校訂者：ムハンマド・アル＝アフマディー・アブー・アン＝ヌール\n▪️ 出版社：ダール・アッ＝サラーム\n▫️ 出版年：ヒジュラ暦1424年／西暦2004年\n▪️ 出版地：カイロ、エジプト\n▫️ 版：2\n▪️ 巻数：3\n▫️ ページ数：1458\n▪️ 資料の種類：書籍\n▫️ 主分類：ハディース学\n▪️ 下位分類：注釈書&quot;,&quot;ru&quot;:&quot;▫️ Название: \nСобрание наук и мудростей в комментарии к пятидесяти хадисам из кратких назидательных изречений — издание Дар ас-Салам\n\n▪️ Автор: Абд ар-Рахман аль-Багдади Ибн Раджаб аль-Ханбали\n▫️ Тахкик: Мухаммад аль-Ахмади Абу ан-Нур\n▪️ Издательство: Дар ас-Салам\n▫️ Дата издания: 1424 г. х. 2004 г.\n▪️ Место издания: Каир, Египет\n▫️ Издание: 2\n▪️ Количество томов: 3\n▫️ Страницы: 1458\n▪️ Тип материала: книга\n▫️ Основная категория: хадисы и их науки\n▪️ Подкатегория: комментарии&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nJami al-Ulum wa-al-Hikam (Mkusanyiko wa elimu na hikima) katika ufafanuzi wa hadithi hamsini kati ya maneno yenye hikima - chapa ya Dar al-Salam\n\n▪️ Mwandishi: Abdulrahman Al-Baghdadi bin Rajab Al-Hanbali\n▫️ Mhakiki: Muhammad al-Ahmadi Abu al-Nur\n▪️ Mchapishaji: Dar al-Salam\n▫️ Tarehe ya kuchapishwa: 1424H 2004\n▪️ Mahali pa kuchapishwa: Kairo, Misri\n▫️ Toleo: 2\n▪️ Idadi ya juzuu: 3\n▫️ Kurasa: 1458\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Hadithi na elimu zake\n▪️ Kundi dogo: Sharh&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nCâmiu’l-Ulûm ve’l-Hikem fî Şerhi Ham­sîne Hadîsen min Cevâmi‘i’l-Kelim (Özlü Sözlerden Elli Hadisin Şerhinde İlimler ve Hikmetler Derlemesi) - Dar al-Salam baskısı\n\n▪️ Yazar: Abdurrahman el-Bağdâdî b. Receb el-Hanbelî\n▫️ Tahkik eden: Muhammed el-Ahmedî Ebü’n-Nûr\n▪️ Yayınevi: Dar al-Salam\n▫️ Yayın tarihi: 1424 H 2004\n▪️ Yayın yeri: Kahire, Mısır\n▫️ Baskı: 2\n▪️ Cilt sayısı: 3\n▫️ Sayfa: 1458\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Hadis ve ilimleri\n▪️ Alt kategori: Şerhler&quot;,&quot;ur&quot;:&quot;▫️ عنوان:\nجامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط دار السلام\n\n▪️ مصنف: عبد الرحمن البغدادي بن رجب الحنبلي\n▫️ محقق: محمد الأحمدي أبو النور\n▪️ ناشر: دار السلام\n▫️ تاریخِ اشاعت: 1424ھ 2004ء\n▪️ مقامِ اشاعت: قاہرہ، مصر\n▫️ طبع: 2\n▪️ جلدیں: 3\n▫️ صفحات: 1458\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: حدیث اور علومِ حدیث\n▪️ ذیلی زمرہ: شرحیں&quot;,&quot;zh&quot;:&quot;▫️ 书名：\n《知识与智慧汇编：阐释五十则精辟圣训》——和平之家出版社版\n\n▪️ 作者：阿卜杜·拉赫曼·巴格达迪·伊本·拉杰卜·罕百里\n▫️ 校勘者：穆罕默德·艾哈迈迪·艾布·努尔\n▪️ 出版社：和平之家出版社\n▫️ 出版日期：伊历1424年／公元2004年\n▪️ 出版地：开罗，埃及\n▫️ 版次：2\n▪️ 册数：3\n▫️ 页数：1458\n▪️ 资料类型：图书\n▫️ 主分类：圣训及其学科\n▪️ 子分类：注释&quot;}" data-original="**▫️ العنوان: 
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../catalogue.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Resources</span>
+    </a>
+
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <img
+            src="../../catalogue/1464/146464.jpg"
+            alt=""
+            class="aspect-[3/4] w-full rounded-xl border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+          />
+        
+        <div class="mt-4 flex flex-col gap-2">
+                                <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/hadeeth/146464_hadeeth2181_%D8%AC%D8%A7%D9%85%D8%B9_%D8%A7%D9%84%D8%B9%D9%84%D9%88%D9%85_%D9%88%D8%A7%D9%84%D8%AD%D9%83%D9%85_%D8%A7%D8%A8%D9%86_%D8%B1%D8%AC%D8%A8_%D8%AA_%D8%A3%D8%A8%D9%88_%D8%A7%D9%84%D9%86%D9%88%D8%B1_%D8%B7_%D8%A7%D9%84%D8%B3%D9%84%D8%A7%D9%85_pdf.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T180125Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=3b35c02aa81b415231869e63c57ceeeb274bac8d3e7d80a7635bf013b6d3ff9a" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" rel="noopener">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z"/>
+  <path d="M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Download</span>
+    </a>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></p>                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;The Collection of Sciences and Judgments in Explaining Fifty Hadiths from the Comprehensive Sayings - Dar Al-Salam&quot;,&quot;es&quot;:&quot;Compendio de las ciencias y las sentencias, comentario de cincuenta hadices de las máximas concisas, edición de Dar al-Salam&quot;,&quot;fr&quot;:&quot;Jami&#039; al-ulum wa-l-hikam fi sharh khamsin hadithan min jawami&#039; al-kalim (Synthèse des sciences et des sagesses, commentaire de cinquante paroles concises) — éd. Dar al-Salam&quot;,&quot;id&quot;:&quot;Jami&#039; al-Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim [Kompilasi Ilmu dan Hikmah dalam Menjelaskan Lima Puluh Hadis Pilihan] — Edisi Darussalam&quot;,&quot;ja&quot;:&quot;『諸学と格言の集成―簡潔な言葉の総合的ハディース50篇の解説』―ダール・アッ＝サラーム版&quot;,&quot;ru&quot;:&quot;Собрание наук и мудростей в комментарии к пятидесяти хадисам из кратких назидательных изречений — издание Дар ас-Салам&quot;,&quot;sw&quot;:&quot;Jami al-Ulum wa-al-Hikam (Mkusanyiko wa elimu na hikima) katika ufafanuzi wa hadithi hamsini kati ya maneno yenye hikima - chapa ya Dar al-Salam&quot;,&quot;tr&quot;:&quot;Câmiu’l-Ulûm ve’l-Hikem fî Şerhi Ham­sîne Hadîsen min Cevâmi‘i’l-Kelim (Özlü Sözlerden Elli Hadisin Şerhinde İlimler ve Hikmetler Derlemesi) - Dar al-Salam baskısı&quot;,&quot;ur&quot;:&quot;جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم (علوم و حکمتوں کا جامع، جامع کلمات کی پچاس احادیث کی شرح)&quot;,&quot;zh&quot;:&quot;《知识与智慧汇编：阐释五十则精辟圣训》——和平之家出版社版&quot;}" data-original="جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط دار السلام">جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط دار السلام</span></h1>
+
+                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1" lang="ar" dir="rtl" data-arabic-original="data-arabic-original" data-flux-text >جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط دار السلام</p>        
+                              <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Authors">Authors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/216/21663.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Rajab Al-Hanbali&quot;,&quot;es&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;id&quot;:&quot;Ibnu Rajab Al-Hanbali&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ・アル＝ハンバリー&quot;,&quot;ru&quot;:&quot;Ибн Раджаб аль-Ханбали&quot;,&quot;sw&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;İbn Receb el-Hanbelî&quot;,&quot;zh&quot;:&quot;伊本·拉哲卜·罕百里&quot;}" data-original="ابن رجب الحنبلي">ابن رجب الحنبلي</span></a></p>                                        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Editors">Editors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/414/41448.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Muhammad Al-Ahmadi Abu Al-Noor&quot;,&quot;es&quot;:&quot;Muhammad al-Ahmadi Abu al-Noor&quot;,&quot;fr&quot;:&quot;Muhammad al-Ahmadi Abu al-Nour&quot;,&quot;id&quot;:&quot;Muhammad Al-Ahmadi Abu An-Nur&quot;,&quot;ja&quot;:&quot;ムハンマド・アル＝アフマディー・アブー・アン＝ヌール&quot;,&quot;ru&quot;:&quot;Мухаммад аль-Ахмади Абу ан-Нур&quot;,&quot;sw&quot;:&quot;Muhammad al-Ahmadi Abu al-Nur&quot;,&quot;tr&quot;:&quot;Muhammed el-Ahmedî Ebü&#039;n-Nûr&quot;,&quot;zh&quot;:&quot;穆罕默德·艾哈迈迪·阿布·努尔&quot;}" data-original="محمد الأحمدي أبو النور">محمد الأحمدي أبو النور</span></a></p>                                        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Publishers">Publishers</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../publishers/899/89956.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Salam&quot;,&quot;es&quot;:&quot;Dar al-Salam&quot;,&quot;fr&quot;:&quot;Dar al-Salam&quot;,&quot;id&quot;:&quot;Dar As-Salam&quot;,&quot;ja&quot;:&quot;ダール・アッ＝サラーム&quot;,&quot;ru&quot;:&quot;Дар ас-Салям&quot;,&quot;sw&quot;:&quot;Dar al-Salam&quot;,&quot;tr&quot;:&quot;Dârü&#039;s-Selâm&quot;,&quot;zh&quot;:&quot;和平出版社&quot;}" data-original="دار السلام">دار السلام</span></a></p>                  
+                  <div class="mt-6 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+            <dl class="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[fit-content(12rem)_1fr]">
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Published">Published</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;1424 AH \/ 2004 CE&quot;,&quot;es&quot;:&quot;1424 H 2004&quot;,&quot;fr&quot;:&quot;1424 H 2004&quot;,&quot;id&quot;:&quot;1424 H 2004 M&quot;,&quot;ja&quot;:&quot;ヒジュラ暦1424年／西暦2004年&quot;,&quot;ru&quot;:&quot;1424 г. х. 2004 г.&quot;,&quot;sw&quot;:&quot;1424H 2004&quot;,&quot;tr&quot;:&quot;1424 H 2004&quot;,&quot;ur&quot;:&quot;1424ھ 2004ء&quot;,&quot;zh&quot;:&quot;伊历1424年／公元2004年&quot;}" data-original="1424هـ 2004م">1424هـ 2004م</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Country">Country</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Cairo, Egypt&quot;,&quot;es&quot;:&quot;El Cairo, Egipto&quot;,&quot;fr&quot;:&quot;Le Caire, Égypte&quot;,&quot;id&quot;:&quot;Kairo, Mesir&quot;,&quot;ja&quot;:&quot;エジプト、カイロ&quot;,&quot;ru&quot;:&quot;Каир, Египет&quot;,&quot;sw&quot;:&quot;Kairo, Misri&quot;,&quot;tr&quot;:&quot;Kahire, Mısır&quot;,&quot;ur&quot;:&quot;قاہرہ، مصر&quot;,&quot;zh&quot;:&quot;埃及，开罗&quot;}" data-original="القاهرة، مصر">القاهرة، مصر</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Edition">Edition</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">2</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Volumes">Volumes</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">3</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Pages">Pages</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">1458</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Type">Type</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Category">Category</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Hadith and Its Sciences&quot;,&quot;es&quot;:&quot;Hadiz y sus ciencias&quot;,&quot;fr&quot;:&quot;Hadith et sciences du hadith&quot;,&quot;id&quot;:&quot;Hadis dan Ilmu-Ilmunya&quot;,&quot;ja&quot;:&quot;ハディース・ハディース学&quot;,&quot;ru&quot;:&quot;Хадис и хадисоведческие науки&quot;,&quot;sw&quot;:&quot;Hadithi na elimu zake&quot;,&quot;tr&quot;:&quot;Hadis ve Hadis İlimleri&quot;,&quot;ur&quot;:&quot;حدیث اور علومِ حدیث&quot;,&quot;zh&quot;:&quot;圣训与圣训学&quot;}" data-original="الحديث وعلومه">الحديث وعلومه</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Subcategory">Subcategory</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentaries&quot;,&quot;es&quot;:&quot;Comentarios&quot;,&quot;fr&quot;:&quot;Commentaires&quot;,&quot;id&quot;:&quot;Syarah&quot;,&quot;ja&quot;:&quot;注釈&quot;,&quot;ru&quot;:&quot;Комментарии&quot;,&quot;sw&quot;:&quot;Sharh&quot;,&quot;tr&quot;:&quot;Şerhler&quot;,&quot;zh&quot;:&quot;注释&quot;}" data-original="شروحات">شروحات</span>
+                </dd>
+                          </dl>
+          </div>
+        
+                  <div class="mt-4 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Description</div>
+            <p class="text-sm leading-relaxed whitespace-pre-line text-zinc-800 dark:text-zinc-100" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: The Collection of Sciences and Judgments in Explaining Fifty Hadiths from the Comprehensive Sayings - Dar Al-Salam\n\n▪️ Author: Abdul Rahman Al-Baghdadi Ibn Rajab Al-Hanbali\n▫️ Editor: Muhammad Al-Ahmadi Abu Al-Noor\n▪️ Publisher: Dar Al-Salam\n▫️ Publish Date: 1424 AH \/ 2004 CE\n▪️ Publish Country: Cairo, Egypt\n▫️ Edition: 2\n▪️ Number of Volumes: 3\n▫️ Pages: 1458\n▪️ Type of Material: Book\n▫️ Main Category: Hadith and Its Sciences\n▪️ Sub Category: Commentaries&quot;,&quot;es&quot;:&quot;▫️ Título: \nCompendio de las ciencias y las sentencias, comentario de cincuenta hadices de las máximas concisas, edición de Dar al-Salam\n\n▪️ Autor: Abd al-Rahman al-Baghdadi ibn Rajab al-Hanbali\n▫️ Edición crítica: Muhammad al-Ahmadi Abu al-Nur\n▪️ Editorial: Dar al-Salam\n▫️ Fecha de publicación: 1424 H 2004\n▪️ Lugar de publicación: El Cairo, Egipto\n▫️ Edición: 2\n▪️ Número de volúmenes: 3\n▫️ Páginas: 1458\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Hadiz y sus ciencias\n▪️ Subcategoría: Comentarios&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nJami&#039; al-ulum wa-l-hikam fi sharh khamsin hadithan min jawami&#039; al-kalim (Synthèse des sciences et des sagesses, commentaire de cinquante paroles concises) — éd. Dar al-Salam\n\n▪️ Auteur : Abd al-Rahman al-Baghdadi ibn Rajab al-Hanbali\n▫️ Édition critique : Muhammad al-Ahmadi Abu al-Nur\n▪️ Éditeur : Dar al-Salam\n▫️ Date de publication : 1424 H 2004\n▪️ Lieu de publication : Le Caire, Égypte\n▫️ Édition : 2\n▪️ Nombre de volumes : 3\n▫️ Pages : 1458\n▪️ Type de document : Livre\n▫️ Catégorie principale : Hadith et ses sciences\n▪️ Sous-catégorie : Commentaires&quot;,&quot;id&quot;:&quot;▫️ Judul: \nJami&#039; al-Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim [Kompilasi Ilmu dan Hikmah dalam Menjelaskan Lima Puluh Hadis Pilihan] — Edisi Darussalam\n\n▪️ Penulis: Abdurrahman Al-Baghdadi bin Rajab Al-Hanbali\n▫️ Pentahkik: Muhammad Al-Ahmadi Abu An-Nur\n▪️ Penerbit: Darussalam\n▫️ Tahun terbit: 1424 H 2004 M\n▪️ Tempat terbit: Kairo, Mesir\n▫️ Cetakan: 2\n▪️ Jumlah jilid: 3\n▫️ Halaman: 1458\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Hadis dan ilmunya\n▪️ Subkategori: Syarah&quot;,&quot;ja&quot;:&quot;▫️ 書名：\n『諸学と格言の集成―簡潔な言葉の総合的ハディース50篇の解説』―ダール・アッ＝サラーム版\n\n▪️ 著者：アブドゥッラフマーン・アル＝バグダーディー、イブン・ラジャブ・アル＝ハンバリー\n▫️ 校訂者：ムハンマド・アル＝アフマディー・アブー・アン＝ヌール\n▪️ 出版社：ダール・アッ＝サラーム\n▫️ 出版年：ヒジュラ暦1424年／西暦2004年\n▪️ 出版地：カイロ、エジプト\n▫️ 版：2\n▪️ 巻数：3\n▫️ ページ数：1458\n▪️ 資料の種類：書籍\n▫️ 主分類：ハディース学\n▪️ 下位分類：注釈書&quot;,&quot;ru&quot;:&quot;▫️ Название: \nСобрание наук и мудростей в комментарии к пятидесяти хадисам из кратких назидательных изречений — издание Дар ас-Салам\n\n▪️ Автор: Абд ар-Рахман аль-Багдади Ибн Раджаб аль-Ханбали\n▫️ Тахкик: Мухаммад аль-Ахмади Абу ан-Нур\n▪️ Издательство: Дар ас-Салам\n▫️ Дата издания: 1424 г. х. 2004 г.\n▪️ Место издания: Каир, Египет\n▫️ Издание: 2\n▪️ Количество томов: 3\n▫️ Страницы: 1458\n▪️ Тип материала: книга\n▫️ Основная категория: хадисы и их науки\n▪️ Подкатегория: комментарии&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nJami al-Ulum wa-al-Hikam (Mkusanyiko wa elimu na hikima) katika ufafanuzi wa hadithi hamsini kati ya maneno yenye hikima - chapa ya Dar al-Salam\n\n▪️ Mwandishi: Abdulrahman Al-Baghdadi bin Rajab Al-Hanbali\n▫️ Mhakiki: Muhammad al-Ahmadi Abu al-Nur\n▪️ Mchapishaji: Dar al-Salam\n▫️ Tarehe ya kuchapishwa: 1424H 2004\n▪️ Mahali pa kuchapishwa: Kairo, Misri\n▫️ Toleo: 2\n▪️ Idadi ya juzuu: 3\n▫️ Kurasa: 1458\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Hadithi na elimu zake\n▪️ Kundi dogo: Sharh&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nCâmiu’l-Ulûm ve’l-Hikem fî Şerhi Ham­sîne Hadîsen min Cevâmi‘i’l-Kelim (Özlü Sözlerden Elli Hadisin Şerhinde İlimler ve Hikmetler Derlemesi) - Dar al-Salam baskısı\n\n▪️ Yazar: Abdurrahman el-Bağdâdî b. Receb el-Hanbelî\n▫️ Tahkik eden: Muhammed el-Ahmedî Ebü’n-Nûr\n▪️ Yayınevi: Dar al-Salam\n▫️ Yayın tarihi: 1424 H 2004\n▪️ Yayın yeri: Kahire, Mısır\n▫️ Baskı: 2\n▪️ Cilt sayısı: 3\n▫️ Sayfa: 1458\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Hadis ve ilimleri\n▪️ Alt kategori: Şerhler&quot;,&quot;ur&quot;:&quot;▫️ عنوان:\nجامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط دار السلام\n\n▪️ مصنف: عبد الرحمن البغدادي بن رجب الحنبلي\n▫️ محقق: محمد الأحمدي أبو النور\n▪️ ناشر: دار السلام\n▫️ تاریخِ اشاعت: 1424ھ 2004ء\n▪️ مقامِ اشاعت: قاہرہ، مصر\n▫️ طبع: 2\n▪️ جلدیں: 3\n▫️ صفحات: 1458\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: حدیث اور علومِ حدیث\n▪️ ذیلی زمرہ: شرحیں&quot;,&quot;zh&quot;:&quot;▫️ 书名：\n《知识与智慧汇编：阐释五十则精辟圣训》——和平之家出版社版\n\n▪️ 作者：阿卜杜·拉赫曼·巴格达迪·伊本·拉杰卜·罕百里\n▫️ 校勘者：穆罕默德·艾哈迈迪·艾布·努尔\n▪️ 出版社：和平之家出版社\n▫️ 出版日期：伊历1424年／公元2004年\n▪️ 出版地：开罗，埃及\n▫️ 版次：2\n▪️ 册数：3\n▫️ 页数：1458\n▪️ 资料类型：图书\n▫️ 主分类：圣训及其学科\n▪️ 子分类：注释&quot;}" data-original="**▫️ العنوان: 
 جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط دار السلام**
 
 ▪️ المؤلف: #عبد_الرحمن_البغدادي_بن_رجب_الحنبلي
@@ -190,28 +214,10 @@
 ▪️ التصنيف الفرعي: #شروحات
 
 ۪</p>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
-      >
-        <span data-t="Close">Close</span>
-      </button>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

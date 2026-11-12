@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="authors"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>زهير الشاويش</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,154 +70,239 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../authors.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Authors</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Zuhair al-Shawish&quot;,&quot;es&quot;:&quot;Zuhair al-Shawish&quot;,&quot;fr&quot;:&quot;Zuhair al-Shawish&quot;,&quot;id&quot;:&quot;Zuhair Asy-Syawisy&quot;,&quot;ja&quot;:&quot;ズハイル・アッシャーウィシュ&quot;,&quot;ru&quot;:&quot;Зухайр аш-Шавиш&quot;,&quot;sw&quot;:&quot;Zuhair al-Shawish&quot;,&quot;tr&quot;:&quot;Züheyr eş-Şâviş&quot;,&quot;zh&quot;:&quot;祖海尔·沙维什&quot;}" data-original="زهير الشاويش">زهير الشاويش</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Author
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/548/54892.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <div
+      class="flex aspect-[3/4] w-full flex-col items-center justify-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-6 size-8" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+            </div>
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Garden of Students and the Mainstay of the Muftis&quot;,&quot;es&quot;:&quot;Rawdat al-Talibin wa Umdat al-Muftin (El jardín de los estudiantes y el apoyo de los muftíes)&quot;,&quot;fr&quot;:&quot;Rawdat al-Talibin wa Umdat al-Muftin (Le jardin des étudiants et le guide des muftis)&quot;,&quot;id&quot;:&quot;Raudhat Ath-Thalibin wa Umdat Al-Muftin (Taman Para Penuntut Ilmu dan Sandaran Para Mufti)&quot;,&quot;ja&quot;:&quot;『ラウダト・アッ＝ターリビーン・ワ・ウムダト・アル＝ムフティーン』&quot;,&quot;ru&quot;:&quot;Раудат ат-талибин ва умдат аль-муфтин&quot;,&quot;sw&quot;:&quot;Rawdat al-Talibin wa Umdat al-Muftin (Bustani ya Wanafunzi na Tegemeo la Watoa Fatwa)&quot;,&quot;tr&quot;:&quot;Ravzatü&#039;t-tâlibîn ve umdetü&#039;l-müftîn (Talebelerin bahçesi ve müftülerin dayanağı)&quot;,&quot;ur&quot;:&quot;روضة الطالبين وعمدة المفتين (طالبین کا باغ اور مفتیوں کا سہارا)&quot;,&quot;zh&quot;:&quot;《求学者之园与教法判令者之资粮》&quot;}" data-original="روضة الطالبين وعمدة المفتين">روضة الطالبين وعمدة المفتين</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
+        روضة الطالبين وعمدة المفتين
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/984/98434.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <div
+      class="flex aspect-[3/4] w-full flex-col items-center justify-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-6 size-8" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
 
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Zuhair al-Shawish&quot;,&quot;es&quot;:&quot;Zuhair al-Shawish&quot;,&quot;fr&quot;:&quot;Zuhair al-Shawish&quot;,&quot;id&quot;:&quot;Zuhair Asy-Syawisy&quot;,&quot;ja&quot;:&quot;ズハイル・アッシャーウィシュ&quot;,&quot;ru&quot;:&quot;Зухайр аш-Шавиш&quot;,&quot;sw&quot;:&quot;Zuhair al-Shawish&quot;,&quot;tr&quot;:&quot;Züheyr eş-Şâviş&quot;,&quot;zh&quot;:&quot;祖海尔·沙维什&quot;}" data-original="زهير الشاويش">زهير الشاويش</span></h1>
-  <p class="muted">
-    <span data-t="Author">Author</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/548/54892.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Garden of Students and the Mainstay of the Muftis&quot;,&quot;es&quot;:&quot;Rawdat al-Talibin wa Umdat al-Muftin (El jardín de los estudiantes y el apoyo de los muftíes)&quot;,&quot;fr&quot;:&quot;Rawdat al-Talibin wa Umdat al-Muftin (Le jardin des étudiants et le guide des muftis)&quot;,&quot;id&quot;:&quot;Raudhat Ath-Thalibin wa Umdat Al-Muftin (Taman Para Penuntut Ilmu dan Sandaran Para Mufti)&quot;,&quot;ja&quot;:&quot;『ラウダト・アッ＝ターリビーン・ワ・ウムダト・アル＝ムフティーン』&quot;,&quot;ru&quot;:&quot;Раудат ат-талибин ва умдат аль-муфтин&quot;,&quot;sw&quot;:&quot;Rawdat al-Talibin wa Umdat al-Muftin (Bustani ya Wanafunzi na Tegemeo la Watoa Fatwa)&quot;,&quot;tr&quot;:&quot;Ravzatü&#039;t-tâlibîn ve umdetü&#039;l-müftîn (Talebelerin bahçesi ve müftülerin dayanağı)&quot;,&quot;ur&quot;:&quot;روضة الطالبين وعمدة المفتين (طالبین کا باغ اور مفتیوں کا سہارا)&quot;,&quot;zh&quot;:&quot;《求学者之园与教法判令者之资粮》&quot;}" data-original="روضة الطالبين وعمدة المفتين">روضة الطالبين وعمدة المفتين</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">المكتب الإسلامي</td>
-        <td dir="auto">1405هـ 1985م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/984/98434.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Word of Sincerity and the Realization of Its Meaning&quot;,&quot;es&quot;:&quot;La palabra de la sinceridad y la explicación de su significado&quot;,&quot;fr&quot;:&quot;La parole de sincérité et l’élucidation de son sens&quot;,&quot;id&quot;:&quot;Kalimat Ikhlas dan Penjelasan Maknanya&quot;,&quot;ja&quot;:&quot;誠実さの言葉とその意味の確証&quot;,&quot;ru&quot;:&quot;Слово искренности и разъяснение его смысла&quot;,&quot;sw&quot;:&quot;Kalima ya Ikhlas na ufafanuzi wa maana yake&quot;,&quot;tr&quot;:&quot;İhlâs Kelimesi ve Anlamının Tahkiki&quot;,&quot;zh&quot;:&quot;《忠诚信仰之言及其意义阐释》&quot;}" data-original="كلمة الإخلاص وتحقيق معناها">كلمة الإخلاص وتحقيق معناها</span>
-          </a>
-        </td>
-        <td dir="auto">ابن رجب الحنبلي</td>
-        <td dir="auto">المكتب الإسلامي</td>
-        <td dir="auto">1397</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1398/139888.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Rulings Worthy of Broadcasting from the Saying of the Prophet: I Was Sent with the Sword Before the Hour&quot;,&quot;es&quot;:&quot;Las sentencias dignas de difundirse sobre el dicho del Profeta: «He sido enviado con la espada antes de la Hora»&quot;,&quot;fr&quot;:&quot;Les jugements dignes d’être diffusés, tirés de la parole du Prophète : « J’ai été envoyé avec l’épée avant l’Heure »&quot;,&quot;id&quot;:&quot;Hukum-Hukum yang Patut Disebarluaskan dari Sabda Nabi, “Aku Diutus dengan Pedang Menjelang Kiamat”&quot;,&quot;ja&quot;:&quot;預言者の「終末の前に剣を携えて遣わされた」という言葉から、広く伝えるに値する教訓&quot;,&quot;ru&quot;:&quot;Изречения, достойные оглашения, о словах Пророка: «Я послан с мечом перед Часом»&quot;,&quot;sw&quot;:&quot;Al-Ahkam al-Jadira bil-Idha&#039;a min Qawl al-Nabi Bu&#039;ithtu bis-Sayf bayna Yaday as-Sa&#039;a (Hukumu zinazostahili kutangazwa kuhusu kauli ya Mtume: Nimetumwa kwa upanga kabla ya Saa)&quot;,&quot;tr&quot;:&quot;Peygamber’in “Kıyamet saatinden önce kılıçla gönderildim” sözünden dolayı yayılması gereken hükümler&quot;,&quot;zh&quot;:&quot;《从先知“我受命持剑，直至末日来临”之言中值得宣扬的训诫》&quot;}" data-original="الحكم الجديرة بالإذاعة من قول النبي بعثت بالسيف بين يدي الساعة">الحكم الجديرة بالإذاعة من قول النبي بعثت بالسيف بين يدي الساعة</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن البغدادي بن رجب الحنبلي</td>
-        <td dir="auto">المكتب الإسلامي</td>
-        <td dir="auto">1403هـ 1983م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1443/144378.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Gardens of the Righteous - Islamic Office&quot;,&quot;es&quot;:&quot;Los jardines de los justos — al-Maktab al-Islami&quot;,&quot;fr&quot;:&quot;Riyad al-Salihin (Les jardins des vertueux) – al-Maktab al-Islami&quot;,&quot;id&quot;:&quot;Riyadhus Shalihin — Al-Maktab al-Islami&quot;,&quot;ja&quot;:&quot;『リヤード・アッ＝サーリヒーン（正しい人々の庭園）』――イスラーム事務所版&quot;,&quot;ru&quot;:&quot;Сады праведных — Исламское бюро&quot;,&quot;sw&quot;:&quot;Riyad al-Salihin (Bustani za Waja Wema) — al-Maktab al-Islami&quot;,&quot;tr&quot;:&quot;Riyâzü&#039;s-sâlihîn – İslamî Büro baskısı&quot;,&quot;zh&quot;:&quot;《清廉者的花园》——伊斯兰书局版&quot;}" data-original="رياض الصالحين- المكتب الإسلامي">رياض الصالحين- المكتب الإسلامي</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">المكتب الإسلامي</td>
-        <td dir="auto">1414هـ 1992م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1465/146555.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Gift of the Distinguished Regarding the Knowledge of the Chains by the Hafiz Yusuf ibn Abd al-Rahman al-Mizzi with the Elegant Notes on the Chains Comments by Ibn Hajar al-Asqalani&quot;,&quot;es&quot;:&quot;Tuhfat al-Ashraf fi Ma&#039;rifat al-Atraf (Regalo de los nobles sobre el conocimiento de las cadenas), del hafiz Yusuf ibn Abd al-Rahman al-Mizzi, junto con al-Nukat al-Ziraf ala al-Atraf (Notas selectas sobre las cadenas): anotaciones de Ibn Hajar al-Asqalani&quot;,&quot;fr&quot;:&quot;Tuhfat al-ashraf bi-ma&#039;rifat al-atraf (Le présent des nobles : connaissance des extrémités des chaînes), de Yusuf ibn Abd al-Rahman al-Mizzi, avec al-Nukat al-ziraf ala al-atraf (Annotations élégantes sur les extrémités), commentaires d&#039;Ibn Hajar al-Asqalani&quot;,&quot;id&quot;:&quot;Tuhfat al-Asyraf bi Ma&#039;rifat al-Athraf karya Al-Hafizh Yusuf bin Abdurrahman Al-Mizzi, bersama An-Nukat adh-Dhiraf &#039;ala al-Athraf, catatan Ibnu Hajar Al-Asqalani&quot;,&quot;ja&quot;:&quot;『タフズィーブ・アル＝カマール』――ハディースの伝承経路を知るために、ハーフィズ・ユースフ・イブン・アブドゥッラフマーン・アル＝ミッズィー著。伝承経路に関する注記『アン＝ヌカト・アッ＝ズィラーフ』、イブン・ハジャル・アル＝アスカラーニーの注釈付き&quot;,&quot;ru&quot;:&quot;Тухфат аль-ашраф би-ма‘рифат аль-атраф хафиза Юсуфа ибн Абд ар-Рахмана аль-Миззи с «ан-Нукат аз-зираф аля аль-атраф» — примечаниями Ибн Хаджара аль-Аскаляни&quot;,&quot;sw&quot;:&quot;Tuhfat al-Ashraf bi-Ma&#039;rifat al-Atraf (Zawadi ya Waheshimiwa kuhusu Kutambua Sehemu za Hadithi), cha Hafidh Yusuf bin Abdulrahman al-Mizzi, pamoja na al-Nukat al-Ziraf ala al-Atraf (Vidokezo Vizuri kuhusu Sehemu za Hadithi), maelezo ya Ibn Hajar al-Asqalani&quot;,&quot;tr&quot;:&quot;Hâfız Yûsuf b. Abdurrahman el-Mizzî’nin Etrâf Bilgisi Hakkında Eşrâf’ın Armağanı ve Etrâf Üzerine Nüketü’z-Zirâf: İbn Hacer el-Askalânî’nin Notları&quot;,&quot;ur&quot;:&quot;تحفة الأشراف بمعرفة الأطراف للحافظ يوسف بن عبد الرحمن المزي مع النكت الظراف على الأطراف تعليقات ابن حجر العسقلاني (اطراف کی معرفت میں تحفۃ الاشراف، حافظ یوسف بن عبد الرحمن المزی کی تصنیف، مع النكت الظراف على الأطراف، ابن حجر عسقلانی کے حواشی)&quot;,&quot;zh&quot;:&quot;《贵族传述者的珍宝：认识圣训传述端点》——哈菲兹·优素福·本·阿卜杜·拉赫曼·米齐著，并附伊本·哈杰尔·阿斯卡拉尼《传述端点精彩评注》&quot;}" data-original="تحفة الأشراف بمعرفة الأطراف للحافظ يوسف بن عبد الرحمن المزي مع النكت الظراف على الأطراف تعليقات ابن حجر العسقلاني">تحفة الأشراف بمعرفة الأطراف للحافظ يوسف بن عبد الرحمن المزي مع النكت الظراف على الأطراف تعليقات ابن حجر العسقلاني</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">المكتب الإسلامي • الدار القيمة</td>
-        <td dir="auto">1403هـ 1983م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1831/183153.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Garden of Students and the Mainstay of Muftis&quot;,&quot;es&quot;:&quot;Rawdat al-Talibin wa-Umdat al-Muftin (El jardín de los estudiantes y referencia de los jurisconsultos)&quot;,&quot;fr&quot;:&quot;Rawdat al-talibin wa-umdat al-muftin (Le jardin des étudiants et le recours des muftis)&quot;,&quot;id&quot;:&quot;Raudhat ath-Thalibin wa Umdat al-Muftin (Taman Para Pencari Ilmu dan Pegangan Para Mufti)&quot;,&quot;ja&quot;:&quot;学徒の園、ファトワーを出す者たちの拠り所&quot;,&quot;ru&quot;:&quot;Раудат ат-талибин ва умдат аль-муфтин&quot;,&quot;sw&quot;:&quot;Rawdat al-Talibin wa Umdat al-Muftin (Bustani ya Wanafunzi na Tegemeo la Watoa Fatwa)&quot;,&quot;tr&quot;:&quot;Ravzatü’t-tâlibîn ve umdetü’l-müftîn [Talebelerin bahçesi ve müftülerin dayanağı]&quot;,&quot;zh&quot;:&quot;《求学者的花园与教法判官的指南》&quot;}" data-original="روضة الطالبين وعمدة المفتين">روضة الطالبين وعمدة المفتين</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">المكتب الإسلامي</td>
-        <td dir="auto">1412هـ 1991 م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+            </div>
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Word of Sincerity and the Realization of Its Meaning&quot;,&quot;es&quot;:&quot;La palabra de la sinceridad y la explicación de su significado&quot;,&quot;fr&quot;:&quot;La parole de sincérité et l’élucidation de son sens&quot;,&quot;id&quot;:&quot;Kalimat Ikhlas dan Penjelasan Maknanya&quot;,&quot;ja&quot;:&quot;誠実さの言葉とその意味の確証&quot;,&quot;ru&quot;:&quot;Слово искренности и разъяснение его смысла&quot;,&quot;sw&quot;:&quot;Kalima ya Ikhlas na ufafanuzi wa maana yake&quot;,&quot;tr&quot;:&quot;İhlâs Kelimesi ve Anlamının Tahkiki&quot;,&quot;zh&quot;:&quot;《忠诚信仰之言及其意义阐释》&quot;}" data-original="كلمة الإخلاص وتحقيق معناها">كلمة الإخلاص وتحقيق معناها</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        كلمة الإخلاص وتحقيق معناها
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      ابن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1398/139888.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1398/139888.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Rulings Worthy of Broadcasting from the Saying of the Prophet: I Was Sent with the Sword Before the Hour&quot;,&quot;es&quot;:&quot;Las sentencias dignas de difundirse sobre el dicho del Profeta: «He sido enviado con la espada antes de la Hora»&quot;,&quot;fr&quot;:&quot;Les jugements dignes d’être diffusés, tirés de la parole du Prophète : « J’ai été envoyé avec l’épée avant l’Heure »&quot;,&quot;id&quot;:&quot;Hukum-Hukum yang Patut Disebarluaskan dari Sabda Nabi, “Aku Diutus dengan Pedang Menjelang Kiamat”&quot;,&quot;ja&quot;:&quot;預言者の「終末の前に剣を携えて遣わされた」という言葉から、広く伝えるに値する教訓&quot;,&quot;ru&quot;:&quot;Изречения, достойные оглашения, о словах Пророка: «Я послан с мечом перед Часом»&quot;,&quot;sw&quot;:&quot;Al-Ahkam al-Jadira bil-Idha&#039;a min Qawl al-Nabi Bu&#039;ithtu bis-Sayf bayna Yaday as-Sa&#039;a (Hukumu zinazostahili kutangazwa kuhusu kauli ya Mtume: Nimetumwa kwa upanga kabla ya Saa)&quot;,&quot;tr&quot;:&quot;Peygamber’in “Kıyamet saatinden önce kılıçla gönderildim” sözünden dolayı yayılması gereken hükümler&quot;,&quot;zh&quot;:&quot;《从先知“我受命持剑，直至末日来临”之言中值得宣扬的训诫》&quot;}" data-original="الحكم الجديرة بالإذاعة من قول النبي بعثت بالسيف بين يدي الساعة">الحكم الجديرة بالإذاعة من قول النبي بعثت بالسيف بين يدي الساعة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الحكم الجديرة بالإذاعة من قول النبي بعثت بالسيف بين يدي الساعة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن البغدادي بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1443/144378.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1443/144378.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Gardens of the Righteous - Islamic Office&quot;,&quot;es&quot;:&quot;Los jardines de los justos — al-Maktab al-Islami&quot;,&quot;fr&quot;:&quot;Riyad al-Salihin (Les jardins des vertueux) – al-Maktab al-Islami&quot;,&quot;id&quot;:&quot;Riyadhus Shalihin — Al-Maktab al-Islami&quot;,&quot;ja&quot;:&quot;『リヤード・アッ＝サーリヒーン（正しい人々の庭園）』――イスラーム事務所版&quot;,&quot;ru&quot;:&quot;Сады праведных — Исламское бюро&quot;,&quot;sw&quot;:&quot;Riyad al-Salihin (Bustani za Waja Wema) — al-Maktab al-Islami&quot;,&quot;tr&quot;:&quot;Riyâzü&#039;s-sâlihîn – İslamî Büro baskısı&quot;,&quot;zh&quot;:&quot;《清廉者的花园》——伊斯兰书局版&quot;}" data-original="رياض الصالحين- المكتب الإسلامي">رياض الصالحين- المكتب الإسلامي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        رياض الصالحين- المكتب الإسلامي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1465/146555.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1465/146555.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Gift of the Distinguished Regarding the Knowledge of the Chains by the Hafiz Yusuf ibn Abd al-Rahman al-Mizzi with the Elegant Notes on the Chains Comments by Ibn Hajar al-Asqalani&quot;,&quot;es&quot;:&quot;Tuhfat al-Ashraf fi Ma&#039;rifat al-Atraf (Regalo de los nobles sobre el conocimiento de las cadenas), del hafiz Yusuf ibn Abd al-Rahman al-Mizzi, junto con al-Nukat al-Ziraf ala al-Atraf (Notas selectas sobre las cadenas): anotaciones de Ibn Hajar al-Asqalani&quot;,&quot;fr&quot;:&quot;Tuhfat al-ashraf bi-ma&#039;rifat al-atraf (Le présent des nobles : connaissance des extrémités des chaînes), de Yusuf ibn Abd al-Rahman al-Mizzi, avec al-Nukat al-ziraf ala al-atraf (Annotations élégantes sur les extrémités), commentaires d&#039;Ibn Hajar al-Asqalani&quot;,&quot;id&quot;:&quot;Tuhfat al-Asyraf bi Ma&#039;rifat al-Athraf karya Al-Hafizh Yusuf bin Abdurrahman Al-Mizzi, bersama An-Nukat adh-Dhiraf &#039;ala al-Athraf, catatan Ibnu Hajar Al-Asqalani&quot;,&quot;ja&quot;:&quot;『タフズィーブ・アル＝カマール』――ハディースの伝承経路を知るために、ハーフィズ・ユースフ・イブン・アブドゥッラフマーン・アル＝ミッズィー著。伝承経路に関する注記『アン＝ヌカト・アッ＝ズィラーフ』、イブン・ハジャル・アル＝アスカラーニーの注釈付き&quot;,&quot;ru&quot;:&quot;Тухфат аль-ашраф би-ма‘рифат аль-атраф хафиза Юсуфа ибн Абд ар-Рахмана аль-Миззи с «ан-Нукат аз-зираф аля аль-атраф» — примечаниями Ибн Хаджара аль-Аскаляни&quot;,&quot;sw&quot;:&quot;Tuhfat al-Ashraf bi-Ma&#039;rifat al-Atraf (Zawadi ya Waheshimiwa kuhusu Kutambua Sehemu za Hadithi), cha Hafidh Yusuf bin Abdulrahman al-Mizzi, pamoja na al-Nukat al-Ziraf ala al-Atraf (Vidokezo Vizuri kuhusu Sehemu za Hadithi), maelezo ya Ibn Hajar al-Asqalani&quot;,&quot;tr&quot;:&quot;Hâfız Yûsuf b. Abdurrahman el-Mizzî’nin Etrâf Bilgisi Hakkında Eşrâf’ın Armağanı ve Etrâf Üzerine Nüketü’z-Zirâf: İbn Hacer el-Askalânî’nin Notları&quot;,&quot;ur&quot;:&quot;تحفة الأشراف بمعرفة الأطراف للحافظ يوسف بن عبد الرحمن المزي مع النكت الظراف على الأطراف تعليقات ابن حجر العسقلاني (اطراف کی معرفت میں تحفۃ الاشراف، حافظ یوسف بن عبد الرحمن المزی کی تصنیف، مع النكت الظراف على الأطراف، ابن حجر عسقلانی کے حواشی)&quot;,&quot;zh&quot;:&quot;《贵族传述者的珍宝：认识圣训传述端点》——哈菲兹·优素福·本·阿卜杜·拉赫曼·米齐著，并附伊本·哈杰尔·阿斯卡拉尼《传述端点精彩评注》&quot;}" data-original="تحفة الأشراف بمعرفة الأطراف للحافظ يوسف بن عبد الرحمن المزي مع النكت الظراف على الأطراف تعليقات ابن حجر العسقلاني">تحفة الأشراف بمعرفة الأطراف للحافظ يوسف بن عبد الرحمن المزي مع النكت الظراف على الأطراف تعليقات ابن حجر العسقلاني</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تحفة الأشراف بمعرفة الأطراف للحافظ يوسف بن عبد الرحمن المزي مع النكت الظراف على الأطراف تعليقات ابن حجر العسقلاني
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1831/183153.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1831/183153.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Garden of Students and the Mainstay of Muftis&quot;,&quot;es&quot;:&quot;Rawdat al-Talibin wa-Umdat al-Muftin (El jardín de los estudiantes y referencia de los jurisconsultos)&quot;,&quot;fr&quot;:&quot;Rawdat al-talibin wa-umdat al-muftin (Le jardin des étudiants et le recours des muftis)&quot;,&quot;id&quot;:&quot;Raudhat ath-Thalibin wa Umdat al-Muftin (Taman Para Pencari Ilmu dan Pegangan Para Mufti)&quot;,&quot;ja&quot;:&quot;学徒の園、ファトワーを出す者たちの拠り所&quot;,&quot;ru&quot;:&quot;Раудат ат-талибин ва умдат аль-муфтин&quot;,&quot;sw&quot;:&quot;Rawdat al-Talibin wa Umdat al-Muftin (Bustani ya Wanafunzi na Tegemeo la Watoa Fatwa)&quot;,&quot;tr&quot;:&quot;Ravzatü’t-tâlibîn ve umdetü’l-müftîn [Talebelerin bahçesi ve müftülerin dayanağı]&quot;,&quot;zh&quot;:&quot;《求学者的花园与教法判官的指南》&quot;}" data-original="روضة الطالبين وعمدة المفتين">روضة الطالبين وعمدة المفتين</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        روضة الطالبين وعمدة المفتين
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

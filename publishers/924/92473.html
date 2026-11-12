@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>مكتبة دار المنهاج</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,144 +70,206 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Minhaj Library&quot;,&quot;es&quot;:&quot;Biblioteca Dar al-Minhaj&quot;,&quot;fr&quot;:&quot;Bibliothèque Dar al-Minhaj&quot;,&quot;id&quot;:&quot;Perpustakaan Dar Al-Minhaj&quot;,&quot;ja&quot;:&quot;ダール・アル＝ミンハージュ図書館&quot;,&quot;ru&quot;:&quot;Библиотека Дар аль-Минхадж&quot;,&quot;sw&quot;:&quot;Maktabat Dar al-Minhaj&quot;,&quot;tr&quot;:&quot;Dârü&#039;l-Minhâc Kütüphanesi&quot;,&quot;zh&quot;:&quot;明哈吉出版社图书馆&quot;}" data-original="مكتبة دار المنهاج">مكتبة دار المنهاج</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/548/54834.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/548/54834.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Curriculum of Students and the Authority of Muftis&quot;,&quot;es&quot;:&quot;Minhaj al-Talibin wa Umdat al-Muftin [La guía de los estudiantes y el apoyo de quienes emiten dictámenes jurídicos]&quot;,&quot;fr&quot;:&quot;Minhaj al-Talibin wa-Umdat al-Muftin (La voie des étudiants et le soutien des muftis)&quot;,&quot;id&quot;:&quot;Minhaj ath-Thalibin wa Umdat al-Muftin [Panduan para penuntut dan pegangan para mufti]&quot;,&quot;ja&quot;:&quot;ミンハージュ・アッ＝ターリビーンとウムダト・アル＝ムフティーン&quot;,&quot;ru&quot;:&quot;Минхадж ат-талибин ва умдат аль-муфтин&quot;,&quot;sw&quot;:&quot;Minhaj al-Talibin wa Umdat al-Muftin (Mwongozo wa wanafunzi na tegemeo la watoa fatwa)&quot;,&quot;tr&quot;:&quot;Minhâcü’t-tâlibîn ve umdetü’l-müftîn (Talebelerin rehberi ve müftülerin dayanağı)&quot;,&quot;zh&quot;:&quot;《求学者指南与教法裁决者的依凭》&quot;}" data-original="منهاج الطالبين وعمدة المفتين">منهاج الطالبين وعمدة المفتين</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Minhaj Library&quot;,&quot;es&quot;:&quot;Biblioteca Dar al-Minhaj&quot;,&quot;fr&quot;:&quot;Bibliothèque Dar al-Minhaj&quot;,&quot;id&quot;:&quot;Perpustakaan Dar Al-Minhaj&quot;,&quot;ja&quot;:&quot;ダール・アル＝ミンハージュ図書館&quot;,&quot;ru&quot;:&quot;Библиотека Дар аль-Минхадж&quot;,&quot;sw&quot;:&quot;Maktabat Dar al-Minhaj&quot;,&quot;tr&quot;:&quot;Dârü&#039;l-Minhâc Kütüphanesi&quot;,&quot;zh&quot;:&quot;明哈吉出版社图书馆&quot;}" data-original="مكتبة دار المنهاج">مكتبة دار المنهاج</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/548/54834.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Curriculum of Students and the Authority of Muftis&quot;,&quot;es&quot;:&quot;Minhaj al-Talibin wa Umdat al-Muftin [La guía de los estudiantes y el apoyo de quienes emiten dictámenes jurídicos]&quot;,&quot;fr&quot;:&quot;Minhaj al-Talibin wa-Umdat al-Muftin (La voie des étudiants et le soutien des muftis)&quot;,&quot;id&quot;:&quot;Minhaj ath-Thalibin wa Umdat al-Muftin [Panduan para penuntut dan pegangan para mufti]&quot;,&quot;ja&quot;:&quot;ミンハージュ・アッ＝ターリビーンとウムダト・アル＝ムフティーン&quot;,&quot;ru&quot;:&quot;Минхадж ат-талибин ва умдат аль-муфтин&quot;,&quot;sw&quot;:&quot;Minhaj al-Talibin wa Umdat al-Muftin (Mwongozo wa wanafunzi na tegemeo la watoa fatwa)&quot;,&quot;tr&quot;:&quot;Minhâcü’t-tâlibîn ve umdetü’l-müftîn (Talebelerin rehberi ve müftülerin dayanağı)&quot;,&quot;zh&quot;:&quot;《求学者指南与教法裁决者的依凭》&quot;}" data-original="منهاج الطالبين وعمدة المفتين">منهاج الطالبين وعمدة المفتين</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">مكتبة دار المنهاج للنشر والتوزيع</td>
-        <td dir="auto">1426هـ 2005 م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1418/141890.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Weak Hadith and the Ruling on Using It&quot;,&quot;es&quot;:&quot;El hadiz débil y la norma de utilizarlo como prueba&quot;,&quot;fr&quot;:&quot;Le hadith faible et le statut de son utilisation comme preuve&quot;,&quot;id&quot;:&quot;Hadis Dhaif dan Hukum Berhujah Dengannya&quot;,&quot;ja&quot;:&quot;弱いハディースと、それを根拠として用いることの法的評価&quot;,&quot;ru&quot;:&quot;Слабый хадис и правомерность использования его в качестве доказательства&quot;,&quot;sw&quot;:&quot;Hadith dhaifu na hukumu ya kuitumia kama hoja&quot;,&quot;tr&quot;:&quot;Zayıf Hadis ve Delil Olarak Kullanılmasının Hükmü&quot;,&quot;zh&quot;:&quot;弱圣训及以之为证的教法判定&quot;}" data-original="الحديث الضعيف وحكم الاحتجاج به">الحديث الضعيف وحكم الاحتجاج به</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">مكتبة دار المنهاج</td>
-        <td dir="auto">1425هـ 2004م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1443/144377.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Gardens of the Righteous - Dar Al-Minhaj&quot;,&quot;es&quot;:&quot;Los jardines de los justos — edición de al-Minhaj&quot;,&quot;fr&quot;:&quot;Riyad al-Salihin (Les jardins des vertueux) – édition al-Minhaj&quot;,&quot;id&quot;:&quot;Riyadhus Shalihin — edisi Al-Minhaj&quot;,&quot;ja&quot;:&quot;『リヤード・アッ＝サーリヒーン（正しい人々の庭園）』――アル＝ミンハージュ版&quot;,&quot;ru&quot;:&quot;Сады праведных — издание «аль-Минхадж»&quot;,&quot;sw&quot;:&quot;Riyad al-Salihin (Bustani za Waja Wema) — chapa ya al-Minhaj&quot;,&quot;tr&quot;:&quot;Riyâzü&#039;s-sâlihîn – Minhâc baskısı&quot;,&quot;zh&quot;:&quot;《清廉者的花园》——明灯出版社版&quot;}" data-original="رياض الصالحين- ط المنهاج">رياض الصالحين- ط المنهاج</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">دار المنهاج</td>
-        <td dir="auto">1436هـ 2015م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1465/146545.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Clarifying the Elite&quot;,&quot;es&quot;:&quot;Verificar el propósito de aclarar al-Nukhba&quot;,&quot;fr&quot;:&quot;Tahqiq al-raghba fi tawdih al-nukhba (Éclaircissement des aspirations à expliquer al-Nukhba)&quot;,&quot;id&quot;:&quot;Tahqiq al-Rughbah fi Tawdhih al-Nukhbah (Penjelasan Nukhbah)&quot;,&quot;ja&quot;:&quot;『ヌフバ』を明らかにするための『タフキーク・アッ＝ラグバ』&quot;,&quot;ru&quot;:&quot;Уточнение желаемого: разъяснение «Нухбы»&quot;,&quot;sw&quot;:&quot;Kuthibitisha al-Raghba katika kufafanua al-Nukhba&quot;,&quot;tr&quot;:&quot;Nuhbetü’l-Fiker’i Açıklama Arzusunun Tahkiki&quot;,&quot;ur&quot;:&quot;تحقيق الرغبة في توضيح النخبة (نخبۃ کی وضاحت میں رغبت کی تحقیق)&quot;,&quot;zh&quot;:&quot;《阐明精要之作：求知的实现》&quot;}" data-original="تحقيق الرغبة في توضيح النخبة">تحقيق الرغبة في توضيح النخبة</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">مكتبة دار المنهاج</td>
-        <td dir="auto">1426هــ 2006م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2405/240500.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Gardens of the Righteous from the Words of the Messenger of Allah ﷺ, the Master of the Gnostics (Segmented)&quot;,&quot;es&quot;:&quot;Riyad al-Salihin (Los jardines de los justos), de las palabras del Mensajero de Allah ﷺ, señor de los conocedores, en edición dividida&quot;,&quot;fr&quot;:&quot;Riyad al-salihin (Les jardins des vertueux), extraits des paroles du Messager d’Allah ﷺ, maître des connaisseurs, en volumes séparés&quot;,&quot;id&quot;:&quot;Riyadhush Shalihin dari Sabda Rasulullah ﷺ, Penghulu Para Arif, Edisi Terbagi&quot;,&quot;ja&quot;:&quot;正しい人々の園――識者の長、アッラーの使徒 ﷺ の言葉より（分冊版）&quot;,&quot;ru&quot;:&quot;Сады праведных из речений Посланника Аллаха ﷺ, господина познавших, в разбивке по частям&quot;,&quot;sw&quot;:&quot;Riyadh al-Salihin (Bustani za watu wema), kutoka katika maneno ya Mtume wa Allah ﷺ, bwana wa wenye maarifa—imegawanywa&quot;,&quot;tr&quot;:&quot;Sâlihler Bahçesi: Âriflerin Efendisi Allah Resulü’nün ﷺ Sözlerinden (Bölümlenmiş)&quot;,&quot;ur&quot;:&quot;رياض الصالحين من كلام رسول الله ﷺ سيد العارفين مجزأ (ریاض الصالحین: رسول اللہ ﷺ، سید العارفین کے کلام سے، جزو وار)&quot;,&quot;zh&quot;:&quot;《善人花园：先知真主使者 ﷺ、众知者之首的言论》分册版&quot;}" data-original="رياض الصالحين من كلام رسول الله ﷺ سيد العارفين مجزأ">رياض الصالحين من كلام رسول الله ﷺ سيد العارفين مجزأ</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">دار المنهاج</td>
-        <td dir="auto">1436هـ 2015م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        منهاج الطالبين وعمدة المفتين
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1418/141890.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1418/141890.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Weak Hadith and the Ruling on Using It&quot;,&quot;es&quot;:&quot;El hadiz débil y la norma de utilizarlo como prueba&quot;,&quot;fr&quot;:&quot;Le hadith faible et le statut de son utilisation comme preuve&quot;,&quot;id&quot;:&quot;Hadis Dhaif dan Hukum Berhujah Dengannya&quot;,&quot;ja&quot;:&quot;弱いハディースと、それを根拠として用いることの法的評価&quot;,&quot;ru&quot;:&quot;Слабый хадис и правомерность использования его в качестве доказательства&quot;,&quot;sw&quot;:&quot;Hadith dhaifu na hukumu ya kuitumia kama hoja&quot;,&quot;tr&quot;:&quot;Zayıf Hadis ve Delil Olarak Kullanılmasının Hükmü&quot;,&quot;zh&quot;:&quot;弱圣训及以之为证的教法判定&quot;}" data-original="الحديث الضعيف وحكم الاحتجاج به">الحديث الضعيف وحكم الاحتجاج به</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        الحديث الضعيف وحكم الاحتجاج به
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1443/144377.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1443/144377.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Gardens of the Righteous - Dar Al-Minhaj&quot;,&quot;es&quot;:&quot;Los jardines de los justos — edición de al-Minhaj&quot;,&quot;fr&quot;:&quot;Riyad al-Salihin (Les jardins des vertueux) – édition al-Minhaj&quot;,&quot;id&quot;:&quot;Riyadhus Shalihin — edisi Al-Minhaj&quot;,&quot;ja&quot;:&quot;『リヤード・アッ＝サーリヒーン（正しい人々の庭園）』――アル＝ミンハージュ版&quot;,&quot;ru&quot;:&quot;Сады праведных — издание «аль-Минхадж»&quot;,&quot;sw&quot;:&quot;Riyad al-Salihin (Bustani za Waja Wema) — chapa ya al-Minhaj&quot;,&quot;tr&quot;:&quot;Riyâzü&#039;s-sâlihîn – Minhâc baskısı&quot;,&quot;zh&quot;:&quot;《清廉者的花园》——明灯出版社版&quot;}" data-original="رياض الصالحين- ط المنهاج">رياض الصالحين- ط المنهاج</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        رياض الصالحين- ط المنهاج
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1465/146545.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1465/146545.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Clarifying the Elite&quot;,&quot;es&quot;:&quot;Verificar el propósito de aclarar al-Nukhba&quot;,&quot;fr&quot;:&quot;Tahqiq al-raghba fi tawdih al-nukhba (Éclaircissement des aspirations à expliquer al-Nukhba)&quot;,&quot;id&quot;:&quot;Tahqiq al-Rughbah fi Tawdhih al-Nukhbah (Penjelasan Nukhbah)&quot;,&quot;ja&quot;:&quot;『ヌフバ』を明らかにするための『タフキーク・アッ＝ラグバ』&quot;,&quot;ru&quot;:&quot;Уточнение желаемого: разъяснение «Нухбы»&quot;,&quot;sw&quot;:&quot;Kuthibitisha al-Raghba katika kufafanua al-Nukhba&quot;,&quot;tr&quot;:&quot;Nuhbetü’l-Fiker’i Açıklama Arzusunun Tahkiki&quot;,&quot;ur&quot;:&quot;تحقيق الرغبة في توضيح النخبة (نخبۃ کی وضاحت میں رغبت کی تحقیق)&quot;,&quot;zh&quot;:&quot;《阐明精要之作：求知的实现》&quot;}" data-original="تحقيق الرغبة في توضيح النخبة">تحقيق الرغبة في توضيح النخبة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تحقيق الرغبة في توضيح النخبة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2405/240500.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2405/240500.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Gardens of the Righteous from the Words of the Messenger of Allah ﷺ, the Master of the Gnostics (Segmented)&quot;,&quot;es&quot;:&quot;Riyad al-Salihin (Los jardines de los justos), de las palabras del Mensajero de Allah ﷺ, señor de los conocedores, en edición dividida&quot;,&quot;fr&quot;:&quot;Riyad al-salihin (Les jardins des vertueux), extraits des paroles du Messager d’Allah ﷺ, maître des connaisseurs, en volumes séparés&quot;,&quot;id&quot;:&quot;Riyadhush Shalihin dari Sabda Rasulullah ﷺ, Penghulu Para Arif, Edisi Terbagi&quot;,&quot;ja&quot;:&quot;正しい人々の園――識者の長、アッラーの使徒 ﷺ の言葉より（分冊版）&quot;,&quot;ru&quot;:&quot;Сады праведных из речений Посланника Аллаха ﷺ, господина познавших, в разбивке по частям&quot;,&quot;sw&quot;:&quot;Riyadh al-Salihin (Bustani za watu wema), kutoka katika maneno ya Mtume wa Allah ﷺ, bwana wa wenye maarifa—imegawanywa&quot;,&quot;tr&quot;:&quot;Sâlihler Bahçesi: Âriflerin Efendisi Allah Resulü’nün ﷺ Sözlerinden (Bölümlenmiş)&quot;,&quot;ur&quot;:&quot;رياض الصالحين من كلام رسول الله ﷺ سيد العارفين مجزأ (ریاض الصالحین: رسول اللہ ﷺ، سید العارفین کے کلام سے، جزو وار)&quot;,&quot;zh&quot;:&quot;《善人花园：先知真主使者 ﷺ、众知者之首的言论》分册版&quot;}" data-original="رياض الصالحين من كلام رسول الله ﷺ سيد العارفين مجزأ">رياض الصالحين من كلام رسول الله ﷺ سيد العارفين مجزأ</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        رياض الصالحين من كلام رسول الله ﷺ سيد العارفين مجزأ
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

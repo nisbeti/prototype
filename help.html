@@ -1,0 +1,484 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root=""
+  data-section="help"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Help</title>
+  <link
+    rel="icon"
+    href="assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="assets/i18n.js"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+  <script
+    src="assets/static.js"
+    defer
+  ></script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section
+    class="w-full max-w-3xl"
+    x-data
+    x-on:keydown.escape.window="
+      if (! document.querySelector('dialog[open]') && ! $event.target.closest?.('input, textarea, select, [contenteditable]')) {
+        history.length > 1 ? history.back() : (location.href = 'index.html');
+      }
+    "
+  >
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Keyboard shortcuts</h1>
+
+            <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mb-6" data-flux-subheading>
+    Single keys work in English and on an Arabic keyboard, but not while you are typing in a box. Esc goes back to where you were.
+</div>
+
+    <div class="space-y-8">
+              <div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" data-flux-heading>On every page</div>
+
+          <dl class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      Q
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      ق
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300"><span data-t="Go to :page" data-r="{&quot;page&quot;:{&quot;t&quot;:&quot;Quran&quot;}}">Go to Quran</span></dd>
+              </div>
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      B
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      ك
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300"><span data-t="Go to :page" data-r="{&quot;page&quot;:{&quot;t&quot;:&quot;Books&quot;}}">Go to Books</span></dd>
+              </div>
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      R
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      م
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300"><span data-t="Go to :page" data-r="{&quot;page&quot;:{&quot;t&quot;:&quot;Items&quot;}}">Go to Resources</span></dd>
+              </div>
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      A
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      و
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300"><span data-t="Go to :page" data-r="{&quot;page&quot;:{&quot;t&quot;:&quot;Authors&quot;}}">Go to Authors</span></dd>
+              </div>
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      M
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      ن
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300"><span data-t="Go to :page" data-r="{&quot;page&quot;:{&quot;t&quot;:&quot;Publishers&quot;}}">Go to Publishers</span></dd>
+              </div>
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      L
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      ل
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300">Open the Library menu</dd>
+              </div>
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      ↑
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      ↓
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300">Move through an open menu</dd>
+              </div>
+                      </dl>
+        </div>
+              <div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" data-flux-heading>Reading a book</div>
+
+          <dl class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      N
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      ت
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300">Next page</dd>
+              </div>
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      P
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      س
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300">Previous page</dd>
+              </div>
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      ←
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      →
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300">Turn the page, the way the book runs: in an Arabic book the left arrow is the next page</dd>
+              </div>
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      C
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      ف
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300">Open the contents</dd>
+              </div>
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      R
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      ق
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300">Turn reading mode on or off</dd>
+              </div>
+                      </dl>
+        </div>
+              <div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" data-flux-heading>In reading mode</div>
+
+          <dl class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      ←
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      →
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300">Turn the page, the way the book runs</dd>
+              </div>
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      R
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      ق
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      Esc
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300">Leave reading mode</dd>
+              </div>
+                      </dl>
+        </div>
+              <div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" data-flux-heading>Reading the Quran</div>
+
+          <dl class="divide-y divide-zinc-200 dark:divide-zinc-700">
+                          <div
+                class="flex items-baseline gap-4 py-2"
+                data-test="help-shortcut"
+              >
+                <dt class="flex w-40 shrink-0 flex-wrap gap-1">
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      Enter
+                    </kbd>
+                                      <kbd
+                      class="min-w-7 rounded border border-zinc-300 bg-zinc-50 px-1.5 py-0.5 text-center font-sans text-sm text-zinc-700 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200"
+                      dir="auto"
+                      data-no-translate
+                    >
+                      Space
+                    </kbd>
+                                  </dt>
+                <dd class="text-zinc-700 dark:text-zinc-300">Play the ayah, or open the tafsir, in focus</dd>
+              </div>
+                      </dl>
+        </div>
+          </div>
+  </section>
+    </div>
+</body>
+</html>

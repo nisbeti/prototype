@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>دار ابن حزم بالقاهرة</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,134 +70,177 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Ibn Hazm, Cairo&quot;,&quot;es&quot;:&quot;Dar Ibn Hazm, El Cairo&quot;,&quot;fr&quot;:&quot;Dar Ibn Hazm, Le Caire&quot;,&quot;id&quot;:&quot;Dar Ibnu Hazm, Kairo&quot;,&quot;ja&quot;:&quot;ダール・イブン・ハズム、カイロ&quot;,&quot;ru&quot;:&quot;Дар Ибн Хазм, Каир&quot;,&quot;sw&quot;:&quot;Dar Ibn Hazm, Kairo&quot;,&quot;tr&quot;:&quot;Dârü İbn Hazm, Kahire&quot;,&quot;zh&quot;:&quot;达尔·伊本·哈兹姆，开罗&quot;}" data-original="دار ابن حزم بالقاهرة">دار ابن حزم بالقاهرة</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/1819/181929.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1819/181929.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Introduction to Tafsir by Sheikh al-Islam Ibn Taymiyyah&quot;,&quot;es&quot;:&quot;Comentario de la introducción a la exégesis de Ibn Taymiyya, Shayj al-Islam&quot;,&quot;fr&quot;:&quot;Commentaire de l’introduction à l’exégèse du cheikh de l’islam Ibn Taymiyya&quot;,&quot;id&quot;:&quot;Penjelasan Pengantar Tafsir karya Syekhul Islam Ibnu Taimiyah&quot;,&quot;ja&quot;:&quot;イスラームの権威イブン・タイミーヤによる『タフスィール序説』注釈&quot;,&quot;ru&quot;:&quot;Комментарий к введению в тафсир шейх аль-Ислама Ибн Таймийи&quot;,&quot;sw&quot;:&quot;Sharh Muqaddimat al-Tafsir li-Shaykh al-Islam Ibn Taymiyya (Ufafanuzi wa Dibaji ya Tafsiri ya Shaykh al-Islam Ibn Taymiyya)&quot;,&quot;tr&quot;:&quot;Şeyhülislâm İbn Teymiyye’nin Tefsir Mukaddimesi Şerhi&quot;,&quot;zh&quot;:&quot;《伊本·泰米叶伊斯兰学导师释经学导论注释》&quot;}" data-original="شرح مقدمة التفسير لشيخ الإسلام ابن تيمية">شرح مقدمة التفسير لشيخ الإسلام ابن تيمية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto">دار ابن حزم بالقاهرة</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/1819/181929.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Introduction to Tafsir by Sheikh al-Islam Ibn Taymiyyah&quot;,&quot;es&quot;:&quot;Comentario de la introducción a la exégesis de Ibn Taymiyya, Shayj al-Islam&quot;,&quot;fr&quot;:&quot;Commentaire de l’introduction à l’exégèse du cheikh de l’islam Ibn Taymiyya&quot;,&quot;id&quot;:&quot;Penjelasan Pengantar Tafsir karya Syekhul Islam Ibnu Taimiyah&quot;,&quot;ja&quot;:&quot;イスラームの権威イブン・タイミーヤによる『タフスィール序説』注釈&quot;,&quot;ru&quot;:&quot;Комментарий к введению в тафсир шейх аль-Ислама Ибн Таймийи&quot;,&quot;sw&quot;:&quot;Sharh Muqaddimat al-Tafsir li-Shaykh al-Islam Ibn Taymiyya (Ufafanuzi wa Dibaji ya Tafsiri ya Shaykh al-Islam Ibn Taymiyya)&quot;,&quot;tr&quot;:&quot;Şeyhülislâm İbn Teymiyye’nin Tefsir Mukaddimesi Şerhi&quot;,&quot;zh&quot;:&quot;《伊本·泰米叶伊斯兰学导师释经学导论注释》&quot;}" data-original="شرح مقدمة التفسير لشيخ الإسلام ابن تيمية">شرح مقدمة التفسير لشيخ الإسلام ابن تيمية</span>
-          </a>
-        </td>
-        <td dir="auto">محمد صالح العثيمين • عبد الله الجبرين • صالح آل الشيخ</td>
-        <td dir="auto">دار ابن حزم</td>
-        <td dir="auto">2009م 1430هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1956/195683.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Three Fundamental Principles by the Renewed Sheikh Muhammad ibn Abd al-Wahhab&quot;,&quot;es&quot;:&quot;Comentario de Los tres principios fundamentales del renovador y jeque del islam Muhammad ibn Abd al-Wahhab&quot;,&quot;fr&quot;:&quot;Commentaire des Trois Fondements du cheikh de l&#039;islam et réformateur Muhammad ibn Abd al-Wahhab&quot;,&quot;id&quot;:&quot;Penjelasan Tiga Landasan karya Syaikhul Islam, Sang Pembaru, Muhammad bin Abdul Wahhab&quot;,&quot;ja&quot;:&quot;イスラームの刷新者ムハンマド・イブン・アブド・アル＝ワッハーブ師の『三つの根本原則』注解&quot;,&quot;ru&quot;:&quot;Комментарий к «Трём основам» шейха ислама и реформатора Мухаммада ибн Абд аль-Ваххаба&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa Misingi Mitatu wa Sheikh wa Uislamu, mwanamageuzi Muhammad bin Abdulwahhab&quot;,&quot;tr&quot;:&quot;Şeyhülislâm Müceddid Muhammed b. Abdülvehhâb’ın Üç Esas Şerhi&quot;,&quot;ur&quot;:&quot;شرح الثلاثة الأصول لشيخ الإسلام المجدد محمد بن عبد الوهاب (شیخ الاسلام مجدد محمد بن عبد الوہاب کے تین اصولوں کی شرح)&quot;,&quot;zh&quot;:&quot;伊斯兰革新导师穆罕默德·本·阿卜杜勒·瓦哈卜所著《三项根本原则》注释&quot;}" data-original="شرح الثلاثة الأصول لشيخ الإسلام المجدد محمد بن عبد الوهاب">شرح الثلاثة الأصول لشيخ الإسلام المجدد محمد بن عبد الوهاب</span>
-          </a>
-        </td>
-        <td dir="auto">ابن باز • عبد الرحمن بن قاسم • العثيمين • الفوزان</td>
-        <td dir="auto">دار ابن حزم</td>
-        <td dir="auto">1428هـ 2007م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2233/223379.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Comprehensive Explanation of the Forty Hadith of Al-Nawawi&quot;,&quot;es&quot;:&quot;Compendio del comentario de los Cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Le recueil de commentaires des Quarante hadiths d&#039;al-Nawawi&quot;,&quot;id&quot;:&quot;Al-Jami&#039; fi Syarh al-Arba&#039;in al-Nawawiyya (Kompilasi Penjelasan atas Empat Puluh Hadis Nawawi)&quot;,&quot;ja&quot;:&quot;『ナワウィーの40ハディース』の注解集&quot;,&quot;ru&quot;:&quot;Сборник комментариев к «Сорока хадисам» ан-Навави&quot;,&quot;sw&quot;:&quot;Al-Jami (Mkusanyo) katika kufafanua Al-Arba&#039;in al-Nawawiyya (Hadithi Arobaini za al-Nawawi)&quot;,&quot;tr&quot;:&quot;el-Câmi‘ fî şerhi’l-Erba‘în en-Neveviyye (Nevevî’nin Kırk Hadis’inin şerhi)&quot;,&quot;zh&quot;:&quot;《四十段圣训》综合注释&quot;}" data-original="الجامع في شرح الأربعين النووية">الجامع في شرح الأربعين النووية</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي • ابن دقيق العيد • عبد الرحمن السعدي • محمد صالح العثيمين • صالح آل الشيخ</td>
-        <td dir="auto">دار ابن حزم</td>
-        <td dir="auto">1428هـ 2007م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2388/238823.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Fatwas of the Muslim Woman: A Collection of Advice and Guidance from Prominent Scholars and Preachers&quot;,&quot;es&quot;:&quot;Dictámenes jurídicos para la mujer musulmana: una selección de consejos y orientaciones de destacados ulemas y predicadores&quot;,&quot;fr&quot;:&quot;Fatwas à l&#039;intention de la musulmane : conseils et orientations des grands savants et prédicateurs&quot;,&quot;id&quot;:&quot;Fatwa Perempuan Muslimah: Kumpulan Nasihat dan Bimbingan dari Ulama serta Dai Terkemuka&quot;,&quot;ja&quot;:&quot;ムスリム女性のためのファトワー集――大学者・説教師たちによる助言と導き&quot;,&quot;ru&quot;:&quot;Фетвы для мусульманки: подборка советов и наставлений выдающихся учёных и проповедников&quot;,&quot;sw&quot;:&quot;Fatwa za mwanamke Muislamu: mkusanyiko wa nasaha na mwongozo kutoka kwa wanazuoni na wahubiri wakuu&quot;,&quot;tr&quot;:&quot;Müslüman Kadının Fetvaları: Büyük Âlim ve Davetçilerin Öğüt ve Yönlendirmelerinden Bir Demet&quot;,&quot;zh&quot;:&quot;穆斯林妇女教法答疑：杰出学者与宣教士的忠告与指导选辑&quot;}" data-original="فتاوى المرأة المسلمة باقة من نصائح وتوجيهات لكبار العلماء والدعاة">فتاوى المرأة المسلمة باقة من نصائح وتوجيهات لكبار العلماء والدعاة</span>
-          </a>
-        </td>
-        <td dir="auto">ابن تيمية • ابن باز • محمد بن إبراهيم • الألباني • السعدي • العثيمين • الفوزان</td>
-        <td dir="auto">دار ابن حزم</td>
-        <td dir="auto">1428هـ 2007م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        شرح مقدمة التفسير لشيخ الإسلام ابن تيمية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد صالح العثيمين • عبد الله الجبرين • صالح آل الشيخ
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1956/195683.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1956/195683.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Three Fundamental Principles by the Renewed Sheikh Muhammad ibn Abd al-Wahhab&quot;,&quot;es&quot;:&quot;Comentario de Los tres principios fundamentales del renovador y jeque del islam Muhammad ibn Abd al-Wahhab&quot;,&quot;fr&quot;:&quot;Commentaire des Trois Fondements du cheikh de l&#039;islam et réformateur Muhammad ibn Abd al-Wahhab&quot;,&quot;id&quot;:&quot;Penjelasan Tiga Landasan karya Syaikhul Islam, Sang Pembaru, Muhammad bin Abdul Wahhab&quot;,&quot;ja&quot;:&quot;イスラームの刷新者ムハンマド・イブン・アブド・アル＝ワッハーブ師の『三つの根本原則』注解&quot;,&quot;ru&quot;:&quot;Комментарий к «Трём основам» шейха ислама и реформатора Мухаммада ибн Абд аль-Ваххаба&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa Misingi Mitatu wa Sheikh wa Uislamu, mwanamageuzi Muhammad bin Abdulwahhab&quot;,&quot;tr&quot;:&quot;Şeyhülislâm Müceddid Muhammed b. Abdülvehhâb’ın Üç Esas Şerhi&quot;,&quot;ur&quot;:&quot;شرح الثلاثة الأصول لشيخ الإسلام المجدد محمد بن عبد الوهاب (شیخ الاسلام مجدد محمد بن عبد الوہاب کے تین اصولوں کی شرح)&quot;,&quot;zh&quot;:&quot;伊斯兰革新导师穆罕默德·本·阿卜杜勒·瓦哈卜所著《三项根本原则》注释&quot;}" data-original="شرح الثلاثة الأصول لشيخ الإسلام المجدد محمد بن عبد الوهاب">شرح الثلاثة الأصول لشيخ الإسلام المجدد محمد بن عبد الوهاب</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        شرح الثلاثة الأصول لشيخ الإسلام المجدد محمد بن عبد الوهاب
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      ابن باز • عبد الرحمن بن قاسم • العثيمين • الفوزان
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2233/223379.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2233/223379.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Comprehensive Explanation of the Forty Hadith of Al-Nawawi&quot;,&quot;es&quot;:&quot;Compendio del comentario de los Cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Le recueil de commentaires des Quarante hadiths d&#039;al-Nawawi&quot;,&quot;id&quot;:&quot;Al-Jami&#039; fi Syarh al-Arba&#039;in al-Nawawiyya (Kompilasi Penjelasan atas Empat Puluh Hadis Nawawi)&quot;,&quot;ja&quot;:&quot;『ナワウィーの40ハディース』の注解集&quot;,&quot;ru&quot;:&quot;Сборник комментариев к «Сорока хадисам» ан-Навави&quot;,&quot;sw&quot;:&quot;Al-Jami (Mkusanyo) katika kufafanua Al-Arba&#039;in al-Nawawiyya (Hadithi Arobaini za al-Nawawi)&quot;,&quot;tr&quot;:&quot;el-Câmi‘ fî şerhi’l-Erba‘în en-Neveviyye (Nevevî’nin Kırk Hadis’inin şerhi)&quot;,&quot;zh&quot;:&quot;《四十段圣训》综合注释&quot;}" data-original="الجامع في شرح الأربعين النووية">الجامع في شرح الأربعين النووية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الجامع في شرح الأربعين النووية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي • ابن دقيق العيد • عبد الرحمن السعدي • محمد صالح العثيمين • صالح آل الشيخ
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2388/238823.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2388/238823.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Fatwas of the Muslim Woman: A Collection of Advice and Guidance from Prominent Scholars and Preachers&quot;,&quot;es&quot;:&quot;Dictámenes jurídicos para la mujer musulmana: una selección de consejos y orientaciones de destacados ulemas y predicadores&quot;,&quot;fr&quot;:&quot;Fatwas à l&#039;intention de la musulmane : conseils et orientations des grands savants et prédicateurs&quot;,&quot;id&quot;:&quot;Fatwa Perempuan Muslimah: Kumpulan Nasihat dan Bimbingan dari Ulama serta Dai Terkemuka&quot;,&quot;ja&quot;:&quot;ムスリム女性のためのファトワー集――大学者・説教師たちによる助言と導き&quot;,&quot;ru&quot;:&quot;Фетвы для мусульманки: подборка советов и наставлений выдающихся учёных и проповедников&quot;,&quot;sw&quot;:&quot;Fatwa za mwanamke Muislamu: mkusanyiko wa nasaha na mwongozo kutoka kwa wanazuoni na wahubiri wakuu&quot;,&quot;tr&quot;:&quot;Müslüman Kadının Fetvaları: Büyük Âlim ve Davetçilerin Öğüt ve Yönlendirmelerinden Bir Demet&quot;,&quot;zh&quot;:&quot;穆斯林妇女教法答疑：杰出学者与宣教士的忠告与指导选辑&quot;}" data-original="فتاوى المرأة المسلمة باقة من نصائح وتوجيهات لكبار العلماء والدعاة">فتاوى المرأة المسلمة باقة من نصائح وتوجيهات لكبار العلماء والدعاة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        فتاوى المرأة المسلمة باقة من نصائح وتوجيهات لكبار العلماء والدعاة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      ابن تيمية • ابن باز • محمد بن إبراهيم • الألباني • السعدي • العثيمين • الفوزان
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

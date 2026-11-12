@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root=""
+  data-section="settings"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>Settings</title>
   <link
-    rel="stylesheet"
-    href="assets/reader.css"
+    rel="icon"
+    href="assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,188 +70,426 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="assets/reader.js"
+    src="assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="index.html"
-      lang="ar"
-    >
-      باحث
-    </a>
-    <nav class="site-nav">
-      <a href="books.html"><span data-t="Books">Books</span></a>
-      <a href="catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span data-t="Settings">Settings</span></h1>
-  <p class="muted"><span data-t="These are kept in this browser only. There is no account, so another browser or computer starts with the defaults.">These are kept in this browser only. There is no account, so another browser or computer starts with the defaults.</span></p>
-
-  <form
-    class="settings"
-    data-settings
-  >
-    <label>
-      <span><span data-t="Language">Language</span></span>
-      <select
-        name="language"
-        data-language-options
-      ></select>
-    </label>
-
-    <label>
-      <span><span data-t="Appearance">Appearance</span></span>
-      <select name="theme">
-                            <option
-            value="system"
-            data-t="System"
-          >
-            System
-          </option>
-                            <option
-            value="light"
-            data-t="Light"
-          >
-            Light
-          </option>
-                            <option
-            value="dark"
-            data-t="Dark"
-          >
-            Dark
-          </option>
-              </select>
-    </label>
-
-    <label>
-      <span><span data-t="Arabic font">Arabic font</span></span>
-      <select name="arabicFont">
-        <option value="amiri">Amiri</option>
-        <option value="naskh">Noto Naskh Arabic</option>
-        <option value="sans">Noto Sans Arabic</option>
-      </select>
-    </label>
-
-    <label>
-      <span><span data-t="Quran font">Quran font</span></span>
-      <select name="quranFont">
-                <option
-          value="uthmani"
-          data-t="Uthmani"
-        >
-          Uthmani
-        </option>
-        <option value="indopak">IndoPak</option>
-        <option value="amiri">Amiri</option>
-      </select>
-    </label>
-
-    <label>
-      <span><span data-t="Reciter">Reciter</span></span>
-      <select name="reciter">
-                            <option
-            value="alafasy"
-            data-t="Mishary al-Afasy"
-          >
-            Mishary al-Afasy
-          </option>
-                            <option
-            value="husary"
-            data-t="Mahmoud Khalil al-Husary"
-          >
-            Mahmoud Khalil al-Husary
-          </option>
-                            <option
-            value="hudhaify"
-            data-t="Ali al-Hudhaify"
-          >
-            Ali al-Hudhaify
-          </option>
-                            <option
-            value="muaiqly"
-            data-t="Maher al-Muaiqly"
-          >
-            Maher al-Muaiqly
-          </option>
-                            <option
-            value="ayyoub"
-            data-t="Muhammad Ayyoub"
-          >
-            Muhammad Ayyoub
-          </option>
-              </select>
-      <small class="muted"><span data-t="Recitation needs an internet connection.">Recitation needs an internet connection.</span></small>
-    </label>
-
-    <label>
-      <span><span data-t="Read-aloud speed">Read-aloud speed</span></span>
-      <select name="readAloudSpeed">
-                  <option value="50">50%</option>
-                  <option value="75">75%</option>
-                  <option value="100">100%</option>
-                  <option value="125">125%</option>
-                  <option value="150">150%</option>
-              </select>
-    </label>
-
-    <label class="checkbox">
-      <input
-        type="checkbox"
-        name="passages"
-        value="on"
-      />
-      <span><span data-t="Mark similar passages in the books">Mark similar passages in the books</span></span>
-    </label>
-  </form>
-  </main>
-
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
-  <dialog
-    class="sheet"
-    data-sheet
+  <script src="assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section
+    class="w-full"
+    x-data="{
+      tab: ['appearance', 'quran', 'browser'].includes(location.hash.slice(1)) ? location.hash.slice(1) : 'appearance',
+      show(tab) {
+        this.tab = tab;
+        history.replaceState(history.state, '', '#' + tab);
+      },
+    }"
   >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
-      >
-        <span data-t="Close">Close</span>
-      </button>
+    <a href="index.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4" data-test="settings-back">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Back</span>
+    </a>
+
+    <div class="relative mb-6 w-full">
+      <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Settings</h1>
+
+              <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mb-6" data-flux-subheading>
+    <span data-t="Kept in this browser, until you or the next reader forget them.">Kept in this browser, until you or the next reader forget them.</span>
+</div>
+      <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/5 dark:bg-white/10 h-px w-full" data-flux-separator></div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+
+    <div class="flex items-start max-md:flex-col">
+      <div class="me-10 w-full pb-4 md:w-[220px]">
+        <nav class="flex flex-col overflow-visible min-h-auto" aria-label="Settings" data-flux-navlist>
+    <a href="#appearance" class="h-10 lg:h-8 relative flex items-center gap-3 rounded-lg  py-0 text-start w-full px-3 my-px text-zinc-500 dark:text-white/80 data-current:text-(--color-accent-content) hover:data-current:text-(--color-accent-content) data-current:bg-zinc-800/[4%] dark:data-current:bg-white/[7%] hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-800/[4%] dark:hover:bg-white/[7%]" data-flux-navlist-item="data-flux-navlist-item" x-on:click.prevent="show('appearance')" x-bind:data-current="tab === 'appearance' ? '' : null">
+        <div class="flex-1 text-sm font-medium leading-none whitespace-nowrap [[data-nav-footer]_&]:hidden [[data-nav-sidebar]_[data-nav-footer]_&]:block" data-content>Appearance</div>
+    </a>
+                      <a href="#quran" class="h-10 lg:h-8 relative flex items-center gap-3 rounded-lg  py-0 text-start w-full px-3 my-px text-zinc-500 dark:text-white/80 data-current:text-(--color-accent-content) hover:data-current:text-(--color-accent-content) data-current:bg-zinc-800/[4%] dark:data-current:bg-white/[7%] hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-800/[4%] dark:hover:bg-white/[7%]" data-flux-navlist-item="data-flux-navlist-item" x-on:click.prevent="show('quran')" x-bind:data-current="tab === 'quran' ? '' : null">
+        <div class="flex-1 text-sm font-medium leading-none whitespace-nowrap [[data-nav-footer]_&]:hidden [[data-nav-sidebar]_[data-nav-footer]_&]:block" data-content>Quran</div>
+    </a>
+                      <a href="#browser" class="h-10 lg:h-8 relative flex items-center gap-3 rounded-lg  py-0 text-start w-full px-3 my-px text-zinc-500 dark:text-white/80 data-current:text-(--color-accent-content) hover:data-current:text-(--color-accent-content) data-current:bg-zinc-800/[4%] dark:data-current:bg-white/[7%] hover:text-zinc-800 dark:hover:text-white hover:bg-zinc-800/[4%] dark:hover:bg-white/[7%]" data-flux-navlist-item="data-flux-navlist-item" x-on:click.prevent="show('browser')" x-bind:data-current="tab === 'browser' ? '' : null">
+        <div class="flex-1 text-sm font-medium leading-none whitespace-nowrap [[data-nav-footer]_&]:hidden [[data-nav-sidebar]_[data-nav-footer]_&]:block" data-content><span data-t="This browser">This browser</span></div>
+    </a>
+</nav>
+      </div>
+
+      <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full md:hidden" data-flux-separator></div>
+
+      <div class="flex-1 self-stretch max-md:pt-6">
+        
+        <div x-show="tab === 'appearance'">
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Appearance</div>
+          <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    <span data-t="How the edition looks in this browser">How the edition looks in this browser</span>
+</div>
+
+          <div class="mt-5 w-full max-w-lg">
+            <ui-radio-group class="block flex p-1 rounded-lg bg-zinc-800/5 dark:bg-white/10 h-10 p-1" x-data="" x-model="$flux.appearance"  data-flux-radio-group-segmented>
+        <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="light" data-flux-control data-flux-radio-segmented tabindex="-1">
+            <svg class="shrink-0 [:where(&amp;)]:size-5 text-zinc-500 dark:text-zinc-400 [ui-radio[data-checked]_&]:text-zinc-800 dark:[ui-radio[data-checked]_&]:text-white" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M10 2a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 10 2ZM10 15a.75.75 0 0 1 .75.75v1.5a.75.75 0 0 1-1.5 0v-1.5A.75.75 0 0 1 10 15ZM10 7a3 3 0 1 0 0 6 3 3 0 0 0 0-6ZM15.657 5.404a.75.75 0 1 0-1.06-1.06l-1.061 1.06a.75.75 0 0 0 1.06 1.06l1.06-1.06ZM6.464 14.596a.75.75 0 1 0-1.06-1.06l-1.06 1.06a.75.75 0 0 0 1.06 1.06l1.06-1.06ZM18 10a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 18 10ZM5 10a.75.75 0 0 1-.75.75h-1.5a.75.75 0 0 1 0-1.5h1.5A.75.75 0 0 1 5 10ZM14.596 15.657a.75.75 0 0 0 1.06-1.06l-1.06-1.061a.75.75 0 1 0-1.06 1.06l1.06 1.06ZM5.404 6.464a.75.75 0 0 0 1.06-1.06l-1.06-1.06a.75.75 0 1 0-1.061 1.06l1.06 1.06Z"/>
+</svg>
+
+            
+    Light
+
+    </ui-radio>
+              <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="dark" data-flux-control data-flux-radio-segmented tabindex="-1">
+            <svg class="shrink-0 [:where(&amp;)]:size-5 text-zinc-500 dark:text-zinc-400 [ui-radio[data-checked]_&]:text-zinc-800 dark:[ui-radio[data-checked]_&]:text-white" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M7.455 2.004a.75.75 0 0 1 .26.77 7 7 0 0 0 9.958 7.967.75.75 0 0 1 1.067.853A8.5 8.5 0 1 1 6.647 1.921a.75.75 0 0 1 .808.083Z" clip-rule="evenodd"/>
+</svg>
+
+            
+    Dark
+
+    </ui-radio>
+              <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="system" data-flux-control data-flux-radio-segmented tabindex="-1">
+            <svg class="shrink-0 [:where(&amp;)]:size-5 text-zinc-500 dark:text-zinc-400 [ui-radio[data-checked]_&]:text-zinc-800 dark:[ui-radio[data-checked]_&]:text-white" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M2 4.25A2.25 2.25 0 0 1 4.25 2h11.5A2.25 2.25 0 0 1 18 4.25v8.5A2.25 2.25 0 0 1 15.75 15h-3.105a3.501 3.501 0 0 0 1.1 1.677A.75.75 0 0 1 13.26 18H6.74a.75.75 0 0 1-.484-1.323A3.501 3.501 0 0 0 7.355 15H4.25A2.25 2.25 0 0 1 2 12.75v-8.5Zm1.5 0a.75.75 0 0 1 .75-.75h11.5a.75.75 0 0 1 .75.75v7.5a.75.75 0 0 1-.75.75H4.25a.75.75 0 0 1-.75-.75v-7.5Z" clip-rule="evenodd"/>
+</svg>
+
+            
+    System
+
+    </ui-radio>
+    </ui-radio-group>
+
+            <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/5 dark:bg-white/10 h-px w-full my-6" data-flux-separator></div>
+
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-1" data-flux-heading>Language</div>
+            <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mb-3" data-flux-subheading>
+    Choose the language of the interface and the catalogue.
+</div>
+            <div class="flex items-center justify-start gap-2">
+              <div
+    class="contents"
+    x-data
+    x-on:click="$el.querySelector('button[disabled]') || $dispatch('modal-show', { name: 'language-switcher' })"
+        data-flux-modal-trigger
+>
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-2 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white" data-flux-button="data-flux-button">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M3.757 4.5c.18.217.376.42.586.608.153-.61.354-1.175.596-1.678A5.53 5.53 0 0 0 3.757 4.5ZM8 1a6.994 6.994 0 0 0-7 7 7 7 0 1 0 7-7Zm0 1.5c-.476 0-1.091.386-1.633 1.427-.293.564-.531 1.267-.683 2.063A5.48 5.48 0 0 0 8 6.5a5.48 5.48 0 0 0 2.316-.51c-.152-.796-.39-1.499-.683-2.063C9.09 2.886 8.476 2.5 8 2.5Zm3.657 2.608a8.823 8.823 0 0 0-.596-1.678c.444.298.842.659 1.182 1.07-.18.217-.376.42-.586.608Zm-1.166 2.436A6.983 6.983 0 0 1 8 8a6.983 6.983 0 0 1-2.49-.456 10.703 10.703 0 0 0 .202 2.6c.72.231 1.49.356 2.288.356.798 0 1.568-.125 2.29-.356a10.705 10.705 0 0 0 .2-2.6Zm1.433 1.85a12.652 12.652 0 0 0 .018-2.609c.405-.276.78-.594 1.117-.947a5.48 5.48 0 0 1 .44 2.262 7.536 7.536 0 0 1-1.575 1.293Zm-2.172 2.435a9.046 9.046 0 0 1-3.504 0c.039.084.078.166.12.244C6.907 13.114 7.523 13.5 8 13.5s1.091-.386 1.633-1.427c.04-.078.08-.16.12-.244Zm1.31.74a8.5 8.5 0 0 0 .492-1.298c.457-.197.893-.43 1.307-.696a5.526 5.526 0 0 1-1.8 1.995Zm-6.123 0a8.507 8.507 0 0 1-.493-1.298 8.985 8.985 0 0 1-1.307-.696 5.526 5.526 0 0 0 1.8 1.995ZM2.5 8.1c.463.5.993.935 1.575 1.293a12.652 12.652 0 0 1-.018-2.608 7.037 7.037 0 0 1-1.117-.947 5.48 5.48 0 0 0-.44 2.262Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span><span data-language-name></span></span>
+        
+        
+                    
+                        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+    </button>
+</div>
+              <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white" data-flux-button="data-flux-button" x-data="" x-on:click="$store.preferences.switchDirection()">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M11 5a.75.75 0 0 1 .688.452l3.25 7.5a.75.75 0 1 1-1.376.596L12.89 12H9.109l-.67 1.548a.75.75 0 1 1-1.377-.596l3.25-7.5A.75.75 0 0 1 11 5Zm-1.24 5.5h2.48L11 7.636 9.76 10.5ZM5 1a.75.75 0 0 1 .75.75v1.261a25.27 25.27 0 0 1 2.598.211.75.75 0 1 1-.2 1.487c-.22-.03-.44-.056-.662-.08A12.939 12.939 0 0 1 5.92 8.058c.237.304.488.595.752.873a.75.75 0 0 1-1.086 1.035A13.075 13.075 0 0 1 5 9.307a13.068 13.068 0 0 1-2.841 2.546.75.75 0 0 1-.827-1.252A11.566 11.566 0 0 0 4.08 8.057a12.991 12.991 0 0 1-.554-.938.75.75 0 1 1 1.323-.707c.049.09.099.181.15.271.388-.68.708-1.405.952-2.164a23.941 23.941 0 0 0-4.1.19.75.75 0 0 1-.2-1.487c.853-.114 1.72-.185 2.598-.211V1.75A.75.75 0 0 1 5 1Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span><span x-show="$store.preferences.direction === 'ltr'">Switch to RTL</span>
+                <span
+                  x-show="$store.preferences.direction === 'rtl'"
+                  x-cloak
+                >
+                  Switch to LTR
+                </span></span>
+    </button>
+            </div>
+
+            <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/5 dark:bg-white/10 h-px w-full my-6" data-flux-separator></div>
+
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-1" data-flux-heading>Arabic font</div>
+            <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mb-3" data-flux-subheading>
+    <span data-t="Choose the font Arabic text is shown in.">Choose the font Arabic text is shown in.</span>
+</div>
+            <div
+              x-data="{ font: $store.preferences.arabicFont }"
+              x-init="$watch('font', (font) => $store.preferences.setArabicFont(font))"
+            >
+              <ui-radio-group class="block flex p-1 rounded-lg bg-zinc-800/5 dark:bg-white/10 h-10 p-1" x-model="font" data-test="arabic-font"  data-flux-radio-group-segmented>
+        <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="amiri" data-flux-control data-flux-radio-segmented tabindex="-1">
+    
+    Amiri
+
+    </ui-radio>
+                                  <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="indopak" data-flux-control data-flux-radio-segmented tabindex="-1">
+    
+    IndoPak
+
+    </ui-radio>
+                                  <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="uthmani" data-flux-control data-flux-radio-segmented tabindex="-1">
+    
+    Uthmani
+
+    </ui-radio>
+                                  <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="sans" data-flux-control data-flux-radio-segmented tabindex="-1">
+    
+    Sans
+
+    </ui-radio>
+    </ui-radio-group>
+            </div>
+            <p
+              lang="ar"
+              dir="rtl"
+              class="font-amiri mt-4 text-2xl leading-loose"
+            >بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</p>
+
+            <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/5 dark:bg-white/10 h-px w-full my-6" data-flux-separator></div>
+
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-1" data-flux-heading>Reading aloud</div>
+            <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mb-3" data-flux-subheading>
+    How fast a book is read aloud to you, beside the voice&#039;s own speed.
+</div>
+            <div
+              x-data="{ speed: String($store.preferences.readAloudSpeed) }"
+              x-init="$watch('speed', (speed) => $store.preferences.setReadAloudSpeed(speed))"
+            >
+              <ui-radio-group class="block flex p-1 rounded-lg bg-zinc-800/5 dark:bg-white/10 h-10 p-1" x-model="speed" data-test="read-aloud-speed"  data-flux-radio-group-segmented>
+        <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="75" data-flux-control data-flux-radio-segmented tabindex="-1">
+    
+    0.75×
+
+    </ui-radio>
+                                  <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="100" data-flux-control data-flux-radio-segmented tabindex="-1">
+    
+    1×
+
+    </ui-radio>
+                                  <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="125" data-flux-control data-flux-radio-segmented tabindex="-1">
+    
+    1.25×
+
+    </ui-radio>
+                                  <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="150" data-flux-control data-flux-radio-segmented tabindex="-1">
+    
+    1.5×
+
+    </ui-radio>
+                                  <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="175" data-flux-control data-flux-radio-segmented tabindex="-1">
+    
+    1.75×
+
+    </ui-radio>
+                                  <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="200" data-flux-control data-flux-radio-segmented tabindex="-1">
+    
+    2×
+
+    </ui-radio>
+    </ui-radio-group>
+            </div>
+          </div>
+        </div>
+
+        
+        <div
+          x-show="tab === 'quran'"
+          x-cloak
+        >
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Quran</div>
+          <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Choose how the Quran reader sounds
+</div>
+
+          <div class="mt-5 w-full max-w-lg">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-1" data-flux-heading>Reciter</div>
+            <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mb-3" data-flux-subheading>
+    <span data-t="Choose whose recitation the Quran reader plays. It needs a connection.">Choose whose recitation the Quran reader plays. It needs a connection.</span>
+</div>
+            <div
+              x-data="{ reciter: $store.preferences.reciter }"
+              x-init="$watch('reciter', (reciter) => $store.preferences.setReciter(reciter))"
+            >
+              <ui-radio-group class="*:data-flux-field:mb-3 [&amp;&gt;[data-flux-field]:has(&gt;[data-flux-description])]:mb-4 [&amp;&gt;[data-flux-field]:last-child]:mb-0!" x-model="reciter" data-test="quran-reciter"  data-flux-radio-group>
+        <ui-field class="min-w-0 [&amp;:not(:has([data-flux-field])):has([data-flux-control][disabled])&gt;[data-flux-label]]:opacity-50 [&amp;:has(&gt;[data-flux-radio-group][disabled])&gt;[data-flux-label]]:opacity-50 [&amp;:has(&gt;[data-flux-checkbox-group][disabled])&gt;[data-flux-label]]:opacity-50 grid gap-x-3 gap-y-1.5 has-[[data-flux-label]~[data-flux-control]]:grid-cols-[1fr_auto] has-[[data-flux-control]~[data-flux-label]]:grid-cols-[auto_1fr] [&amp;&gt;[data-flux-control]~[data-flux-description]]:row-start-2 [&amp;&gt;[data-flux-control]~[data-flux-description]]:col-start-2 [&amp;&gt;[data-flux-control]~[data-flux-error]]:col-span-2 [&amp;&gt;[data-flux-control]~[data-flux-error]]:mt-1 [&amp;&gt;[data-flux-label]~[data-flux-control]]:row-start-1 [&amp;&gt;[data-flux-label]~[data-flux-control]]:col-start-2" data-flux-field>
+    <ui-radio class="flex size-[1.125rem] rounded-full mt-px outline-offset-2" value="alafasy" label="Mishary al-Afasy" data-flux-control data-flux-radio tabindex="-1">
+        <div class="shrink-0 size-[1.125rem] rounded-full text-sm text-zinc-700 dark:text-zinc-800 shadow-xs [ui-radio[disabled]_&amp;]:opacity-75 [ui-radio[data-checked][disabled]_&amp;]:opacity-50 [ui-radio[disabled]_&amp;]:shadow-none [ui-radio[data-checked]_&amp;]:shadow-none flex justify-center items-center [ui-radio[data-checked]_&amp;&gt;div]:block border border-zinc-300 dark:border-white/10 [ui-radio[disabled]_&amp;]:border-zinc-200 dark:[ui-radio[disabled]_&amp;]:border-white/5 [ui-radio[data-checked]_&amp;]:border-transparent data-indeterminate:border-transparent [ui-radio[data-checked]_&amp;]:[ui-radio[disabled]_&amp;]:border-transparent data-indeterminate:border-transparent [print-color-adjust:exact] bg-white dark:bg-white/10 [ui-radio[data-checked]_&amp;]:bg-[var(--color-accent)] hover:[ui-radio[data-checked]_&amp;]:bg-(--color-accent) focus:[ui-radio[data-checked]_&amp;]:bg-(--color-accent)" data-flux-radio-indicator>
+    <div class="hidden size-2 rounded-full bg-[var(--color-accent-foreground)]"></div>
+</div>
+    </ui-radio>
+
+                    <ui-label class="inline-flex items-center text-sm font-medium  [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white [&amp;:has([data-flux-label-trailing])]:flex" data-flux-label>
+    Mishary al-Afasy
+
+    
+    
+    </ui-label>
+        
+        
+                    <div role="alert" aria-live="polite" aria-atomic="true" class="mt-3 text-sm font-medium text-red-500 dark:text-red-400 hidden" data-flux-error>
+    </div>
+</ui-field>
+
+                                  <ui-field class="min-w-0 [&amp;:not(:has([data-flux-field])):has([data-flux-control][disabled])&gt;[data-flux-label]]:opacity-50 [&amp;:has(&gt;[data-flux-radio-group][disabled])&gt;[data-flux-label]]:opacity-50 [&amp;:has(&gt;[data-flux-checkbox-group][disabled])&gt;[data-flux-label]]:opacity-50 grid gap-x-3 gap-y-1.5 has-[[data-flux-label]~[data-flux-control]]:grid-cols-[1fr_auto] has-[[data-flux-control]~[data-flux-label]]:grid-cols-[auto_1fr] [&amp;&gt;[data-flux-control]~[data-flux-description]]:row-start-2 [&amp;&gt;[data-flux-control]~[data-flux-description]]:col-start-2 [&amp;&gt;[data-flux-control]~[data-flux-error]]:col-span-2 [&amp;&gt;[data-flux-control]~[data-flux-error]]:mt-1 [&amp;&gt;[data-flux-label]~[data-flux-control]]:row-start-1 [&amp;&gt;[data-flux-label]~[data-flux-control]]:col-start-2" data-flux-field>
+    <ui-radio class="flex size-[1.125rem] rounded-full mt-px outline-offset-2" value="husary" label="Mahmoud Khalil al-Husary" data-flux-control data-flux-radio tabindex="-1">
+        <div class="shrink-0 size-[1.125rem] rounded-full text-sm text-zinc-700 dark:text-zinc-800 shadow-xs [ui-radio[disabled]_&amp;]:opacity-75 [ui-radio[data-checked][disabled]_&amp;]:opacity-50 [ui-radio[disabled]_&amp;]:shadow-none [ui-radio[data-checked]_&amp;]:shadow-none flex justify-center items-center [ui-radio[data-checked]_&amp;&gt;div]:block border border-zinc-300 dark:border-white/10 [ui-radio[disabled]_&amp;]:border-zinc-200 dark:[ui-radio[disabled]_&amp;]:border-white/5 [ui-radio[data-checked]_&amp;]:border-transparent data-indeterminate:border-transparent [ui-radio[data-checked]_&amp;]:[ui-radio[disabled]_&amp;]:border-transparent data-indeterminate:border-transparent [print-color-adjust:exact] bg-white dark:bg-white/10 [ui-radio[data-checked]_&amp;]:bg-[var(--color-accent)] hover:[ui-radio[data-checked]_&amp;]:bg-(--color-accent) focus:[ui-radio[data-checked]_&amp;]:bg-(--color-accent)" data-flux-radio-indicator>
+    <div class="hidden size-2 rounded-full bg-[var(--color-accent-foreground)]"></div>
+</div>
+    </ui-radio>
+
+                    <ui-label class="inline-flex items-center text-sm font-medium  [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white [&amp;:has([data-flux-label-trailing])]:flex" data-flux-label>
+    Mahmoud Khalil al-Husary
+
+    
+    
+    </ui-label>
+        
+        
+                    <div role="alert" aria-live="polite" aria-atomic="true" class="mt-3 text-sm font-medium text-red-500 dark:text-red-400 hidden" data-flux-error>
+    </div>
+</ui-field>
+
+                                  <ui-field class="min-w-0 [&amp;:not(:has([data-flux-field])):has([data-flux-control][disabled])&gt;[data-flux-label]]:opacity-50 [&amp;:has(&gt;[data-flux-radio-group][disabled])&gt;[data-flux-label]]:opacity-50 [&amp;:has(&gt;[data-flux-checkbox-group][disabled])&gt;[data-flux-label]]:opacity-50 grid gap-x-3 gap-y-1.5 has-[[data-flux-label]~[data-flux-control]]:grid-cols-[1fr_auto] has-[[data-flux-control]~[data-flux-label]]:grid-cols-[auto_1fr] [&amp;&gt;[data-flux-control]~[data-flux-description]]:row-start-2 [&amp;&gt;[data-flux-control]~[data-flux-description]]:col-start-2 [&amp;&gt;[data-flux-control]~[data-flux-error]]:col-span-2 [&amp;&gt;[data-flux-control]~[data-flux-error]]:mt-1 [&amp;&gt;[data-flux-label]~[data-flux-control]]:row-start-1 [&amp;&gt;[data-flux-label]~[data-flux-control]]:col-start-2" data-flux-field>
+    <ui-radio class="flex size-[1.125rem] rounded-full mt-px outline-offset-2" value="hudhaify" label="Ali al-Hudhaify" data-flux-control data-flux-radio tabindex="-1">
+        <div class="shrink-0 size-[1.125rem] rounded-full text-sm text-zinc-700 dark:text-zinc-800 shadow-xs [ui-radio[disabled]_&amp;]:opacity-75 [ui-radio[data-checked][disabled]_&amp;]:opacity-50 [ui-radio[disabled]_&amp;]:shadow-none [ui-radio[data-checked]_&amp;]:shadow-none flex justify-center items-center [ui-radio[data-checked]_&amp;&gt;div]:block border border-zinc-300 dark:border-white/10 [ui-radio[disabled]_&amp;]:border-zinc-200 dark:[ui-radio[disabled]_&amp;]:border-white/5 [ui-radio[data-checked]_&amp;]:border-transparent data-indeterminate:border-transparent [ui-radio[data-checked]_&amp;]:[ui-radio[disabled]_&amp;]:border-transparent data-indeterminate:border-transparent [print-color-adjust:exact] bg-white dark:bg-white/10 [ui-radio[data-checked]_&amp;]:bg-[var(--color-accent)] hover:[ui-radio[data-checked]_&amp;]:bg-(--color-accent) focus:[ui-radio[data-checked]_&amp;]:bg-(--color-accent)" data-flux-radio-indicator>
+    <div class="hidden size-2 rounded-full bg-[var(--color-accent-foreground)]"></div>
+</div>
+    </ui-radio>
+
+                    <ui-label class="inline-flex items-center text-sm font-medium  [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white [&amp;:has([data-flux-label-trailing])]:flex" data-flux-label>
+    Ali al-Hudhaify
+
+    
+    
+    </ui-label>
+        
+        
+                    <div role="alert" aria-live="polite" aria-atomic="true" class="mt-3 text-sm font-medium text-red-500 dark:text-red-400 hidden" data-flux-error>
+    </div>
+</ui-field>
+
+                                  <ui-field class="min-w-0 [&amp;:not(:has([data-flux-field])):has([data-flux-control][disabled])&gt;[data-flux-label]]:opacity-50 [&amp;:has(&gt;[data-flux-radio-group][disabled])&gt;[data-flux-label]]:opacity-50 [&amp;:has(&gt;[data-flux-checkbox-group][disabled])&gt;[data-flux-label]]:opacity-50 grid gap-x-3 gap-y-1.5 has-[[data-flux-label]~[data-flux-control]]:grid-cols-[1fr_auto] has-[[data-flux-control]~[data-flux-label]]:grid-cols-[auto_1fr] [&amp;&gt;[data-flux-control]~[data-flux-description]]:row-start-2 [&amp;&gt;[data-flux-control]~[data-flux-description]]:col-start-2 [&amp;&gt;[data-flux-control]~[data-flux-error]]:col-span-2 [&amp;&gt;[data-flux-control]~[data-flux-error]]:mt-1 [&amp;&gt;[data-flux-label]~[data-flux-control]]:row-start-1 [&amp;&gt;[data-flux-label]~[data-flux-control]]:col-start-2" data-flux-field>
+    <ui-radio class="flex size-[1.125rem] rounded-full mt-px outline-offset-2" value="muaiqly" label="Maher al-Muaiqly" data-flux-control data-flux-radio tabindex="-1">
+        <div class="shrink-0 size-[1.125rem] rounded-full text-sm text-zinc-700 dark:text-zinc-800 shadow-xs [ui-radio[disabled]_&amp;]:opacity-75 [ui-radio[data-checked][disabled]_&amp;]:opacity-50 [ui-radio[disabled]_&amp;]:shadow-none [ui-radio[data-checked]_&amp;]:shadow-none flex justify-center items-center [ui-radio[data-checked]_&amp;&gt;div]:block border border-zinc-300 dark:border-white/10 [ui-radio[disabled]_&amp;]:border-zinc-200 dark:[ui-radio[disabled]_&amp;]:border-white/5 [ui-radio[data-checked]_&amp;]:border-transparent data-indeterminate:border-transparent [ui-radio[data-checked]_&amp;]:[ui-radio[disabled]_&amp;]:border-transparent data-indeterminate:border-transparent [print-color-adjust:exact] bg-white dark:bg-white/10 [ui-radio[data-checked]_&amp;]:bg-[var(--color-accent)] hover:[ui-radio[data-checked]_&amp;]:bg-(--color-accent) focus:[ui-radio[data-checked]_&amp;]:bg-(--color-accent)" data-flux-radio-indicator>
+    <div class="hidden size-2 rounded-full bg-[var(--color-accent-foreground)]"></div>
+</div>
+    </ui-radio>
+
+                    <ui-label class="inline-flex items-center text-sm font-medium  [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white [&amp;:has([data-flux-label-trailing])]:flex" data-flux-label>
+    Maher al-Muaiqly
+
+    
+    
+    </ui-label>
+        
+        
+                    <div role="alert" aria-live="polite" aria-atomic="true" class="mt-3 text-sm font-medium text-red-500 dark:text-red-400 hidden" data-flux-error>
+    </div>
+</ui-field>
+
+                                  <ui-field class="min-w-0 [&amp;:not(:has([data-flux-field])):has([data-flux-control][disabled])&gt;[data-flux-label]]:opacity-50 [&amp;:has(&gt;[data-flux-radio-group][disabled])&gt;[data-flux-label]]:opacity-50 [&amp;:has(&gt;[data-flux-checkbox-group][disabled])&gt;[data-flux-label]]:opacity-50 grid gap-x-3 gap-y-1.5 has-[[data-flux-label]~[data-flux-control]]:grid-cols-[1fr_auto] has-[[data-flux-control]~[data-flux-label]]:grid-cols-[auto_1fr] [&amp;&gt;[data-flux-control]~[data-flux-description]]:row-start-2 [&amp;&gt;[data-flux-control]~[data-flux-description]]:col-start-2 [&amp;&gt;[data-flux-control]~[data-flux-error]]:col-span-2 [&amp;&gt;[data-flux-control]~[data-flux-error]]:mt-1 [&amp;&gt;[data-flux-label]~[data-flux-control]]:row-start-1 [&amp;&gt;[data-flux-label]~[data-flux-control]]:col-start-2" data-flux-field>
+    <ui-radio class="flex size-[1.125rem] rounded-full mt-px outline-offset-2" value="ayyoub" label="Muhammad Ayyoub" data-flux-control data-flux-radio tabindex="-1">
+        <div class="shrink-0 size-[1.125rem] rounded-full text-sm text-zinc-700 dark:text-zinc-800 shadow-xs [ui-radio[disabled]_&amp;]:opacity-75 [ui-radio[data-checked][disabled]_&amp;]:opacity-50 [ui-radio[disabled]_&amp;]:shadow-none [ui-radio[data-checked]_&amp;]:shadow-none flex justify-center items-center [ui-radio[data-checked]_&amp;&gt;div]:block border border-zinc-300 dark:border-white/10 [ui-radio[disabled]_&amp;]:border-zinc-200 dark:[ui-radio[disabled]_&amp;]:border-white/5 [ui-radio[data-checked]_&amp;]:border-transparent data-indeterminate:border-transparent [ui-radio[data-checked]_&amp;]:[ui-radio[disabled]_&amp;]:border-transparent data-indeterminate:border-transparent [print-color-adjust:exact] bg-white dark:bg-white/10 [ui-radio[data-checked]_&amp;]:bg-[var(--color-accent)] hover:[ui-radio[data-checked]_&amp;]:bg-(--color-accent) focus:[ui-radio[data-checked]_&amp;]:bg-(--color-accent)" data-flux-radio-indicator>
+    <div class="hidden size-2 rounded-full bg-[var(--color-accent-foreground)]"></div>
+</div>
+    </ui-radio>
+
+                    <ui-label class="inline-flex items-center text-sm font-medium  [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white [&amp;:has([data-flux-label-trailing])]:flex" data-flux-label>
+    Muhammad Ayyoub
+
+    
+    
+    </ui-label>
+        
+        
+                    <div role="alert" aria-live="polite" aria-atomic="true" class="mt-3 text-sm font-medium text-red-500 dark:text-red-400 hidden" data-flux-error>
+    </div>
+</ui-field>
+    </ui-radio-group>
+            </div>
+
+            <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/5 dark:bg-white/10 h-px w-full my-6" data-flux-separator></div>
+
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-1" data-flux-heading><span data-t="Quran font">Quran font</span></div>
+            <div
+              x-data="{ font: $store.preferences.quranFont }"
+              x-init="$watch('font', (font) => $store.preferences.setQuranFont(font))"
+            >
+              <ui-radio-group class="block flex p-1 rounded-lg bg-zinc-800/5 dark:bg-white/10 h-10 p-1" x-model="font"  data-flux-radio-group-segmented>
+        <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="uthmani" data-flux-control data-flux-radio-segmented tabindex="-1">
+    
+    Uthmani
+
+    </ui-radio>
+                <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="indopak" data-flux-control data-flux-radio-segmented tabindex="-1">
+    
+    IndoPak
+
+    </ui-radio>
+                <ui-radio class="flex whitespace-nowrap flex-1 justify-center items-center gap-2 rounded-md data-checked:shadow-xs text-sm font-medium text-zinc-600 hover:text-zinc-800 dark:hover:text-white dark:text-white/70 data-checked:text-zinc-800 dark:data-checked:text-white data-checked:bg-white dark:data-checked:bg-white/20 [&amp;[disabled]]:opacity-50 dark:[&amp;[disabled]]:opacity-75 [&amp;[disabled]]:cursor-default [&amp;[disabled]]:pointer-events-none px-4" value="amiri" data-flux-control data-flux-radio-segmented tabindex="-1">
+    
+    Amiri
+
+    </ui-radio>
+    </ui-radio-group>
+            </div>
+          </div>
+        </div>
+
+        
+        <div
+          x-show="tab === 'browser'"
+          x-cloak
+        >
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span data-t="This browser">This browser</span></div>
+          <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    <span data-t="There are no accounts: every setting is kept in this browser alone.">There are no accounts: every setting is kept in this browser alone.</span>
+</div>
+
+          <div class="mt-5 w-full max-w-lg">
+            <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-500 text-white  shadow-[inset_0px_1px_var(--color-red-500),inset_0px_2px_--theme(--color-white/.15)] dark:shadow-none [[data-flux-button-group]_&amp;]:border-e [:is([data-flux-button-group]&gt;&amp;:last-child,_[data-flux-button-group]_:last-child&gt;&amp;)]:border-e-0 [[data-flux-button-group]_&amp;]:border-red-600 dark:[[data-flux-button-group]_&amp;]:border-red-900/25" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-data="" x-on:click="$store.preferences.reset()" data-test="settings-reset">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M13.836 2.477a.75.75 0 0 1 .75.75v3.182a.75.75 0 0 1-.75.75h-3.182a.75.75 0 0 1 0-1.5h1.37l-.84-.841a4.5 4.5 0 0 0-7.08.932.75.75 0 0 1-1.3-.75 6 6 0 0 1 9.44-1.242l.842.84V3.227a.75.75 0 0 1 .75-.75Zm-.911 7.5A.75.75 0 0 1 13.199 11a6 6 0 0 1-9.44 1.241l-.84-.84v1.371a.75.75 0 0 1-1.5 0V9.591a.75.75 0 0 1 .75-.75H5.35a.75.75 0 0 1 0 1.5H3.98l.841.841a4.5 4.5 0 0 0 7.08-.932.75.75 0 0 1 1.025-.273Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span><span data-t="Forget my settings">Forget my settings</span></span>
+    </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+    </div>
 </body>
 </html>

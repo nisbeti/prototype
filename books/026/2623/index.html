@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../../"
+  data-section="books"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>الأربعون النووية</title>
   <link
-    rel="stylesheet"
-    href="../../../assets/reader.css"
+    rel="icon"
+    href="../../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,487 +70,400 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../../assets/reader.js"
+    src="../../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../../books.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Books</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
 
-  <main class="site-main">
-      <div class="book-head">
-    
-    <div class="book-head-text">
-      <h1
-        class="page-title"
-        lang="ar"
-        dir="rtl"
-      >
-        الأربعون النووية
-      </h1>
-      <p class="muted translated-only" dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Arba&#039;un al-Nawawiyya (The Forty Hadith of al-Nawawi)&quot;,&quot;es&quot;:&quot;Al-Arba&#039;un al-Nawawiyya (Los cuarenta hadices de al-Nawawi)&quot;,&quot;fr&quot;:&quot;Al-Arba&#039;in al-Nawawiyya (Les quarante hadiths de Nawawi)&quot;,&quot;id&quot;:&quot;Al-Arba&#039;in An-Nawawiyah [Empat Puluh Hadis Nawawi]&quot;,&quot;ja&quot;:&quot;アル＝アルバイーン・アン＝ナワウィーヤ（ナワウィーの四十の伝承）&quot;,&quot;ru&quot;:&quot;Сорок хадисов ан-Навави&quot;,&quot;sw&quot;:&quot;Al-Arba&#039;un al-Nawawiyya (Hadithi Arobaini za Nawawi)&quot;,&quot;tr&quot;:&quot;el-Erbaʿûn en-Neveviyye (Nevevî’nin Kırk Hadisi)&quot;,&quot;ur&quot;:&quot;الأربعون النووية (نووی کی چالیس احادیث)&quot;,&quot;zh&quot;:&quot;《四十段圣训》&quot;}" data-original=""></p>
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <div
+            class="flex h-56 w-full shrink-0 items-center justify-center rounded-sm border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+          >
+            <svg class="shrink-0 [:where(&amp;)]:size-6 size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+</svg>
 
-      <p class="credits">
-                  <a
-            href="../../../authors/002/271.html"
-            lang="ar"
-          >
-            النووي
-          </a>
-                          <span class="muted">(<span data-t="d. :year" data-r="{&quot;year&quot;:676}">d. 676</span>)</span>
-                          <button
-            type="button"
-            class="button small"
-            data-open-card="author-card"
-          >
-            <span data-t="About the author">About the author</span>
-          </button>
-              </p>
-
-              <p class="credits">
-          <span data-t="Publisher">Publisher</span>:
-          <a
-            href="../../../publishers/5321/532176.html"
-            lang="ar"
-          >
-            دار المنهاج للنشر والتوزيع، لبنان - بيروت
-          </a>
-        </p>
-      
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="../../../books/026/2623/1.html#p1"
-          >
-            <span data-t="Read">Read</span>
-          </a>
-                <span class="muted">
-          <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;81&quot;}" data-n="81">81 pages</span>
-                  </span>
-      </p>
-    </div>
-  </div>
-
-      <template id="author-card">
-      <div
-        class="card-text"
-        lang="ar"
-        dir="rtl"
-      >
+                  </div>
         
+        <div class="mt-4 flex flex-col gap-2">
+                      <a href="../../../books/026/2623/1.html#p1" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-[var(--color-accent)] hover:bg-[color-mix(in_oklab,_var(--color-accent),_transparent_10%)] text-[var(--color-accent-foreground)] border border-black/10 dark:border-0 shadow-[inset_0px_1px_--theme(--color-white/.2)] [[data-flux-button-group]_&amp;]:border-e-0 [:is([data-flux-button-group]&gt;&amp;:last-child,_[data-flux-button-group]_:last-child&gt;&amp;)]:border-e-[1px] dark:[:is([data-flux-button-group]&gt;&amp;:last-child,_[data-flux-button-group]_:last-child&gt;&amp;)]:border-e-0 [:is([data-flux-button-group]&gt;&amp;:not(:first-child),_[data-flux-button-group]_:not(:first-child)&gt;&amp;)]:border-s-[1px]! [:is([data-flux-button-group]&gt;&amp;:not(:first-child),_[data-flux-button-group]_:not(:first-child)&gt;&amp;)]:border-s-[color-mix(in_srgb,var(--color-accent-foreground),transparent_85%)]" data-flux-group-target="data-flux-group-target" data-test="start-reading">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M7.25 3.688a8.035 8.035 0 0 0-4.872-.523A.48.48 0 0 0 2 3.64v7.994c0 .345.342.588.679.512a6.02 6.02 0 0 1 4.571.81V3.688ZM8.75 12.956a6.02 6.02 0 0 1 4.571-.81c.337.075.679-.167.679-.512V3.64a.48.48 0 0 0-.378-.475 8.034 8.034 0 0 0-4.872.523v9.268Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Read</span>
+    </a>
+          
+                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" dir="auto" lang="ar" data-flux-heading>الأربعون النووية</h1>
+
+                <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Arba&#039;un al-Nawawiyya (The Forty Hadith of al-Nawawi)&quot;,&quot;es&quot;:&quot;Al-Arba&#039;un al-Nawawiyya (Los cuarenta hadices de al-Nawawi)&quot;,&quot;fr&quot;:&quot;Al-Arba&#039;in al-Nawawiyya (Les quarante hadiths de Nawawi)&quot;,&quot;id&quot;:&quot;Al-Arba&#039;in An-Nawawiyah [Empat Puluh Hadis Nawawi]&quot;,&quot;ja&quot;:&quot;アル＝アルバイーン・アン＝ナワウィーヤ（ナワウィーの四十の伝承）&quot;,&quot;ru&quot;:&quot;Сорок хадисов ан-Навави&quot;,&quot;sw&quot;:&quot;Al-Arba&#039;un al-Nawawiyya (Hadithi Arobaini za Nawawi)&quot;,&quot;tr&quot;:&quot;el-Erbaʿûn en-Neveviyye (Nevevî’nin Kırk Hadisi)&quot;,&quot;ur&quot;:&quot;الأربعون النووية (نووی کی چالیس احادیث)&quot;,&quot;zh&quot;:&quot;《四十段圣训》&quot;}" data-original=""></span></p>
+                  <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1 flex flex-wrap items-baseline gap-x-2" data-flux-subheading>
+    <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../authors/002/271.html" lang="ar" data-flux-link >النووي</a>                        <bdi class="text-zinc-400">
+              (<span data-t="d. :year" data-r="{&quot;year&quot;:&quot;676 AH&quot;}">d. 676 AH</span>)
+            </bdi>
+</div>
+        
+                  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span>Publisher:</span>
+            <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../publishers/5321/532176.html" lang="ar" data-flux-link >دار المنهاج للنشر والتوزيع، لبنان - بيروت</a></p>        
+        <div class="mt-3 flex flex-wrap gap-2">
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50">
+        <span lang="ar">الرقائق والآداب والأذكار</span>
+    </div>
+                    <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50">
+        <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;81&quot;}" data-n="81">81 pages</span>
+    </div>
+                  </div>
+
+                  <div
+            class="mt-4"
+            data-test="other-editions"
+          >
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Other editions</div>
+            <ul class="mt-1 space-y-1 text-sm">
+                              <li>
+                                      <span
+                      dir="auto"
+                      title="Not in this edition"
+                    >
+                      الأربعون النووية مع زيادات ابن رجب
+                    </span>
+                                                    </li>
+                          </ul>
+          </div>
+        
+        <div class="mt-6 grid grid-cols-1 gap-4 xl:grid-cols-2">
+                      <div class="min-w-0 rounded-xl border border-zinc-200 p-5 [overflow-wrap:anywhere] dark:border-zinc-700">
+              <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+              <dl
+  class="text-sm grid gap-x-6 gap-y-3 sm:grid-cols-[fit-content(12rem)_1fr]"
+  dir="auto"
+>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Title&quot;,&quot;es&quot;:&quot;Título&quot;,&quot;fr&quot;:&quot;Titre&quot;,&quot;id&quot;:&quot;Judul&quot;,&quot;ja&quot;:&quot;書名&quot;,&quot;ru&quot;:&quot;Название&quot;,&quot;sw&quot;:&quot;Jina la kitabu&quot;,&quot;tr&quot;:&quot;Kitap adı&quot;,&quot;ur&quot;:&quot;نام کتاب&quot;,&quot;zh&quot;:&quot;书名&quot;}" data-original="الكتاب">الكتاب</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Arba&#039;un al-Nawawiyya (The Forty Hadith of al-Nawawi)&quot;,&quot;es&quot;:&quot;Al-Arba&#039;un al-Nawawiyya (Los cuarenta hadices de al-Nawawi)&quot;,&quot;fr&quot;:&quot;Al-Arba&#039;in al-Nawawiyya (Les quarante hadiths de Nawawi)&quot;,&quot;id&quot;:&quot;Al-Arba&#039;in An-Nawawiyah [Empat Puluh Hadis Nawawi]&quot;,&quot;ja&quot;:&quot;アル＝アルバイーン・アン＝ナワウィーヤ（ナワウィーの四十の伝承）&quot;,&quot;ru&quot;:&quot;Сорок хадисов ан-Навави&quot;,&quot;sw&quot;:&quot;Al-Arba&#039;un al-Nawawiyya (Hadithi Arobaini za Nawawi)&quot;,&quot;tr&quot;:&quot;el-Erbaʿûn en-Neveviyye (Nevevî’nin Kırk Hadisi)&quot;,&quot;ur&quot;:&quot;الأربعون النووية (نووی کی چالیس احادیث)&quot;,&quot;zh&quot;:&quot;《四十段圣训》&quot;}" data-original="الأربعون النووية">الأربعون النووية</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Author&quot;,&quot;es&quot;:&quot;Autor&quot;,&quot;fr&quot;:&quot;Auteur&quot;,&quot;id&quot;:&quot;Penulis&quot;,&quot;ja&quot;:&quot;著者&quot;,&quot;ru&quot;:&quot;Автор&quot;,&quot;sw&quot;:&quot;Mwandishi&quot;,&quot;tr&quot;:&quot;Yazar&quot;,&quot;ur&quot;:&quot;مصنف&quot;,&quot;zh&quot;:&quot;作者&quot;}" data-original="المؤلف">المؤلف</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Abu Zakariyya Muhyi al-Din Yahya ibn Sharaf al-Nawawi (d. 676 AH)&quot;,&quot;es&quot;:&quot;Abu Zakariyya Muhyi al-Din Yahya ibn Sharaf al-Nawawi (m. 676 H)&quot;,&quot;fr&quot;:&quot;Abu Zakariya Muhyi al-Din Yahya ibn Sharaf al-Nawawi (mort en 676 H)&quot;,&quot;id&quot;:&quot;Abu Zakariya Muhyiddin Yahya bin Syaraf An-Nawawi (w. 676 H)&quot;,&quot;ja&quot;:&quot;アブー・ザカリヤー・ムヒー・アッディーン・ヤフヤー・イブン・シャラフ・アン＝ナワウィー（ヒジュラ暦676年没）&quot;,&quot;ru&quot;:&quot;Абу Закария Мухйи-д-Дин Яхья ибн Шараф ан-Навави (ум. 676 г. х.)&quot;,&quot;sw&quot;:&quot;Abu Zakariya Muhyi al-Din Yahya bin Sharaf al-Nawawi (alikufa 676H)&quot;,&quot;tr&quot;:&quot;Ebû Zekeriyyâ Muhyiddin Yahyâ b. Şeref en-Nevevî (ö. 676 H)&quot;,&quot;ur&quot;:&quot;أبو زكريا محيي الدين يحيى بن شرف النووي (ت ٦٧٦ھ)&quot;,&quot;zh&quot;:&quot;艾布·宰凯里雅·穆希丁·叶海亚·本·谢拉夫·脑威（卒于伊历676年）&quot;}" data-original="أبو زكريا محيي الدين يحيى بن شرف النووي (ت ٦٧٦هـ)">أبو زكريا محيي الدين يحيى بن شرف النووي (ت ٦٧٦هـ)</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Prepared by&quot;,&quot;es&quot;:&quot;Preparado por&quot;,&quot;fr&quot;:&quot;Préparé par&quot;,&quot;id&quot;:&quot;Disiapkan oleh&quot;,&quot;ja&quot;:&quot;編集&quot;,&quot;ru&quot;:&quot;Подготовил&quot;,&quot;sw&quot;:&quot;Imeandaliwa na&quot;,&quot;tr&quot;:&quot;Hazırlayan&quot;,&quot;ur&quot;:&quot;باہتمام&quot;,&quot;zh&quot;:&quot;整理&quot;}" data-original="عُنِيَ بِهِ">عُنِيَ بِهِ</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Qusay Muhammad Nawras al-Hallaq, Anwar ibn Abi Bakr al-Shaykhi&quot;,&quot;es&quot;:&quot;Qusay Muhammad Nawras al-Hallaq, Anwar ibn Abi Bakr al-Shaykhi&quot;,&quot;fr&quot;:&quot;Qusay Muhammad Nawras al-Hallaq, Anwar ibn Abi Bakr al-Shaykhi&quot;,&quot;id&quot;:&quot;Qusai Muhammad Nurs Al-Hallaq, Anwar bin Abi Bakr Asy-Syaikhi&quot;,&quot;ja&quot;:&quot;クサイ・ムハンマド・ヌールス・アル＝ハッラーク、アンワル・イブン・アビー・バクル・アッ＝シャイヒー&quot;,&quot;ru&quot;:&quot;Кусай Мухаммад Нурс аль-Халляк, Анвар ибн Аби Бакр аш-Шайхи&quot;,&quot;sw&quot;:&quot;Qusay Muhammad Nawras al-Hallaq, Anwar bin Abi Bakr al-Shaykhi&quot;,&quot;tr&quot;:&quot;Kusay Muhammed Nûres el-Hallâk, Enver b. Ebû Bekir eş-Şeyhî&quot;,&quot;zh&quot;:&quot;库赛·穆罕默德·努尔斯·哈拉格、艾奈尔·本·艾比·伯克尔·谢赫&quot;}" data-original="قصي محمد نورس الحلاق، أنور بن أبي بكر الشيخي">قصي محمد نورس الحلاق، أنور بن أبي بكر الشيخي</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Publisher&quot;,&quot;es&quot;:&quot;Editorial&quot;,&quot;fr&quot;:&quot;Éditeur&quot;,&quot;id&quot;:&quot;Penerbit&quot;,&quot;ja&quot;:&quot;出版社&quot;,&quot;ru&quot;:&quot;Издательство&quot;,&quot;sw&quot;:&quot;Mchapishaji&quot;,&quot;tr&quot;:&quot;Yayınevi&quot;,&quot;ur&quot;:&quot;ناشر&quot;,&quot;zh&quot;:&quot;出版社&quot;}" data-original="الناشر">الناشر</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar al-Minhaj lil-Nashr wa al-Tawzi, Lebanon - Beirut&quot;,&quot;es&quot;:&quot;Dar al-Minhaj li-l-Nashr wa-l-Tawzi, Líbano - Beirut&quot;,&quot;fr&quot;:&quot;Dar al-Minhaj lil-Nashr wa al-Tawzi, Liban - Beyrouth&quot;,&quot;id&quot;:&quot;Dar al-Minhaj li an-Nasyr wa at-Tauzi&#039;, Lebanon - Beirut&quot;,&quot;ja&quot;:&quot;ダール・アル＝ミンハージュ出版・販売、レバノン・ベイルート&quot;,&quot;ru&quot;:&quot;Дар аль-Минхадж ли-н-нашр ва-т-таузи‘, Ливан — Бейрут&quot;,&quot;sw&quot;:&quot;Dar al-Minhaj lil-Nashr wa al-Tawzi, Lebanon - Beirut&quot;,&quot;tr&quot;:&quot;Dar al-Minhaj lil-Nashr wa al-Tawzi, Lübnan - Beyrut&quot;,&quot;ur&quot;:&quot;دار المنهاج للنشر والتوزيع، لبنان - بیروت&quot;,&quot;zh&quot;:&quot;明道出版社，黎巴嫩—贝鲁特&quot;}" data-original="دار المنهاج للنشر والتوزيع، لبنان - بيروت">دار المنهاج للنشر والتوزيع، لبنان - بيروت</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Edition&quot;,&quot;es&quot;:&quot;Edición&quot;,&quot;fr&quot;:&quot;Édition&quot;,&quot;id&quot;:&quot;Cetakan&quot;,&quot;ja&quot;:&quot;版&quot;,&quot;ru&quot;:&quot;Издание&quot;,&quot;sw&quot;:&quot;Toleo&quot;,&quot;tr&quot;:&quot;Baskı&quot;,&quot;ur&quot;:&quot;طبع&quot;,&quot;zh&quot;:&quot;版次&quot;}" data-original="الطبعة">الطبعة</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;First, 1430 AH - 2009 CE&quot;,&quot;es&quot;:&quot;Primera, 1430 H - 2009&quot;,&quot;fr&quot;:&quot;Première, 1430 H - 2009&quot;,&quot;id&quot;:&quot;Pertama, 1430 H - 2009 M&quot;,&quot;ja&quot;:&quot;初版、ヒジュラ暦1430年／西暦2009年&quot;,&quot;ru&quot;:&quot;Первое, 1430 г. х. — 2009 г.&quot;,&quot;sw&quot;:&quot;La kwanza, 1430 H - 2009&quot;,&quot;tr&quot;:&quot;Birinci baskı, 1430 H - 2009&quot;,&quot;ur&quot;:&quot;پہلی، ١٤٣٠ ھ - ٢٠٠٩ء&quot;,&quot;zh&quot;:&quot;第一版，伊历1430年－公元2009年&quot;}" data-original="الأولى، ١٤٣٠ هـ - ٢٠٠٩ م">الأولى، ١٤٣٠ هـ - ٢٠٠٩ م</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Number of pages&quot;,&quot;es&quot;:&quot;Número de páginas&quot;,&quot;fr&quot;:&quot;Nombre de pages&quot;,&quot;id&quot;:&quot;Jumlah halaman&quot;,&quot;ja&quot;:&quot;ページ数&quot;,&quot;ru&quot;:&quot;Количество страниц&quot;,&quot;sw&quot;:&quot;Idadi ya kurasa&quot;,&quot;tr&quot;:&quot;Sayfa sayısı&quot;,&quot;ur&quot;:&quot;صفحات کی تعداد&quot;,&quot;zh&quot;:&quot;页数&quot;}" data-original="عدد الصفحات">عدد الصفحات</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;115&quot;,&quot;es&quot;:&quot;115&quot;,&quot;fr&quot;:&quot;115&quot;,&quot;id&quot;:&quot;115&quot;,&quot;ja&quot;:&quot;115&quot;,&quot;ru&quot;:&quot;115&quot;,&quot;sw&quot;:&quot;115&quot;,&quot;tr&quot;:&quot;115&quot;,&quot;zh&quot;:&quot;115&quot;}" data-original="١١٥">١١٥</span>
+          </dd>
+          <dd
+      class="min-w-0 sm:col-span-2 text-zinc-500 dark:text-zinc-400"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The page numbering matches the print edition&quot;,&quot;es&quot;:&quot;La paginación coincide con la edición impresa&quot;,&quot;fr&quot;:&quot;La pagination correspond à l&#039;édition imprimée&quot;,&quot;id&quot;:&quot;Penomoran halaman sesuai dengan edisi cetak&quot;,&quot;ja&quot;:&quot;ページ番号は印刷版と一致&quot;,&quot;ru&quot;:&quot;Нумерация страниц соответствует печатному изданию&quot;,&quot;sw&quot;:&quot;Kurasa zimehesabiwa sawa na nakala iliyochapishwa&quot;,&quot;tr&quot;:&quot;Sayfa numaraları basılı nüshaya uygundur&quot;,&quot;ur&quot;:&quot;صفحات کی ترقیم مطبوعہ نسخے کے مطابق ہے&quot;,&quot;zh&quot;:&quot;页码与纸质版一致&quot;}" data-original="ترقيم الكتاب موافق للمطبوع">ترقيم الكتاب موافق للمطبوع</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Author page&quot;,&quot;es&quot;:&quot;Página del autor&quot;,&quot;fr&quot;:&quot;Page de l&#039;auteur&quot;,&quot;id&quot;:&quot;Halaman penulis&quot;,&quot;ja&quot;:&quot;著者ページ&quot;,&quot;ru&quot;:&quot;Страница автора&quot;,&quot;sw&quot;:&quot;Ukurasa wa mwandishi&quot;,&quot;tr&quot;:&quot;Yazar sayfası&quot;,&quot;ur&quot;:&quot;مصنف کا صفحہ&quot;,&quot;zh&quot;:&quot;作者页面&quot;}" data-original="صفحة المؤلف">صفحة المؤلف</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;al-Nawawi&quot;,&quot;es&quot;:&quot;Al-Nawawi&quot;,&quot;fr&quot;:&quot;Al-Nawawi&quot;,&quot;id&quot;:&quot;An-Nawawi&quot;,&quot;ja&quot;:&quot;アン＝ナワウィー&quot;,&quot;ru&quot;:&quot;ан-Навави&quot;,&quot;sw&quot;:&quot;Al-Nawawi&quot;,&quot;tr&quot;:&quot;Nevevî&quot;,&quot;zh&quot;:&quot;脑威&quot;}" data-original="النووي">النووي</span>
+          </dd>
+  </dl>
+            </div>
+          
+                      <div class="min-w-0 rounded-xl border border-zinc-200 p-5 [overflow-wrap:anywhere] dark:border-zinc-700">
+              <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>About the author</div>
+              <div class="max-h-96 overflow-y-auto text-sm leading-relaxed text-zinc-800 dark:text-zinc-100">
+                                  
+                  <div class="whitespace-pre-line" dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Nawawi (631–676 AH = 1233–1277 CE)\nA leading scholar of jurisprudence and hadith. He was born and died in Nawa (a village in Hawran, Syria), to which his name refers. He studied in Damascus and lived there for a long time.\n(Among his books)\n• Tahdhib al-Asma&#039; wa al-Lughat (A Guide to Names and Vocabulary) — published\n• Minhaj al-Talibin (The Path of the Students) — published\n• Al-Daqa&#039;iq (The Subtleties) — published\n• Tashih al-Tanbih (Correction of al-Tanbih) — published; on Shafi&#039;i jurisprudence. I have seen an old manuscript of it titled al-Tanbih ala ma fi al-Tanbih (Notes on What Is in al-Tanbih)\n• Al-Minhaj fi Sharh Sahih Muslim (The Guide to the Commentary on Sahih Muslim) — published in five volumes\n• Al-Taqrib wa al-Taysir (Conciseness and Facilitation) — published; on hadith terminology\n• Hilyat al-Abrar (The Adornment of the Righteous) — published; known as al-Adhkar al-Nawawiyya (Nawawi&#039;s Remembrances)\n• Khulasat al-Ahkam min Muhimmat al-Sunan wa Qawa&#039;id al-Islam (A Summary of Rulings from Important Sunan Reports and the Principles of Islam) — manuscript [published]\n• Riyad al-Salihin min Kalam Sayyid al-Mursalin (The Gardens of the Righteous, from the Words of the Master of the Messengers) — published\n• Bustan al-Arifin (The Garden of the Gnostics) — published\n• Al-Idah (The Clarification) — published; on pilgrimage rites\n• Sharh al-Muhadhdhab by al-Shirazi (Commentary on al-Muhadhdhab) — published\n• Rawdat al-Talibin (The Garden of the Students) — manuscript; jurisprudence [published]\n• Al-Tibyan fi Adab Hamalat al-Qur&#039;an (Clarification of the Etiquette of Those Who Carry the Quran) — published\n• Al-Maqasid (The Aims) — published; a treatise on the affirmation of God&#039;s oneness\n• Mukhtasar Tabaqat al-Shafi&#039;iyya by Ibn al-Salah (Abridgment of the Generations of Shafi&#039;i Scholars) — manuscript\n• Manaqib al-Shafi&#039;i (The Virtues of al-Shafi&#039;i) — manuscript\n• Al-Manthurat (Collected Items) — published; jurisprudence, comprising his legal opinions\n• Mukhtasar al-Tibyan (Abridgment of al-Tibyan) — manuscript; exhortations. The original work is his.\n• Manar al-Huda (The Beacon of Guidance) — published; on pausing and beginning in Quran recitation, and tajwid\n• Al-Isharat ila Bayan Asma&#039; al-Mubhamat (Indications for Identifying Unspecified Names) — published; a treatise\n• Al-Arba&#039;un Hadithan al-Nawawiyya (Nawawi&#039;s Forty Hadith) — published. Many scholars have written commentaries on it.\n• Separate biographical treatises about him were written, one by al-Suhaymi, another by al-Sakhawi, and a third, al-Minhaj al-Sawi by al-Suyuti, which survives in two manuscripts; another by al-Sakhawi was printed (as Ubayd informed us).\n• In Ibn Qadi Shuhba&#039;s Tabaqat, al-Isnawi says: Two works are attributed to him that are not his. One is a concise abridgment called al-Nihaya fi Ikhtisar al-Ghaya (The End: An Abridgment of al-Ghaya), a manuscript in the Zahiriyya Library. The other is Aghalit ala al-Wasit (Errors in al-Wasit), which discusses fifty points of jurisprudence, some of them related to hadith. Ibn al-Rif&#039;a attributed this work to him in his commentary on al-Wasit, so beware of the attribution: it belongs to one of the people of Hama. This is why his student Ibn al-Attar did not mention it when listing his works, despite giving a comprehensive account.\n• Ibn Mar&#039;i gave his full lineage in al-Futuhat al-Wahbiyya (The Divinely Bestowed Conquests) and said: “Marri,” with a damma on the mim and a kasra on the ra, as he found it vowelled in Nawawi&#039;s own handwriting; “al-Hizami,” with a kasra on the unpointed ha and a dotted zay; and “al-Nawawi,” referring to Nawa. It may also be written with an alif as “Nawawi.” I say: he himself wrote it without the alif; see a sample of his handwriting (1).\n_________\n(1) Tabaqat al-Shafi&#039;iyya by al-Subki, 5:165; Tabaqat al-Shafi&#039;iyya by Ibn Qadi Shuhba — manuscript; al-Nu&#039;aymi, 1:24, which gives his death as 677; al-Nujum al-Zahira, 7:278; Brock, 1:469 (394), S 1:680; Adab al-Lugha, 3:242; al-Tibyan — manuscript; Miftah al-Sa&#039;ada, 1:398; al-Taymuriyya, 3:307; Hadi al-Mustarshidin, 471 and 248; Huart; Ibn al-Furat, 7:108; al-Asifiyya, 1:521 and 2:138, 230; Bankipore, 13:80; and al-Futuhat al-Wahbiyya by Ibrahim ibn Mar&#039;i al-Shabarkhiti.\nQuoted from al-A&#039;lam by al-Zirikli [with additions in square brackets]&quot;,&quot;es&quot;:&quot;Al-Nawawi (631 - 676 H = 1233 - 1277)\nErudito destacado en derecho islámico y hadiz. Nació y murió en Nawa, una de las localidades de Haurán, en Siria; de allí procede su nisba. Estudió en Damasco, donde residió durante largo tiempo.\n(Algunas de sus obras)\n• Tahdhib al-Asma wa al-Lughat [Depuración de los nombres y las lenguas] - impreso\n• Minhaj al-Talibin - impreso\n• Al-Daqa&#039;iq - impreso\n• Tashih al-Tanbih - impreso; sobre derecho shafií. He visto un antiguo manuscrito suyo titulado Al-Tanbih ala ma fi al-Tanbih [Advertencia sobre lo que contiene Al-Tanbih].\n• Al-Minhaj fi Sharh Sahih Muslim - impreso en cinco volúmenes\n• Al-Taqrib wa al-Taysir - impreso; sobre terminología del hadiz\n• Hilyat al-Abrar - impreso; conocido como Al-Adhkar al-Nawawiyya\n• Khulasat al-Ahkam min Muhimmat al-Sunan wa Qawaid al-Islam - manuscrito [impreso]\n• Riyad al-Salihin min Kalam Sayyid al-Mursalin - impreso\n• Bustan al-Arifin - impreso\n• Al-Idah - impreso; sobre los ritos de peregrinación\n• Sharh al-Muhadhdhab de al-Shirazi - impreso\n• Rawdat al-Talibin - manuscrito; derecho islámico [impreso]\n• Al-Tibyan fi Adab Hamalat al-Quran - impreso\n• Al-Maqasid - impreso; tratado sobre la unicidad de Allah\n• Mukhtasar Tabaqat al-Shafiiyya de Ibn al-Salah - manuscrito\n• Manaqib al-Shafii - manuscrito\n• Al-Manthurat - impreso; derecho islámico, libro que reúne sus dictámenes jurídicos\n• Mukhtasar al-Tibyan - manuscrito; exhortaciones. El original es suyo.\n• Manar al-Huda - impreso; sobre las pausas y los comienzos de la recitación, y la recitación coránica\n• Al-Isharat ila Bayan Asma al-Mubhamat - impreso; tratado\n• Al-Arbaun Hadithan al-Nawawiyya - impreso; muchos autores escribieron comentarios sobre él.\n• Su biografía fue objeto de tratados independientes, uno de al-Suhaymi, otro de al-Sakhawi y un tercero, Al-Minhaj al-Sawi, de al-Suyuti, conservado en dos manuscritos; el tercero es de al-Sakhawi y está impreso (nos lo comunicó Ubayd).\n• En Tabaqat Ibn Qadi Shuhba se recoge lo siguiente: al-Isnawi dijo: Se le atribuyen dos obras que no son suyas. Una es un breve compendio llamado Al-Nihaya fi Ikhtisar al-Ghaya - manuscrito conservado en la biblioteca Zahiriyya; la otra, Aghalit ala al-Wasit, contiene cincuenta pasajes de derecho islámico y algunos de hadiz. Entre quienes se la atribuyen está Ibn al-Rif&#039;a, en su comentario de Al-Wasit. Téngase cuidado con ella: pertenece a uno de los habitantes de Hama. Por eso su discípulo Ibn al-Attar no la menciona cuando enumera sus obras, aunque las reseña exhaustivamente.\n• Ibn Mar&#039;i, en Al-Futuhat al-Wahbiyya, consignó su genealogía completa y dijo: «Marri», con damma en la mim y kasra en la ra, según aparece vocalizado de su puño y letra; «al-Hizami», con kasra en la ha sin punto diacrítico y con za con punto; y «al-Nawawi», nisba derivada de Nawa, que también puede escribirse con alif: «Nawawi». Digo: él la escribía sin alif. Véase una muestra de su caligrafía (1).\n_________\n(1) Tabaqat al-Shafiiyya de al-Subki, 5: 165; Tabaqat al-Shafiiyya de Ibn Qadi Shuhba - manuscrito; al-Na&#039;imi, 1: 24, donde se indica que murió en 677; al-Nujum al-Zahira, 7: 278; Brock, 1: 469 (394); S, 1: 680; Adab al-Lugha, 3: 242; Al-Tibyan - manuscrito; Miftah al-Saada, 1: 398; al-Taymuriyya, 3: 307; Hadi al-Mustarshidin, 471; Huart, 248; Ibn al-Furat, 7: 108; al-Asifiyya, 1: 521 y 2: 138, 230; Bankipore, 13: 80; y Al-Futuhat al-Wahbiyya, de Ibrahim ibn Mar&#039;i al-Shabarkhiti.\nTomado de: «Al-A&#039;lam», de al-Zirikli [con añadidos entre corchetes]&quot;,&quot;fr&quot;:&quot;Al-Nawawi (631 - 676 H = 1233 - 1277)\nÉminent spécialiste du droit musulman et du hadith. Il naquit et mourut à Nawa, l’un des villages du Hauran, en Syrie, dont il tire son nom. Il étudia à Damas, où il résida longtemps.\n(Parmi ses ouvrages)\n• Tahdhib al-Asma wa al-Lughat (Épuration des noms et des termes) — imprimé\n• Minhaj al-Talibin (La voie des étudiants) — imprimé\n• Al-Daqa&#039;iq (Les subtilités) — imprimé\n• Tashih al-Tanbih (Correction du Tanbih) — imprimé, sur le droit chaféite. J’en ai vu un ancien manuscrit intitulé Al-Tanbih ala ma fi al-Tanbih (Avertissement sur le contenu du Tanbih)\n• Al-Minhaj fi Sharh Sahih Muslim (La voie dans le commentaire du Sahih de Muslim) — imprimé en cinq volumes\n• Al-Taqrib wa al-Taysir (Introduction et simplification) — imprimé, sur la terminologie du hadith\n• Hilyat al-Abrar (La parure des vertueux) — imprimé, connu sous le titre Al-Adhkar al-Nawawiyya (Les invocations d’al-Nawawi)\n• Khulasat al-Ahkam min Muhimmat al-Sunan wa Qawaid al-Islam (Résumé des règles tirées des traditions importantes et des principes de l’islam) — manuscrit [imprimé]\n• Riyad al-Salihin min Kalam Sayyid al-Mursalin (Les jardins des vertueux, d’après les paroles du maître des envoyés) — imprimé\n• Bustan al-Arifin (Le jardin des gnostiques) — imprimé\n• Al-Idah (L’explication) — imprimé, sur les rites du pèlerinage\n• Sharh al-Muhadhdhab d’al-Shirazi — imprimé\n• Rawdat al-Talibin (Le jardin des étudiants) — manuscrit, droit musulman [imprimé]\n• Al-Tibyan fi Adab Hamalat al-Quran (Exposé sur les règles de bienséance des porteurs du Quran) — imprimé\n• Al-Maqasid (Les objectifs) — imprimé, épître sur l’unicité divine\n• Mukhtasar Tabaqat al-Shafi&#039;iyya d’Ibn al-Salah (Abrégé des générations de juristes chaféites) — manuscrit\n• Manaqib al-Shafi&#039;i (Les mérites d’al-Shafi&#039;i) — manuscrit\n• Al-Manthurat (Les textes épars) — imprimé, droit musulman ; recueil de ses avis juridiques\n• Mukhtasar al-Tibyan (Abrégé de l’Exposé) — manuscrit, exhortations ; l’ouvrage original est de lui\n• Manar al-Huda (Le phare de la bonne direction) — imprimé, sur les règles de pause et de reprise dans la récitation et le tajwid\n• Al-Isharat ila Bayan Asma al-Mubhamat (Indications pour élucider les noms obscurs) — imprimé, épître\n• Al-Arba&#039;un Hadithan al-Nawawiyya (Les quarante hadiths d’al-Nawawi) — imprimé ; de nombreux auteurs en ont rédigé des commentaires.\n• Sa biographie a fait l’objet de plusieurs épîtres : l’une par al-Suhaymi, une autre par al-Sakhawi, et une troisième, intitulée Al-Minhaj al-Sawi (La voie équilibrée), par al-Suyuti, qui existe en deux manuscrits ; la troisième est celle d’al-Sakhawi, publiée (information communiquée par Ubayd).\n• Dans Tabaqat Ibn Qadi Shuhba (Les générations de juristes, d’Ibn Qadi Shuhba), al-Isnawi dit que deux ouvrages lui sont attribués à tort. Le premier est un abrégé concis intitulé Al-Nihaya fi Ikhtisar al-Ghaya (L’aboutissement, abrégé de l’objectif) — manuscrit conservé à la bibliothèque Zahiriyya. Le second, Aghalit ala al-Wasit (Erreurs relevées dans le Wasit), comprend cinquante passages de droit musulman et quelques passages de hadith. Ibn al-Rif&#039;a le lui attribue également dans son commentaire du Wasit. Méfiez-vous de cette attribution : l’ouvrage est dû à l’un des Hamaouis. C’est pourquoi son disciple Ibn al-Attar ne l’a pas mentionné lorsqu’il a dressé la liste exhaustive de ses ouvrages.\n• Dans Al-Futuhat al-Wahbiyya (Les ouvertures accordées par faveur), Ibn Mar&#039;i donne sa généalogie complète et précise : « Marri », avec le mim vocalisé par une damma et le ra par une kasra, comme l’indique la notation de sa propre main ; « al-Hizami », avec le ha guttural vocalisé par une kasra et le za pointé ; et « al-Nawawi », nom de relation à Nawa, que l’on peut aussi écrire avec un alif : « Nawawi ». J’ajoute qu’il l’écrivait sans alif. Voir un spécimen de son écriture (1).\n_________\n(1) Tabaqat al-Shafi&#039;iyya d’al-Subki, 5:165 ; Tabaqat al-Shafi&#039;iyya d’Ibn Qadi Shuhba — manuscrit ; al-Nu&#039;aymi, 1:24, qui donne pour date de décès 677 ; al-Nujum al-Zahira, 7:278 ; Brock, 1:469 (394) ; S, 1:680 ; Adab al-Lugha, 3:242 ; al-Tibyan — manuscrit ; Miftah al-Sa&#039;ada, 1:398 ; al-Taymuriyya, 3:307 ; Hadi al-Mustarshidin, 471 ; Huart, 248 ; Ibn al-Furat, 7:108 ; al-Asifiyya, 1:521 et 2:138, 230 ; Bankipore, 13:80 ; et Al-Futuhat al-Wahbiyya d&#039;Ibrahim ibn Mar&#039;i al-Shabarkhiti.\nReproduit de Al-A&#039;lam d’al-Zirikli [avec des ajouts entre crochets]&quot;,&quot;id&quot;:&quot;An-Nawawi (631–676 H = 1233–1277 M)\nSeorang ulama terkemuka dalam fikih dan hadis. Ia lahir dan wafat di Nawa, salah satu desa di Hauran, Suriah; nisbahnya diambil dari nama tempat itu. Ia belajar di Damaskus dan menetap di sana dalam waktu yang lama.\n(Di antara kitab-kitabnya)\n• Tahdzib Al-Asma&#039; wa Al-Lughat [Penyempurnaan Nama-Nama dan Istilah-istilah] — telah dicetak\n• Minhaj Ath-Thalibin — telah dicetak\n• Ad-Daqa&#039;iq — telah dicetak\n• Tashih At-Tanbih — telah dicetak; tentang fikih mazhab Syafi‘i. Saya pernah melihat manuskrip tua karya ini dengan judul At-Tanbih ‘ala ma fi At-Tanbih [Penjelasan tentang Isi Kitab At-Tanbih]\n• Al-Minhaj fi Syarh Shahih Muslim — telah dicetak dalam lima jilid\n• At-Taqrib wa At-Taysir — telah dicetak; tentang istilah hadis\n• Hilyat Al-Abrar — telah dicetak; dikenal sebagai Al-Adzkar An-Nawawiyah\n• Khulashat Al-Ahkam min Muhimmat As-Sunan wa Qawa&#039;id Al-Islam [Ringkasan Hukum dari Hadis-Hadis Sunah yang Penting dan Kaidah-Kaidah Islam] — manuskrip [telah dicetak]\n• Riyadh Ash-Shalihin min Kalam Sayyid Al-Mursalin — telah dicetak\n• Bustan Al-‘Arifin — telah dicetak\n• Al-Idhah — telah dicetak; tentang manasik\n• Syarh Al-Muhadzdzab karya Asy-Syirazi — telah dicetak\n• Raudhat Ath-Thalibin — manuskrip; fikih [telah dicetak]\n• At-Tibyan fi Adab Hamalat Al-Qur&#039;an — telah dicetak\n• Al-Maqashid — telah dicetak; risalah tentang tauhid\n• Mukhtashar Thabaqat Asy-Syafi‘iyyah karya Ibnu Shalah — manuskrip\n• Manaqib Asy-Syafi‘i — manuskrip\n• Al-Mantsurat — telah dicetak; tentang fikih, berisi fatwa-fatwanya\n• Mukhtashar At-Tibyan — manuskrip; nasihat-nasihat. Karya aslinya juga miliknya\n• Manar Al-Huda — telah dicetak; tentang waqaf dan ibtida&#039;, serta tajwid\n• Al-Isyarat ila Bayan Asma&#039; Al-Mubhamat [Petunjuk untuk Menjelaskan Nama-Nama yang Samar] — telah dicetak; sebuah risalah\n• Al-Arba‘un Haditsan An-Nawawiyah — telah dicetak dan telah disyarah oleh banyak ulama.\n• Biografinya dibahas secara khusus dalam beberapa risalah. Salah satunya karya As-Suhaimi, yang kedua karya As-Sakhawi, dan yang ketiga berjudul Al-Minhaj As-Sawi karya As-Suyuthi, dalam dua manuskrip. Risalah ketiga karya As-Sakhawi telah dicetak (informasi ini disampaikan kepada kami oleh Ubaid).\n• Dalam Thabaqat Ibnu Qadhi Syuhbah, Asnawi berkata: “Ada dua karya yang dinisbatkan kepadanya, padahal bukan miliknya. Yang pertama ialah ringkasan ringkas berjudul An-Nihayah fi Ikhtishar Al-Ghayah — manuskrip di Azh-Zhahiriyah. Yang kedua ialah Aghalith ‘ala Al-Wasith, yang memuat lima puluh pembahasan fikih dan beberapa pembahasan hadis. Di antara orang yang menisbatkan karya ini kepadanya ialah Ibnu Ar-Rif‘ah dalam Syarh Al-Wasith. Waspadalah terhadapnya, karena karya itu milik salah seorang dari Hama. Oleh sebab itu, Ibnu Al-‘Aththar, muridnya, tidak menyebutkannya ketika merinci dan membahas tuntas karya-karyanya.”\n• Ibnu Mar‘i mencantumkan nasabnya secara lengkap dalam Al-Futuhat Al-Wahbiyyah. Ia berkata: “Marri, dengan dhammah pada mim dan kasrah pada ra, sebagaimana ditemukan tertulis dengan harakat pada tulisan tangannya. Al-Hizami, dengan kasrah pada ha&#039; tanpa titik dan zai bertitik. An-Nawawi, nisbah kepada Nawa; boleh juga ditulis dengan alif, ‘Nawawi’.” Saya berkata: Ia sendiri menulisnya tanpa alif. Lihat contoh tulisannya (1).\n_________\n(1) Thabaqat Asy-Syafi‘iyyah karya As-Subki, 5:165; Thabaqat Asy-Syafi‘iyyah karya Ibnu Qadhi Syuhbah — manuskrip; An-Nu‘aimi, 1:24, yang menyebutkan bahwa ia wafat pada 677; An-Nujum Az-Zahirah, 7:278; Brock, 1:469 (394); S, 1:680; Adab Al-Lughah, 3:242; At-Tibyan — manuskrip; Miftah As-Sa‘adah, 1:398; At-Taymuriyyah, 3:307; Hadi Al-Mustarsyidin, 471; Huart, 248; Ibnu Al-Furat, 7:108; Al-Ashifiyyah, 1:521 dan 2:138, 230; Bankipore, 13:80; serta Al-Futuhat Al-Wahbiyyah karya Ibrahim bin Mar‘i Asy-Syabarkhiti.\nDikutip dari Al-A‘lam karya Az-Zirikli [dengan tambahan di antara kurung siku]&quot;,&quot;ja&quot;:&quot;アン＝ナワウィー（ヒジュラ暦631–676年＝西暦1233–1277年）\n法学とハディースにおける大家。シリアのハウラーン地方の村ナワーで生まれ、同地で没した。ナワーにちなみ、この名で呼ばれる。ダマスカスで学び、長年そこに居住した。\n（著作）\n• タフズィーブ・アル＝アスマー・ワル＝ルガート（校訂刊本）\n• ミンハージュ・アッ＝ターリビーン（校訂刊本）\n• アッ＝ダカーイク（校訂刊本）\n• タスヒーフ・アッ＝タンビーフ（校訂刊本）。シャーフィイー派法学に関する著作。私はこれの古い写本を見たが、「アッ＝タンビーフに記された事柄についての注意」という題が付されていた。\n• アル＝ミンハージュ・フィー・シャルヒ・サヒーフ・ムスリム（校訂刊本、全5巻）\n• アッ＝タクリーブ・ワッ＝タイスィール（校訂刊本）。ハディース学の術語に関する著作。\n• ヒルヤト・アル＝アブラー（校訂刊本）。「アン＝ナワウィーのズィクル集」として知られる。\n• フラーサト・アル＝アフカーム・ミン・ムヒンマーティ・アッ＝スナン・ワ・カワーイディ・アル＝イスラーム（写本）［刊行済み］\n• リヤード・アッ＝サーリヒーン・ミン・カラーミ・サイイド・アル＝ムルサリーン（校訂刊本）\n• ブスターン・アル＝アーリフィーン（校訂刊本）\n• アル＝イーダーフ（校訂刊本）。巡礼儀礼に関する著作。\n• アッ＝シャルフ・アル＝ムハッザブ（アッ＝シーラーズィー著の注釈、校訂刊本）\n• ラウダト・アッ＝ターリビーン（写本、法学）［刊行済み］\n• アッ＝ティビヤーン・フィー・アーダービ・ハマラティ・アル＝クルアーン（校訂刊本）\n• アル＝マカーシド（校訂刊本）。タウヒードに関する小冊子。\n• ムフタサル・タバカート・アッ＝シャーフィイーヤ（イブン・アッ＝サラーフ著、写本）\n• マナークィブ・アッ＝シャーフィイー（写本）\n• アル＝マンスーラート（校訂刊本）。法学書であり、彼のファトワー集である。\n• ムフタサル・アッ＝ティビヤーン（写本）。訓戒集で、原著は彼自身の著作。\n• マナール・アル＝フダー（校訂刊本）。ワクフと語句の開始、およびクルアーン読誦法に関する著作。\n• アル＝イシャーラート・イラー・バヤーニ・アスマーイ・アル＝ムブハマート（校訂刊本、小冊子）\n• アル＝アルバウーン・ハディース・アン＝ナワウィーヤ（校訂刊本）。多くの学者がこれに注釈を付している。\n• 彼の伝記は複数の小冊子で独立して扱われている。その一つはアッ＝スハイミーによるもの、二つ目はアッ＝サハーウィーによるもの、三つ目はアッ＝スユーティーの「アル＝ミンハージュ・アッ＝サウィー」（写本2点）である。さらにアッ＝サハーウィーの著作がもう一つあり、刊行されている（ウバイドの情報による）。\n• イブン・カーディー・シュフバの『シャーフィイー派学者列伝』には、アル＝イスナウィーの次の言葉がある。「彼の著作とされているが、実際には彼のものではない書物が二つある。一つは『アル＝ニハーヤ・フィー・イフティサーリ・アル＝ガーヤ』（写本）という短い要約書で、ザーヒリーヤ図書館に所蔵されている。もう一つは『アル＝ワスィートに関する誤り』で、法学上の箇所が50か所、ハディースに関する箇所もいくつか含まれている。『アル＝ワスィート』の注釈でこれを彼の著作とした者の一人はイブン・アッ＝リフアである。注意されたい。これはハマーの人々の一人による著作である。そのため、弟子のイブン・アル＝アッタールは著作を列挙する際にこれを挙げなかった。彼は著作を網羅していたのである。」\n• イブン・マルイーは『アル＝フトゥーハート・アル＝ワハビーヤ』で彼の完全な系譜を記し、こう述べている。「マッリーはミームにダンマ、ラーにカスラを付す。彼自身の筆跡でそう母音記号が付されているのを確認した。アル＝ヒザーミーは、無点のハーにカスラを付し、ザイには点を付す。アン＝ナワウィーはナワーにちなむ名であり、アリフを加えて『ナワーウィー』と書くこともできる。」私は言う。彼自身はアリフを加えずに書いていた。彼の筆跡の見本を参照されたい（1）。\n_________\n（1）アッ＝スブキー『シャーフィイー派学者列伝』5:165、イブン・カーディー・シュフバ『シャーフィイー派学者列伝』（写本）、アン＝ヌアイミー1:24（没年を677年とする）、『アル＝ヌジューム・アッ＝ザーヒラ』7:278、ブロック1:469（394）、S 1:680、『アーダーブ・アル＝ルガ』3:242、『アッ＝ティビヤーン』（写本）、『ミフターフ・アッ＝サアーダ』1:398、アッ＝タイムーリーヤ3:307、『ハーディー・アル＝ムスタルシディーン』471、248、ユアール、イブン・アル＝フラート7:108、アル＝アースィフィーヤ1:521、2:138、230、バンキポール13:80、そしてイブラーヒーム・イブン・マルイー・アッ＝シャブラヒーティー『アル＝フトゥーハート・アル＝ワハビーヤ』。\n『アル＝アーラーム』（アッ＝ザルカリー著）より引用［角括弧内に加筆あり］&quot;,&quot;ru&quot;:&quot;Ан-Навави (631–676 гг. х. = 1233–1277 гг.)\nВыдающийся знаток фикха и хадисов. Родился и умер в Нава (одно из селений Хаурана в Сирии), откуда и происходит его нисба. Учился в Дамаске и долгое время жил там.\n(Из его книг)\n• «Тахзиб аль-асма ва-ль-лугат» — издано\n• «Минхадж ат-талибин» — издано\n• «Ад-дакаик» — издано\n• «Тасхих ат-танбих» — издано; по шафиитскому фикху. Я видел его старую рукопись под названием «Ат-танбих аля ма фи ат-танбих».\n• «Аль-минхадж фи шарх Сахих Муслим» — издано в пяти томах\n• «Ат-такриб ва-т-тайсир» — издано; по терминологии хадисоведения\n• «Хильят аль-абрар» — издано; известно как «Аль-азкар ан-нававийя»\n• «Хулясат аль-ахкам мин мухиммат ас-сунан ва каваид аль-ислам» — рукопись [издано]\n• «Рияд ас-салихин мин калям саййид аль-мурсалин» — издано\n• «Бустан аль-арифин» — издано\n• «Аль-идах» — издано; о хадже и обрядах паломничества\n• «Шарх аль-Мухаззаб» аш-Ширази — издано\n• «Раудат ат-талибин» — рукопись; фикх [издано]\n• «Ат-тибьян фи адаб хамалят аль-Коран» — издано\n• «Аль-макасид» — издано; трактат о единобожии\n• «Мухтасар табакат аш-шафиия» Ибн ас-Саляха — рукопись\n• «Манакиб аш-Шафии» — рукопись\n• «Аль-мансурат» — издано; по фикху, книга его фетв\n• «Мухтасар ат-тибьян» — рукопись; назидания; оригинал принадлежит ему\n• «Манар аль-худа» — издано; о вакфе и началах чтения, таджвид\n• «Аль-ишарат иля баян асма аль-мубхамят» — издано; трактат\n• «Сорок хадисов ан-Навави» — издано; многие написали к нему комментарии.\n• Его биографии посвящены отдельные трактаты. Один из них — ас-Сухайми, второй — ас-Сахави, третий — «Аль-минхадж ас-сави» ас-Суюти (две рукописи), и ещё один трактат ас-Сахави, изданный (сообщил нам об этом Убайд).\n• В книге «Табакат» Ибн Кади Шухбы приведены слова аль-Иснави: ему приписывают два сочинения, которые ему не принадлежат. Первое — небольшое сокращение под названием «Ан-нихая фи ихтисар аль-гайя» (рукопись в Захирийе); второе — «Агалит аля аль-Васит», включающее пятьдесят разделов по фикху и некоторые разделы по хадисам. Среди приписывавших ему это сочинение — Ибн ар-Рифа в комментарии к «Аль-Васит». Остерегайтесь этой ошибки: автором был один из жителей Хамы. Поэтому его ученик Ибн аль-Аттар не упомянул эту книгу, перечисляя и подробно описывая его сочинения.\n• Ибн Мар&#039;и в «Аль-футухат аль-вахбийя» привёл его полное происхождение и сказал: «Марри» — с даммой над мимом и кясрой над ра; так оно было огласовано его рукой. «Аль-Хизами» — с кясрой над немаркированной ха и с буквой зай. «Ан-Навави» — нисба к Нава; её можно писать с алифом: «Навави». Я же скажу: он сам писал это слово без алифа. См. образец его почерка (1).\n_________\n(1) «Табакат аш-шафиия» ас-Субки, 5:165; «Табакат аш-шафиия» Ибн Кади Шухбы — рукопись; ан-Нуайми, 1:24 (там указано, что он умер в 677 г.); «Ан-нуджум аз-захира», 7:278; Brock, 1:469 (394); S, 1:680; «Адаб аль-люга», 3:242; «Ат-тибьян» — рукопись; «Мифтах ас-саада», 1:398; «Таймурия», 3:307; «Хади аль-мустаршидин», 471 и 248; Huart; Ибн аль-Фурат, 7:108; «Аль-асифия», 1:521 и 2:138, 230; Bankipore, 13:80; «Аль-футухат аль-вахбийя» Ибрахима ибн Мар&#039;и аш-Шабрахити.\nПереведено по: «Аль-Алям» аз-Зирикли [с добавлениями в квадратных скобках]&quot;,&quot;sw&quot;:&quot;Al-Nawawi (631 - 676 H = 1233 - 1277 BK)\nMwanazuoni mkubwa wa fiqhi na hadithi. Alizaliwa na kufariki Nawa (moja ya vijiji vya Hauran, nchini Syria), na jina lake la nasaba linatokana na hapo. Alisoma Dameski na akaishi huko kwa muda mrefu.\n(Katika vitabu vyake)\n• Tahdhib al-Asma wa al-Lughat [Uhariri wa majina na lugha] — kimechapishwa\n• Minhaj al-Talibin [Njia ya wanafunzi] — kimechapishwa\n• Al-Daqa&#039;iq [Mambo madogo yenye usahihi] — kimechapishwa\n• Tashih al-Tanbih [Usahihishaji wa Tanbih] — kimechapishwa; kuhusu fiqhi ya Shafi&#039;i. Nimeona nakala ya zamani ya mswada wake, yenye jina Al-Tanbih ala ma fi al-Tanbih [Tahadhari kuhusu yaliyomo katika Tanbih]\n• Al-Minhaj fi Sharh Sahih Muslim [Njia ya kufafanua Sahih Muslim] — kimechapishwa katika juzuu tano\n• Al-Taqrib wa al-Taysir [Kukaribisha na kurahisisha] — kimechapishwa; kuhusu istilahi za hadithi\n• Hilyat al-Abrar [Pambo la watu wema] — kimechapishwa; kinajulikana kama Al-Adhkar al-Nawawiyya\n• Khulasat al-Ahkam min Muhimmat al-Sunan wa Qawa&#039;id al-Islam [Muhtasari wa hukumu muhimu za Sunna na misingi ya Uislamu] — mswada [kimechapishwa]\n• Riyad al-Salihin min Kalam Sayyid al-Mursalin [Bustani za wema kutoka maneno ya bwana wa Mitume] — kimechapishwa\n• Bustan al-Arifin [Bustani ya wajuzi] — kimechapishwa\n• Al-Idah [Ufafanuzi] — kimechapishwa; kuhusu ibada za Hijja\n• Sharh al-Muhadhdhab li al-Shirazi [Ufafanuzi wa Al-Muhadhdhab ya Al-Shirazi] — kimechapishwa\n• Rawdat al-Talibin [Bustani ya wanafunzi] — mswada wa fiqhi [kimechapishwa]\n• Al-Tibyan fi Adab Hamalat al-Qur&#039;an [Ufafanuzi kuhusu adabu za wabebaji wa Quran] — kimechapishwa\n• Al-Maqasid [Madhumuni] — kimechapishwa; risala kuhusu tauhidi\n• Mukhtasar Tabaqat al-Shafi&#039;iyya ya Ibn al-Salah [Muhtasari wa tabaka za wanazuoni wa Shafi&#039;i] — mswada\n• Manaqib al-Shafi&#039;i [Sifa na fadhila za Al-Shafi&#039;i] — mswada\n• Al-Manthurat [Mambo yaliyotawanyika] — kimechapishwa; kuhusu fiqhi, na ni kitabu cha fatwa zake\n• Mukhtasar al-Tibyan [Muhtasari wa Al-Tibyan] — mswada wa mawaidha; kitabu cha asili ni chake\n• Manar al-Huda [Mnara wa uongofu] — kimechapishwa; kuhusu waqfu na ibtida, na tajwidi\n• Al-Isharat ila Bayan Asma al-Mubhamat [Ishara za kufafanua majina yasiyo wazi] — risala iliyochapishwa\n• Al-Arba&#039;un Hadithan al-Nawawiyya [Hadithi arobaini za Al-Nawawi] — kimechapishwa; wanazuoni wengi wamekifafanua.\n• Wasifu wake ulitengwa katika risala kadhaa. Moja ni ya Al-Suhaymi, ya pili ni ya Al-Sakhawi, na ya tatu ni Al-Minhaj al-Sawi ya Al-Suyuti, iliyo katika miswada miwili; ya tatu ni ya Al-Sakhawi na imechapishwa (Ubayd ndiye aliyetufahamisha kuhusu hilo).\n• Katika Tabaqat ya Ibn Qadi Shuhba: Al-Isnawi alisema kuwa vitabu viwili vinahusishwa naye kimakosa. Kimoja ni muhtasari mfupi mzuri unaoitwa Al-Nihaya fi Ikhtisar al-Ghaya [Mwisho katika kufupisha lengo] — mswada ulioko katika maktaba ya Zahiriyya. Cha pili ni Aghalit ala al-Wasit [Makosa kuhusu Al-Wasit], chenye sehemu hamsini za fiqhi na baadhi ya hadithi. Miongoni mwa waliokihusisha naye ni Ibn al-Rif&#039;a katika ufafanuzi wake wa Al-Wasit; jihadhari nacho, kwa kuwa ni cha mmoja wa watu wa Hama. Kwa sababu hiyo, mwanafunzi wake Ibn al-Attar hakukitaja alipohesabu na kukamilisha orodha ya vitabu vyake.\n• Ibn Mar&#039;i, katika Al-Futuhat al-Wahbiyya [Ufunguzi wa Wahbiyya], alitaja nasaba yake kamili na kusema: Marri, kwa dhamma kwenye mim na kasra kwenye ra, kama ilivyopatikana ikiwa imewekewa irabu kwa mkono wake; Al-Hizami, kwa kasra kwenye ha isiyo na nukta na zay yenye nukta; na Al-Nawawi, nasaba inayotokana na Nawa. Inawezekana kuandika kwa alif: “Nawawi”. Ninasema: yeye mwenyewe alikuwa akiliandika bila alif. Tazama mfano wa mwandiko wake (1).\n_________\n(1) Tabaqat al-Shafi&#039;iyya ya Al-Subki 5:165; Tabaqat al-Shafi&#039;iyya ya Ibn Qadi Shuhba — mswada; Al-Nu&#039;aymi 1:24, ambapo imeandikwa kuwa alifariki mwaka 677; Al-Nujum al-Zahira 7:278; Brock 1:469 (394); S 1:680; Adab al-Lugha 3:242; Al-Tibyan — mswada; Miftah al-Sa&#039;ada 1:398; Al-Taymuriyya 3:307; Hadi al-Mustarshidin 471; Huart 248; Ibn al-Furat 7:108; Al-Asifiyya 1:521 na 2:138, 230; Bankipore 13:80; na Al-Futuhat al-Wahbiyya ya Ibrahim bin Mar&#039;i al-Shibrakhiti.\nImenukuliwa kutoka: “Al-A&#039;lam” ya Al-Zirikli [pamoja na nyongeza zilizo ndani ya mabano ya mraba]&quot;,&quot;tr&quot;:&quot;Nevevî (631-676 H = 1233-1277)\nFıkıh ve hadis alanında önde gelen bir âlimdi. Hûran’ın (Suriye) köylerinden Neve’de doğdu ve orada vefat etti; nisbesi de buradan gelir. Dımaşk’ta öğrenim gördü ve uzun süre burada yaşadı.\n(Eserlerinden)\n• Tehzîbü’l-esmâ ve’l-lugāt (İsimler ve Dillerin Düzenlenmesi) – basılmıştır.\n• Minhâcü’t-tâlibîn (Talebelerin Yolu) – basılmıştır.\n• ed-Dekāik (İncelikler) – basılmıştır.\n• Tasḥîḥü’t-Tenbîh (Tenbîh’in Düzeltilmesi) – Şâfiî fıkhı alanındadır. Tenbîh alâ mâ fi’t-Tenbîh adıyla eski bir yazmasını gördüm.\n• el-Minhâc fî şerḥi Ṣaḥîḥi Müslim (Sahîh-i Müslim Şerhi) – beş cilt olarak basılmıştır.\n• et-Takrîb ve’t-teysîr (Yaklaştırma ve Kolaylaştırma) – hadis terimleri alanındadır.\n• Ḥilyetü’l-ebrâr (İyilerin Süsü) – basılmıştır; el-Eẕkâr en-Neveviyye adıyla bilinir.\n• Ḫulâṣatü’l-aḥkâm min mühimmâti’s-sünen ve ḳavâʿidi’l-İslâm (Sünnetlerin Önemli Konuları ve İslâm’ın Esaslarından Hükümlerin Özeti) – yazma [basılmıştır].\n• Riyâżü’ṣ-ṣâliḥîn min kelâmi seyyidi’l-mürselîn (Resullerin Efendisinin Sözlerinden Salihlerin Bahçeleri) – basılmıştır.\n• Bostânü’l-ârifîn (Âriflerin Bahçesi) – basılmıştır.\n• el-Îżâḥ (Açıklama) – hac menâsiki hakkındadır.\n• Şerḥu’l-Müheẕẕeb li’ş-Şîrâzî (Şîrâzî’nin Müheẕẕeb’inin Şerhi) – basılmıştır.\n• Ravżatü’ṭ-ṭâlibîn (Talebelerin Bahçesi) – fıkıh alanında yazma [basılmıştır].\n• et-Tibyân fî âdâbi ḥameleti’l-Ḳurʾân (Kur’an’ı Taşıyanların Edepleri) – basılmıştır.\n• el-Maḳāṣıd (Amaçlar) – tevhid hakkında bir risaledir.\n• Muḫtaṣaru Ṭabaḳāti’ş-Şâfiʿiyye li’bni’ṣ-Ṣalâḥ (İbnü’s-Salâh’ın Şâfiî Tabakaları’nın Muhtasarı) – yazma.\n• Menâḳıbü’ş-Şâfiʿî (Şâfiî’nin Menkıbeleri) – yazma.\n• el-Mens̱ûrât (Dağınık Meseleler) – fıkıh alanında olup fetvalarını içerir.\n• Muḫtaṣaru’t-Tibyân (Tibyân’ın Muhtasarı) – öğütler hakkındadır; aslı da kendisine aittir.\n• Menârü’l-hüdâ (Hidayet Kandili) – vakıf ve ibtidâ, yani tilâvette durma ve başlama konuları ile tecvid hakkındadır; basılmıştır.\n• el-İşârât ilâ beyâni esmâʾi’l-mübhemât (Kapalı Kalan İsimleri Açıklamaya Dair İşaretler) – basılmış bir risaledir.\n• el-Erbaʿûn en-Neveviyye (Nevevî’nin Kırk Hadisi) – basılmıştır; birçok kişi tarafından şerh edilmiştir.\n• Biyografisi çeşitli risalelerde müstakil olarak ele alınmıştır. Bunlardan biri Süheymî’ye, ikincisi Sehâvî’ye, üçüncüsü ise Süyûtî’nin el-Minhâcü’s-sevî adlı eserine aittir; son eser iki yazma nüshadır. Sehâvî’nin eseri ise basılmıştır (bunu Ubeyd bildirdi).\n• İbn Kādî Şühbe’nin Ṭabaḳāt’ında şöyle denir: İsnâvî, ona ait olmadığı hâlde kendisine nispet edilen iki eser bulunduğunu söyler. Bunlardan biri, Zâhiriyye Kütüphanesi’nde bulunan el-Nihâye fî iḫtiṣâri’l-Ġāye adlı kısa ve zarif bir muhtasardır; diğeri ise fıkıhla ilgili elli konuyu ve bazı hadis meselelerini içeren Aġāliṭ ʿale’l-Vasîṭ’tir. İbnü’r-Rif‘a, el-Vasîṭ şerhinde bu eseri Nevevî’ye nispet edenler arasındadır. Buna itibar etmeyin; eser Hamevîlerden birine aittir. Bu sebeple Nevevî’nin öğrencisi İbnü’l-Attâr, eserlerini sayıp hepsini kaydettiği hâlde bu kitaptan söz etmemiştir.\n• İbn Mer‘î, el-Fütûḥâtü’l-vehbiyye’de onun soyunu tam olarak verir ve şöyle der: Mürri, mîm ötreli ve râ kesreli okunur; kendi el yazısında harekelenmiş hâli bu şekildedir. Hızâmî, noktasız hâ ile ve zâ harfiyle okunur. Nevevî nisbesi Neve’den gelir; elifle “Nevâvî” şeklinde yazılması da mümkündür. Ben derim ki, kendisi bunu elifsiz yazardı; el yazısının örneğine bakınız (1).\n_________\n(1) Sübkî, Ṭabaḳātü’ş-Şâfiʿiyye, 5:165; İbn Kādî Şühbe, Ṭabaḳātü’ş-Şâfiʿiyye – yazma; Nuaymî, 1:24 (burada vefat yılı 677 olarak verilmiştir); en-Nücûmü’z-zâhire, 7:278; Brockelmann, 1:469 (394); S, 1:680; Âdâbü’l-luġa, 3:242; et-Tibyân – yazma; Miftâḥu’s-saʿâde, 1:398; Teymûriyye, 3:307; Hâdî’l-müsterşidîn, 471; Huart, 248; İbnü’l-Furât, 7:108; Âsıfiyye, 1:521 ve 2:138, 230; Bankipore, 13:80; İbrâhim b. Mer‘î eş-Şebrahîtî, el-Fütûḥâtü’l-vehbiyye.\n«el-A‘lâm»dan naklen, Ziriklî [köşeli parantez içindeki eklemelerle]&quot;,&quot;ur&quot;:&quot;نووی (٦٣١ - ٦٧٦ھ = ١٢٣٣ - ١٢٧٧ء)\nفقہ اور حدیث کے بڑے عالم تھے۔ ان کی ولادت اور وفات نَویٰ میں ہوئی، جو شام میں حوران کے دیہات میں سے ایک ہے، اور ان کی نسبت بھی اسی کی طرف ہے۔ انہوں نے دمشق میں تعلیم حاصل کی اور طویل عرصے تک وہیں مقیم رہے۔\n(ان کی کتابوں میں سے)\n• تهذيب الأسماء واللغات (ناموں اور لغات کی تہذیب) - مطبوعہ\n• منهاج الطالبين (طالبین کا منہاج) - مطبوعہ\n• الدقائق (باریک نکات) - مطبوعہ\n• تصحيح التنبيه (التنبیہ کی تصحیح) - شافعی فقہ میں مطبوعہ؛ میں نے اس کا ایک قدیم مخطوطہ «التنبيه على ما في التنبيه» کے نام سے دیکھا ہے۔\n• المنهاج في شرح صحيح مسلم (صحیح مسلم کی شرح میں منہاج) - پانچ جلدوں میں مطبوعہ\n• التقريب والتيسير (تقریب اور آسانی) - اصطلاحِ حدیث میں مطبوعہ\n• حلية الأبرار (نیکوکاروں کا زیور) - مطبوعہ، اسے الأذكار النووية بھی کہا جاتا ہے۔\n• خلاصة الأحكام من مهمات السنن وقواعد الإسلام (احکام کا خلاصہ، سنن کے اہم مسائل اور اسلام کے اصول) - مخطوطہ [طبع ہو چکی ہے]\n• رياض الصالحين من كلام سيد المرسلين (مرسلین کے سردار کے کلام سے صالحین کے باغات) - مطبوعہ\n• بستان العارفين (عارفوں کا باغ) - مطبوعہ\n• الإيضاح (وضاحت) - مناسک میں مطبوعہ\n• شرح المهذب للشيرازي (شیرازی کی المهذب کی شرح) - مطبوعہ\n• روضة الطالبين (طالبین کا باغ) - فقہ کا مخطوطہ [طبع ہو چکی ہے]\n• التبيان في آداب حملة القرآن (قرآن کے حاملین کے آداب کا بیان) - مطبوعہ\n• المقاصد (مقاصد) - توحید پر رسالہ، مطبوعہ\n• مختصر طبقات الشافعية لابن الصلاح (ابن الصلاح کی طبقات الشافعیہ کا مختصر) - مخطوطہ\n• مناقب الشافعيّ (امام شافعی کے مناقب) - مخطوطہ\n• المنثورات (منتشر مسائل) - فقہ میں مطبوعہ؛ یہ ان کے فتاویٰ کی کتاب ہے۔\n• مختصر التبيان (التبیان کا مختصر) - نصیحتوں پر، اصل کتاب انہی کی ہے۔\n• منار الهدى (ہدایت کا مینار) - وقف و ابتدا اور تجوید میں مطبوعہ\n• الإشارات إلى بيان أسماء المبهمات (مبہم ناموں کی وضاحت کے اشارے) - مطبوعہ رسالہ\n• الأربعون حديثا النووية (نووی کی چالیس احادیث) - مطبوعہ؛ بہت سے لوگوں نے اس کی شرحیں لکھی ہیں۔\n• ان کے حالات پر مستقل رسائل لکھے گئے، ان میں سے ایک السحیمی کا، دوسرا السخاوي کا، اور تیسرا السيوطي کا «المنهاج السوي» ہے، جس کے دو مخطوطے ہیں؛ جبکہ السخاوي کا تیسرا رسالہ مطبوعہ ہے۔ (عبید نے ہمیں یہ اطلاع دی۔)\n• ابن قاضی شہبہ کی «طبقات» میں ہے: الاسنوی نے کہا کہ ان کی طرف دو ایسی تصنیفیں منسوب کی جاتی ہیں جو ان کی نہیں۔ پہلی ایک مختصر اور عمدہ کتاب ہے جسے «النهاية في اختصار الغاية - مخطوطہ» کہا جاتا ہے اور وہ ظاہریہ میں ہے۔ دوسری «أغاليط على الوسيط» ہے، جو فقہ کے پچاس مقامات اور بعض حدیثی مقامات پر مشتمل ہے۔ جن لوگوں نے اسے ان کی طرف منسوب کیا، ان میں شرح الوسيط میں «ابن الرفعة» بھی ہیں۔ اس سے بچو، کیونکہ یہ بعض حمویوں کی تصنیف ہے۔ اسی لیے ان کے شاگرد ابن العطار نے ان کی تصانیف کا ذکر کرتے اور مکمل فہرست دیتے ہوئے اس کا تذکرہ نہیں کیا۔\n• ابن مرعی نے «الفتوحات الوهبية» میں ان کا پورا نسب درج کیا اور کہا: «مَرّی»، میم پر پیش اور را پر زیر کے ساتھ، جیسا کہ ان کے اپنے ہاتھ کی تحریر میں ضبط شدہ پایا؛ «الحزامي» میں حاء مہملہ پر زیر اور زاء معجمہ ہے؛ اور «النووي» نسبت ہے نَویٰ کی طرف۔ اسے الف کے ساتھ «نواوي» لکھنا بھی درست ہے۔ میں کہتا ہوں: وہ خود اسے الف کے بغیر لکھتے تھے۔ ان کی خطاطی کا نمونہ دیکھیے (١)۔\n_________\n(١) طبقات الشافعية للسبكي ٥: ١٦٥، اور طبقات الشافعية لابن قاضي شهبة - مخطوطہ۔ النعيمي ١: ٢٤، جس میں ہے کہ ان کی وفات ٦٧٧ھ میں ہوئی؛ النجوم الزاهرة ٧: ٢٧٨؛ Brock ١: ٤٦٩ (٣٩٤) S ١: ٦٨٠؛ آداب اللغة ٣: ٢٤٢؛ التبيان - مخطوطہ؛ مفتاح السعادة ١: ٣٩٨؛ التيمورية ٣: ٣٠٧؛ هادي المسترشدين ٤٧١ و ٢٤٨ Huart؛ ابن الفرات ٧: ١٠٨؛ الآصفية ١: ٥٢١ و ٢: ١٣٨، ٢٣٠؛ Bankipore ١٣: ٨٠؛ اور إبراهيم بن مرعي الشبرخيتي کی الفتوحات الوهبية۔\n«الأعلام» للزركلي سے منقول [مربع قوسین میں اضافوں کے ساتھ]&quot;,&quot;zh&quot;:&quot;脑威（伊历631—676年＝公元1233—1277年）\n精通教法与圣训。生于并卒于瑙瓦（叙利亚豪兰地区的村庄），故以此为名。他在大马士革求学，并在那里长期居住。\n（著作）\n•《姓名与语言考订》—已刊\n•《求学者指南》—已刊\n•《精微要义》—已刊\n•《〈提醒篇〉校订》—已刊，论沙斐仪教法。我见过一部该书的古抄本，题名为《〈提醒篇〉中的内容指引》\n•《圣训实录穆斯林篇注释指南》—已刊，共五卷\n•《圣训学术语导论与简明说明》—已刊\n•《贤者之饰》—已刊，又名《脑威祈祷词集》\n•《圣训要义与伊斯兰准则摘要》—手稿［已刊］\n•《先知圣训中的清廉者花园》—已刊\n•《贤者花园》—已刊\n•《朝觐仪式指南》—已刊\n•《穆哈扎卜篇注释》—已刊\n•《求学者园圃》—手稿，教法［已刊］\n•《古兰经诵读者礼仪论》—已刊\n•《宗旨》—已刊，论认主独一的短文\n•《伊本·萨拉赫沙斐仪派传记集节本》—手稿\n•《沙斐仪的功绩》—手稿\n•《散篇集》—已刊，教法著作，即其教法判例集\n•《〈古兰经诵读者礼仪论〉节本》—手稿，劝诫文；原著为脑威所作\n•《引导之灯》—已刊，论停顿与起始、诵读规则\n•《阐明含混人名的注记》—已刊，短文\n•《脑威四十段圣训》—已刊，许多人为之作注。\n• 有人另撰脑威传记，计有数种：一为苏海米所作，二为萨哈维所作，三为苏尤提所作《正当的道路》，现存两部手稿；另有萨哈维所作的一种，已刊行（此资料由奥拜德提供）。\n• 伊本·卡迪·舍赫拜的《沙斐仪派传记集》中记载：伊斯纳维说，有两部著作被误归于脑威名下，实非其作。一是名为《目标节本精要》的小型节本，现藏于扎希里耶图书馆；二是《〈中篇〉中的错误》，列举五十处教法问题，其中一些涉及圣训。曾将此书归于脑威名下的人包括伊本·里夫阿，他在《中篇注释》中提及此书，切勿相信；此书实为某位哈马维人所作。因此，其弟子伊本·阿塔尔在列举并详述脑威著作时没有提到它。\n• 伊本·马尔伊在《神恩之启示》中完整列出脑威的世系，并说：“马里”一名的米姆读ḍamma，拉读kasra，这是他亲笔标注的读法；“希扎米”的ḥ读轻音，z读带点音；“脑威”是以瑙瓦为名，可写作带长元音的“瑙瓦维”。我则说：脑威本人书写时不加长元音，参见其书迹样本（1）。\n_________\n（1）苏卜基《沙斐仪派传记集》5：165；伊本·卡迪·舍赫拜《沙斐仪派传记集》—手稿；努艾米1：24（其中称其卒于伊历677年）；《璀璨星辰》7：278；Brock 1：469（394）；S 1：680；《语言文学礼仪》3：242；《阐释》—手稿；《幸福之钥》1：398；《泰穆里耶文库目录》3：307；《求道者指南》471；Huart 248；伊本·弗拉特7：108；阿西菲耶文库目录1：521及2：138、230；Bankipore 13：80；易卜拉欣·本·马尔伊·舍布拉希提《神恩之启示》。\n引自扎里克利《名人录》［含方括号内增补］&quot;}" data-original=""></div>
+                                <details
+                  class="mt-3"
+                                  >
+                  <summary class="cursor-pointer text-zinc-500 dark:text-zinc-400">Arabic original</summary>
+                  <div
+                    class="prose-sm mt-2"
+                    dir="rtl"
+                    lang="ar"
+                  >
+                    
 النَّوَوِي (٦٣١ - ٦٧٦ هـ = ١٢٣٣ - ١٢٧٧ م)علامة بالفقه والحديث. مولده ووفاته في نوا (من قرى حوران، بسورية) وإليها نسبته. تعلم في دمشق، وأقام بها زمنا طويلا.(من كتبه)• تهذيب الأسماء واللغات - ط• منهاج الطالبين - ط• الدقائق - ط• تصحيح التنبيه - ط في فقه الشافعية رأيت مخطوطة قديمة منه باسم التنبيه على ما في التنبيه• المنهاج في شرح صحيح مسلم - ط خمس مجلدات• التقريب والتيسير - ط في مصطلح الحديث• حلية الأبرار - ط يعرف بالأذكار النووية• خلاصة الأحكام من مهمات السنن وقواعد الإسلام - خ [طُبع]• ورياض الصالحين من كلام سيد المرسلين - ط• بستان العارفين - ط• الإيضاح - ط في المناسك• شرح المهذب للشيرازي - ط• روضة الطالبين - خ فقه [طُبع]• والتبيان في آداب حملة القرآن - ط• المقاصد - ط رسالة في التوحيد• مختصر طبقات الشافعية لابن الصلاح - خ• مناقب الشافعيّ - خ• المنثورات - ط فقه، وهو كتاب فتاويه• مختصر التبيان - خ مواعظ، والأصل له• منار الهدى - ط في الوقف والابتداء، تجويد• الإشارات إلى بيان أسماء المبهمات - ط رسالة• الأربعون حديثا النووية - ط شرحها كثيرون.• وأفردت ترجمته في رسائل، إحداها للسحيمي، والثانية للسخاوي، والثالثة «المنهاج السوي» للسيوطي مخطوطتان، والثالثة للسخاوي مطبوعة (أفادنا بها عبيد)• وفي طبقات ابن قاضي شهبة: قال الإسنوي: وينسب إليه تصنيفان ليسا له، أحداهما مختصر لطيف يسمى «النهاية في اختصار الغاية - خ» في الظاهرية، والثاني «أغاليط على الوسيط» مشتملة على خمسين موضعا فقهية وبعضها حديثية، وممن نسب إليه هذا «ابن الرفعة» في شرح الوسيط، فاحذره، فإنه لبعض الحمويين، ولهذا لم يذكره ابن العطار تلميذه حين عدد تصانيفه واستوعبها.• وأورد ابن مرعي، في «الفتوحات الوهبية» نسبه كاملا، وقال: مرّي، بضم الميم وكسر الراء، كما وجد مضبوطا بخطه، والحزامي: بكسر الحاء المهملة، وبالزاي المعجمة، والنووي: نسبة لنوا، يجوز كتبها بالألف: «نواوي» قلت: كان يكتبها هو بغير الألف، انظر نموذج خطه <span class="footnote-mark">(١)</span>._________<span class="footnote-mark">(١)</span> طبقات الشافعية للسبكي ٥: ١٦٥ وطبقات الشافعية لابن قاضي شهبة - خ. والنعيمي ١: ٢٤ وفيه: وفاته سنة ٦٧٧ والنجوم الزاهرة ٧: ٢٧٨ و Brock ١: ٤٦٩ <span class="footnote-mark">(٣٩٤)</span> S ١: ٦٨٠ وآداب اللغة ٣: ٢٤٢ والتبيان - خ. ومفتاح السعادة ١: ٣٩٨ والتيمورية ٣: ٣٠٧ وهادي المسترشدين ٤٧١ و ٢٤٨ Huart وابن الفرات ٧: ١٠٨ والآصفية ١: ٥٢١ و ٢: ١٣٨، ٢٣٠ و Bankipore ١٣: ٨٠ والفتوحات الوهبية لإبراهيم بن مرعي الشبرخيتي.نقلا عن: «الأعلام» للزركلي [مع إضافات بين معقوفين]
 <hr>
 <ul><li>آداب الفتوى والمفتي والمستفتي</li><li>إرشاد طلاب الحقائق إلى معرفة سنن خير الخلائق صلى الله عليه وسلم</li><li>الأذكار للنووي ت الأرنؤوط</li><li>الأذكار للنووي ت مستو</li><li>الأذكار للنووي ط ابن حزم</li><li>الأربعون النووية</li><li>الأربعون النووية مع زيادات ابن رجب</li><li>الأصول والضوابط</li><li>الإيجاز في شرح سنن أبي داود - النووي</li><li>الإيضاح في مناسك الحج والعمرة</li><li>التبيان في آداب حملة القرآن</li><li>التقريب والتيسير للنووي</li><li>المجموع شرح المهذب - ط المنيرية</li><li>بستان العارفين للنووي</li><li>تحرير ألفاظ التنبيه</li><li>تحقيق رياض الصالحين للألباني</li><li>تهذيب الأسماء واللغات</li><li>جزء فيه ذكر اعتقاد السلف في الحروف والأصوات</li><li>خلاصة الأحكام</li><li>دقائق المنهاج</li><li>روضة الطالبين وعمدة المفتين</li><li>رياض الصالحين - ت الرسالة الثاني</li><li>رياض الصالحين - ت الفحل</li><li>شرح النووي على مسلم</li><li>فتاوى النووي</li><li>منهاج الطالبين وعمدة المفتين في الفقه</li></ul>
 
-      </div>
-    </template>
-  
-      <section class="panel">
-      <h2><span data-t="About the book">About the book</span></h2>
-      <dl class="book-card">
-                              <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Title&quot;,&quot;es&quot;:&quot;Título&quot;,&quot;fr&quot;:&quot;Titre&quot;,&quot;id&quot;:&quot;Judul&quot;,&quot;ja&quot;:&quot;書名&quot;,&quot;ru&quot;:&quot;Название&quot;,&quot;sw&quot;:&quot;Jina la kitabu&quot;,&quot;tr&quot;:&quot;Kitap adı&quot;,&quot;ur&quot;:&quot;نام کتاب&quot;,&quot;zh&quot;:&quot;书名&quot;}" data-original="الكتاب">الكتاب</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Arba&#039;un al-Nawawiyya (The Forty Hadith of al-Nawawi)&quot;,&quot;es&quot;:&quot;Al-Arba&#039;un al-Nawawiyya (Los cuarenta hadices de al-Nawawi)&quot;,&quot;fr&quot;:&quot;Al-Arba&#039;in al-Nawawiyya (Les quarante hadiths de Nawawi)&quot;,&quot;id&quot;:&quot;Al-Arba&#039;in An-Nawawiyah [Empat Puluh Hadis Nawawi]&quot;,&quot;ja&quot;:&quot;アル＝アルバイーン・アン＝ナワウィーヤ（ナワウィーの四十の伝承）&quot;,&quot;ru&quot;:&quot;Сорок хадисов ан-Навави&quot;,&quot;sw&quot;:&quot;Al-Arba&#039;un al-Nawawiyya (Hadithi Arobaini za Nawawi)&quot;,&quot;tr&quot;:&quot;el-Erbaʿûn en-Neveviyye (Nevevî’nin Kırk Hadisi)&quot;,&quot;ur&quot;:&quot;الأربعون النووية (نووی کی چالیس احادیث)&quot;,&quot;zh&quot;:&quot;《四十段圣训》&quot;}" data-original="الأربعون النووية">الأربعون النووية</span></dd>
+                  </div>
+                </details>
+              </div>
             </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Author&quot;,&quot;es&quot;:&quot;Autor&quot;,&quot;fr&quot;:&quot;Auteur&quot;,&quot;id&quot;:&quot;Penulis&quot;,&quot;ja&quot;:&quot;著者&quot;,&quot;ru&quot;:&quot;Автор&quot;,&quot;sw&quot;:&quot;Mwandishi&quot;,&quot;tr&quot;:&quot;Yazar&quot;,&quot;ur&quot;:&quot;مصنف&quot;,&quot;zh&quot;:&quot;作者&quot;}" data-original="المؤلف">المؤلف</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Abu Zakariyya Muhyi al-Din Yahya ibn Sharaf al-Nawawi (d. 676 AH)&quot;,&quot;es&quot;:&quot;Abu Zakariyya Muhyi al-Din Yahya ibn Sharaf al-Nawawi (m. 676 H)&quot;,&quot;fr&quot;:&quot;Abu Zakariya Muhyi al-Din Yahya ibn Sharaf al-Nawawi (mort en 676 H)&quot;,&quot;id&quot;:&quot;Abu Zakariya Muhyiddin Yahya bin Syaraf An-Nawawi (w. 676 H)&quot;,&quot;ja&quot;:&quot;アブー・ザカリヤー・ムヒー・アッディーン・ヤフヤー・イブン・シャラフ・アン＝ナワウィー（ヒジュラ暦676年没）&quot;,&quot;ru&quot;:&quot;Абу Закария Мухйи-д-Дин Яхья ибн Шараф ан-Навави (ум. 676 г. х.)&quot;,&quot;sw&quot;:&quot;Abu Zakariya Muhyi al-Din Yahya bin Sharaf al-Nawawi (alikufa 676H)&quot;,&quot;tr&quot;:&quot;Ebû Zekeriyyâ Muhyiddin Yahyâ b. Şeref en-Nevevî (ö. 676 H)&quot;,&quot;ur&quot;:&quot;أبو زكريا محيي الدين يحيى بن شرف النووي (ت ٦٧٦ھ)&quot;,&quot;zh&quot;:&quot;艾布·宰凯里雅·穆希丁·叶海亚·本·谢拉夫·脑威（卒于伊历676年）&quot;}" data-original="أبو زكريا محيي الدين يحيى بن شرف النووي (ت ٦٧٦هـ)">أبو زكريا محيي الدين يحيى بن شرف النووي (ت ٦٧٦هـ)</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Prepared by&quot;,&quot;es&quot;:&quot;Preparado por&quot;,&quot;fr&quot;:&quot;Préparé par&quot;,&quot;id&quot;:&quot;Disiapkan oleh&quot;,&quot;ja&quot;:&quot;編集&quot;,&quot;ru&quot;:&quot;Подготовил&quot;,&quot;sw&quot;:&quot;Imeandaliwa na&quot;,&quot;tr&quot;:&quot;Hazırlayan&quot;,&quot;ur&quot;:&quot;باہتمام&quot;,&quot;zh&quot;:&quot;整理&quot;}" data-original="عُنِيَ بِهِ">عُنِيَ بِهِ</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Qusay Muhammad Nawras al-Hallaq, Anwar ibn Abi Bakr al-Shaykhi&quot;,&quot;es&quot;:&quot;Qusay Muhammad Nawras al-Hallaq, Anwar ibn Abi Bakr al-Shaykhi&quot;,&quot;fr&quot;:&quot;Qusay Muhammad Nawras al-Hallaq, Anwar ibn Abi Bakr al-Shaykhi&quot;,&quot;id&quot;:&quot;Qusai Muhammad Nurs Al-Hallaq, Anwar bin Abi Bakr Asy-Syaikhi&quot;,&quot;ja&quot;:&quot;クサイ・ムハンマド・ヌールス・アル＝ハッラーク、アンワル・イブン・アビー・バクル・アッ＝シャイヒー&quot;,&quot;ru&quot;:&quot;Кусай Мухаммад Нурс аль-Халляк, Анвар ибн Аби Бакр аш-Шайхи&quot;,&quot;sw&quot;:&quot;Qusay Muhammad Nawras al-Hallaq, Anwar bin Abi Bakr al-Shaykhi&quot;,&quot;tr&quot;:&quot;Kusay Muhammed Nûres el-Hallâk, Enver b. Ebû Bekir eş-Şeyhî&quot;,&quot;zh&quot;:&quot;库赛·穆罕默德·努尔斯·哈拉格、艾奈尔·本·艾比·伯克尔·谢赫&quot;}" data-original="قصي محمد نورس الحلاق، أنور بن أبي بكر الشيخي">قصي محمد نورس الحلاق، أنور بن أبي بكر الشيخي</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Publisher&quot;,&quot;es&quot;:&quot;Editorial&quot;,&quot;fr&quot;:&quot;Éditeur&quot;,&quot;id&quot;:&quot;Penerbit&quot;,&quot;ja&quot;:&quot;出版社&quot;,&quot;ru&quot;:&quot;Издательство&quot;,&quot;sw&quot;:&quot;Mchapishaji&quot;,&quot;tr&quot;:&quot;Yayınevi&quot;,&quot;ur&quot;:&quot;ناشر&quot;,&quot;zh&quot;:&quot;出版社&quot;}" data-original="الناشر">الناشر</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar al-Minhaj lil-Nashr wa al-Tawzi, Lebanon - Beirut&quot;,&quot;es&quot;:&quot;Dar al-Minhaj li-l-Nashr wa-l-Tawzi, Líbano - Beirut&quot;,&quot;fr&quot;:&quot;Dar al-Minhaj lil-Nashr wa al-Tawzi, Liban - Beyrouth&quot;,&quot;id&quot;:&quot;Dar al-Minhaj li an-Nasyr wa at-Tauzi&#039;, Lebanon - Beirut&quot;,&quot;ja&quot;:&quot;ダール・アル＝ミンハージュ出版・販売、レバノン・ベイルート&quot;,&quot;ru&quot;:&quot;Дар аль-Минхадж ли-н-нашр ва-т-таузи‘, Ливан — Бейрут&quot;,&quot;sw&quot;:&quot;Dar al-Minhaj lil-Nashr wa al-Tawzi, Lebanon - Beirut&quot;,&quot;tr&quot;:&quot;Dar al-Minhaj lil-Nashr wa al-Tawzi, Lübnan - Beyrut&quot;,&quot;ur&quot;:&quot;دار المنهاج للنشر والتوزيع، لبنان - بیروت&quot;,&quot;zh&quot;:&quot;明道出版社，黎巴嫩—贝鲁特&quot;}" data-original="دار المنهاج للنشر والتوزيع، لبنان - بيروت">دار المنهاج للنشر والتوزيع، لبنان - بيروت</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Edition&quot;,&quot;es&quot;:&quot;Edición&quot;,&quot;fr&quot;:&quot;Édition&quot;,&quot;id&quot;:&quot;Cetakan&quot;,&quot;ja&quot;:&quot;版&quot;,&quot;ru&quot;:&quot;Издание&quot;,&quot;sw&quot;:&quot;Toleo&quot;,&quot;tr&quot;:&quot;Baskı&quot;,&quot;ur&quot;:&quot;طبع&quot;,&quot;zh&quot;:&quot;版次&quot;}" data-original="الطبعة">الطبعة</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;First, 1430 AH - 2009 CE&quot;,&quot;es&quot;:&quot;Primera, 1430 H - 2009&quot;,&quot;fr&quot;:&quot;Première, 1430 H - 2009&quot;,&quot;id&quot;:&quot;Pertama, 1430 H - 2009 M&quot;,&quot;ja&quot;:&quot;初版、ヒジュラ暦1430年／西暦2009年&quot;,&quot;ru&quot;:&quot;Первое, 1430 г. х. — 2009 г.&quot;,&quot;sw&quot;:&quot;La kwanza, 1430 H - 2009&quot;,&quot;tr&quot;:&quot;Birinci baskı, 1430 H - 2009&quot;,&quot;ur&quot;:&quot;پہلی، ١٤٣٠ ھ - ٢٠٠٩ء&quot;,&quot;zh&quot;:&quot;第一版，伊历1430年－公元2009年&quot;}" data-original="الأولى، ١٤٣٠ هـ - ٢٠٠٩ م">الأولى، ١٤٣٠ هـ - ٢٠٠٩ م</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Number of pages&quot;,&quot;es&quot;:&quot;Número de páginas&quot;,&quot;fr&quot;:&quot;Nombre de pages&quot;,&quot;id&quot;:&quot;Jumlah halaman&quot;,&quot;ja&quot;:&quot;ページ数&quot;,&quot;ru&quot;:&quot;Количество страниц&quot;,&quot;sw&quot;:&quot;Idadi ya kurasa&quot;,&quot;tr&quot;:&quot;Sayfa sayısı&quot;,&quot;ur&quot;:&quot;صفحات کی تعداد&quot;,&quot;zh&quot;:&quot;页数&quot;}" data-original="عدد الصفحات">عدد الصفحات</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;115&quot;,&quot;es&quot;:&quot;115&quot;,&quot;fr&quot;:&quot;115&quot;,&quot;id&quot;:&quot;115&quot;,&quot;ja&quot;:&quot;115&quot;,&quot;ru&quot;:&quot;115&quot;,&quot;sw&quot;:&quot;115&quot;,&quot;tr&quot;:&quot;115&quot;,&quot;zh&quot;:&quot;115&quot;}" data-original="١١٥">١١٥</span></dd>
-            </div>
-                                        <div>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;The page numbering matches the print edition&quot;,&quot;es&quot;:&quot;La paginación coincide con la edición impresa&quot;,&quot;fr&quot;:&quot;La pagination correspond à l&#039;édition imprimée&quot;,&quot;id&quot;:&quot;Penomoran halaman sesuai dengan edisi cetak&quot;,&quot;ja&quot;:&quot;ページ番号は印刷版と一致&quot;,&quot;ru&quot;:&quot;Нумерация страниц соответствует печатному изданию&quot;,&quot;sw&quot;:&quot;Kurasa zimehesabiwa sawa na nakala iliyochapishwa&quot;,&quot;tr&quot;:&quot;Sayfa numaraları basılı nüshaya uygundur&quot;,&quot;ur&quot;:&quot;صفحات کی ترقیم مطبوعہ نسخے کے مطابق ہے&quot;,&quot;zh&quot;:&quot;页码与纸质版一致&quot;}" data-original="ترقيم الكتاب موافق للمطبوع">ترقيم الكتاب موافق للمطبوع</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Author page&quot;,&quot;es&quot;:&quot;Página del autor&quot;,&quot;fr&quot;:&quot;Page de l&#039;auteur&quot;,&quot;id&quot;:&quot;Halaman penulis&quot;,&quot;ja&quot;:&quot;著者ページ&quot;,&quot;ru&quot;:&quot;Страница автора&quot;,&quot;sw&quot;:&quot;Ukurasa wa mwandishi&quot;,&quot;tr&quot;:&quot;Yazar sayfası&quot;,&quot;ur&quot;:&quot;مصنف کا صفحہ&quot;,&quot;zh&quot;:&quot;作者页面&quot;}" data-original="صفحة المؤلف">صفحة المؤلف</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;al-Nawawi&quot;,&quot;es&quot;:&quot;Al-Nawawi&quot;,&quot;fr&quot;:&quot;Al-Nawawi&quot;,&quot;id&quot;:&quot;An-Nawawi&quot;,&quot;ja&quot;:&quot;アン＝ナワウィー&quot;,&quot;ru&quot;:&quot;ан-Навави&quot;,&quot;sw&quot;:&quot;Al-Nawawi&quot;,&quot;tr&quot;:&quot;Nevevî&quot;,&quot;zh&quot;:&quot;脑威&quot;}" data-original="النووي">النووي</span></dd>
-            </div>
-                        </dl>
-    </section>
-  
-  
-      <section class="panel">
-      <h2><span data-t="Other editions">Other editions</span></h2>
-      <ul class="plain">
-                  <li lang="ar">
-                          <span
-                class="absent"
-                title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
-              >
-                الأربعون النووية مع زيادات ابن رجب
-              </span>
-                      </li>
-              </ul>
-    </section>
-  
-      <section class="panel">
-      <h2><span data-t="Books sharing the most passages with it">Books sharing the most passages with it</span></h2>
-      <table
-        class="table"
-        data-sortable
-      >
-        <thead>
-          <tr>
-            <th data-sort="text"><span data-t="Book">Book</span></th>
-            <th data-sort="text"><span data-t="Author">Author</span></th>
-            <th data-sort="number"><span data-t="Shared passages">Shared passages</span></th>
-          </tr>
-        </thead>
-        <tbody>
-                      <tr>
-              <td lang="ar">
-                                  <a href="../../../books/027/2709/index.html">شرح الأربعين النووية لابن دقيق العيد</a>
-                              </td>
-              <td lang="ar">ابن دقيق العيد</td>
-              <td data-value="64">64</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
-                                  <a href="../../../books/076/7603/index.html">شرح الأربعين النووية - عبد الكريم الخضير</a>
-                              </td>
-              <td lang="ar">عبد الكريم الخضير</td>
-              <td data-value="60">60</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                  </div>
+
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Shares most with</div>
+          <ul class="space-y-1 text-sm">
+                          <li class="flex items-baseline justify-between gap-3">
+                                  <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../books/027/2709/index.html" lang="ar" data-flux-link >شرح الأربعين النووية لابن دقيق العيد</a>                                <span class="shrink-0 text-zinc-400 tabular-nums">61</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
+                                  <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../books/076/7603/index.html" lang="ar" data-flux-link >شرح الأربعين النووية - عبد الكريم الخضير</a>                                <span class="shrink-0 text-zinc-400 tabular-nums">59</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     التعيين في شرح الأربعين
                   </span>
-                              </td>
-              <td lang="ar">الطوفي</td>
-              <td data-value="58">58</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">57</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     جامع العلوم والحكم - ت أبي النور
                   </span>
-                              </td>
-              <td lang="ar">ابن رجب الحنبلي</td>
-              <td data-value="57">57</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">57</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
-                  >
-                    الفتح المبين بشرح الأربعين
-                  </span>
-                              </td>
-              <td lang="ar">ابن حجر الهيتمي</td>
-              <td data-value="57">57</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
-                                  <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     التحفة الربانية في شرح الأربعين حديثا النووية
                   </span>
-                              </td>
-              <td lang="ar">إسماعيل الأنصاري</td>
-              <td data-value="57">57</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">57</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     متون طالب العلم - المستوى الأول
                   </span>
-                              </td>
-              <td lang="ar">عبد المحسن القاسم</td>
-              <td data-value="57">57</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">57</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
+                  >
+                    الفتح المبين بشرح الأربعين
+                  </span>
+                                <span class="shrink-0 text-zinc-400 tabular-nums">56</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
+                                  <span
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     الأربعون النووية مع زيادات ابن رجب
                   </span>
-                              </td>
-              <td lang="ar">النووي</td>
-              <td data-value="56">56</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">55</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     فتح القوي المتين في شرح الأربعين وتتمة الخمسين للنووي وابن رجب رحمهما الله
                   </span>
-                              </td>
-              <td lang="ar">عبد المحسن العباد</td>
-              <td data-value="56">56</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">55</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
-                  >
-                    شرح الأربعين النووية - العباد
-                  </span>
-                              </td>
-              <td lang="ar">عبد المحسن العباد</td>
-              <td data-value="55">55</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
-                                  <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     المعين على تفهم الأربعين ت دغش
                   </span>
-                              </td>
-              <td lang="ar">ابن الملقن</td>
-              <td data-value="54">54</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
-                                  <a href="../../../books/054/5472/index.html">شرح الأربعين النووية للعثيمين</a>
-                              </td>
-              <td lang="ar">ابن عثيمين</td>
-              <td data-value="54">54</td>
-            </tr>
-                  </tbody>
-      </table>
-    </section>
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <ul class="plain">
-                  <li>
-            <a href="../../../catalogue/1390/139094.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Forty Hadith of Al-Nawawi&quot;,&quot;es&quot;:&quot;Los cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Les Quarante hadiths d’al-Nawawi&quot;,&quot;id&quot;:&quot;Al-Arba&#039;in An-Nawawiyyah [Empat Puluh Hadis An-Nawawi]&quot;,&quot;ja&quot;:&quot;『アル＝アルバイーン・アン＝ナワウィーヤ』&quot;,&quot;ru&quot;:&quot;Сорок хадисов ан-Навави&quot;,&quot;sw&quot;:&quot;Hadithi Arobaini za al-Nawawi&quot;,&quot;tr&quot;:&quot;Nevevî&#039;nin Kırk Hadisi&quot;,&quot;ur&quot;:&quot;الأربعون النووية (اربعین نووی)&quot;,&quot;zh&quot;:&quot;《脑威四十段圣训》&quot;}" data-original="الأربعون النووية">الأربعون النووية</span>
-            </a>
-          </li>
-              </ul>
-    </section>
-  
-      <section
-      class="panel"
-      id="contents"
-    >
-      <h2><span data-t="Contents">Contents</span></h2>
-      <ol
-        class="contents"
+                                <span class="shrink-0 text-zinc-400 tabular-nums">54</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
+                                  <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../books/054/5472/index.html" lang="ar" data-flux-link >شرح الأربعين النووية للعثيمين</a>                                <span class="shrink-0 text-zinc-400 tabular-nums">54</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
+                                  <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../books/033/3318/index.html" lang="ar" data-flux-link >جامع العلوم والحكم - ت الفحل</a>                                <span class="shrink-0 text-zinc-400 tabular-nums">53</span>
+              </li>
+                      </ul>
+        
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Also in the catalogue</div>
+          <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                          <a
+  href="../../../catalogue/1390/139094.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/1390/139094.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Forty Hadith of Al-Nawawi&quot;,&quot;es&quot;:&quot;Los cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Les Quarante hadiths d’al-Nawawi&quot;,&quot;id&quot;:&quot;Al-Arba&#039;in An-Nawawiyyah [Empat Puluh Hadis An-Nawawi]&quot;,&quot;ja&quot;:&quot;『アル＝アルバイーン・アン＝ナワウィーヤ』&quot;,&quot;ru&quot;:&quot;Сорок хадисов ан-Навави&quot;,&quot;sw&quot;:&quot;Hadithi Arobaini za al-Nawawi&quot;,&quot;tr&quot;:&quot;Nevevî&#039;nin Kırk Hadisi&quot;,&quot;ur&quot;:&quot;الأربعون النووية (اربعین نووی)&quot;,&quot;zh&quot;:&quot;《脑威四十段圣训》&quot;}" data-original="الأربعون النووية">الأربعون النووية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
         lang="ar"
         dir="rtl"
+        data-arabic-original
       >
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p1">مقدمة المؤلف</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p12">الحديث الأول</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p14">الحديث الثاني</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p18">الحديث الثالث</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p19">الحديث الرابع</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p21">الحديث الخامس</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p22">الحديث السادس</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p24">الحديث السابع</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p25">الحديث الثامن</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p26">الحديث التاسع</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p27">الحديث العاشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p29">الحديث الحادي عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p30">الحديث الثانى عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p31">الحديث الثالث عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p32">الحديث الرابع عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p33">الحديث الخامس عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p34">الحديث السادس عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p35">الحديث السابع عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p36">الحديث الثامن عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p37">الحديث التاسع عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p39">الحديث العشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/1.html#p40">الحديث الحادي والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p41">الحديث الثانى والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p43">الحديث الثالث والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p45">الحديث الرابع والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p49">الحديث الخامس والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p51">الحديث السادس والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p53">الحديث السابع والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p55">الحديث الثامن والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p57">الحديث التاسع والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p60">الحديث الثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p62">الحديث الحادي والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p63">الحديث الثاني والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p65">الحديث الثالث والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p66">الحديث الرابع والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p67">الحديث الخامس والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p69">الحديث السادس والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p71">الحديث السابع والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p74">الحديث الثامن والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p76">الحديث التاسع والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p77">الحديث الأربعون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/41.html#p79">الحديث الحادي والأربعون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/026/2623/80.html#p80">الحديث الثاني والأربعون</a>
-                      </li>
-              </ol>
-    </section>
-    </main>
+        الأربعون النووية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                      </div>
+        
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Contents</div>
+          <div class="rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div
+  dir="rtl"
+  x-data="staticContents(JSON.parse('{\u0022src\u0022:\u0022contents.js\u0022,\u0022pageId\u0022:null}'))"
+  x-on:load-contents.window="load()"
+   x-init="load()" >
+  <div class="w-full relative block group/input mb-3" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd"/>
+</svg>
 
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="query" placeholder="Filter contents..." aria-label="Filter contents" data-test="contents-filter"
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="entries === null" data-flux-text >Loading…</p>
+  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mb-3" x-cloak="x-cloak" x-show="entries !== null && query.trim() !== '' && shown.length === 0" data-flux-text >No entries match.</p>
+  <div class="max-h-[32rem] overflow-y-auto">
+    <ul>
+      <template
+        x-for="(entry, index) in shown"
+        :key="index"
       >
-        <span data-t="Close">Close</span>
-      </button>
+        <li
+          class="relative py-0.5"
+          x-bind:style="`padding-inline-start: ${entry.d * 0.875}rem`"
+          x-bind:data-current="entry === entries[current] ? '' : null"
+        >
+          <template
+            x-for="level in entry.d"
+            :key="level"
+          >
+            <span
+              class="absolute inset-y-0 border-s border-zinc-300 dark:border-zinc-600"
+              x-bind:style="`inset-inline-start: ${(level - 1) * 0.875 + 0.25}rem`"
+              aria-hidden="true"
+            ></span>
+          </template>
+          <a
+            class="text-base text-zinc-700 underline decoration-zinc-800/20 underline-offset-[6px] hover:decoration-current dark:text-zinc-300 dark:decoration-white/20"
+            x-bind:class="
+              entry === entries[current] &&
+              'rounded bg-amber-100 px-1 font-semibold text-zinc-900 dark:bg-amber-900/40 dark:text-white'
+            "
+            x-bind:href="entry.h"
+            x-on:click="$flux.modal('book-contents').close()"
+            x-text="entry.t"
+            data-test="contents-entry"
+          ></a>
+        </li>
+      </template>
+    </ul>
+  </div>
+</div>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

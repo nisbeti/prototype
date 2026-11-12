@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="items"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>فقه وفتاوى البيوع</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,137 +70,112 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
-    </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <div class="book-head">
-          <img
-        class="cover"
-        src="../../catalogue/2417/241793.jpg"
-        alt=""
-      />
-    
-    <div class="book-head-text">
-      <h1 class="page-title">
-        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Jurisprudence and Fatwas on Sales&quot;,&quot;es&quot;:&quot;Jurisprudencia y dictámenes sobre compraventas&quot;,&quot;fr&quot;:&quot;Droit et fatwas sur les ventes&quot;,&quot;id&quot;:&quot;Fikih dan Fatwa Jual Beli&quot;,&quot;ja&quot;:&quot;売買の法学とファトワー&quot;,&quot;ru&quot;:&quot;Фикх и фетвы о купле-продаже&quot;,&quot;sw&quot;:&quot;Fiqhi na fatwa kuhusu mauzo&quot;,&quot;tr&quot;:&quot;Alım Satım Fıkhı ve Fetvaları&quot;,&quot;ur&quot;:&quot;فقه وفتاوى البيوع (بیع کے فقہ اور فتاویٰ)&quot;,&quot;zh&quot;:&quot;《买卖法学与教法裁决》&quot;}" data-original="فقه وفتاوى البيوع">فقه وفتاوى البيوع</span>
-      </h1>
-
-                        <p class="credits">
-            <span data-t="Authors">Authors</span>:
-                                        <a href="../../authors/001/113.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Abdulaziz bin Abdullah bin Baz&quot;,&quot;es&quot;:&quot;Abd al-Aziz ibn Abdullah ibn Baz&quot;,&quot;fr&quot;:&quot;Abd al-Aziz ibn Abdullah ibn Baz&quot;,&quot;id&quot;:&quot;Abdulaziz bin Abdullah bin Baz&quot;,&quot;ja&quot;:&quot;アブドゥルアズィーズ・イブン・アブドゥッラー・イブン・バーズ&quot;,&quot;ru&quot;:&quot;Абд аль-Азиз ибн Абдаллах ибн Баз&quot;,&quot;sw&quot;:&quot;Abdulaziz bin Abdullah bin Baz&quot;,&quot;tr&quot;:&quot;Abdülazîz b. Abdullah b. Bâz&quot;,&quot;zh&quot;:&quot;阿卜杜勒阿齐兹·本·阿卜杜拉·本·巴兹&quot;}" data-original="عبد العزيز بن عبد الله بن باز">عبد العزيز بن عبد الله بن باز</span>
-              </a>
-                              ،
-                                                      <a href="../../authors/001/193.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Muhammad bin Saleh Al-Uthaymeen&quot;,&quot;es&quot;:&quot;Muhammad ibn Saleh al-Uthaymeen&quot;,&quot;fr&quot;:&quot;Muhammad ibn Saleh al-Uthaymeen&quot;,&quot;id&quot;:&quot;Muhammad bin Saleh Al-Utsaimin&quot;,&quot;ja&quot;:&quot;ムハンマド・イブン・サーレハ・アル＝ウサイミーン&quot;,&quot;ru&quot;:&quot;Мухаммад ибн Салих аль-Усаймин&quot;,&quot;sw&quot;:&quot;Muhammad bin Saleh al-Uthaymeen&quot;,&quot;tr&quot;:&quot;Muhammed b. Sâlih el-Useymîn&quot;,&quot;zh&quot;:&quot;穆罕默德·本·萨利赫·欧赛敏&quot;}" data-original="محمد بن صالح العثيمين">محمد بن صالح العثيمين</span>
-              </a>
-                              ،
-                                                      <a href="../../authors/001/197.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Saleh bin Fawzan Al-Fawzan&quot;,&quot;es&quot;:&quot;Saleh ibn Fawzan al-Fawzan&quot;,&quot;fr&quot;:&quot;Saleh ibn Fawzan al-Fawzan&quot;,&quot;id&quot;:&quot;Saleh bin Fauzan Al-Fauzan&quot;,&quot;ja&quot;:&quot;サーレハ・イブン・ファウザーン・アル＝ファウザーン&quot;,&quot;ru&quot;:&quot;Салих ибн Фаузан аль-Фаузан&quot;,&quot;sw&quot;:&quot;Saleh bin Fawzan al-Fawzan&quot;,&quot;tr&quot;:&quot;Sâlih b. Fevzân el-Fevzân&quot;,&quot;zh&quot;:&quot;萨利赫·本·福赞·福赞&quot;}" data-original="صالح بن فوزان الفوزان">صالح بن فوزان الفوزان</span>
-              </a>
-                              ،
-                                                      <a href="../../authors/010/1043.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Abdul Rahman bin Nasir al-Sa&#039;di&quot;,&quot;es&quot;:&quot;Abd al-Rahman ibn Nasir al-Sa&#039;di&quot;,&quot;fr&quot;:&quot;Abd al-Rahman ibn Nasir al-Sa&#039;di&quot;,&quot;id&quot;:&quot;Abdurrahman bin Nashir As-Sa&#039;di&quot;,&quot;ja&quot;:&quot;アブドゥッラフマーン・イブン・ナーシル・アッ＝サアディー&quot;,&quot;ru&quot;:&quot;Абд ар-Рахман ибн Насир ас-Са&#039;ди&quot;,&quot;sw&quot;:&quot;Abdulrahman bin Nasir al-Sa&#039;di&quot;,&quot;tr&quot;:&quot;Abdurrahman b. Nâsır es-Sa&#039;dî&quot;,&quot;zh&quot;:&quot;阿卜杜·拉赫曼·本·纳绥尔·萨迪&quot;}" data-original="عبد الرحمن بن ناصر السعدي">عبد الرحمن بن ناصر السعدي</span>
-              </a>
-                                    </p>
-                                <p class="credits">
-            <span data-t="Editors">Editors</span>:
-                                        <a href="../../authors/083/8324.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ashraf bin Abdul Maqsud&quot;,&quot;es&quot;:&quot;Ashraf ibn Abd al-Maqsud&quot;,&quot;fr&quot;:&quot;Ashraf ibn Abd al-Maqsud&quot;,&quot;id&quot;:&quot;Asyraf bin Abdul Maqsud&quot;,&quot;ja&quot;:&quot;アシュラフ・ビン・アブドゥルマクスード&quot;,&quot;ru&quot;:&quot;Ашраф ибн Абд аль-Максуд&quot;,&quot;sw&quot;:&quot;Ashraf bin Abdulmaqsud&quot;,&quot;tr&quot;:&quot;Eşref b. Abdülmaksûd&quot;,&quot;zh&quot;:&quot;艾什拉夫·本·阿卜杜·马克苏德&quot;}" data-original="أشرف بن عبد المقصود">أشرف بن عبد المقصود</span>
-              </a>
-                                    </p>
-                                <p class="credits">
-            <span data-t="Publishers">Publishers</span>:
-                                        <a href="../../publishers/954/95452.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Aqeedah for Heritage&quot;,&quot;es&quot;:&quot;Dar al-Aqida para el Patrimonio&quot;,&quot;fr&quot;:&quot;Dar al-Aqida li-l-Turath&quot;,&quot;id&quot;:&quot;Dar Al-Aqidah untuk Warisan&quot;,&quot;ja&quot;:&quot;ダール・アル＝アキーダ遺産出版&quot;,&quot;ru&quot;:&quot;Дар аль-Акида ли-т-турас&quot;,&quot;sw&quot;:&quot;Dar al-Aqeedah kwa Turathi&quot;,&quot;tr&quot;:&quot;Dârü’l-Akîde li’t-türâs&quot;,&quot;zh&quot;:&quot;信仰遗产出版社&quot;}" data-original="دار العقيدة للتراث">دار العقيدة للتراث</span>
-              </a>
-                                    </p>
-              
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/Figh/241793_Figh25252%20%D9%81%D9%82%D9%87%20%D9%88%D9%81%D8%AA%D8%A7%D9%88%D9%89%20%D8%A7%D9%84%D8%A8%D9%8A%D9%88%D8%B9.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T102751Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=abb376b29db15b5881391681a0799ea9f7bf5dfd6586bea1503fa2a199317d50"
-            rel="noopener"
-            target="_blank"
-          >
-            <span data-t="Download">Download</span>
-          </a>
-          <span class="muted"><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></span>
-                      </p>
-    </div>
-  </div>
-
-      <section class="panel">
-      <dl class="book-card">
-                  <div>
-            <dt><span data-t="Published">Published</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;es&quot;:&quot;1424h 2003&quot;,&quot;fr&quot;:&quot;1424 H 2003&quot;,&quot;id&quot;:&quot;1424 H 2003 M&quot;,&quot;ja&quot;:&quot;ヒジュラ暦1424年／西暦2003年&quot;,&quot;ru&quot;:&quot;1424 г. х. \/ 2003 г.&quot;,&quot;sw&quot;:&quot;1424H 2003 BK&quot;,&quot;tr&quot;:&quot;1424 H 2003&quot;,&quot;zh&quot;:&quot;伊历1424年 公元2003年&quot;}" data-original="1424ه 2003م">1424ه 2003م</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Country">Country</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Egypt, 1424 AH \/ 2003 CE&quot;,&quot;es&quot;:&quot;El Cairo, Alejandría, Egipto&quot;,&quot;fr&quot;:&quot;Le Caire, Alexandrie, Égypte&quot;,&quot;id&quot;:&quot;Kairo, Alexandria, Mesir&quot;,&quot;ja&quot;:&quot;カイロ、アレクサンドリア、エジプト&quot;,&quot;ru&quot;:&quot;Каир, Александрия, Египет&quot;,&quot;sw&quot;:&quot;Kairo, Alexandria, Misri&quot;,&quot;tr&quot;:&quot;Kahire, İskenderiye, Mısır&quot;,&quot;ur&quot;:&quot;قاہرہ، اسکندریہ، مصر&quot;,&quot;zh&quot;:&quot;开罗、亚历山大，埃及&quot;}" data-original="القاهرة، الإسكندرية، مصر">القاهرة، الإسكندرية، مصر</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Edition">Edition</span></dt>
-            <dd><span dir="auto">1</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Volumes">Volumes</span></dt>
-            <dd><span dir="auto">1</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Pages">Pages</span></dt>
-            <dd><span dir="auto">248</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Category">Category</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Jurisprudence and Its Principles&quot;,&quot;es&quot;:&quot;Jurisprudencia y sus fundamentos&quot;,&quot;fr&quot;:&quot;Jurisprudence et ses fondements&quot;,&quot;id&quot;:&quot;Fikih dan Ushul Fikih&quot;,&quot;ja&quot;:&quot;法学・法源学&quot;,&quot;ru&quot;:&quot;Фикх и его основы&quot;,&quot;sw&quot;:&quot;Fiqhi na misingi yake&quot;,&quot;tr&quot;:&quot;Fıkıh ve Fıkıh Usulü&quot;,&quot;ur&quot;:&quot;فقہ اور اصولِ فقہ&quot;,&quot;zh&quot;:&quot;教法与教法原理&quot;}" data-original="الفقه وأصوله">الفقه وأصوله</span></dd>
-          </div>
-              </dl>
-    </section>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
-      <section class="panel">
-      <h2><span data-t="Description">Description</span></h2>
-      <p class="caption" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title:  Jurisprudence and Fatwas on Sales\n\n▪️ Editor: Abdul Rahman Al-Saadi • Ibn Baz • Ibn Uthaymeen • Al-Fawzan\n▫️ Publisher: Ashraf bin Abdul Maqsood\n▪️ Publish Date: Dar Al-Aqidah\n▫️ Publish Country: Egypt, 1424 AH \/ 2003 CE\n▪️ Edition: Cairo, Alexandria\n▫️ Number of Volumes: 1\n▪️ Pages: 1\n▫️ Type of Container: 248\n▪️ Sub Category: Jurisprudence and Its Principles&quot;,&quot;es&quot;:&quot;▫️ Título: \nJurisprudencia y dictámenes sobre compraventas\n\n▪️ Edición crítica: Abd al-Rahman al-Sa&#039;di • Ibn Baz • Ibn Uthaymin • al-Fawzan\n▫️ Editorial: Ashraf ibn Abd al-Maqsud\n▪️ Fecha de publicación: Dar al-Aqida\n▫️ Lugar de publicación: Egipto, 1424h 2003\n▪️ Edición: El Cairo, Alejandría\n▫️ Número de volúmenes: 1\n▪️ Páginas: 1\n▫️ Tipo de material: 248\n▪️ Subcategoría: Derecho islámico y sus principios&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nDroit et fatwas sur les ventes\n\n▪️ Édition critique : Abd al-Rahman al-Sadi • Ibn Baz • Ibn al-Uthaymin • al-Fawzan\n▫️ Éditeur : Ashraf ibn Abd al-Maqsud\n▪️ Date de publication : Dar al-Aqida\n▫️ Lieu de publication : Égypte, 1424 H 2003\n▪️ Édition : Le Caire, Alexandrie\n▫️ Nombre de volumes : 1\n▪️ Pages : 1\n▫️ Type de document : 248\n▪️ Sous-catégorie : Droit musulman et ses fondements&quot;,&quot;id&quot;:&quot;▫️ Judul: \nFikih dan Fatwa Jual Beli\n\n▪️ Pentahkik: Abdurrahman as-Sa&#039;di • Ibnu Baz • Ibnu al-Utsaimin • al-Fauzan\n▫️ Penerbit: Asyraf bin Abdul Maqsud\n▪️ Tahun terbit: Dar al-Aqidah\n▫️ Tempat terbit: Mesir, 1424 H 2003 M\n▪️ Cetakan: Kairo, Iskandariyah\n▫️ Jumlah jilid: 1\n▪️ Halaman: 1\n▫️ Jenis bahan: 248\n▪️ Subkategori: Fikih dan Usul Fikih&quot;,&quot;ja&quot;:&quot;▫️ 書名： \n売買の法学とファトワー\n\n▪️ 校訂者：アブドゥッラフマーン・アッ＝サアディー • イブン・バーズ • イブン・アル＝ウサイミーン • アル＝ファウザーン\n▫️ 出版社：アシュラフ・イブン・アブドゥルマクスード\n▪️ 出版年：ダール・アル＝アキーダ\n▫️ 出版地：エジプト、ヒジュラ暦1424年／西暦2003年\n▪️ 版：カイロ、アレクサンドリア\n▫️ 巻数：1\n▪️ ページ数：1\n▫️ 資料の種類：248\n▪️ 下位分類：法学と法源学&quot;,&quot;ru&quot;:&quot;▫️ Название: \nФикх и фетвы о купле-продаже\n\n▪️ Тахкик: Абд ар-Рахман ас-Саади • Ибн Баз • Ибн аль-Усаймин • аль-Фаузан\n▫️ Издательство: Ашраф ибн Абд аль-Максуд\n▪️ Дата издания: Дар аль-Акида\n▫️ Место издания: Египет, 1424 г. х. \/ 2003 г.\n▪️ Издание: Каир, Александрия\n▫️ Количество томов: 1\n▪️ Страницы: 1\n▫️ Тип материала: 248\n▪️ Подкатегория: Фикх и его основы&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nFiqhi na fatwa kuhusu mauzo\n\n▪️ Mhakiki: Abd al-Rahman al-Sa&#039;di • Ibn Baz • Ibn al-Uthaymin • al-Fawzan\n▫️ Mchapishaji: Ashraf bin Abdulmaqsud\n▪️ Tarehe ya kuchapishwa: Dar al-Aqidah\n▫️ Mahali pa kuchapishwa: Misri, 1424H 2003 BK\n▪️ Toleo: Kairo, Alexandria\n▫️ Idadi ya juzuu: 1\n▪️ Kurasa: 1\n▫️ Aina ya nyenzo: 248\n▪️ Kundi dogo: Fiqhi na misingi yake&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nAlım Satım Fıkhı ve Fetvaları\n\n▪️ Tahkik eden: Abdurrahman es-Sa‘dî • İbn Bâz • İbn Useymîn • el-Fevzân\n▫️ Yayınevi: Eşref b. Abdülmaksûd\n▪️ Yayın tarihi: Dar al-Aqida\n▫️ Yayın yeri: Mısır, 1424 H 2003\n▪️ Baskı: Kahire, İskenderiye\n▫️ Cilt sayısı: 1\n▪️ Sayfa: 1\n▫️ Materyal türü: 248\n▪️ Alt kategori: Fıkıh ve Fıkıh Usulü&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nفقه وفتاوى البيوع (بیع کے فقہ اور فتاویٰ)\n\n▪️ محقق: عبد الرحمن السعدي • ابن باز • ابن عثيمين • الفوزان\n▫️ ناشر: أشرف بن عبد المقصود\n▪️ تاریخِ اشاعت: دار العقيدة\n▫️ مقامِ اشاعت: مصر، 1424ه 2003م\n▪️ طبع: قاہرہ، اسکندریہ\n▫️ جلدیں: 1\n▪️ صفحات: 1\n▫️ نوعیت: 248\n▪️ ذیلی زمرہ: فقہ اور اصولِ فقہ&quot;,&quot;zh&quot;:&quot;▫️ 书名： \n《买卖法学与教法裁决》\n\n▪️ 校勘者：阿卜杜·拉赫曼·萨阿迪 • 伊本·巴兹 • 伊本·欧赛敏 • 福赞\n▫️ 出版社：阿什拉夫·本·阿卜杜·麦克苏德\n▪️ 出版日期：信仰教法出版社\n▫️ 出版地：埃及，伊历1424年 公元2003年\n▪️ 版次：开罗，亚历山大\n▫️ 册数：1\n▪️ 页数：1\n▫️ 资料类型：248\n▪️ 子分类：法学与法学原理&quot;}" data-original="▫️ العنوان: 
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../catalogue.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Resources</span>
+    </a>
+
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <img
+            src="../../catalogue/2417/241793.jpg"
+            alt=""
+            class="aspect-[3/4] w-full rounded-xl border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+          />
+        
+        <div class="mt-4 flex flex-col gap-2">
+                                <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/Figh/241793_Figh25252%20%D9%81%D9%82%D9%87%20%D9%88%D9%81%D8%AA%D8%A7%D9%88%D9%89%20%D8%A7%D9%84%D8%A8%D9%8A%D9%88%D8%B9.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T180236Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=b0961d0a8a5f5df0189a77b93dd2dc5a813f39e9025e0caa70770d90d2932c2c" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" rel="noopener">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z"/>
+  <path d="M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Download</span>
+    </a>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></p>                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Jurisprudence and Fatwas on Sales&quot;,&quot;es&quot;:&quot;Jurisprudencia y dictámenes sobre compraventas&quot;,&quot;fr&quot;:&quot;Droit et fatwas sur les ventes&quot;,&quot;id&quot;:&quot;Fikih dan Fatwa Jual Beli&quot;,&quot;ja&quot;:&quot;売買の法学とファトワー&quot;,&quot;ru&quot;:&quot;Фикх и фетвы о купле-продаже&quot;,&quot;sw&quot;:&quot;Fiqhi na fatwa kuhusu mauzo&quot;,&quot;tr&quot;:&quot;Alım Satım Fıkhı ve Fetvaları&quot;,&quot;ur&quot;:&quot;فقه وفتاوى البيوع (بیع کے فقہ اور فتاویٰ)&quot;,&quot;zh&quot;:&quot;《买卖法学与教法裁决》&quot;}" data-original="فقه وفتاوى البيوع">فقه وفتاوى البيوع</span></h1>
+
+                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1" lang="ar" dir="rtl" data-arabic-original="data-arabic-original" data-flux-text >فقه وفتاوى البيوع</p>        
+                              <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Authors">Authors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/001/113.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Abdulaziz bin Abdullah bin Baz&quot;,&quot;es&quot;:&quot;Abd al-Aziz ibn Abdullah ibn Baz&quot;,&quot;fr&quot;:&quot;Abd al-Aziz ibn Abdullah ibn Baz&quot;,&quot;id&quot;:&quot;Abdulaziz bin Abdullah bin Baz&quot;,&quot;ja&quot;:&quot;アブドゥルアズィーズ・イブン・アブドゥッラー・イブン・バーズ&quot;,&quot;ru&quot;:&quot;Абд аль-Азиз ибн Абдаллах ибн Баз&quot;,&quot;sw&quot;:&quot;Abdulaziz bin Abdullah bin Baz&quot;,&quot;tr&quot;:&quot;Abdülazîz b. Abdullah b. Bâz&quot;,&quot;zh&quot;:&quot;阿卜杜勒阿齐兹·本·阿卜杜拉·本·巴兹&quot;}" data-original="عبد العزيز بن عبد الله بن باز">عبد العزيز بن عبد الله بن باز</span></a>                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/001/193.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Muhammad bin Saleh Al-Uthaymeen&quot;,&quot;es&quot;:&quot;Muhammad ibn Saleh al-Uthaymeen&quot;,&quot;fr&quot;:&quot;Muhammad ibn Saleh al-Uthaymeen&quot;,&quot;id&quot;:&quot;Muhammad bin Saleh Al-Utsaimin&quot;,&quot;ja&quot;:&quot;ムハンマド・イブン・サーレハ・アル＝ウサイミーン&quot;,&quot;ru&quot;:&quot;Мухаммад ибн Салих аль-Усаймин&quot;,&quot;sw&quot;:&quot;Muhammad bin Saleh al-Uthaymeen&quot;,&quot;tr&quot;:&quot;Muhammed b. Sâlih el-Useymîn&quot;,&quot;zh&quot;:&quot;穆罕默德·本·萨利赫·欧赛敏&quot;}" data-original="محمد بن صالح العثيمين">محمد بن صالح العثيمين</span></a>                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/001/197.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Saleh bin Fawzan Al-Fawzan&quot;,&quot;es&quot;:&quot;Saleh ibn Fawzan al-Fawzan&quot;,&quot;fr&quot;:&quot;Saleh ibn Fawzan al-Fawzan&quot;,&quot;id&quot;:&quot;Saleh bin Fauzan Al-Fauzan&quot;,&quot;ja&quot;:&quot;サーレハ・イブン・ファウザーン・アル＝ファウザーン&quot;,&quot;ru&quot;:&quot;Салих ибн Фаузан аль-Фаузан&quot;,&quot;sw&quot;:&quot;Saleh bin Fawzan al-Fawzan&quot;,&quot;tr&quot;:&quot;Sâlih b. Fevzân el-Fevzân&quot;,&quot;zh&quot;:&quot;萨利赫·本·福赞·福赞&quot;}" data-original="صالح بن فوزان الفوزان">صالح بن فوزان الفوزان</span></a>                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/010/1043.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Abdul Rahman bin Nasir al-Sa&#039;di&quot;,&quot;es&quot;:&quot;Abd al-Rahman ibn Nasir al-Sa&#039;di&quot;,&quot;fr&quot;:&quot;Abd al-Rahman ibn Nasir al-Sa&#039;di&quot;,&quot;id&quot;:&quot;Abdurrahman bin Nashir As-Sa&#039;di&quot;,&quot;ja&quot;:&quot;アブドゥッラフマーン・イブン・ナーシル・アッ＝サアディー&quot;,&quot;ru&quot;:&quot;Абд ар-Рахман ибн Насир ас-Са&#039;ди&quot;,&quot;sw&quot;:&quot;Abdulrahman bin Nasir al-Sa&#039;di&quot;,&quot;tr&quot;:&quot;Abdurrahman b. Nâsır es-Sa&#039;dî&quot;,&quot;zh&quot;:&quot;阿卜杜·拉赫曼·本·纳绥尔·萨迪&quot;}" data-original="عبد الرحمن بن ناصر السعدي">عبد الرحمن بن ناصر السعدي</span></a></p>                                        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Editors">Editors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/083/8324.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ashraf bin Abdul Maqsud&quot;,&quot;es&quot;:&quot;Ashraf ibn Abd al-Maqsud&quot;,&quot;fr&quot;:&quot;Ashraf ibn Abd al-Maqsud&quot;,&quot;id&quot;:&quot;Asyraf bin Abdul Maqsud&quot;,&quot;ja&quot;:&quot;アシュラフ・ビン・アブドゥルマクスード&quot;,&quot;ru&quot;:&quot;Ашраф ибн Абд аль-Максуд&quot;,&quot;sw&quot;:&quot;Ashraf bin Abdulmaqsud&quot;,&quot;tr&quot;:&quot;Eşref b. Abdülmaksûd&quot;,&quot;zh&quot;:&quot;艾什拉夫·本·阿卜杜·马克苏德&quot;}" data-original="أشرف بن عبد المقصود">أشرف بن عبد المقصود</span></a></p>                                        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Publishers">Publishers</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../publishers/954/95452.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Aqeedah for Heritage&quot;,&quot;es&quot;:&quot;Dar al-Aqida para el Patrimonio&quot;,&quot;fr&quot;:&quot;Dar al-Aqida li-l-Turath&quot;,&quot;id&quot;:&quot;Dar Al-Aqidah untuk Warisan&quot;,&quot;ja&quot;:&quot;ダール・アル＝アキーダ遺産出版&quot;,&quot;ru&quot;:&quot;Дар аль-Акида ли-т-турас&quot;,&quot;sw&quot;:&quot;Dar al-Aqeedah kwa Turathi&quot;,&quot;tr&quot;:&quot;Dârü’l-Akîde li’t-türâs&quot;,&quot;zh&quot;:&quot;信仰遗产出版社&quot;}" data-original="دار العقيدة للتراث">دار العقيدة للتراث</span></a></p>                  
+                  <div class="mt-6 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+            <dl class="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[fit-content(12rem)_1fr]">
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Published">Published</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;es&quot;:&quot;1424h 2003&quot;,&quot;fr&quot;:&quot;1424 H 2003&quot;,&quot;id&quot;:&quot;1424 H 2003 M&quot;,&quot;ja&quot;:&quot;ヒジュラ暦1424年／西暦2003年&quot;,&quot;ru&quot;:&quot;1424 г. х. \/ 2003 г.&quot;,&quot;sw&quot;:&quot;1424H 2003 BK&quot;,&quot;tr&quot;:&quot;1424 H 2003&quot;,&quot;zh&quot;:&quot;伊历1424年 公元2003年&quot;}" data-original="1424ه 2003م">1424ه 2003م</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Country">Country</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Egypt, 1424 AH \/ 2003 CE&quot;,&quot;es&quot;:&quot;El Cairo, Alejandría, Egipto&quot;,&quot;fr&quot;:&quot;Le Caire, Alexandrie, Égypte&quot;,&quot;id&quot;:&quot;Kairo, Alexandria, Mesir&quot;,&quot;ja&quot;:&quot;カイロ、アレクサンドリア、エジプト&quot;,&quot;ru&quot;:&quot;Каир, Александрия, Египет&quot;,&quot;sw&quot;:&quot;Kairo, Alexandria, Misri&quot;,&quot;tr&quot;:&quot;Kahire, İskenderiye, Mısır&quot;,&quot;ur&quot;:&quot;قاہرہ، اسکندریہ، مصر&quot;,&quot;zh&quot;:&quot;开罗、亚历山大，埃及&quot;}" data-original="القاهرة، الإسكندرية، مصر">القاهرة، الإسكندرية، مصر</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Edition">Edition</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">1</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Volumes">Volumes</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">1</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Pages">Pages</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">248</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Category">Category</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Jurisprudence and Its Principles&quot;,&quot;es&quot;:&quot;Jurisprudencia y sus fundamentos&quot;,&quot;fr&quot;:&quot;Jurisprudence et ses fondements&quot;,&quot;id&quot;:&quot;Fikih dan Ushul Fikih&quot;,&quot;ja&quot;:&quot;法学・法源学&quot;,&quot;ru&quot;:&quot;Фикх и его основы&quot;,&quot;sw&quot;:&quot;Fiqhi na misingi yake&quot;,&quot;tr&quot;:&quot;Fıkıh ve Fıkıh Usulü&quot;,&quot;ur&quot;:&quot;فقہ اور اصولِ فقہ&quot;,&quot;zh&quot;:&quot;教法与教法原理&quot;}" data-original="الفقه وأصوله">الفقه وأصوله</span>
+                </dd>
+                          </dl>
+          </div>
+        
+                  <div class="mt-4 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Description</div>
+            <p class="text-sm leading-relaxed whitespace-pre-line text-zinc-800 dark:text-zinc-100" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title:  Jurisprudence and Fatwas on Sales\n\n▪️ Editor: Abdul Rahman Al-Saadi • Ibn Baz • Ibn Uthaymeen • Al-Fawzan\n▫️ Publisher: Ashraf bin Abdul Maqsood\n▪️ Publish Date: Dar Al-Aqidah\n▫️ Publish Country: Egypt, 1424 AH \/ 2003 CE\n▪️ Edition: Cairo, Alexandria\n▫️ Number of Volumes: 1\n▪️ Pages: 1\n▫️ Type of Container: 248\n▪️ Sub Category: Jurisprudence and Its Principles&quot;,&quot;es&quot;:&quot;▫️ Título: \nJurisprudencia y dictámenes sobre compraventas\n\n▪️ Edición crítica: Abd al-Rahman al-Sa&#039;di • Ibn Baz • Ibn Uthaymin • al-Fawzan\n▫️ Editorial: Ashraf ibn Abd al-Maqsud\n▪️ Fecha de publicación: Dar al-Aqida\n▫️ Lugar de publicación: Egipto, 1424h 2003\n▪️ Edición: El Cairo, Alejandría\n▫️ Número de volúmenes: 1\n▪️ Páginas: 1\n▫️ Tipo de material: 248\n▪️ Subcategoría: Derecho islámico y sus principios&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nDroit et fatwas sur les ventes\n\n▪️ Édition critique : Abd al-Rahman al-Sadi • Ibn Baz • Ibn al-Uthaymin • al-Fawzan\n▫️ Éditeur : Ashraf ibn Abd al-Maqsud\n▪️ Date de publication : Dar al-Aqida\n▫️ Lieu de publication : Égypte, 1424 H 2003\n▪️ Édition : Le Caire, Alexandrie\n▫️ Nombre de volumes : 1\n▪️ Pages : 1\n▫️ Type de document : 248\n▪️ Sous-catégorie : Droit musulman et ses fondements&quot;,&quot;id&quot;:&quot;▫️ Judul: \nFikih dan Fatwa Jual Beli\n\n▪️ Pentahkik: Abdurrahman as-Sa&#039;di • Ibnu Baz • Ibnu al-Utsaimin • al-Fauzan\n▫️ Penerbit: Asyraf bin Abdul Maqsud\n▪️ Tahun terbit: Dar al-Aqidah\n▫️ Tempat terbit: Mesir, 1424 H 2003 M\n▪️ Cetakan: Kairo, Iskandariyah\n▫️ Jumlah jilid: 1\n▪️ Halaman: 1\n▫️ Jenis bahan: 248\n▪️ Subkategori: Fikih dan Usul Fikih&quot;,&quot;ja&quot;:&quot;▫️ 書名： \n売買の法学とファトワー\n\n▪️ 校訂者：アブドゥッラフマーン・アッ＝サアディー • イブン・バーズ • イブン・アル＝ウサイミーン • アル＝ファウザーン\n▫️ 出版社：アシュラフ・イブン・アブドゥルマクスード\n▪️ 出版年：ダール・アル＝アキーダ\n▫️ 出版地：エジプト、ヒジュラ暦1424年／西暦2003年\n▪️ 版：カイロ、アレクサンドリア\n▫️ 巻数：1\n▪️ ページ数：1\n▫️ 資料の種類：248\n▪️ 下位分類：法学と法源学&quot;,&quot;ru&quot;:&quot;▫️ Название: \nФикх и фетвы о купле-продаже\n\n▪️ Тахкик: Абд ар-Рахман ас-Саади • Ибн Баз • Ибн аль-Усаймин • аль-Фаузан\n▫️ Издательство: Ашраф ибн Абд аль-Максуд\n▪️ Дата издания: Дар аль-Акида\n▫️ Место издания: Египет, 1424 г. х. \/ 2003 г.\n▪️ Издание: Каир, Александрия\n▫️ Количество томов: 1\n▪️ Страницы: 1\n▫️ Тип материала: 248\n▪️ Подкатегория: Фикх и его основы&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nFiqhi na fatwa kuhusu mauzo\n\n▪️ Mhakiki: Abd al-Rahman al-Sa&#039;di • Ibn Baz • Ibn al-Uthaymin • al-Fawzan\n▫️ Mchapishaji: Ashraf bin Abdulmaqsud\n▪️ Tarehe ya kuchapishwa: Dar al-Aqidah\n▫️ Mahali pa kuchapishwa: Misri, 1424H 2003 BK\n▪️ Toleo: Kairo, Alexandria\n▫️ Idadi ya juzuu: 1\n▪️ Kurasa: 1\n▫️ Aina ya nyenzo: 248\n▪️ Kundi dogo: Fiqhi na misingi yake&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nAlım Satım Fıkhı ve Fetvaları\n\n▪️ Tahkik eden: Abdurrahman es-Sa‘dî • İbn Bâz • İbn Useymîn • el-Fevzân\n▫️ Yayınevi: Eşref b. Abdülmaksûd\n▪️ Yayın tarihi: Dar al-Aqida\n▫️ Yayın yeri: Mısır, 1424 H 2003\n▪️ Baskı: Kahire, İskenderiye\n▫️ Cilt sayısı: 1\n▪️ Sayfa: 1\n▫️ Materyal türü: 248\n▪️ Alt kategori: Fıkıh ve Fıkıh Usulü&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nفقه وفتاوى البيوع (بیع کے فقہ اور فتاویٰ)\n\n▪️ محقق: عبد الرحمن السعدي • ابن باز • ابن عثيمين • الفوزان\n▫️ ناشر: أشرف بن عبد المقصود\n▪️ تاریخِ اشاعت: دار العقيدة\n▫️ مقامِ اشاعت: مصر، 1424ه 2003م\n▪️ طبع: قاہرہ، اسکندریہ\n▫️ جلدیں: 1\n▪️ صفحات: 1\n▫️ نوعیت: 248\n▪️ ذیلی زمرہ: فقہ اور اصولِ فقہ&quot;,&quot;zh&quot;:&quot;▫️ 书名： \n《买卖法学与教法裁决》\n\n▪️ 校勘者：阿卜杜·拉赫曼·萨阿迪 • 伊本·巴兹 • 伊本·欧赛敏 • 福赞\n▫️ 出版社：阿什拉夫·本·阿卜杜·麦克苏德\n▪️ 出版日期：信仰教法出版社\n▫️ 出版地：埃及，伊历1424年 公元2003年\n▪️ 版次：开罗，亚历山大\n▫️ 册数：1\n▪️ 页数：1\n▫️ 资料类型：248\n▪️ 子分类：法学与法学原理&quot;}" data-original="▫️ العنوان: 
 فقه وفتاوى البيوع
 
 ▪️ المحقق: #عبد_الرحمن_السعدي • #ابن_باز • #ابن_عثيمين • #الفوزان
@@ -190,28 +202,10 @@
 ▪️ التصنيف الفرعي: #الفقه_وأصوله
 
 ۪</p>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
-      >
-        <span data-t="Close">Close</span>
-      </button>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>مكتبة المنار الإسلامية</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,154 +70,235 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Manar Islamic Library&quot;,&quot;es&quot;:&quot;Maktabat al-Manar al-Islamiyya&quot;,&quot;fr&quot;:&quot;Bibliothèque islamique al-Manar&quot;,&quot;id&quot;:&quot;Maktabah Al-Manar Al-Islamiyyah&quot;,&quot;ja&quot;:&quot;マクタバト・アル＝マナール・アル＝イスラーミーヤ&quot;,&quot;ru&quot;:&quot;Исламская библиотека аль-Манар&quot;,&quot;sw&quot;:&quot;Maktabat al-Manar al-Islamiyya&quot;,&quot;tr&quot;:&quot;Mektebetü&#039;l-Menâri&#039;l-İslâmiyye&quot;,&quot;zh&quot;:&quot;灯塔伊斯兰图书馆&quot;}" data-original="مكتبة المنار الإسلامية">مكتبة المنار الإسلامية</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/1081/108118.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1081/108118.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Orientalists and the Sunnah&quot;,&quot;es&quot;:&quot;Los orientalistas y la Sunnah&quot;,&quot;fr&quot;:&quot;Les orientalistes et la Sunna&quot;,&quot;id&quot;:&quot;Al-Mustasyriqun was-Sunnah (Para Orientalis dan Sunnah)&quot;,&quot;ja&quot;:&quot;オリエンタリストとスンナ&quot;,&quot;ru&quot;:&quot;Ориенталисты и Сунна&quot;,&quot;sw&quot;:&quot;Al-Mustashriqun wal-Sunna (Wataalamu wa Mashariki na Sunna)&quot;,&quot;tr&quot;:&quot;Müsteşrikler ve sünnet&quot;,&quot;zh&quot;:&quot;《东方学家与圣行》&quot;}" data-original="المستشرقون والسنة">المستشرقون والسنة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Manar Islamic Library&quot;,&quot;es&quot;:&quot;Maktabat al-Manar al-Islamiyya&quot;,&quot;fr&quot;:&quot;Bibliothèque islamique al-Manar&quot;,&quot;id&quot;:&quot;Maktabah Al-Manar Al-Islamiyyah&quot;,&quot;ja&quot;:&quot;マクタバト・アル＝マナール・アル＝イスラーミーヤ&quot;,&quot;ru&quot;:&quot;Исламская библиотека аль-Манар&quot;,&quot;sw&quot;:&quot;Maktabat al-Manar al-Islamiyya&quot;,&quot;tr&quot;:&quot;Mektebetü&#039;l-Menâri&#039;l-İslâmiyye&quot;,&quot;zh&quot;:&quot;灯塔伊斯兰图书馆&quot;}" data-original="مكتبة المنار الإسلامية">مكتبة المنار الإسلامية</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/1081/108118.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Orientalists and the Sunnah&quot;,&quot;es&quot;:&quot;Los orientalistas y la Sunnah&quot;,&quot;fr&quot;:&quot;Les orientalistes et la Sunna&quot;,&quot;id&quot;:&quot;Al-Mustasyriqun was-Sunnah (Para Orientalis dan Sunnah)&quot;,&quot;ja&quot;:&quot;オリエンタリストとスンナ&quot;,&quot;ru&quot;:&quot;Ориенталисты и Сунна&quot;,&quot;sw&quot;:&quot;Al-Mustashriqun wal-Sunna (Wataalamu wa Mashariki na Sunna)&quot;,&quot;tr&quot;:&quot;Müsteşrikler ve sünnet&quot;,&quot;zh&quot;:&quot;《东方学家与圣行》&quot;}" data-original="المستشرقون والسنة">المستشرقون والسنة</span>
-          </a>
-        </td>
-        <td dir="auto">سعد المرصفي</td>
-        <td dir="auto">مكتبة المنار الإسلامية • مؤسسة الريان</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1419/141934.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Defense of the Hadith on the Virtues of Abu Sufyan (may Allah be pleased with him)&quot;,&quot;es&quot;:&quot;Defensa del hadiz sobre las virtudes de Abu Sufyan&quot;,&quot;fr&quot;:&quot;Défense du hadith sur les mérites d&#039;Abu Sufyan&quot;,&quot;id&quot;:&quot;Pembelaan terhadap hadis tentang keutamaan Abu Sufyan radhiyallahu anhu&quot;,&quot;ja&quot;:&quot;アブー・スフヤーンの美徳に関するハディースを擁護して&quot;,&quot;ru&quot;:&quot;Защита хадиса о достоинствах Абу Суфьяна, да будет доволен им Аллах&quot;,&quot;sw&quot;:&quot;Utetezi wa hadithi kuhusu fadhila za Abu Sufyan, Allah amridhie&quot;,&quot;tr&quot;:&quot;Ebû Süfyân&#039;ın Faziletleri Hakkındaki Hadisin Savunusu&quot;,&quot;zh&quot;:&quot;为关于艾卜·苏富扬美德的圣训辩护&quot;}" data-original="دفاع عن حديث فضائل أبي سفيان رضي الله عنه">دفاع عن حديث فضائل أبي سفيان رضي الله عنه</span>
-          </a>
-        </td>
-        <td dir="auto">سعد المرصفي</td>
-        <td dir="auto">مكتبة المنار الإسلامية • مؤسسة الريان</td>
-        <td dir="auto">1416هـ 1995م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1426/142669.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Objections to the Hadith of Al-Jassasa and Their Refutation&quot;,&quot;es&quot;:&quot;Objeciones sobre el hadiz de al-Jassasa y sus respuestas&quot;,&quot;fr&quot;:&quot;Objections concernant le hadith de la Jassasa et leurs réfutations&quot;,&quot;id&quot;:&quot;Syubhat tentang Hadis Jassasah dan Bantahannya&quot;,&quot;ja&quot;:&quot;ジャッサーサのハディースをめぐる疑義とその反駁&quot;,&quot;ru&quot;:&quot;Сомнения относительно хадиса о Джассасе и опровержение их&quot;,&quot;sw&quot;:&quot;Shubuhat kuhusu Hadithi ya al-Jassasa na Majibu Yake&quot;,&quot;tr&quot;:&quot;Cessâse Hadisi Hakkındaki Şüpheler ve Bunlara Cevaplar&quot;,&quot;ur&quot;:&quot;شبهات حول حديث الجساسة وردها (جسّاسہ کی حدیث کے بارے میں شبہات اور ان کا رد)&quot;,&quot;zh&quot;:&quot;关于贾萨萨圣训的疑难及其回应&quot;}" data-original="شبهات حول حديث الجساسة وردها">شبهات حول حديث الجساسة وردها</span>
-          </a>
-        </td>
-        <td dir="auto">سعد المرصفي</td>
-        <td dir="auto">مكتبة المنار الإسلامية • مؤسسة الريان</td>
-        <td dir="auto">1418هـ 1997م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1428/142830.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Orientalists and the Sunnah&quot;,&quot;es&quot;:&quot;Los orientalistas y la Sunna&quot;,&quot;fr&quot;:&quot;Les orientalistes et la Sunna&quot;,&quot;id&quot;:&quot;Orientalis dan Sunah&quot;,&quot;ja&quot;:&quot;東洋学者とスンナ&quot;,&quot;ru&quot;:&quot;Ориенталисты и Сунна&quot;,&quot;sw&quot;:&quot;Wanaorientalisti na Sunna&quot;,&quot;tr&quot;:&quot;Müsteşrikler ve Sünnet&quot;,&quot;ur&quot;:&quot;المستشرقون والسنة (مستشرقین اور سنت)&quot;,&quot;zh&quot;:&quot;《东方学家与圣行》&quot;}" data-original="المستشرقون والسنة">المستشرقون والسنة</span>
-          </a>
-        </td>
-        <td dir="auto">سعد المرصفي</td>
-        <td dir="auto">مكتبة المنار الإسلامية • مؤسسة الريان</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1435/143543.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Validity and Jurisprudence of Nursing Narrations&quot;,&quot;es&quot;:&quot;Hadices sobre la lactancia: su valor probatorio y su jurisprudencia&quot;,&quot;fr&quot;:&quot;Les hadiths sur l’allaitement : leur autorité et leur jurisprudence&quot;,&quot;id&quot;:&quot;Hadis-hadis persusuan: kehujahan dan fikihnya&quot;,&quot;ja&quot;:&quot;授乳に関するハディース――法的証拠性と法学的解釈&quot;,&quot;ru&quot;:&quot;Хадисы о молочном родстве: их доказательная сила и фикх&quot;,&quot;sw&quot;:&quot;Hadithi za kunyonyesha: uhalali wake na fiqhi yake&quot;,&quot;tr&quot;:&quot;Süt emzirme hadisleri: delil değeri ve fıkhı&quot;,&quot;ur&quot;:&quot;أحاديث الرضاع حجيتها وفقهها (رضاعت سے متعلق احادیث: ان کی حجیت اور فقہ)&quot;,&quot;zh&quot;:&quot;《哺乳圣训：其证据效力与法学意义》&quot;}" data-original="أحاديث الرضاع حجيتها وفقهها">أحاديث الرضاع حجيتها وفقهها</span>
-          </a>
-        </td>
-        <td dir="auto">سعد المرصفي</td>
-        <td dir="auto">مكتبة المنار الإسلامية • مؤسسة الريان</td>
-        <td dir="auto">1415هـ 1994م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1460/146074.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Objections to the Hadiths of Stoning and Their Refutation - Saad Al-Marsafi&quot;,&quot;es&quot;:&quot;Dudas sobre los hadices de la lapidación y su refutación — Sa&#039;d al-Mirsafi&quot;,&quot;fr&quot;:&quot;Objections concernant les hadiths de la lapidation et leur réfutation — Sa&#039;d al-Mirsafi&quot;,&quot;id&quot;:&quot;Keraguan Seputar Hadis-Hadis Rajam dan Sanggahannya — Sa&#039;d Al-Marsafi&quot;,&quot;ja&quot;:&quot;石打ち刑のハディースをめぐる疑念とその反論――サアド・アル＝マルサフィー&quot;,&quot;ru&quot;:&quot;Сомнения вокруг хадисов о побиении камнями и ответы на них — Са&#039;д аль-Мирсафи&quot;,&quot;sw&quot;:&quot;Mashaka kuhusu hadith za kupigwa mawe na kuyajibu — Sa&#039;d al-Mirsafi&quot;,&quot;tr&quot;:&quot;Recm Hadisleri Hakkındaki Şüpheler ve Bunlara Verilen Cevaplar – Sa&#039;d el-Mursafî&quot;,&quot;zh&quot;:&quot;《关于石刑圣训的疑难质疑及其驳斥——萨阿德·马尔萨菲》&quot;}" data-original="شبهات حول أحاديث الرجم وردها- سعد المرصفي">شبهات حول أحاديث الرجم وردها- سعد المرصفي</span>
-          </a>
-        </td>
-        <td dir="auto">سعد المرصفي</td>
-        <td dir="auto">مكتبة المنار الإسلامية • مؤسسة الريان</td>
-        <td dir="auto">1415هـ 1994م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        المستشرقون والسنة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      سعد المرصفي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1419/141934.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1419/141934.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Defense of the Hadith on the Virtues of Abu Sufyan (may Allah be pleased with him)&quot;,&quot;es&quot;:&quot;Defensa del hadiz sobre las virtudes de Abu Sufyan&quot;,&quot;fr&quot;:&quot;Défense du hadith sur les mérites d&#039;Abu Sufyan&quot;,&quot;id&quot;:&quot;Pembelaan terhadap hadis tentang keutamaan Abu Sufyan radhiyallahu anhu&quot;,&quot;ja&quot;:&quot;アブー・スフヤーンの美徳に関するハディースを擁護して&quot;,&quot;ru&quot;:&quot;Защита хадиса о достоинствах Абу Суфьяна, да будет доволен им Аллах&quot;,&quot;sw&quot;:&quot;Utetezi wa hadithi kuhusu fadhila za Abu Sufyan, Allah amridhie&quot;,&quot;tr&quot;:&quot;Ebû Süfyân&#039;ın Faziletleri Hakkındaki Hadisin Savunusu&quot;,&quot;zh&quot;:&quot;为关于艾卜·苏富扬美德的圣训辩护&quot;}" data-original="دفاع عن حديث فضائل أبي سفيان رضي الله عنه">دفاع عن حديث فضائل أبي سفيان رضي الله عنه</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        دفاع عن حديث فضائل أبي سفيان رضي الله عنه
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      سعد المرصفي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1426/142669.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1426/142669.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Objections to the Hadith of Al-Jassasa and Their Refutation&quot;,&quot;es&quot;:&quot;Objeciones sobre el hadiz de al-Jassasa y sus respuestas&quot;,&quot;fr&quot;:&quot;Objections concernant le hadith de la Jassasa et leurs réfutations&quot;,&quot;id&quot;:&quot;Syubhat tentang Hadis Jassasah dan Bantahannya&quot;,&quot;ja&quot;:&quot;ジャッサーサのハディースをめぐる疑義とその反駁&quot;,&quot;ru&quot;:&quot;Сомнения относительно хадиса о Джассасе и опровержение их&quot;,&quot;sw&quot;:&quot;Shubuhat kuhusu Hadithi ya al-Jassasa na Majibu Yake&quot;,&quot;tr&quot;:&quot;Cessâse Hadisi Hakkındaki Şüpheler ve Bunlara Cevaplar&quot;,&quot;ur&quot;:&quot;شبهات حول حديث الجساسة وردها (جسّاسہ کی حدیث کے بارے میں شبہات اور ان کا رد)&quot;,&quot;zh&quot;:&quot;关于贾萨萨圣训的疑难及其回应&quot;}" data-original="شبهات حول حديث الجساسة وردها">شبهات حول حديث الجساسة وردها</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شبهات حول حديث الجساسة وردها
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      سعد المرصفي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1428/142830.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1428/142830.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Orientalists and the Sunnah&quot;,&quot;es&quot;:&quot;Los orientalistas y la Sunna&quot;,&quot;fr&quot;:&quot;Les orientalistes et la Sunna&quot;,&quot;id&quot;:&quot;Orientalis dan Sunah&quot;,&quot;ja&quot;:&quot;東洋学者とスンナ&quot;,&quot;ru&quot;:&quot;Ориенталисты и Сунна&quot;,&quot;sw&quot;:&quot;Wanaorientalisti na Sunna&quot;,&quot;tr&quot;:&quot;Müsteşrikler ve Sünnet&quot;,&quot;ur&quot;:&quot;المستشرقون والسنة (مستشرقین اور سنت)&quot;,&quot;zh&quot;:&quot;《东方学家与圣行》&quot;}" data-original="المستشرقون والسنة">المستشرقون والسنة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        المستشرقون والسنة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      سعد المرصفي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1435/143543.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1435/143543.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Validity and Jurisprudence of Nursing Narrations&quot;,&quot;es&quot;:&quot;Hadices sobre la lactancia: su valor probatorio y su jurisprudencia&quot;,&quot;fr&quot;:&quot;Les hadiths sur l’allaitement : leur autorité et leur jurisprudence&quot;,&quot;id&quot;:&quot;Hadis-hadis persusuan: kehujahan dan fikihnya&quot;,&quot;ja&quot;:&quot;授乳に関するハディース――法的証拠性と法学的解釈&quot;,&quot;ru&quot;:&quot;Хадисы о молочном родстве: их доказательная сила и фикх&quot;,&quot;sw&quot;:&quot;Hadithi za kunyonyesha: uhalali wake na fiqhi yake&quot;,&quot;tr&quot;:&quot;Süt emzirme hadisleri: delil değeri ve fıkhı&quot;,&quot;ur&quot;:&quot;أحاديث الرضاع حجيتها وفقهها (رضاعت سے متعلق احادیث: ان کی حجیت اور فقہ)&quot;,&quot;zh&quot;:&quot;《哺乳圣训：其证据效力与法学意义》&quot;}" data-original="أحاديث الرضاع حجيتها وفقهها">أحاديث الرضاع حجيتها وفقهها</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        أحاديث الرضاع حجيتها وفقهها
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      سعد المرصفي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1460/146074.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1460/146074.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Objections to the Hadiths of Stoning and Their Refutation - Saad Al-Marsafi&quot;,&quot;es&quot;:&quot;Dudas sobre los hadices de la lapidación y su refutación — Sa&#039;d al-Mirsafi&quot;,&quot;fr&quot;:&quot;Objections concernant les hadiths de la lapidation et leur réfutation — Sa&#039;d al-Mirsafi&quot;,&quot;id&quot;:&quot;Keraguan Seputar Hadis-Hadis Rajam dan Sanggahannya — Sa&#039;d Al-Marsafi&quot;,&quot;ja&quot;:&quot;石打ち刑のハディースをめぐる疑念とその反論――サアド・アル＝マルサフィー&quot;,&quot;ru&quot;:&quot;Сомнения вокруг хадисов о побиении камнями и ответы на них — Са&#039;д аль-Мирсафи&quot;,&quot;sw&quot;:&quot;Mashaka kuhusu hadith za kupigwa mawe na kuyajibu — Sa&#039;d al-Mirsafi&quot;,&quot;tr&quot;:&quot;Recm Hadisleri Hakkındaki Şüpheler ve Bunlara Verilen Cevaplar – Sa&#039;d el-Mursafî&quot;,&quot;zh&quot;:&quot;《关于石刑圣训的疑难质疑及其驳斥——萨阿德·马尔萨菲》&quot;}" data-original="شبهات حول أحاديث الرجم وردها- سعد المرصفي">شبهات حول أحاديث الرجم وردها- سعد المرصفي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شبهات حول أحاديث الرجم وردها- سعد المرصفي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      سعد المرصفي
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

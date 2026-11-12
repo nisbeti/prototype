@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>مجمع البحرين للنشر والتوزيع</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,114 +70,119 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;The Confluence of Two Seas for Publishing and Distribution&quot;,&quot;es&quot;:&quot;Majma&#039; al-Bahrayn li al-Nashr wa al-Tawzi&#039;&quot;,&quot;fr&quot;:&quot;Majma&#039; al-Bahrayn li al-Nashr wa al-Tawzi&#039;&quot;,&quot;id&quot;:&quot;Majma&#039; al-Bahrain untuk Penerbitan dan Distribusi&quot;,&quot;ja&quot;:&quot;マジュマア・アル＝バフライン・リン＝ナシュル・ワッ＝タウズィーウ&quot;,&quot;ru&quot;:&quot;Маджма&#039; аль-Бахрейн ли-н-нашр ва-т-таузи&#039;&quot;,&quot;sw&quot;:&quot;Majma al-Bahrayn lil-Nashr wal-Tawzi&quot;,&quot;tr&quot;:&quot;Mecma&#039;u&#039;l-bahreyn li&#039;n-neşr ve&#039;t-tevzî&quot;,&quot;zh&quot;:&quot;两海交汇出版与发行公司&quot;}" data-original="مجمع البحرين للنشر والتوزيع">مجمع البحرين للنشر والتوزيع</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/1148/114898.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1148/114898.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;A Brief Commentary on the Book \&quot;Lum&#039;at al-I&#039;tiqad: The Guide to the Path of Guidance\&quot; - Majma&#039; al-Bahrain&quot;,&quot;es&quot;:&quot;Comentario breve del libro El destello de la creencia, guía hacia el camino recto - Complejo Bahrein&quot;,&quot;fr&quot;:&quot;Commentaire succinct du livre Lueur de la croyance, guide vers la voie de la rectitude - Majma al-Bahrayn&quot;,&quot;id&quot;:&quot;Komentar Ringkas atas Kitab Lum&#039;at al-I&#039;tiqad al-Hadi ila Sabil ar-Rasyad [Kilau Akidah yang Menuntun ke Jalan Petunjuk] – Majma&#039; al-Bahrain&quot;,&quot;ja&quot;:&quot;『導きの道へ導く信条の輝き』への簡潔な注釈―マジュマウ・アル＝バフライン&quot;,&quot;ru&quot;:&quot;Краткие примечания к книге «Лю&#039;ат аль-и&#039;тикад аль-хади иля сабиль ар-рашад» — Маджма&#039; аль-Бахрейн&quot;,&quot;sw&quot;:&quot;Maelezo Mafupi kuhusu Kitabu Lum&#039;at al-I&#039;tiqad al-Hadi ila Sabil al-Rashad (Mwangaza wa Imani, Uongozao kwenye Njia ya Uongofu) - Majma&#039; al-Bahrayn&quot;,&quot;tr&quot;:&quot;Lüm&#039;atü&#039;l-i&#039;tikād el-hâdî ilâ sebîli&#039;r-reşâd (Doğru Yola Götüren İtikad Parıltısı) Kitabı Üzerine Kısa Bir Not - Mecma&#039; al-Bahreyn&quot;,&quot;zh&quot;:&quot;《〈引向正道的信仰之光〉简注》—巴林群岛出版社&quot;}" data-original="تعليق مختصر على كتاب لمعة الاعتقاد الهادي إلى سبيل الرشاد - مجمع البحرين">تعليق مختصر على كتاب لمعة الاعتقاد الهادي إلى سبيل الرشاد - مجمع البحرين</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;The Confluence of Two Seas for Publishing and Distribution&quot;,&quot;es&quot;:&quot;Majma&#039; al-Bahrayn li al-Nashr wa al-Tawzi&#039;&quot;,&quot;fr&quot;:&quot;Majma&#039; al-Bahrayn li al-Nashr wa al-Tawzi&#039;&quot;,&quot;id&quot;:&quot;Majma&#039; al-Bahrain untuk Penerbitan dan Distribusi&quot;,&quot;ja&quot;:&quot;マジュマア・アル＝バフライン・リン＝ナシュル・ワッ＝タウズィーウ&quot;,&quot;ru&quot;:&quot;Маджма&#039; аль-Бахрейн ли-н-нашр ва-т-таузи&#039;&quot;,&quot;sw&quot;:&quot;Majma al-Bahrayn lil-Nashr wal-Tawzi&quot;,&quot;tr&quot;:&quot;Mecma&#039;u&#039;l-bahreyn li&#039;n-neşr ve&#039;t-tevzî&quot;,&quot;zh&quot;:&quot;两海交汇出版与发行公司&quot;}" data-original="مجمع البحرين للنشر والتوزيع">مجمع البحرين للنشر والتوزيع</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/1148/114898.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;A Brief Commentary on the Book \&quot;Lum&#039;at al-I&#039;tiqad: The Guide to the Path of Guidance\&quot; - Majma&#039; al-Bahrain&quot;,&quot;es&quot;:&quot;Comentario breve del libro El destello de la creencia, guía hacia el camino recto - Complejo Bahrein&quot;,&quot;fr&quot;:&quot;Commentaire succinct du livre Lueur de la croyance, guide vers la voie de la rectitude - Majma al-Bahrayn&quot;,&quot;id&quot;:&quot;Komentar Ringkas atas Kitab Lum&#039;at al-I&#039;tiqad al-Hadi ila Sabil ar-Rasyad [Kilau Akidah yang Menuntun ke Jalan Petunjuk] – Majma&#039; al-Bahrain&quot;,&quot;ja&quot;:&quot;『導きの道へ導く信条の輝き』への簡潔な注釈―マジュマウ・アル＝バフライン&quot;,&quot;ru&quot;:&quot;Краткие примечания к книге «Лю&#039;ат аль-и&#039;тикад аль-хади иля сабиль ар-рашад» — Маджма&#039; аль-Бахрейн&quot;,&quot;sw&quot;:&quot;Maelezo Mafupi kuhusu Kitabu Lum&#039;at al-I&#039;tiqad al-Hadi ila Sabil al-Rashad (Mwangaza wa Imani, Uongozao kwenye Njia ya Uongofu) - Majma&#039; al-Bahrayn&quot;,&quot;tr&quot;:&quot;Lüm&#039;atü&#039;l-i&#039;tikād el-hâdî ilâ sebîli&#039;r-reşâd (Doğru Yola Götüren İtikad Parıltısı) Kitabı Üzerine Kısa Bir Not - Mecma&#039; al-Bahreyn&quot;,&quot;zh&quot;:&quot;《〈引向正道的信仰之光〉简注》—巴林群岛出版社&quot;}" data-original="تعليق مختصر على كتاب لمعة الاعتقاد الهادي إلى سبيل الرشاد - مجمع البحرين">تعليق مختصر على كتاب لمعة الاعتقاد الهادي إلى سبيل الرشاد - مجمع البحرين</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مجمع البحرين للنشر والتوزيع</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1149/114900.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Optimal Rules Regarding the Attributes of God and His Beautiful Names - Majma&#039; Al-Bahrain&quot;,&quot;es&quot;:&quot;Comentario de Las mejores reglas sobre los atributos y los nombres más bellos de Allah - Complejo Bahrein&quot;,&quot;fr&quot;:&quot;Commentaire des règles optimales sur les attributs et les plus beaux noms d&#039;Allah - Majma al-Bahrayn&quot;,&quot;id&quot;:&quot;Syarah Al-Qawa&#039;id al-Mutsla fi Sifat Allah wa Asma&#039;ihi al-Husna [Penjelasan Kaidah-Kaidah Terbaik tentang Sifat dan Nama-Nama Allah yang Indah] – Majma&#039; al-Bahrain&quot;,&quot;ja&quot;:&quot;アッラーの属性と最も美しい御名に関する最良の規則の注解―マジュマウ・アル＝バフライン&quot;,&quot;ru&quot;:&quot;Комментарий к «Аль-Кава&#039;ид аль-Мусля» о качествах и прекрасных именах Аллаха — Маджма&#039; аль-Бахрейн&quot;,&quot;sw&quot;:&quot;Sharh al-Qawa&#039;id al-Muthla (Ufafanuzi wa Kanuni Bora kuhusu Sifa na Majina Mazuri ya Allah) - Majma&#039; al-Bahrayn&quot;,&quot;tr&quot;:&quot;Allah&#039;ın sıfatları ve en güzel isimleri hakkında el-Kavâidü&#039;l-müs lâ&#039;nın şerhi - Mecma&#039; al-Bahreyn&quot;,&quot;zh&quot;:&quot;《最佳准则：真主美名与属性注释》—巴林群岛出版社&quot;}" data-original="شرح القواعد المثلى في صفات الله وأسمائه الحسنى- مجمع البحرين">شرح القواعد المثلى في صفات الله وأسمائه الحسنى- مجمع البحرين</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مجمع البحرين للنشر والتوزيع</td>
-        <td dir="auto"></td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        تعليق مختصر على كتاب لمعة الاعتقاد الهادي إلى سبيل الرشاد - مجمع البحرين
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1149/114900.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1149/114900.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Optimal Rules Regarding the Attributes of God and His Beautiful Names - Majma&#039; Al-Bahrain&quot;,&quot;es&quot;:&quot;Comentario de Las mejores reglas sobre los atributos y los nombres más bellos de Allah - Complejo Bahrein&quot;,&quot;fr&quot;:&quot;Commentaire des règles optimales sur les attributs et les plus beaux noms d&#039;Allah - Majma al-Bahrayn&quot;,&quot;id&quot;:&quot;Syarah Al-Qawa&#039;id al-Mutsla fi Sifat Allah wa Asma&#039;ihi al-Husna [Penjelasan Kaidah-Kaidah Terbaik tentang Sifat dan Nama-Nama Allah yang Indah] – Majma&#039; al-Bahrain&quot;,&quot;ja&quot;:&quot;アッラーの属性と最も美しい御名に関する最良の規則の注解―マジュマウ・アル＝バフライン&quot;,&quot;ru&quot;:&quot;Комментарий к «Аль-Кава&#039;ид аль-Мусля» о качествах и прекрасных именах Аллаха — Маджма&#039; аль-Бахрейн&quot;,&quot;sw&quot;:&quot;Sharh al-Qawa&#039;id al-Muthla (Ufafanuzi wa Kanuni Bora kuhusu Sifa na Majina Mazuri ya Allah) - Majma&#039; al-Bahrayn&quot;,&quot;tr&quot;:&quot;Allah&#039;ın sıfatları ve en güzel isimleri hakkında el-Kavâidü&#039;l-müs lâ&#039;nın şerhi - Mecma&#039; al-Bahreyn&quot;,&quot;zh&quot;:&quot;《最佳准则：真主美名与属性注释》—巴林群岛出版社&quot;}" data-original="شرح القواعد المثلى في صفات الله وأسمائه الحسنى- مجمع البحرين">شرح القواعد المثلى في صفات الله وأسمائه الحسنى- مجمع البحرين</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        شرح القواعد المثلى في صفات الله وأسمائه الحسنى- مجمع البحرين
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

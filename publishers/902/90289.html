@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>دار القاسم</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,144 +70,206 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Qasim&quot;,&quot;es&quot;:&quot;Dar al-Qasim&quot;,&quot;fr&quot;:&quot;Dar al-Qasim&quot;,&quot;id&quot;:&quot;Dar Al-Qasim&quot;,&quot;ja&quot;:&quot;ダール・アル＝カースィム&quot;,&quot;ru&quot;:&quot;Дар аль-Касим&quot;,&quot;sw&quot;:&quot;Dar al-Qasim&quot;,&quot;tr&quot;:&quot;Dârü&#039;l-Kâsım&quot;,&quot;zh&quot;:&quot;卡西姆出版社&quot;}" data-original="دار القاسم">دار القاسم</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/527/52702.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/527/52702.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Fatwas on Looking, Seclusion, and Mixing&quot;,&quot;es&quot;:&quot;Dictámenes jurídicos sobre la mirada, el aislamiento y la mezcla entre hombres y mujeres&quot;,&quot;fr&quot;:&quot;Fatwas sur le regard, l&#039;isolement et la mixité&quot;,&quot;id&quot;:&quot;Fatwa tentang Memandang, Berkhalwat, dan Bercampur Baur&quot;,&quot;ja&quot;:&quot;視線、隔離、男女混交に関するファトワー集&quot;,&quot;ru&quot;:&quot;Фетвы о взгляде, уединении и смешении мужчин и женщин&quot;,&quot;sw&quot;:&quot;Fatwa kuhusu Kutazama, Kukaa Faraghani na Kuchanganyika&quot;,&quot;tr&quot;:&quot;Bakma, halvet ve kadın-erkek karışıklığına dair fetvalar&quot;,&quot;zh&quot;:&quot;目光、独处与男女混处法特瓦&quot;}" data-original="فتاوى النظر والخلوة والاختلاط">فتاوى النظر والخلوة والاختلاط</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Qasim&quot;,&quot;es&quot;:&quot;Dar al-Qasim&quot;,&quot;fr&quot;:&quot;Dar al-Qasim&quot;,&quot;id&quot;:&quot;Dar Al-Qasim&quot;,&quot;ja&quot;:&quot;ダール・アル＝カースィム&quot;,&quot;ru&quot;:&quot;Дар аль-Касим&quot;,&quot;sw&quot;:&quot;Dar al-Qasim&quot;,&quot;tr&quot;:&quot;Dârü&#039;l-Kâsım&quot;,&quot;zh&quot;:&quot;卡西姆出版社&quot;}" data-original="دار القاسم">دار القاسم</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/527/52702.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Fatwas on Looking, Seclusion, and Mixing&quot;,&quot;es&quot;:&quot;Dictámenes jurídicos sobre la mirada, el aislamiento y la mezcla entre hombres y mujeres&quot;,&quot;fr&quot;:&quot;Fatwas sur le regard, l&#039;isolement et la mixité&quot;,&quot;id&quot;:&quot;Fatwa tentang Memandang, Berkhalwat, dan Bercampur Baur&quot;,&quot;ja&quot;:&quot;視線、隔離、男女混交に関するファトワー集&quot;,&quot;ru&quot;:&quot;Фетвы о взгляде, уединении и смешении мужчин и женщин&quot;,&quot;sw&quot;:&quot;Fatwa kuhusu Kutazama, Kukaa Faraghani na Kuchanganyika&quot;,&quot;tr&quot;:&quot;Bakma, halvet ve kadın-erkek karışıklığına dair fetvalar&quot;,&quot;zh&quot;:&quot;目光、独处与男女混处法特瓦&quot;}" data-original="فتاوى النظر والخلوة والاختلاط">فتاوى النظر والخلوة والاختلاط</span>
-          </a>
-        </td>
-        <td dir="auto">ابن باز • العثيمين • الجبرين • اللجنة الدائمة</td>
-        <td dir="auto">دار القاسم</td>
-        <td dir="auto">1416هــ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/548/54803.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Rulings of Prayer&quot;,&quot;es&quot;:&quot;Algunas normas de la oración&quot;,&quot;fr&quot;:&quot;Quelques règles de la prière&quot;,&quot;id&quot;:&quot;Beberapa Hukum Salat&quot;,&quot;ja&quot;:&quot;礼拝に関する法的規定について&quot;,&quot;ru&quot;:&quot;Некоторые положения о молитве&quot;,&quot;sw&quot;:&quot;Baadhi ya hukumu za swala&quot;,&quot;tr&quot;:&quot;Namaz hükümlerinden&quot;,&quot;zh&quot;:&quot;礼拜方面的若干规定&quot;}" data-original="من أحكام الصلاة">من أحكام الصلاة</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">دار القاسم</td>
-        <td dir="auto">1419هـــ 1998م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1034/103447.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Book of Monotheism - Ibn Rajab&quot;,&quot;es&quot;:&quot;Kitab al-Tawhid (Libro de la unicidad) - Ibn Rajab&quot;,&quot;fr&quot;:&quot;Livre de l&#039;unicité - Ibn Rajab&quot;,&quot;id&quot;:&quot;Kitab Tauhid (Ibnu Rajab)&quot;,&quot;ja&quot;:&quot;タウヒードの書――イブン・ラジャブ&quot;,&quot;ru&quot;:&quot;Китаб ат-таухид (Книга единобожия) — Ибн Раджаб&quot;,&quot;sw&quot;:&quot;Kitabu cha Tawhid – Ibn Rajab&quot;,&quot;tr&quot;:&quot;Tevhid Kitabı – İbn Receb&quot;,&quot;zh&quot;:&quot;《认主独一之书》（伊本·拉杰卜）&quot;}" data-original="كتاب التوحيد- ابن رجب">كتاب التوحيد- ابن رجب</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن أحمد بن رجب الحنبلي</td>
-        <td dir="auto">دار القاسم للنشر</td>
-        <td dir="auto">1415</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1166/116677.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Role of Women in Reforming Society&quot;,&quot;es&quot;:&quot;El papel de la mujer en la reforma de la sociedad&quot;,&quot;fr&quot;:&quot;Le rôle de la femme dans la réforme de la société&quot;,&quot;id&quot;:&quot;Peran Perempuan dalam Memperbaiki Masyarakat&quot;,&quot;ja&quot;:&quot;社会改革における女性の役割&quot;,&quot;ru&quot;:&quot;Роль женщины в исправлении общества&quot;,&quot;sw&quot;:&quot;Dawru al-Mar&#039;a fi Islah al-Mujtama&#039; (Jukumu la mwanamke katika kuirekebisha jamii)&quot;,&quot;tr&quot;:&quot;Toplumun Islahında Kadının Rolü&quot;,&quot;ur&quot;:&quot;دور المرأه في إصلاح المجتمع (معاشرے کی اصلاح میں عورت کا کردار)&quot;,&quot;zh&quot;:&quot;妇女在社会改革中的作用&quot;}" data-original="دور المرأه في إصلاح المجتمع">دور المرأه في إصلاح المجتمع</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">دار القاسم</td>
-        <td dir="auto">1419</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2143/214342.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Verification of Monotheism and Its Purification from the Impurities of Polytheism&quot;,&quot;es&quot;:&quot;Verificar el monoteísmo y depurarlo de las impurezas del politeísmo&quot;,&quot;fr&quot;:&quot;Réaliser l’unicité divine et la purifier des traces de l’associationnisme&quot;,&quot;id&quot;:&quot;Mewujudkan Tauhid dan Membersihkannya dari Noda-Noda Syirik&quot;,&quot;ja&quot;:&quot;タウヒードの確立とシルクの混入物からの浄化&quot;,&quot;ru&quot;:&quot;Утверждение единобожия и очищение его от примесей многобожия&quot;,&quot;sw&quot;:&quot;Kuthibitisha Tawhidi na Kuitakasa dhidi ya Athari za Shirki&quot;,&quot;tr&quot;:&quot;Tevhidi Tahkik Etmek ve Şirk Bulaşıklarından Arındırmak&quot;,&quot;zh&quot;:&quot;确立认主独一并清除以物配主的杂染&quot;}" data-original="تحقيق التوحيد وتخليصه من شوائب الشرك">تحقيق التوحيد وتخليصه من شوائب الشرك</span>
-          </a>
-        </td>
-        <td dir="auto">عبد العزيز بن عبد الله بن باز • محمد بن صالح العثيمين</td>
-        <td dir="auto">دار القاسم للنشر</td>
-        <td dir="auto">1419هـ 1998م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        فتاوى النظر والخلوة والاختلاط
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      ابن باز • العثيمين • الجبرين • اللجنة الدائمة
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/548/54803.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/548/54803.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Rulings of Prayer&quot;,&quot;es&quot;:&quot;Algunas normas de la oración&quot;,&quot;fr&quot;:&quot;Quelques règles de la prière&quot;,&quot;id&quot;:&quot;Beberapa Hukum Salat&quot;,&quot;ja&quot;:&quot;礼拝に関する法的規定について&quot;,&quot;ru&quot;:&quot;Некоторые положения о молитве&quot;,&quot;sw&quot;:&quot;Baadhi ya hukumu za swala&quot;,&quot;tr&quot;:&quot;Namaz hükümlerinden&quot;,&quot;zh&quot;:&quot;礼拜方面的若干规定&quot;}" data-original="من أحكام الصلاة">من أحكام الصلاة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        من أحكام الصلاة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1034/103447.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1034/103447.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Book of Monotheism - Ibn Rajab&quot;,&quot;es&quot;:&quot;Kitab al-Tawhid (Libro de la unicidad) - Ibn Rajab&quot;,&quot;fr&quot;:&quot;Livre de l&#039;unicité - Ibn Rajab&quot;,&quot;id&quot;:&quot;Kitab Tauhid (Ibnu Rajab)&quot;,&quot;ja&quot;:&quot;タウヒードの書――イブン・ラジャブ&quot;,&quot;ru&quot;:&quot;Китаб ат-таухид (Книга единобожия) — Ибн Раджаб&quot;,&quot;sw&quot;:&quot;Kitabu cha Tawhid – Ibn Rajab&quot;,&quot;tr&quot;:&quot;Tevhid Kitabı – İbn Receb&quot;,&quot;zh&quot;:&quot;《认主独一之书》（伊本·拉杰卜）&quot;}" data-original="كتاب التوحيد- ابن رجب">كتاب التوحيد- ابن رجب</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        كتاب التوحيد- ابن رجب
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن أحمد بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1166/116677.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1166/116677.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Role of Women in Reforming Society&quot;,&quot;es&quot;:&quot;El papel de la mujer en la reforma de la sociedad&quot;,&quot;fr&quot;:&quot;Le rôle de la femme dans la réforme de la société&quot;,&quot;id&quot;:&quot;Peran Perempuan dalam Memperbaiki Masyarakat&quot;,&quot;ja&quot;:&quot;社会改革における女性の役割&quot;,&quot;ru&quot;:&quot;Роль женщины в исправлении общества&quot;,&quot;sw&quot;:&quot;Dawru al-Mar&#039;a fi Islah al-Mujtama&#039; (Jukumu la mwanamke katika kuirekebisha jamii)&quot;,&quot;tr&quot;:&quot;Toplumun Islahında Kadının Rolü&quot;,&quot;ur&quot;:&quot;دور المرأه في إصلاح المجتمع (معاشرے کی اصلاح میں عورت کا کردار)&quot;,&quot;zh&quot;:&quot;妇女在社会改革中的作用&quot;}" data-original="دور المرأه في إصلاح المجتمع">دور المرأه في إصلاح المجتمع</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        دور المرأه في إصلاح المجتمع
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2143/214342.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2143/214342.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Verification of Monotheism and Its Purification from the Impurities of Polytheism&quot;,&quot;es&quot;:&quot;Verificar el monoteísmo y depurarlo de las impurezas del politeísmo&quot;,&quot;fr&quot;:&quot;Réaliser l’unicité divine et la purifier des traces de l’associationnisme&quot;,&quot;id&quot;:&quot;Mewujudkan Tauhid dan Membersihkannya dari Noda-Noda Syirik&quot;,&quot;ja&quot;:&quot;タウヒードの確立とシルクの混入物からの浄化&quot;,&quot;ru&quot;:&quot;Утверждение единобожия и очищение его от примесей многобожия&quot;,&quot;sw&quot;:&quot;Kuthibitisha Tawhidi na Kuitakasa dhidi ya Athari za Shirki&quot;,&quot;tr&quot;:&quot;Tevhidi Tahkik Etmek ve Şirk Bulaşıklarından Arındırmak&quot;,&quot;zh&quot;:&quot;确立认主独一并清除以物配主的杂染&quot;}" data-original="تحقيق التوحيد وتخليصه من شوائب الشرك">تحقيق التوحيد وتخليصه من شوائب الشرك</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تحقيق التوحيد وتخليصه من شوائب الشرك
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد العزيز بن عبد الله بن باز • محمد بن صالح العثيمين
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>غراس للنشر والتوزيع</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,134 +70,177 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Gharas for Publishing and Distribution&quot;,&quot;es&quot;:&quot;Gharas para la publicación y distribución&quot;,&quot;fr&quot;:&quot;Gharas pour l&#039;édition et la distribution&quot;,&quot;id&quot;:&quot;Ghiras untuk Penerbitan dan Distribusi&quot;,&quot;ja&quot;:&quot;ギラース出版・流通社&quot;,&quot;ru&quot;:&quot;Гарас по издательскому делу и распространению&quot;,&quot;sw&quot;:&quot;Gharas lil-Nashr wat-Tawzi&quot;,&quot;tr&quot;:&quot;Ğırâs li&#039;n-Neşr ve&#039;t-Tevzî&quot;,&quot;zh&quot;:&quot;吉拉斯出版发行社&quot;}" data-original="غراس للنشر والتوزيع">غراس للنشر والتوزيع</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/500/50063.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/500/50063.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The System of Jurisprudential Rules and the System of Principles of Jurisprudence and Its Rules&quot;,&quot;es&quot;:&quot;Poema sobre las máximas jurídicas y poema sobre los fundamentos del derecho y sus principios&quot;,&quot;fr&quot;:&quot;Poème didactique sur les règles juridiques et poème didactique sur les fondements du droit musulman et ses règles&quot;,&quot;id&quot;:&quot;Nazam Kaidah-Kaidah Fikih dan Nazam Usul Fikih beserta Kaidah-Kaidahnya&quot;,&quot;ja&quot;:&quot;法学的諸原則の詩、および法源学とその諸原則の詩&quot;,&quot;ru&quot;:&quot;Поэма о правилах фикха и поэма об основах фикха и его правилах&quot;,&quot;sw&quot;:&quot;Utenzi wa kanuni za fiqhi na utenzi wa misingi ya fiqhi na kanuni zake&quot;,&quot;tr&quot;:&quot;Fıkıh kaideleri manzumesi ve fıkıh usulü ile kaideleri manzumesi&quot;,&quot;ur&quot;:&quot;منظومة القواعد الفقهية ومنظومة أصول الفقه وقواعده (فقہی قواعد اور اصولِ فقہ و اس کے قواعد پر منظومہ)&quot;,&quot;zh&quot;:&quot;教法规则韵文与教法原理及其规则韵文&quot;}" data-original="منظومة القواعد الفقهية ومنظومة أصول الفقه وقواعده">منظومة القواعد الفقهية ومنظومة أصول الفقه وقواعده</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Gharas for Publishing and Distribution&quot;,&quot;es&quot;:&quot;Gharas para la publicación y distribución&quot;,&quot;fr&quot;:&quot;Gharas pour l&#039;édition et la distribution&quot;,&quot;id&quot;:&quot;Ghiras untuk Penerbitan dan Distribusi&quot;,&quot;ja&quot;:&quot;ギラース出版・流通社&quot;,&quot;ru&quot;:&quot;Гарас по издательскому делу и распространению&quot;,&quot;sw&quot;:&quot;Gharas lil-Nashr wat-Tawzi&quot;,&quot;tr&quot;:&quot;Ğırâs li&#039;n-Neşr ve&#039;t-Tevzî&quot;,&quot;zh&quot;:&quot;吉拉斯出版发行社&quot;}" data-original="غراس للنشر والتوزيع">غراس للنشر والتوزيع</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/500/50063.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The System of Jurisprudential Rules and the System of Principles of Jurisprudence and Its Rules&quot;,&quot;es&quot;:&quot;Poema sobre las máximas jurídicas y poema sobre los fundamentos del derecho y sus principios&quot;,&quot;fr&quot;:&quot;Poème didactique sur les règles juridiques et poème didactique sur les fondements du droit musulman et ses règles&quot;,&quot;id&quot;:&quot;Nazam Kaidah-Kaidah Fikih dan Nazam Usul Fikih beserta Kaidah-Kaidahnya&quot;,&quot;ja&quot;:&quot;法学的諸原則の詩、および法源学とその諸原則の詩&quot;,&quot;ru&quot;:&quot;Поэма о правилах фикха и поэма об основах фикха и его правилах&quot;,&quot;sw&quot;:&quot;Utenzi wa kanuni za fiqhi na utenzi wa misingi ya fiqhi na kanuni zake&quot;,&quot;tr&quot;:&quot;Fıkıh kaideleri manzumesi ve fıkıh usulü ile kaideleri manzumesi&quot;,&quot;ur&quot;:&quot;منظومة القواعد الفقهية ومنظومة أصول الفقه وقواعده (فقہی قواعد اور اصولِ فقہ و اس کے قواعد پر منظومہ)&quot;,&quot;zh&quot;:&quot;教法规则韵文与教法原理及其规则韵文&quot;}" data-original="منظومة القواعد الفقهية ومنظومة أصول الفقه وقواعده">منظومة القواعد الفقهية ومنظومة أصول الفقه وقواعده</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">غراس</td>
-        <td dir="auto">1421هـ 2000 م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/658/65834.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Selected from the Dictionary of the Scholars of Shihab al-Din Abu al-Abbas Ahmad ibn Rajab al-Hanbali&quot;,&quot;es&quot;:&quot;Selección del diccionario de maestros de Shihab al-Din Abu al-Abbas Ahmad ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Al-Muntaqa min Mu&#039;jam Shuyukh Shihab al-Din Abi al-Abbas Ahmad ibn Rajab al-Hanbali (Sélection du dictionnaire des maîtres d&#039;Ibn Rajab)&quot;,&quot;id&quot;:&quot;Pilihan dari Mu&#039;jam Syuyukh Syihabuddin Abu Al-Abbas Ahmad bin Rajab Al-Hanbali&quot;,&quot;ja&quot;:&quot;シハーブッディーン・アブー・アル＝アッバース・アフマド・イブン・ラジャブ・アル＝ハンバリーの師匠録からの抜粋&quot;,&quot;ru&quot;:&quot;Избранное из словаря шейхов Шихаб ад-Дина Абу аль-Аббаса Ахмада ибн Раджаба аль-Ханбали&quot;,&quot;sw&quot;:&quot;Teule kutoka Al-Mu&#039;jam ya walimu wa Shihab al-Din Abu al-Abbas Ahmad bin Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;Şihâbüddin Ebü&#039;l-Abbas Ahmed b. Receb el-Hanbelî&#039;nin Şeyhleri Mu&#039;ceminden Seçmeler&quot;,&quot;zh&quot;:&quot;《伊本·拉杰布·罕百里师长名录选编》&quot;}" data-original="المنتقي من معجم شيوخ شهاب الدين أبي العباس أحمد بن رجب الحنبلي">المنتقي من معجم شيوخ شهاب الدين أبي العباس أحمد بن رجب الحنبلي</span>
-          </a>
-        </td>
-        <td dir="auto">زين الدين أبو الفرج عبد الرحمن بن أحمد بن رجب الحنبلي</td>
-        <td dir="auto">غراس</td>
-        <td dir="auto">1426هـ 2006م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1459/145960.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Authenticity of the Gardens of the Righteous from the Hadith of the Master of the Messengers, with Valuable Marginal Notes and Significant Comments&quot;,&quot;es&quot;:&quot;Selección auténtica de Riyad al-Salihin, de los dichos del señor de los mensajeros, con valiosas notas y comentarios esclarecedores&quot;,&quot;fr&quot;:&quot;Le recueil authentique Riyad al-Salihin (Les Jardins des vertueux), tiré des paroles du maître des envoyés, suivi de précieuses notes et annotations&quot;,&quot;id&quot;:&quot;Shahih Riyadhush Shalihin dari Hadis Penghulu Para Rasul, dilengkapi catatan berharga dan komentar yang baik&quot;,&quot;ja&quot;:&quot;預言者たちの長に関する伝承による『正しき人々の園』真正伝承集―貴重な注釈と有益なコメント付き&quot;,&quot;ru&quot;:&quot;Достоверное «Сады праведных» из хадисов господина посланников; в приложении — ценные примечания и полезные комментарии&quot;,&quot;sw&quot;:&quot;Sahih Riyad al-Salihin (Bustani za Waja Wema) kutokana na hadithi za Bwana wa Mitume, ikiwa na maelezo na ufafanuzi wenye thamani mwishoni&quot;,&quot;tr&quot;:&quot;Seyyidü’l-mürselîn’in hadislerinden Riyâzü’s-sâlihîn’in sahih rivayetleri; sonunda değerli haşiyeler ve seçkin notlarla&quot;,&quot;zh&quot;:&quot;《义人花园可靠本：先知领袖的圣训》，附珍贵注释与精妙评注&quot;}" data-original="صحيح رياض الصالحين من حديث سيد المرسلين، وبذيله حواش نفيسة وتعليقات منيفة">صحيح رياض الصالحين من حديث سيد المرسلين، وبذيله حواش نفيسة وتعليقات منيفة</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي • محمد ناصر الدين الألباني</td>
-        <td dir="auto">غراس للنشر والتوزيع والدعاية والإعلان</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1678/167873.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Unique Pearl System in the Science of Grammar&quot;,&quot;es&quot;:&quot;Poema didáctico La perla única sobre la ciencia de la gramática&quot;,&quot;fr&quot;:&quot;Poème didactique de la Perle unique sur la science de la grammaire&quot;,&quot;id&quot;:&quot;Nazam ad-Durrah al-Yatimah dalam Ilmu Nahwu&quot;,&quot;ja&quot;:&quot;文法学における唯一無二の真珠の詩文&quot;,&quot;ru&quot;:&quot;Поэма «Дурра аль-ятима» по грамматике&quot;,&quot;sw&quot;:&quot;Manzumat al-Durra al-Yatima fi Ilm al-Nahw (Shairi la Lulu ya Pekee katika Elimu ya Sarufi)&quot;,&quot;tr&quot;:&quot;Nahiv İlminde Eşsiz İnci Manzumesi&quot;,&quot;zh&quot;:&quot;《语法学中的孤珍韵文》&quot;}" data-original="منظومة الدرة اليتيمة في علم النحو">منظومة الدرة اليتيمة في علم النحو</span>
-          </a>
-        </td>
-        <td dir="auto">سعيد بن سعد الحضرمي</td>
-        <td dir="auto">غراس للنشر والتوزيع</td>
-        <td dir="auto">1427ه 2006م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        منظومة القواعد الفقهية ومنظومة أصول الفقه وقواعده
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/658/65834.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/658/65834.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Selected from the Dictionary of the Scholars of Shihab al-Din Abu al-Abbas Ahmad ibn Rajab al-Hanbali&quot;,&quot;es&quot;:&quot;Selección del diccionario de maestros de Shihab al-Din Abu al-Abbas Ahmad ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Al-Muntaqa min Mu&#039;jam Shuyukh Shihab al-Din Abi al-Abbas Ahmad ibn Rajab al-Hanbali (Sélection du dictionnaire des maîtres d&#039;Ibn Rajab)&quot;,&quot;id&quot;:&quot;Pilihan dari Mu&#039;jam Syuyukh Syihabuddin Abu Al-Abbas Ahmad bin Rajab Al-Hanbali&quot;,&quot;ja&quot;:&quot;シハーブッディーン・アブー・アル＝アッバース・アフマド・イブン・ラジャブ・アル＝ハンバリーの師匠録からの抜粋&quot;,&quot;ru&quot;:&quot;Избранное из словаря шейхов Шихаб ад-Дина Абу аль-Аббаса Ахмада ибн Раджаба аль-Ханбали&quot;,&quot;sw&quot;:&quot;Teule kutoka Al-Mu&#039;jam ya walimu wa Shihab al-Din Abu al-Abbas Ahmad bin Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;Şihâbüddin Ebü&#039;l-Abbas Ahmed b. Receb el-Hanbelî&#039;nin Şeyhleri Mu&#039;ceminden Seçmeler&quot;,&quot;zh&quot;:&quot;《伊本·拉杰布·罕百里师长名录选编》&quot;}" data-original="المنتقي من معجم شيوخ شهاب الدين أبي العباس أحمد بن رجب الحنبلي">المنتقي من معجم شيوخ شهاب الدين أبي العباس أحمد بن رجب الحنبلي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        المنتقي من معجم شيوخ شهاب الدين أبي العباس أحمد بن رجب الحنبلي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      زين الدين أبو الفرج عبد الرحمن بن أحمد بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1459/145960.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1459/145960.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Authenticity of the Gardens of the Righteous from the Hadith of the Master of the Messengers, with Valuable Marginal Notes and Significant Comments&quot;,&quot;es&quot;:&quot;Selección auténtica de Riyad al-Salihin, de los dichos del señor de los mensajeros, con valiosas notas y comentarios esclarecedores&quot;,&quot;fr&quot;:&quot;Le recueil authentique Riyad al-Salihin (Les Jardins des vertueux), tiré des paroles du maître des envoyés, suivi de précieuses notes et annotations&quot;,&quot;id&quot;:&quot;Shahih Riyadhush Shalihin dari Hadis Penghulu Para Rasul, dilengkapi catatan berharga dan komentar yang baik&quot;,&quot;ja&quot;:&quot;預言者たちの長に関する伝承による『正しき人々の園』真正伝承集―貴重な注釈と有益なコメント付き&quot;,&quot;ru&quot;:&quot;Достоверное «Сады праведных» из хадисов господина посланников; в приложении — ценные примечания и полезные комментарии&quot;,&quot;sw&quot;:&quot;Sahih Riyad al-Salihin (Bustani za Waja Wema) kutokana na hadithi za Bwana wa Mitume, ikiwa na maelezo na ufafanuzi wenye thamani mwishoni&quot;,&quot;tr&quot;:&quot;Seyyidü’l-mürselîn’in hadislerinden Riyâzü’s-sâlihîn’in sahih rivayetleri; sonunda değerli haşiyeler ve seçkin notlarla&quot;,&quot;zh&quot;:&quot;《义人花园可靠本：先知领袖的圣训》，附珍贵注释与精妙评注&quot;}" data-original="صحيح رياض الصالحين من حديث سيد المرسلين، وبذيله حواش نفيسة وتعليقات منيفة">صحيح رياض الصالحين من حديث سيد المرسلين، وبذيله حواش نفيسة وتعليقات منيفة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        صحيح رياض الصالحين من حديث سيد المرسلين، وبذيله حواش نفيسة وتعليقات منيفة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي • محمد ناصر الدين الألباني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1678/167873.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1678/167873.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Unique Pearl System in the Science of Grammar&quot;,&quot;es&quot;:&quot;Poema didáctico La perla única sobre la ciencia de la gramática&quot;,&quot;fr&quot;:&quot;Poème didactique de la Perle unique sur la science de la grammaire&quot;,&quot;id&quot;:&quot;Nazam ad-Durrah al-Yatimah dalam Ilmu Nahwu&quot;,&quot;ja&quot;:&quot;文法学における唯一無二の真珠の詩文&quot;,&quot;ru&quot;:&quot;Поэма «Дурра аль-ятима» по грамматике&quot;,&quot;sw&quot;:&quot;Manzumat al-Durra al-Yatima fi Ilm al-Nahw (Shairi la Lulu ya Pekee katika Elimu ya Sarufi)&quot;,&quot;tr&quot;:&quot;Nahiv İlminde Eşsiz İnci Manzumesi&quot;,&quot;zh&quot;:&quot;《语法学中的孤珍韵文》&quot;}" data-original="منظومة الدرة اليتيمة في علم النحو">منظومة الدرة اليتيمة في علم النحو</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        منظومة الدرة اليتيمة في علم النحو
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      سعيد بن سعد الحضرمي
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

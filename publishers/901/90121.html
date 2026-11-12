@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>دار المعرفة</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,224 +70,442 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Ma&#039;rifah&quot;,&quot;es&quot;:&quot;Dar al-Ma&#039;rifah&quot;,&quot;fr&quot;:&quot;Dar al-Ma&#039;rifa&quot;,&quot;id&quot;:&quot;Dar Al-Ma&#039;rifah&quot;,&quot;ja&quot;:&quot;ダール・アル＝マアリファ&quot;,&quot;ru&quot;:&quot;Дар аль-ма&#039;рифа&quot;,&quot;sw&quot;:&quot;Dar al-Ma&#039;rifa&quot;,&quot;tr&quot;:&quot;Dârü&#039;l-Ma&#039;rife&quot;,&quot;zh&quot;:&quot;知识出版社&quot;}" data-original="دار المعرفة">دار المعرفة</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/594/59467.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <div
+      class="flex aspect-[3/4] w-full flex-col items-center justify-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-6 size-8" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+            </div>
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Curriculum of Students and the Authority of Muftis&quot;,&quot;es&quot;:&quot;Minhaj al-Talibin wa Umdat al-Muftin (El camino de los estudiantes y la referencia de quienes emiten dictámenes)&quot;,&quot;fr&quot;:&quot;Minhaj al-Talibin wa Umdat al-Muftin (La voie des étudiants et la référence des muftis)&quot;,&quot;id&quot;:&quot;Minhaj ath-Thalibin wa Umdat al-Muftin (Pedoman Para Penuntut Ilmu dan Pegangan Para Mufti)&quot;,&quot;ja&quot;:&quot;学徒の道程と法学者の拠り所&quot;,&quot;ru&quot;:&quot;Минхадж ат-талибин ва умдат аль-муфтин (Путь ищущих знания и опора муфтиев)&quot;,&quot;sw&quot;:&quot;Minhaj al-Talibin wa Umdat al-Muftin (Mwongozo wa wanafunzi na tegemeo la watoa fatwa)&quot;,&quot;tr&quot;:&quot;Minhâcü&#039;t-tâlibîn ve Umdetü&#039;l-müftîn (Talebelerin Yöntemi ve Müftülerin Dayanağı)&quot;,&quot;ur&quot;:&quot;منهاج الطالبين وعمدة المفتين (طالب علموں کا منہج اور مفتیوں کا سہارا)&quot;,&quot;zh&quot;:&quot;《求学者指南与教法判令者的依凭》&quot;}" data-original="منهاج الطالبين وعمدة المفتين">منهاج الطالبين وعمدة المفتين</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Ma&#039;rifah&quot;,&quot;es&quot;:&quot;Dar al-Ma&#039;rifah&quot;,&quot;fr&quot;:&quot;Dar al-Ma&#039;rifa&quot;,&quot;id&quot;:&quot;Dar Al-Ma&#039;rifah&quot;,&quot;ja&quot;:&quot;ダール・アル＝マアリファ&quot;,&quot;ru&quot;:&quot;Дар аль-ма&#039;рифа&quot;,&quot;sw&quot;:&quot;Dar al-Ma&#039;rifa&quot;,&quot;tr&quot;:&quot;Dârü&#039;l-Ma&#039;rife&quot;,&quot;zh&quot;:&quot;知识出版社&quot;}" data-original="دار المعرفة">دار المعرفة</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/594/59467.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Curriculum of Students and the Authority of Muftis&quot;,&quot;es&quot;:&quot;Minhaj al-Talibin wa Umdat al-Muftin (El camino de los estudiantes y la referencia de quienes emiten dictámenes)&quot;,&quot;fr&quot;:&quot;Minhaj al-Talibin wa Umdat al-Muftin (La voie des étudiants et la référence des muftis)&quot;,&quot;id&quot;:&quot;Minhaj ath-Thalibin wa Umdat al-Muftin (Pedoman Para Penuntut Ilmu dan Pegangan Para Mufti)&quot;,&quot;ja&quot;:&quot;学徒の道程と法学者の拠り所&quot;,&quot;ru&quot;:&quot;Минхадж ат-талибин ва умдат аль-муфтин (Путь ищущих знания и опора муфтиев)&quot;,&quot;sw&quot;:&quot;Minhaj al-Talibin wa Umdat al-Muftin (Mwongozo wa wanafunzi na tegemeo la watoa fatwa)&quot;,&quot;tr&quot;:&quot;Minhâcü&#039;t-tâlibîn ve Umdetü&#039;l-müftîn (Talebelerin Yöntemi ve Müftülerin Dayanağı)&quot;,&quot;ur&quot;:&quot;منهاج الطالبين وعمدة المفتين (طالب علموں کا منہج اور مفتیوں کا سہارا)&quot;,&quot;zh&quot;:&quot;《求学者指南与教法判令者的依凭》&quot;}" data-original="منهاج الطالبين وعمدة المفتين">منهاج الطالبين وعمدة المفتين</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">دار المعرفة</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/654/65401.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Foundational Compendium for the Indexed Dictionary&quot;,&quot;es&quot;:&quot;Al-Majma al-Mu&#039;assas li-l-Mujam al-Mufahras (El compendio fundacional del diccionario indexado)&quot;,&quot;fr&quot;:&quot;Al-Majma al-Mu&#039;assis li-l-Mu&#039;jam al-Mufahras (Le répertoire fondateur du dictionnaire indexé)&quot;,&quot;id&quot;:&quot;Al-Majma&#039; al-Mu&#039;assas lil-Mu&#039;jam al-Mufahras [Kumpulan Dasar untuk Kamus Indeks]&quot;,&quot;ja&quot;:&quot;索引付き辞典の基礎資料集&quot;,&quot;ru&quot;:&quot;Аль-Маджма‘ аль-муассас ли-ль-му‘джам аль-муфахрас (Сводный алфавитный указатель)&quot;,&quot;sw&quot;:&quot;Al-Majma&#039; al-Mu&#039;assas li al-Mu&#039;jam al-Mufahras (Mkusanyo Ulioanzisha Kamusi Yenye Fahirisi)&quot;,&quot;tr&quot;:&quot;el-Mecma‘u&#039;l-Mü&#039;essis li&#039;l-Mu‘cemi&#039;l-Müfehres (Fihristli Sözlüğün Temeli)&quot;,&quot;ur&quot;:&quot;المجمع المؤسس للمعجم المفهرس (المعجم المفهرس کی بنیاد رکھنے والی تصنیف)&quot;,&quot;zh&quot;:&quot;《索引辞典的奠基汇编》&quot;}" data-original="المجمع المؤسس للمعجم المفهرس">المجمع المؤسس للمعجم المفهرس</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي ابن حجر العسقلاني</td>
-        <td dir="auto">دار المعرفة</td>
-        <td dir="auto">1415هـ 1994م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1160/116076.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Ten Spouses&quot;,&quot;es&quot;:&quot;La convivencia conyugal&quot;,&quot;fr&quot;:&quot;La vie conjugale&quot;,&quot;id&quot;:&quot;Kehidupan Suami Istri&quot;,&quot;ja&quot;:&quot;夫婦の交わり&quot;,&quot;ru&quot;:&quot;Супружеское общение&quot;,&quot;sw&quot;:&quot;Maisha ya ndoa&quot;,&quot;tr&quot;:&quot;Eşler Arasındaki İlişkiler&quot;,&quot;ur&quot;:&quot;العشرة الزوجية (ازدواجی زندگی کے حقوق و آداب)&quot;,&quot;zh&quot;:&quot;夫妻相处之道&quot;}" data-original="العشرة الزوجية">العشرة الزوجية</span>
-          </a>
-        </td>
-        <td dir="auto">محمد إسماعيل النجاري</td>
-        <td dir="auto">دار المعرفة</td>
-        <td dir="auto">2002</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1281/128127.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Strange Interpretation of Hadith Arranged Alphabetically&quot;,&quot;es&quot;:&quot;Explicación de los términos oscuros del hadiz, ordenados alfabéticamente&quot;,&quot;fr&quot;:&quot;Explication des termes rares du hadith, classés par ordre alphabétique&quot;,&quot;id&quot;:&quot;Penjelasan Lafaz-Lafaz Gharib dalam Hadis yang Disusun Berdasarkan Abjad&quot;,&quot;ja&quot;:&quot;ハディース中の珍語のアルファベット順注釈&quot;,&quot;ru&quot;:&quot;Толкование редких слов в хадисах в алфавитном порядке&quot;,&quot;sw&quot;:&quot;Tafsiri ya maneno magumu katika Hadith, iliyopangwa kwa alfabeti&quot;,&quot;tr&quot;:&quot;Garîbü’l-hadîs’in alfabetik olarak düzenlenmiş tefsiri&quot;,&quot;zh&quot;:&quot;《按字母顺序编排的圣训疑难词语释义》&quot;}" data-original="تفسير غريب الحديث مرتبًا على الحروف">تفسير غريب الحديث مرتبًا على الحروف</span>
-          </a>
-        </td>
-        <td dir="auto">ابن حجر</td>
-        <td dir="auto">دار المعرفة للطباعة والنشر</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1384/138495.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Approximation of Tahdhib - Dar Al-Ma&#039;rifah&quot;,&quot;es&quot;:&quot;Taqrib al-Tahdhib (Aproximación a la depuración) - Dar al-Marifa&quot;,&quot;fr&quot;:&quot;Taqrib al-Tahdhib (Rapprochement du Tahdhib) - Dar al-Ma&#039;rifa&quot;,&quot;id&quot;:&quot;Taqrib at-Tahdzib (Ringkasan at-Tahdzib) — Dar al-Ma&#039;rifah&quot;,&quot;ja&quot;:&quot;タクリーブ・アッ＝タフズィーブ―ダール・アル＝マアリファ版&quot;,&quot;ru&quot;:&quot;Такриб ат-Тахзиб — Дар аль-Ма‘рифа&quot;,&quot;sw&quot;:&quot;Taqrib al-Tahdhib (Muhtasari wa Tahdhib) — Dar al-Ma&#039;rifa&quot;,&quot;tr&quot;:&quot;Takrîbü&#039;t-Tehzîb – Dar al-Ma&#039;rifa&quot;,&quot;zh&quot;:&quot;《精简《 تهذيب》的提要——知识出版社版》&quot;}" data-original="تقريب التهذيب - دار المعرفة">تقريب التهذيب - دار المعرفة</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار المعرفة</td>
-        <td dir="auto">1395هـ 1975م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1385/138538.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Sahih Muslim, titled Al-Minhaj: Explanation of Sahih Muslim by Ibn Al-Hajjaj&quot;,&quot;es&quot;:&quot;Sahih Muslim, conocido como al-Minhaj: comentario de Sahih Muslim ibn al-Hajjaj&quot;,&quot;fr&quot;:&quot;Sahih Muslim, intitulé al-Minhaj: commentaire du Sahih Muslim d&#039;Ibn al-Hajjaj&quot;,&quot;id&quot;:&quot;Shahih Muslim yang dikenal sebagai Al-Minhaj: Syarah Shahih Muslim bin Al-Hajjaj&quot;,&quot;ja&quot;:&quot;サヒーフ・ムスリム：アル＝ミンハージュと題する、サヒーフ・ムスリム・イブン・アル＝ハッジャージュ注解&quot;,&quot;ru&quot;:&quot;Сахих Муслим, известный как «аль-Минхадж»: комментарий к «Сахих Муслим ибн аль-Хаджжадж»&quot;,&quot;sw&quot;:&quot;Sahih Muslim, inayojulikana pia kama Al-Minhaj: Sharh Sahih Muslim bin al-Hajjaj (Maelezo ya Sahih Muslim bin al-Hajjaj)&quot;,&quot;tr&quot;:&quot;Sahîh-i Müslim: el-Minhâc adıyla bilinen, Müslim b. Haccâc&#039;ın Sahîh&#039;inin şerhi&quot;,&quot;ur&quot;:&quot;صحيح مسلم المسمى المنهاج شرح صحيح مسلم بن الحجاج (صحیح مسلم، جس کا نام المنہاج ہے: صحیح مسلم بن حجاج کی شرح)&quot;,&quot;zh&quot;:&quot;《穆斯林圣训实录》，又名《明道：穆斯林·本·哈贾吉圣训实录注释》&quot;}" data-original="صحيح مسلم المسمى المنهاج شرح صحيح مسلم بن الحجاج">صحيح مسلم المسمى المنهاج شرح صحيح مسلم بن الحجاج</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">دار المعرفة</td>
-        <td dir="auto">1414هـ 1994م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1425/142589.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Knowledge of the Verification of the Hadiths of Guidance&quot;,&quot;es&quot;:&quot;Al-Diraya fi Takhrij Ahadith al-Hidaya [Conocimiento de las fuentes de los hadices de al-Hidaya]&quot;,&quot;fr&quot;:&quot;Al-Diraya fi takhrij ahadith al-Hidaya (La connaissance critique des hadiths de l&#039;Hidaya)&quot;,&quot;id&quot;:&quot;Ad-Dirayah fi Takhrij Ahadits Al-Hidayah [Kajian Takhrij Hadis-Hadis Al-Hidayah]&quot;,&quot;ja&quot;:&quot;アッ＝ディラーヤ・フィー・タフリージ・アハーディース・アル＝ヒダーヤ&quot;,&quot;ru&quot;:&quot;Ад-Дирая в такхридже хадисов «Аль-Хидая»&quot;,&quot;sw&quot;:&quot;Al-Diraya fi Takhrij Ahadith al-Hidaya (Uchunguzi wa hadithi za kitabu Al-Hidaya)&quot;,&quot;tr&quot;:&quot;ed-Dirâye fî tahrîci ehâdîsi’l-Hidâye (el-Hidâye hadislerinin tahrici)&quot;,&quot;ur&quot;:&quot;الدراية في تخريج أحاديث الهداية (الہدایہ کی احادیث کی تخریج میں درایت)&quot;,&quot;zh&quot;:&quot;《指引之书圣训考证》&quot;}" data-original="الدراية في تخريج أحاديث الهداية">الدراية في تخريج أحاديث الهداية</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار المعرفة</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1429/142970.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Knowledge of the Verification of the Hadiths of Guidance&quot;,&quot;es&quot;:&quot;Al-Diraya fi takhrij ahadith al-Hidaya [Conocimiento de las fuentes de los hadices de al-Hidaya]&quot;,&quot;fr&quot;:&quot;Al-Diraya fi takhrij ahadith al-Hidaya (La connaissance des sources des hadiths d’al-Hidaya)&quot;,&quot;id&quot;:&quot;Ad-Dirayah dalam Menakhrij Hadis-hadis Al-Hidayah&quot;,&quot;ja&quot;:&quot;アル＝ヒダーヤのハディース出典照合におけるアル＝ディラーヤ&quot;,&quot;ru&quot;:&quot;Ад-Дирая фи тахридж ахадис аль-Хидая (Исследование путей передачи хадисов из «аль-Хидаи»)&quot;,&quot;sw&quot;:&quot;Al-Diraya katika takhrij ya hadithi za al-Hidaya&quot;,&quot;tr&quot;:&quot;Hidâye Hadislerinin Tahricinde ed-Dirâye&quot;,&quot;ur&quot;:&quot;الدراية في تخريج أحاديث الهداية (الہدایہ کی احادیث کی تخریج میں الدراية)&quot;,&quot;zh&quot;:&quot;《指导圣训的考证》&quot;}" data-original="الدراية في تخريج أحاديث الهداية">الدراية في تخريج أحاديث الهداية</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار المعرفة</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1439/143970.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Strange Interpretation of Hadith Organized by Letters&quot;,&quot;es&quot;:&quot;Explicación de los términos raros del hadiz, ordenados alfabéticamente&quot;,&quot;fr&quot;:&quot;Explication des termes rares du hadith, classés par ordre alphabétique&quot;,&quot;id&quot;:&quot;Penjelasan Kata-kata Asing dalam Hadis, Disusun Menurut Abjad&quot;,&quot;ja&quot;:&quot;珍奇なハディース語彙の解説――アルファベット順&quot;,&quot;ru&quot;:&quot;Толкование редких слов в хадисах, расположенное в алфавитном порядке&quot;,&quot;sw&quot;:&quot;Tafsiri ya maneno magumu ya hadithi, yakiwa yamepangwa kwa herufi&quot;,&quot;tr&quot;:&quot;Garîbü&#039;l-hadîsin harf sırasına göre açıklaması&quot;,&quot;zh&quot;:&quot;《按字母顺序编排的奇异圣训词语释义》&quot;}" data-original="تفسير غريب الحديث مرتبًا على الحروف">تفسير غريب الحديث مرتبًا على الحروف</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار المعرفة</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1458/145832.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Opening of the Bari with the Explanation of Sahih al-Bukhari - Dar Al-Ma&#039;rifah&quot;,&quot;es&quot;:&quot;Fath al-Bari (Explicación del Sahih de al-Bujari) - edición de Dar al-Maarifa&quot;,&quot;fr&quot;:&quot;Fath al-Bari, commentaire du Sahih al-Bukhari — éd. Dar al-Marifa&quot;,&quot;id&quot;:&quot;Fath Al-Bari bi Syarh Sahih Al-Bukhari (Penjelasan atas Sahih Al-Bukhari) — edisi Dar al-Ma&#039;rifa&quot;,&quot;ja&quot;:&quot;サヒーフ・ブハーリー注解『ファトフ・アル＝バーリー』（ダール・アル＝マアリファ版）&quot;,&quot;ru&quot;:&quot;Фатх аль-Бари би-шарх Сахих аль-Бухари — издание Дар аль-Маарифа&quot;,&quot;sw&quot;:&quot;Fath al-Bari (Ufafanuzi wa Sahih al-Bukhari) — chapa ya Dar al-Ma&#039;rifa&quot;,&quot;tr&quot;:&quot;Fethu&#039;l-Bârî bi-Şerhi Sahîhi&#039;l-Buhârî (Buhârî&#039;nin Sahih&#039;inin Şerhi) - Dar al-Ma&#039;rifa baskısı&quot;,&quot;ur&quot;:&quot;فتح الباري بشرح صحيح البخاري (صحیح بخاری کی شرح فتح الباری) - دار المعرفة کا ایڈیشن&quot;,&quot;zh&quot;:&quot;《布哈里圣训实录注释：巴里胜利》—知识出版社版&quot;}" data-original="فتح الباري بشرح صحيح البخاري- ط دار المعرفة">فتح الباري بشرح صحيح البخاري- ط دار المعرفة</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار المعرفة</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1461/146132.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Gold Series in What Imam Al-Shafi&#039;i Narrated from Malik from Nafi&#039; from Ibn Umar, Along with the Mursal Narrations&quot;,&quot;es&quot;:&quot;La cadena de oro en las narraciones del imam al-Shafi&#039;i de Malik, de Nafi y de Ibn Umar, junto con los hadices mursal&quot;,&quot;fr&quot;:&quot;La chaîne d’or concernant les traditions rapportées par l’imam al-Shafi&#039;i de Malik, de Nafi, d’Ibn Umar, accompagnée des hadiths mursal&quot;,&quot;id&quot;:&quot;Silsilat adz-Dzahab (Rangkaian Emas) tentang Riwayat Imam Asy-Syafi&#039;i dari Malik, dari Nafi&#039;, dari Ibnu Umar, beserta Riwayat Mursal&quot;,&quot;ja&quot;:&quot;黄金の連鎖――イマーム・シャーフィイーがマーリク、ナーフィウ、イブン・ウマルから伝えたもの、およびムルサル伝承&quot;,&quot;ru&quot;:&quot;Золотая цепь в передаче имама аш-Шафии от Малика, от Нафи&#039;а, от Ибн Умара, вместе с мурсалями&quot;,&quot;sw&quot;:&quot;Mnyororo wa dhahabu katika mapokezi ya Imam al-Shafi&#039;i kutoka kwa Malik, kutoka kwa Nafi&#039;, kutoka kwa Ibn Umar, pamoja na hadithi mursal&quot;,&quot;tr&quot;:&quot;İmam Şâfiî&#039;nin Mâlik&#039;ten, onun Nâfi&#039;den, onun da İbn Ömer&#039;den rivayet ettiği hadislerdeki altın silsile ve mürseller&quot;,&quot;zh&quot;:&quot;《黄金传承链：伊玛目沙斐仪经马立克、纳菲尔传自伊本·欧麦尔的传述及其相关中断传述》&quot;}" data-original="سلسلة الذهب فيما رواه الإمام الشافعي عن مالك عن نافع عن ابن عمر ومعه المراسيل">سلسلة الذهب فيما رواه الإمام الشافعي عن مالك عن نافع عن ابن عمر ومعه المراسيل</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني • سليمان بن أشعث السجستاني أبو داود</td>
-        <td dir="auto">دار المعرفة</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1470/147088.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Foundational Encyclopedia for the Indexed Dictionary - Dar Al-Ma&#039;rifah&quot;,&quot;es&quot;:&quot;Al-Mujam al-mu&#039;assas li-l-mu&#039;jam al-mufahras (El diccionario fundacional del índice), ed. Dar al-Ma&#039;rifa&quot;,&quot;fr&quot;:&quot;Al-Mujam al-mu&#039;assas li-l-Mujam al-mufahras [Le répertoire établi pour l&#039;index alphabétique] — éd. Dar al-Maarifa&quot;,&quot;id&quot;:&quot;Al-Majma&#039; al-Mu&#039;assas li al-Mu&#039;jam al-Mufahras (Kamus Indeks) — edisi Dar al-Ma&#039;rifa&quot;,&quot;ja&quot;:&quot;アル＝ムジュマウ・アル＝ムアッサス・リル＝ムアジャム・アル＝ムファフラス―ダール・アル＝マアリファ版&quot;,&quot;ru&quot;:&quot;аль-Муджма&#039; аль-Муассас ли-ль-Му&#039;джам аль-Муфахрас (Основание для алфавитного словаря) — издание Дар аль-Ма&#039;рифа&quot;,&quot;sw&quot;:&quot;Al-Mujam al-Mu&#039;assas kwa Al-Mujam al-Mufahras (Kamusi iliyoainishwa)&quot;,&quot;tr&quot;:&quot;el-Mecmaʿu&#039;l-muʾassis li&#039;l-muʿcemi&#039;l-müfehres (Fihristli Sözlük İçin Temel Kaynak) - Dârü&#039;l-Maʿrife Baskısı&quot;,&quot;ur&quot;:&quot;المجمع المؤسس للمعجم المفهرس- ط. دار المعرفة (المعجم المفهرس کی بنیاد رکھنے والی جامع کتاب)&quot;,&quot;zh&quot;:&quot;《〈索引词典〉的奠基汇编》——知识之家版&quot;}" data-original="المجمع المؤسس للمعجم المفهرس- ط. دار المعرفة">المجمع المؤسس للمعجم المفهرس- ط. دار المعرفة</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار المعرفة</td>
-        <td dir="auto">1413هــ 1992م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1925/192530.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Supplement to the Classes of the Hanbalis&quot;,&quot;es&quot;:&quot;Libro del suplemento a las generaciones de los hanbalíes (al-Dhayl ala Tabaqat al-Hanabila)&quot;,&quot;fr&quot;:&quot;Livre complémentaire aux générations des hanbalites&quot;,&quot;id&quot;:&quot;Kitab Adz-Dzail &#039;ala Thabaqat al-Hanabilah (Suplemen Thabaqat Hanbali)&quot;,&quot;ja&quot;:&quot;『ハンバル派法学者列伝』補遺&quot;,&quot;ru&quot;:&quot;Книга-дополнение к «Табакат ханбалитов»&quot;,&quot;sw&quot;:&quot;Kitabu cha Kiambatisho cha Tabaka za Hanbali&quot;,&quot;tr&quot;:&quot;Hanbelî Tabakalarına Zeyl Kitabı&quot;,&quot;ur&quot;:&quot;كتاب الذيل على طبقات الحنابلة (حنبلیوں کے طبقات پر ذیل کی کتاب)&quot;,&quot;zh&quot;:&quot;《汉百里派人物传记续编》&quot;}" data-original="كتاب الذيل على طبقات الحنابلة">كتاب الذيل على طبقات الحنابلة</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن البغدادي بن رجب الحنبلي</td>
-        <td dir="auto">دار المعرفة</td>
-        <td dir="auto">1987م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        منهاج الطالبين وعمدة المفتين
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/654/65401.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/654/65401.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Foundational Compendium for the Indexed Dictionary&quot;,&quot;es&quot;:&quot;Al-Majma al-Mu&#039;assas li-l-Mujam al-Mufahras (El compendio fundacional del diccionario indexado)&quot;,&quot;fr&quot;:&quot;Al-Majma al-Mu&#039;assis li-l-Mu&#039;jam al-Mufahras (Le répertoire fondateur du dictionnaire indexé)&quot;,&quot;id&quot;:&quot;Al-Majma&#039; al-Mu&#039;assas lil-Mu&#039;jam al-Mufahras [Kumpulan Dasar untuk Kamus Indeks]&quot;,&quot;ja&quot;:&quot;索引付き辞典の基礎資料集&quot;,&quot;ru&quot;:&quot;Аль-Маджма‘ аль-муассас ли-ль-му‘джам аль-муфахрас (Сводный алфавитный указатель)&quot;,&quot;sw&quot;:&quot;Al-Majma&#039; al-Mu&#039;assas li al-Mu&#039;jam al-Mufahras (Mkusanyo Ulioanzisha Kamusi Yenye Fahirisi)&quot;,&quot;tr&quot;:&quot;el-Mecma‘u&#039;l-Mü&#039;essis li&#039;l-Mu‘cemi&#039;l-Müfehres (Fihristli Sözlüğün Temeli)&quot;,&quot;ur&quot;:&quot;المجمع المؤسس للمعجم المفهرس (المعجم المفهرس کی بنیاد رکھنے والی تصنیف)&quot;,&quot;zh&quot;:&quot;《索引辞典的奠基汇编》&quot;}" data-original="المجمع المؤسس للمعجم المفهرس">المجمع المؤسس للمعجم المفهرس</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        المجمع المؤسس للمعجم المفهرس
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي ابن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1160/116076.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1160/116076.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Ten Spouses&quot;,&quot;es&quot;:&quot;La convivencia conyugal&quot;,&quot;fr&quot;:&quot;La vie conjugale&quot;,&quot;id&quot;:&quot;Kehidupan Suami Istri&quot;,&quot;ja&quot;:&quot;夫婦の交わり&quot;,&quot;ru&quot;:&quot;Супружеское общение&quot;,&quot;sw&quot;:&quot;Maisha ya ndoa&quot;,&quot;tr&quot;:&quot;Eşler Arasındaki İlişkiler&quot;,&quot;ur&quot;:&quot;العشرة الزوجية (ازدواجی زندگی کے حقوق و آداب)&quot;,&quot;zh&quot;:&quot;夫妻相处之道&quot;}" data-original="العشرة الزوجية">العشرة الزوجية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        العشرة الزوجية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد إسماعيل النجاري
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1281/128127.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1281/128127.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Strange Interpretation of Hadith Arranged Alphabetically&quot;,&quot;es&quot;:&quot;Explicación de los términos oscuros del hadiz, ordenados alfabéticamente&quot;,&quot;fr&quot;:&quot;Explication des termes rares du hadith, classés par ordre alphabétique&quot;,&quot;id&quot;:&quot;Penjelasan Lafaz-Lafaz Gharib dalam Hadis yang Disusun Berdasarkan Abjad&quot;,&quot;ja&quot;:&quot;ハディース中の珍語のアルファベット順注釈&quot;,&quot;ru&quot;:&quot;Толкование редких слов в хадисах в алфавитном порядке&quot;,&quot;sw&quot;:&quot;Tafsiri ya maneno magumu katika Hadith, iliyopangwa kwa alfabeti&quot;,&quot;tr&quot;:&quot;Garîbü’l-hadîs’in alfabetik olarak düzenlenmiş tefsiri&quot;,&quot;zh&quot;:&quot;《按字母顺序编排的圣训疑难词语释义》&quot;}" data-original="تفسير غريب الحديث مرتبًا على الحروف">تفسير غريب الحديث مرتبًا على الحروف</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تفسير غريب الحديث مرتبًا على الحروف
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      ابن حجر
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1384/138495.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1384/138495.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Approximation of Tahdhib - Dar Al-Ma&#039;rifah&quot;,&quot;es&quot;:&quot;Taqrib al-Tahdhib (Aproximación a la depuración) - Dar al-Marifa&quot;,&quot;fr&quot;:&quot;Taqrib al-Tahdhib (Rapprochement du Tahdhib) - Dar al-Ma&#039;rifa&quot;,&quot;id&quot;:&quot;Taqrib at-Tahdzib (Ringkasan at-Tahdzib) — Dar al-Ma&#039;rifah&quot;,&quot;ja&quot;:&quot;タクリーブ・アッ＝タフズィーブ―ダール・アル＝マアリファ版&quot;,&quot;ru&quot;:&quot;Такриб ат-Тахзиб — Дар аль-Ма‘рифа&quot;,&quot;sw&quot;:&quot;Taqrib al-Tahdhib (Muhtasari wa Tahdhib) — Dar al-Ma&#039;rifa&quot;,&quot;tr&quot;:&quot;Takrîbü&#039;t-Tehzîb – Dar al-Ma&#039;rifa&quot;,&quot;zh&quot;:&quot;《精简《 تهذيب》的提要——知识出版社版》&quot;}" data-original="تقريب التهذيب - دار المعرفة">تقريب التهذيب - دار المعرفة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تقريب التهذيب - دار المعرفة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1385/138538.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1385/138538.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Sahih Muslim, titled Al-Minhaj: Explanation of Sahih Muslim by Ibn Al-Hajjaj&quot;,&quot;es&quot;:&quot;Sahih Muslim, conocido como al-Minhaj: comentario de Sahih Muslim ibn al-Hajjaj&quot;,&quot;fr&quot;:&quot;Sahih Muslim, intitulé al-Minhaj: commentaire du Sahih Muslim d&#039;Ibn al-Hajjaj&quot;,&quot;id&quot;:&quot;Shahih Muslim yang dikenal sebagai Al-Minhaj: Syarah Shahih Muslim bin Al-Hajjaj&quot;,&quot;ja&quot;:&quot;サヒーフ・ムスリム：アル＝ミンハージュと題する、サヒーフ・ムスリム・イブン・アル＝ハッジャージュ注解&quot;,&quot;ru&quot;:&quot;Сахих Муслим, известный как «аль-Минхадж»: комментарий к «Сахих Муслим ибн аль-Хаджжадж»&quot;,&quot;sw&quot;:&quot;Sahih Muslim, inayojulikana pia kama Al-Minhaj: Sharh Sahih Muslim bin al-Hajjaj (Maelezo ya Sahih Muslim bin al-Hajjaj)&quot;,&quot;tr&quot;:&quot;Sahîh-i Müslim: el-Minhâc adıyla bilinen, Müslim b. Haccâc&#039;ın Sahîh&#039;inin şerhi&quot;,&quot;ur&quot;:&quot;صحيح مسلم المسمى المنهاج شرح صحيح مسلم بن الحجاج (صحیح مسلم، جس کا نام المنہاج ہے: صحیح مسلم بن حجاج کی شرح)&quot;,&quot;zh&quot;:&quot;《穆斯林圣训实录》，又名《明道：穆斯林·本·哈贾吉圣训实录注释》&quot;}" data-original="صحيح مسلم المسمى المنهاج شرح صحيح مسلم بن الحجاج">صحيح مسلم المسمى المنهاج شرح صحيح مسلم بن الحجاج</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        صحيح مسلم المسمى المنهاج شرح صحيح مسلم بن الحجاج
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1425/142589.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <div
+      class="flex aspect-[3/4] w-full flex-col items-center justify-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-6 size-8" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+            </div>
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Knowledge of the Verification of the Hadiths of Guidance&quot;,&quot;es&quot;:&quot;Al-Diraya fi Takhrij Ahadith al-Hidaya [Conocimiento de las fuentes de los hadices de al-Hidaya]&quot;,&quot;fr&quot;:&quot;Al-Diraya fi takhrij ahadith al-Hidaya (La connaissance critique des hadiths de l&#039;Hidaya)&quot;,&quot;id&quot;:&quot;Ad-Dirayah fi Takhrij Ahadits Al-Hidayah [Kajian Takhrij Hadis-Hadis Al-Hidayah]&quot;,&quot;ja&quot;:&quot;アッ＝ディラーヤ・フィー・タフリージ・アハーディース・アル＝ヒダーヤ&quot;,&quot;ru&quot;:&quot;Ад-Дирая в такхридже хадисов «Аль-Хидая»&quot;,&quot;sw&quot;:&quot;Al-Diraya fi Takhrij Ahadith al-Hidaya (Uchunguzi wa hadithi za kitabu Al-Hidaya)&quot;,&quot;tr&quot;:&quot;ed-Dirâye fî tahrîci ehâdîsi’l-Hidâye (el-Hidâye hadislerinin tahrici)&quot;,&quot;ur&quot;:&quot;الدراية في تخريج أحاديث الهداية (الہدایہ کی احادیث کی تخریج میں درایت)&quot;,&quot;zh&quot;:&quot;《指引之书圣训考证》&quot;}" data-original="الدراية في تخريج أحاديث الهداية">الدراية في تخريج أحاديث الهداية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الدراية في تخريج أحاديث الهداية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1429/142970.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1429/142970.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Knowledge of the Verification of the Hadiths of Guidance&quot;,&quot;es&quot;:&quot;Al-Diraya fi takhrij ahadith al-Hidaya [Conocimiento de las fuentes de los hadices de al-Hidaya]&quot;,&quot;fr&quot;:&quot;Al-Diraya fi takhrij ahadith al-Hidaya (La connaissance des sources des hadiths d’al-Hidaya)&quot;,&quot;id&quot;:&quot;Ad-Dirayah dalam Menakhrij Hadis-hadis Al-Hidayah&quot;,&quot;ja&quot;:&quot;アル＝ヒダーヤのハディース出典照合におけるアル＝ディラーヤ&quot;,&quot;ru&quot;:&quot;Ад-Дирая фи тахридж ахадис аль-Хидая (Исследование путей передачи хадисов из «аль-Хидаи»)&quot;,&quot;sw&quot;:&quot;Al-Diraya katika takhrij ya hadithi za al-Hidaya&quot;,&quot;tr&quot;:&quot;Hidâye Hadislerinin Tahricinde ed-Dirâye&quot;,&quot;ur&quot;:&quot;الدراية في تخريج أحاديث الهداية (الہدایہ کی احادیث کی تخریج میں الدراية)&quot;,&quot;zh&quot;:&quot;《指导圣训的考证》&quot;}" data-original="الدراية في تخريج أحاديث الهداية">الدراية في تخريج أحاديث الهداية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الدراية في تخريج أحاديث الهداية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1439/143970.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1439/143970.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Strange Interpretation of Hadith Organized by Letters&quot;,&quot;es&quot;:&quot;Explicación de los términos raros del hadiz, ordenados alfabéticamente&quot;,&quot;fr&quot;:&quot;Explication des termes rares du hadith, classés par ordre alphabétique&quot;,&quot;id&quot;:&quot;Penjelasan Kata-kata Asing dalam Hadis, Disusun Menurut Abjad&quot;,&quot;ja&quot;:&quot;珍奇なハディース語彙の解説――アルファベット順&quot;,&quot;ru&quot;:&quot;Толкование редких слов в хадисах, расположенное в алфавитном порядке&quot;,&quot;sw&quot;:&quot;Tafsiri ya maneno magumu ya hadithi, yakiwa yamepangwa kwa herufi&quot;,&quot;tr&quot;:&quot;Garîbü&#039;l-hadîsin harf sırasına göre açıklaması&quot;,&quot;zh&quot;:&quot;《按字母顺序编排的奇异圣训词语释义》&quot;}" data-original="تفسير غريب الحديث مرتبًا على الحروف">تفسير غريب الحديث مرتبًا على الحروف</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تفسير غريب الحديث مرتبًا على الحروف
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1458/145832.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1458/145832.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Opening of the Bari with the Explanation of Sahih al-Bukhari - Dar Al-Ma&#039;rifah&quot;,&quot;es&quot;:&quot;Fath al-Bari (Explicación del Sahih de al-Bujari) - edición de Dar al-Maarifa&quot;,&quot;fr&quot;:&quot;Fath al-Bari, commentaire du Sahih al-Bukhari — éd. Dar al-Marifa&quot;,&quot;id&quot;:&quot;Fath Al-Bari bi Syarh Sahih Al-Bukhari (Penjelasan atas Sahih Al-Bukhari) — edisi Dar al-Ma&#039;rifa&quot;,&quot;ja&quot;:&quot;サヒーフ・ブハーリー注解『ファトフ・アル＝バーリー』（ダール・アル＝マアリファ版）&quot;,&quot;ru&quot;:&quot;Фатх аль-Бари би-шарх Сахих аль-Бухари — издание Дар аль-Маарифа&quot;,&quot;sw&quot;:&quot;Fath al-Bari (Ufafanuzi wa Sahih al-Bukhari) — chapa ya Dar al-Ma&#039;rifa&quot;,&quot;tr&quot;:&quot;Fethu&#039;l-Bârî bi-Şerhi Sahîhi&#039;l-Buhârî (Buhârî&#039;nin Sahih&#039;inin Şerhi) - Dar al-Ma&#039;rifa baskısı&quot;,&quot;ur&quot;:&quot;فتح الباري بشرح صحيح البخاري (صحیح بخاری کی شرح فتح الباری) - دار المعرفة کا ایڈیشن&quot;,&quot;zh&quot;:&quot;《布哈里圣训实录注释：巴里胜利》—知识出版社版&quot;}" data-original="فتح الباري بشرح صحيح البخاري- ط دار المعرفة">فتح الباري بشرح صحيح البخاري- ط دار المعرفة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        فتح الباري بشرح صحيح البخاري- ط دار المعرفة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1461/146132.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1461/146132.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Gold Series in What Imam Al-Shafi&#039;i Narrated from Malik from Nafi&#039; from Ibn Umar, Along with the Mursal Narrations&quot;,&quot;es&quot;:&quot;La cadena de oro en las narraciones del imam al-Shafi&#039;i de Malik, de Nafi y de Ibn Umar, junto con los hadices mursal&quot;,&quot;fr&quot;:&quot;La chaîne d’or concernant les traditions rapportées par l’imam al-Shafi&#039;i de Malik, de Nafi, d’Ibn Umar, accompagnée des hadiths mursal&quot;,&quot;id&quot;:&quot;Silsilat adz-Dzahab (Rangkaian Emas) tentang Riwayat Imam Asy-Syafi&#039;i dari Malik, dari Nafi&#039;, dari Ibnu Umar, beserta Riwayat Mursal&quot;,&quot;ja&quot;:&quot;黄金の連鎖――イマーム・シャーフィイーがマーリク、ナーフィウ、イブン・ウマルから伝えたもの、およびムルサル伝承&quot;,&quot;ru&quot;:&quot;Золотая цепь в передаче имама аш-Шафии от Малика, от Нафи&#039;а, от Ибн Умара, вместе с мурсалями&quot;,&quot;sw&quot;:&quot;Mnyororo wa dhahabu katika mapokezi ya Imam al-Shafi&#039;i kutoka kwa Malik, kutoka kwa Nafi&#039;, kutoka kwa Ibn Umar, pamoja na hadithi mursal&quot;,&quot;tr&quot;:&quot;İmam Şâfiî&#039;nin Mâlik&#039;ten, onun Nâfi&#039;den, onun da İbn Ömer&#039;den rivayet ettiği hadislerdeki altın silsile ve mürseller&quot;,&quot;zh&quot;:&quot;《黄金传承链：伊玛目沙斐仪经马立克、纳菲尔传自伊本·欧麦尔的传述及其相关中断传述》&quot;}" data-original="سلسلة الذهب فيما رواه الإمام الشافعي عن مالك عن نافع عن ابن عمر ومعه المراسيل">سلسلة الذهب فيما رواه الإمام الشافعي عن مالك عن نافع عن ابن عمر ومعه المراسيل</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        سلسلة الذهب فيما رواه الإمام الشافعي عن مالك عن نافع عن ابن عمر ومعه المراسيل
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني • سليمان بن أشعث السجستاني أبو داود
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1470/147088.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1470/147088.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Foundational Encyclopedia for the Indexed Dictionary - Dar Al-Ma&#039;rifah&quot;,&quot;es&quot;:&quot;Al-Mujam al-mu&#039;assas li-l-mu&#039;jam al-mufahras (El diccionario fundacional del índice), ed. Dar al-Ma&#039;rifa&quot;,&quot;fr&quot;:&quot;Al-Mujam al-mu&#039;assas li-l-Mujam al-mufahras [Le répertoire établi pour l&#039;index alphabétique] — éd. Dar al-Maarifa&quot;,&quot;id&quot;:&quot;Al-Majma&#039; al-Mu&#039;assas li al-Mu&#039;jam al-Mufahras (Kamus Indeks) — edisi Dar al-Ma&#039;rifa&quot;,&quot;ja&quot;:&quot;アル＝ムジュマウ・アル＝ムアッサス・リル＝ムアジャム・アル＝ムファフラス―ダール・アル＝マアリファ版&quot;,&quot;ru&quot;:&quot;аль-Муджма&#039; аль-Муассас ли-ль-Му&#039;джам аль-Муфахрас (Основание для алфавитного словаря) — издание Дар аль-Ма&#039;рифа&quot;,&quot;sw&quot;:&quot;Al-Mujam al-Mu&#039;assas kwa Al-Mujam al-Mufahras (Kamusi iliyoainishwa)&quot;,&quot;tr&quot;:&quot;el-Mecmaʿu&#039;l-muʾassis li&#039;l-muʿcemi&#039;l-müfehres (Fihristli Sözlük İçin Temel Kaynak) - Dârü&#039;l-Maʿrife Baskısı&quot;,&quot;ur&quot;:&quot;المجمع المؤسس للمعجم المفهرس- ط. دار المعرفة (المعجم المفهرس کی بنیاد رکھنے والی جامع کتاب)&quot;,&quot;zh&quot;:&quot;《〈索引词典〉的奠基汇编》——知识之家版&quot;}" data-original="المجمع المؤسس للمعجم المفهرس- ط. دار المعرفة">المجمع المؤسس للمعجم المفهرس- ط. دار المعرفة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        المجمع المؤسس للمعجم المفهرس- ط. دار المعرفة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1925/192530.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1925/192530.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Supplement to the Classes of the Hanbalis&quot;,&quot;es&quot;:&quot;Libro del suplemento a las generaciones de los hanbalíes (al-Dhayl ala Tabaqat al-Hanabila)&quot;,&quot;fr&quot;:&quot;Livre complémentaire aux générations des hanbalites&quot;,&quot;id&quot;:&quot;Kitab Adz-Dzail &#039;ala Thabaqat al-Hanabilah (Suplemen Thabaqat Hanbali)&quot;,&quot;ja&quot;:&quot;『ハンバル派法学者列伝』補遺&quot;,&quot;ru&quot;:&quot;Книга-дополнение к «Табакат ханбалитов»&quot;,&quot;sw&quot;:&quot;Kitabu cha Kiambatisho cha Tabaka za Hanbali&quot;,&quot;tr&quot;:&quot;Hanbelî Tabakalarına Zeyl Kitabı&quot;,&quot;ur&quot;:&quot;كتاب الذيل على طبقات الحنابلة (حنبلیوں کے طبقات پر ذیل کی کتاب)&quot;,&quot;zh&quot;:&quot;《汉百里派人物传记续编》&quot;}" data-original="كتاب الذيل على طبقات الحنابلة">كتاب الذيل على طبقات الحنابلة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        كتاب الذيل على طبقات الحنابلة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن البغدادي بن رجب الحنبلي
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

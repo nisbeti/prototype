@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../../"
+  data-section="books"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>شرح الأربعين النووية للعثيمين</title>
   <link
-    rel="stylesheet"
-    href="../../../assets/reader.css"
+    rel="icon"
+    href="../../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,725 +70,450 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../../assets/reader.js"
+    src="../../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../../books.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Books</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
 
-  <main class="site-main">
-      <div class="book-head">
-    
-    <div class="book-head-text">
-      <h1
-        class="page-title"
-        lang="ar"
-        dir="rtl"
-      >
-        شرح الأربعين النووية للعثيمين
-      </h1>
-      <p class="muted translated-only" dir="auto" data-tr="{&quot;en&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Commentary on al-Nawawi&#039;s Forty Hadiths)&quot;,&quot;es&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya [Comentario de los cuarenta hadices de al-Nawawi]&quot;,&quot;fr&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Commentaire des quarante hadiths de al-Nawawi)&quot;,&quot;id&quot;:&quot;Syarah Al-Arba&#039;in An-Nawawiyyah [Penjelasan atas Empat Puluh Hadis An-Nawawi]&quot;,&quot;ja&quot;:&quot;アル＝アルバイーン・アン＝ナワウィーヤの注釈&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави»&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arobaini za Nawawi)&quot;,&quot;tr&quot;:&quot;Şerhu’l-Erbaîn en-Neveviyye (Nevevî’nin Kırk Hadis’inin Şerhi)&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية (چالیس نووی احادیث کی شرح)&quot;,&quot;zh&quot;:&quot;《四十段圣训注释》&quot;}" data-original=""></p>
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <div
+            class="flex h-56 w-full shrink-0 items-center justify-center rounded-sm border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+          >
+            <svg class="shrink-0 [:where(&amp;)]:size-6 size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+</svg>
 
-      <p class="credits">
-                  <a
-            href="../../../authors/001/193.html"
-            lang="ar"
-          >
-            ابن عثيمين
-          </a>
-                          <span class="muted">(<span data-t="d. :year" data-r="{&quot;year&quot;:1421}">d. 1421</span>)</span>
-                          <button
-            type="button"
-            class="button small"
-            data-open-card="author-card"
-          >
-            <span data-t="About the author">About the author</span>
-          </button>
-              </p>
-
-              <p class="credits">
-          <span data-t="Publisher">Publisher</span>:
-          <a
-            href="../../../publishers/921/92105.html"
-            lang="ar"
-          >
-            دار الثريا للنشر
-          </a>
-        </p>
-      
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="../../../books/054/5472/1.html#p1"
-          >
-            <span data-t="Read">Read</span>
-          </a>
-                <span class="muted">
-          <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;403&quot;}" data-n="403">403 pages</span>
-                  </span>
-      </p>
-    </div>
-  </div>
-
-      <template id="author-card">
-      <div
-        class="card-text"
-        lang="ar"
-        dir="rtl"
-      >
+                  </div>
         
+        <div class="mt-4 flex flex-col gap-2">
+                      <a href="../../../books/054/5472/1.html#p1" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-[var(--color-accent)] hover:bg-[color-mix(in_oklab,_var(--color-accent),_transparent_10%)] text-[var(--color-accent-foreground)] border border-black/10 dark:border-0 shadow-[inset_0px_1px_--theme(--color-white/.2)] [[data-flux-button-group]_&amp;]:border-e-0 [:is([data-flux-button-group]&gt;&amp;:last-child,_[data-flux-button-group]_:last-child&gt;&amp;)]:border-e-[1px] dark:[:is([data-flux-button-group]&gt;&amp;:last-child,_[data-flux-button-group]_:last-child&gt;&amp;)]:border-e-0 [:is([data-flux-button-group]&gt;&amp;:not(:first-child),_[data-flux-button-group]_:not(:first-child)&gt;&amp;)]:border-s-[1px]! [:is([data-flux-button-group]&gt;&amp;:not(:first-child),_[data-flux-button-group]_:not(:first-child)&gt;&amp;)]:border-s-[color-mix(in_srgb,var(--color-accent-foreground),transparent_85%)]" data-flux-group-target="data-flux-group-target" data-test="start-reading">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M7.25 3.688a8.035 8.035 0 0 0-4.872-.523A.48.48 0 0 0 2 3.64v7.994c0 .345.342.588.679.512a6.02 6.02 0 0 1 4.571.81V3.688ZM8.75 12.956a6.02 6.02 0 0 1 4.571-.81c.337.075.679-.167.679-.512V3.64a.48.48 0 0 0-.378-.475 8.034 8.034 0 0 0-4.872.523v9.268Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Read</span>
+    </a>
+          
+                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" dir="auto" lang="ar" data-flux-heading>شرح الأربعين النووية للعثيمين</h1>
+
+                <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Commentary on al-Nawawi&#039;s Forty Hadiths)&quot;,&quot;es&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya [Comentario de los cuarenta hadices de al-Nawawi]&quot;,&quot;fr&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Commentaire des quarante hadiths de al-Nawawi)&quot;,&quot;id&quot;:&quot;Syarah Al-Arba&#039;in An-Nawawiyyah [Penjelasan atas Empat Puluh Hadis An-Nawawi]&quot;,&quot;ja&quot;:&quot;アル＝アルバイーン・アン＝ナワウィーヤの注釈&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави»&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arobaini za Nawawi)&quot;,&quot;tr&quot;:&quot;Şerhu’l-Erbaîn en-Neveviyye (Nevevî’nin Kırk Hadis’inin Şerhi)&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية (چالیس نووی احادیث کی شرح)&quot;,&quot;zh&quot;:&quot;《四十段圣训注释》&quot;}" data-original=""></span></p>
+                  <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1 flex flex-wrap items-baseline gap-x-2" data-flux-subheading>
+    <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../authors/001/193.html" lang="ar" data-flux-link >ابن عثيمين</a>                        <bdi class="text-zinc-400">
+              (<span data-t="d. :year" data-r="{&quot;year&quot;:&quot;1421 AH&quot;}">d. 1421 AH</span>)
+            </bdi>
+</div>
+        
+                  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span>Publisher:</span>
+            <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../publishers/921/92105.html" lang="ar" data-flux-link >دار الثريا للنشر</a></p>        
+        <div class="mt-3 flex flex-wrap gap-2">
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50">
+        <span lang="ar">شروح الحديث</span>
+    </div>
+                    <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50">
+        <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;403&quot;}" data-n="403">403 pages</span>
+    </div>
+                  </div>
+
+        
+        <div class="mt-6 grid grid-cols-1 gap-4 xl:grid-cols-2">
+                      <div class="min-w-0 rounded-xl border border-zinc-200 p-5 [overflow-wrap:anywhere] dark:border-zinc-700">
+              <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+              <dl
+  class="text-sm grid gap-x-6 gap-y-3 sm:grid-cols-[fit-content(12rem)_1fr]"
+  dir="auto"
+>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Title&quot;,&quot;es&quot;:&quot;Título&quot;,&quot;fr&quot;:&quot;Titre&quot;,&quot;id&quot;:&quot;Judul&quot;,&quot;ja&quot;:&quot;書名&quot;,&quot;ru&quot;:&quot;Название&quot;,&quot;sw&quot;:&quot;Jina la kitabu&quot;,&quot;tr&quot;:&quot;Kitap adı&quot;,&quot;ur&quot;:&quot;نام کتاب&quot;,&quot;zh&quot;:&quot;书名&quot;}" data-original="الكتاب">الكتاب</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Commentary on al-Nawawi&#039;s Forty Hadiths)&quot;,&quot;es&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya [Comentario de los cuarenta hadices de al-Nawawi]&quot;,&quot;fr&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Commentaire des quarante hadiths de al-Nawawi)&quot;,&quot;id&quot;:&quot;Syarah Al-Arba&#039;in An-Nawawiyyah [Penjelasan atas Empat Puluh Hadis An-Nawawi]&quot;,&quot;ja&quot;:&quot;アル＝アルバイーン・アン＝ナワウィーヤの注釈&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави»&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arobaini za Nawawi)&quot;,&quot;tr&quot;:&quot;Şerhu’l-Erbaîn en-Neveviyye (Nevevî’nin Kırk Hadis’inin Şerhi)&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية (چالیس نووی احادیث کی شرح)&quot;,&quot;zh&quot;:&quot;《四十段圣训注释》&quot;}" data-original="شرح الأربعين النووية">شرح الأربعين النووية</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Author&quot;,&quot;es&quot;:&quot;Autor&quot;,&quot;fr&quot;:&quot;Auteur&quot;,&quot;id&quot;:&quot;Penulis&quot;,&quot;ja&quot;:&quot;著者&quot;,&quot;ru&quot;:&quot;Автор&quot;,&quot;sw&quot;:&quot;Mwandishi&quot;,&quot;tr&quot;:&quot;Yazar&quot;,&quot;ur&quot;:&quot;مصنف&quot;,&quot;zh&quot;:&quot;作者&quot;}" data-original="المؤلف">المؤلف</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Muhammad ibn Salih ibn Muhammad al-Uthaymin (d. 1421 AH)&quot;,&quot;es&quot;:&quot;Muhammad ibn Salih ibn Muhammad al-Uthaymin (f. 1421 H)&quot;,&quot;fr&quot;:&quot;Muhammad ibn Salih ibn Muhammad al-Uthaymin (d. 1421H)&quot;,&quot;id&quot;:&quot;Muhammad bin Shalih bin Muhammad Al-Utsaimin (w. 1421 H)&quot;,&quot;ja&quot;:&quot;ムハンマド・イブン・サーリフ・イブン・ムハンマド・アル＝ウサイミーン（没年：ヒジュラ暦1421年）&quot;,&quot;ru&quot;:&quot;Мухаммад ибн Салих ибн Мухаммад аль-Усаймин (ум. 1421 г. х.)&quot;,&quot;sw&quot;:&quot;Muhammad bin Salih bin Muhammad al-Uthaymin (aliyefariki 1421H)&quot;,&quot;tr&quot;:&quot;Muhammed b. Sâlih b. Muhammed el-Useymîn (ö. 1421 H)&quot;,&quot;ur&quot;:&quot;محمد بن صالح بن محمد العثيمين (ت ١٤٢١ھ)&quot;,&quot;zh&quot;:&quot;穆罕默德·本·萨利赫·本·穆罕默德·欧赛敏（卒于伊历1421年）&quot;}" data-original="محمد بن صالح بن محمد العثيمين (ت ١٤٢١هـ)">محمد بن صالح بن محمد العثيمين (ت ١٤٢١هـ)</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Publisher&quot;,&quot;es&quot;:&quot;Editorial&quot;,&quot;fr&quot;:&quot;Éditeur&quot;,&quot;id&quot;:&quot;Penerbit&quot;,&quot;ja&quot;:&quot;出版社&quot;,&quot;ru&quot;:&quot;Издательство&quot;,&quot;sw&quot;:&quot;Mchapishaji&quot;,&quot;tr&quot;:&quot;Yayınevi&quot;,&quot;ur&quot;:&quot;ناشر&quot;,&quot;zh&quot;:&quot;出版社&quot;}" data-original="الناشر">الناشر</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar al-Thurayya lil-Nashr&quot;,&quot;es&quot;:&quot;Dar al-Thurayya lil-Nashr&quot;,&quot;fr&quot;:&quot;Dar al-Thurayya li-l-Nashr&quot;,&quot;id&quot;:&quot;Dar ats-Tsurayya li an-Nasyr&quot;,&quot;ja&quot;:&quot;ダール・アッ＝スラーヤー出版&quot;,&quot;ru&quot;:&quot;Дар ас-Сурайя ли-н-нашр&quot;,&quot;sw&quot;:&quot;Dar al-Thurayya lil-Nashr&quot;,&quot;tr&quot;:&quot;Dar al-Thurayya lil-Nashr&quot;,&quot;zh&quot;:&quot;苏拉亚出版社&quot;}" data-original="دار الثريا للنشر">دار الثريا للنشر</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Number of pages&quot;,&quot;es&quot;:&quot;Número de páginas&quot;,&quot;fr&quot;:&quot;Nombre de pages&quot;,&quot;id&quot;:&quot;Jumlah halaman&quot;,&quot;ja&quot;:&quot;ページ数&quot;,&quot;ru&quot;:&quot;Количество страниц&quot;,&quot;sw&quot;:&quot;Idadi ya kurasa&quot;,&quot;tr&quot;:&quot;Sayfa sayısı&quot;,&quot;ur&quot;:&quot;صفحات کی تعداد&quot;,&quot;zh&quot;:&quot;页数&quot;}" data-original="عدد الصفحات">عدد الصفحات</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;405&quot;,&quot;fr&quot;:&quot;405&quot;,&quot;id&quot;:&quot;405&quot;,&quot;ja&quot;:&quot;405&quot;,&quot;ru&quot;:&quot;405&quot;}" data-original="٤٠٥">٤٠٥</span>
+          </dd>
+          <dd
+      class="min-w-0 sm:col-span-2 text-zinc-500 dark:text-zinc-400"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The page numbering matches the print edition&quot;,&quot;es&quot;:&quot;La paginación coincide con la edición impresa&quot;,&quot;fr&quot;:&quot;La pagination correspond à l&#039;édition imprimée&quot;,&quot;id&quot;:&quot;Penomoran halaman sesuai dengan edisi cetak&quot;,&quot;ja&quot;:&quot;ページ番号は印刷版と一致&quot;,&quot;ru&quot;:&quot;Нумерация страниц соответствует печатному изданию&quot;,&quot;sw&quot;:&quot;Kurasa zimehesabiwa sawa na nakala iliyochapishwa&quot;,&quot;tr&quot;:&quot;Sayfa numaraları basılı nüshaya uygundur&quot;,&quot;ur&quot;:&quot;صفحات کی ترقیم مطبوعہ نسخے کے مطابق ہے&quot;,&quot;zh&quot;:&quot;页码与纸质版一致&quot;}" data-original="ترقيم الكتاب موافق للمطبوع">ترقيم الكتاب موافق للمطبوع</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Author page&quot;,&quot;es&quot;:&quot;Página del autor&quot;,&quot;fr&quot;:&quot;Page de l&#039;auteur&quot;,&quot;id&quot;:&quot;Halaman penulis&quot;,&quot;ja&quot;:&quot;著者ページ&quot;,&quot;ru&quot;:&quot;Страница автора&quot;,&quot;sw&quot;:&quot;Ukurasa wa mwandishi&quot;,&quot;tr&quot;:&quot;Yazar sayfası&quot;,&quot;ur&quot;:&quot;مصنف کا صفحہ&quot;,&quot;zh&quot;:&quot;作者页面&quot;}" data-original="صفحة المؤلف">صفحة المؤلف</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Uthaymin&quot;,&quot;es&quot;:&quot;Ibn Uthaymin&quot;,&quot;fr&quot;:&quot;Ibn Uthaymin&quot;,&quot;id&quot;:&quot;Ibnu Utsaimin&quot;,&quot;ja&quot;:&quot;イブン・ウサイミーン&quot;,&quot;ru&quot;:&quot;Ибн Усаймин&quot;,&quot;sw&quot;:&quot;Ibn Uthaymin&quot;,&quot;tr&quot;:&quot;İbn Useymîn&quot;,&quot;zh&quot;:&quot;伊本·欧赛敏&quot;}" data-original="ابن عثيمين">ابن عثيمين</span>
+          </dd>
+  </dl>
+            </div>
+          
+                      <div class="min-w-0 rounded-xl border border-zinc-200 p-5 [overflow-wrap:anywhere] dark:border-zinc-700">
+              <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>About the author</div>
+              <div class="max-h-96 overflow-y-auto text-sm leading-relaxed text-zinc-800 dark:text-zinc-100">
+                                  
+                  <div class="whitespace-pre-line" dir="auto" data-tr="{&quot;en&quot;:&quot;Muhammad ibn Salih al-Uthaymin (1347–1421 AH, 1928–2001 CE).\nMuhammad ibn Salih ibn Muhammad Uthaymin al-Muqbil al-Wuhaybi al-Tamimi\n• A Saudi scholar and jurist, professor at the College of Sharia at the Qassim branch of Imam Muhammad ibn Saud Islamic University, and member of the Council of Senior Scholars.\n• He was born in Unaizah in the Qassim region, whose mosques hosted many circles of Islamic legal learning and intellectual discussion.\n• He memorized the Quran in childhood, then devoted himself to studying the Islamic and Arabic sciences under many specialist scholars, including:\n- Shaykh Abd al-Rahman Nasir al-Sa&#039;di, with whom he remained even after his father moved to Riyadh. He succeeded him as imam and preacher at the Grand Mosque in Unaizah.\n- Another of his teachers was Shaykh Abd al-Aziz ibn Abd Allah ibn Baz, from whom, he said, he learned to give attention to hadith and to seek evidence.\n- He also studied under Shaykh Muhammad al-Mukhtar al-Jakani al-Shinqiti, author of Adwa&#039; al-Bayan fi Idah al-Quran bi al-Quran (The Illuminating Explanation of the Quran through the Quran), Shaykh Ali ibn Muhammad al-Salihi, and others.\n• Al-Uthaymin graduated from the College of Sharia in Riyadh in 1377 AH. He began teaching at the scientific institute before graduating from the college.\n• He declined to serve as a judge despite the insistence of Shaykh Muhammad ibn Ibrahim Al al-Shaykh, then the kingdom&#039;s mufti and chief judge. He devoted himself to teaching and freed himself from adherence to a legal school, drawing extensively on the independent legal reasoning of Ibn Taymiyya, which made his jurisprudential views more independent.\n• The Shaykh&#039;s scholarly output exceeded fifty-five works, some of which were selected as textbooks at scientific institutes in Saudi Arabia.\n• His first book was Fath Rabb al-Bariyya bi Talkhis al-Hamawiyya (1382 AH), an abridgment of Ibn Taymiyya&#039;s al-Hamawiyya on creed, a lengthy legal response on creed addressed to the people of Hama. His other works include a commentary on Zad al-Mustaqni&#039; and a commentary on Riyad al-Salihin. His legal opinions were collected in about fourteen volumes.\n• He delivered many influential lectures, particularly in guiding young people. His legal opinions reached the public by telephone, in writing, through recordings, and on radio, especially on the program Nur &#039;ala al-Darb.\n• He was distinguished by his extensive knowledge, clear understanding of religion in both creed and law, an effective style of presentation, and wisdom in his approach to religious outreach.\n• He received the King Faisal International Prize for Service to Islam in 1414 AH, 1994 CE.\nTranslated from: al-Mawsu&#039;a al-Arabiyya al-Alamiyya (The Global Arabic Encyclopedia)&quot;,&quot;es&quot;:&quot;Muhammad ibn Salih al-Uthaymin (1347-1421 H, 1928-2001).\nMuhammad ibn Salih ibn Muhammad Uthaymin al-Muqbil al-Wuhaybi al-Tamimi\n• Erudito y jurista saudí, profesor de la Facultad de Sharia de la sede de la Universidad Islámica Imam Muhammad ibn Saud en la región de Qasim y miembro del Consejo de Grandes Eruditos.\n• Nació en Unaizah, en la región de Qasim, cuyas mezquitas eran lugar de numerosos círculos de estudio de las ciencias religiosas y debates intelectuales.\n• Aprendió el Quran de memoria en su infancia y después se dedicó al estudio de las ciencias religiosas y árabes con numerosos eruditos especializados, entre ellos:\n- El shayj Abd al-Rahman Nasir al-Sadi, con quien estudió hasta después de que su padre se trasladara a Riad. Lo sucedió como imam y predicador de la Gran Mezquita de Unaizah.\n- Entre sus maestros también estuvo el shayj Abd al-Aziz ibn Abd Allah ibn Baz, de quien, según sus propias palabras, aprendió a prestar atención al hadiz y a buscar pruebas.\n- También estudió con el shayj Muhammad al-Mukhtar al-Jakani al-Shinqiti, autor de Adwa al-Bayan fi Idah al-Quran bi-l-Quran (Los destellos de la explicación sobre cómo aclarar el Quran mediante el Quran), y con el shayj Ali ibn Muhammad al-Salihi, entre otros.\n• Al-Uthaymin se graduó en la Facultad de Sharia de Riad en 1377 H. Comenzó a enseñar en el Instituto Científico antes de graduarse en la facultad.\n• Rechazó ocupar un cargo judicial, pese a la insistencia del shayj Muhammad ibn Ibrahim Al al-Shayj, entonces muftí del reino y presidente de los jueces. Se dedicó a la enseñanza y se liberó de la imitación de las escuelas jurídicas; siguió en gran medida los dictámenes de Ibn Taymiyya, lo que dio mayor independencia a sus opiniones jurídicas.\n• Su producción académica superó las cincuenta y cinco obras, algunas de las cuales fueron seleccionadas como libros de texto para los institutos científicos de Arabia Saudí.\n• Su primer libro fue Fath Rabb al-Bariyya bi-Talkhis al-Hamawiyya (La apertura del Señor de la creación mediante el resumen de al-Hamawiyya), publicado en 1382 H. Es un resumen del tratado de Ibn Taymiyya al-Hamawiyya sobre doctrina, considerado una extensa respuesta jurídica acerca de la doctrina, dirigida a los habitantes de Hama. También escribió un comentario de Zad al-Mustaqni; un comentario de Riyad al-Salihin; y sus dictámenes jurídicos fueron recopilados en unos catorce volúmenes.\n• Pronunció numerosas conferencias que influyeron en la orientación del público, especialmente de los jóvenes. Sus dictámenes llegaron a la gente por teléfono, por escrito, mediante grabaciones o por la radio, en especial a través del programa Nur ala al-Darb.\n• Se distinguió por sus vastos conocimientos, su clara comprensión de la religión —en materia de doctrina y de ley religiosa—, su buena manera de exponer y su prudencia en el método de predicación.\n• Recibió el Premio Internacional Rey Faisal al Servicio del Islam en 1414 H, 1994.\nTomado de: «Enciclopedia Árabe Universal»&quot;,&quot;fr&quot;:&quot;Muhammad ibn Salih al-Uthaymin (1347 - 1421 H, 1928 - 2001).\nMuhammad ibn Salih ibn Muhammad Uthaymin al-Muqbil al-Wuhaybi al-Tamimi\n• Savant et juriste saoudien, professeur à la faculté de charia de la branche de l’Université islamique Imam Muhammad ibn Saud dans la région de Qassim, et membre du Conseil des grands oulémas.\n• Il est né à Unayzah, dans la région de Qassim, dont les mosquées accueillaient de nombreux cercles d’étude religieuse et débats intellectuels.\n• Il mémorisa le noble Quran dans son enfance, puis se consacra à l’étude des sciences religieuses et de la langue arabe auprès de nombreux savants spécialisés, parmi lesquels :\n- Le cheikh Abd al-Rahman Nasir al-Sa&#039;di, qu’il fréquenta assidûment, même après que son père eut déménagé à Riyad. Il lui succéda comme imam et prédicateur de la Grande Mosquée d’Unayzah.\n- Parmi ses autres maîtres figurait le cheikh Abd al-Aziz ibn Abd Allah ibn Baz, dont il tira, selon ses propres mots, le souci de l’étude du hadith et de la recherche des preuves.\n- Il étudia également auprès du cheikh Muhammad al-Mukhtar al-Jakni al-Shinqiti, auteur de Adwa al-Bayan fi Idah al-Quran bi al-Quran (Les lumières de l’éloquence dans l’explication du Quran par le Quran), ainsi qu’auprès du cheikh Ali ibn Muhammad al-Salihi et d’autres.\n• Al-Uthaymin obtint son diplôme de la faculté de charia de Riyad en 1377 H. Il avait commencé à enseigner à l’institut scientifique avant d’obtenir son diplôme.\n• Il refusa d’exercer la fonction de juge, malgré l’insistance du cheikh Muhammad ibn Ibrahim Al al-Shaykh, alors mufti du royaume et président des juges. Il se consacra à l’enseignement et s’affranchit du conformisme à une école juridique particulière. Il adopta largement les avis juridiques d’Ibn Taymiyya, ce qui rendit ses opinions juridiques plus indépendantes.\n• La production savante du cheikh compte plus de cinquante-cinq ouvrages, dont certains furent choisis comme manuels dans les instituts scientifiques du royaume d’Arabie saoudite.\n• Son premier ouvrage fut Fath Rabb al-Bariyya bi Talkhis al-Hamawiyya (L’ouverture du Seigneur des créatures : abrégé de la Hamawiyya), paru en 1382 H. Il s’agit d’un résumé du livre d’Ibn Taymiyya sur la croyance, al-Hamawiyya, qui est considéré comme une longue fatwa sur la croyance, en réponse aux habitants de Hama. Il a également écrit un commentaire de Zad al-Mustaqni, un commentaire de Riyad al-Salihin, et ses fatwas ont été réunies en quelque quatorze volumes.\n• Il donna un grand nombre de conférences marquantes, notamment pour guider le grand public et les jeunes. Ses fatwas parvenaient au public par téléphone, par écrit, par enregistrement ou à la radio, en particulier dans l’émission Nour ala al-Darb.\n• Il se distinguait par l’étendue de son savoir, sa compréhension claire de la religion — dans ses dimensions doctrinale et juridique —, la qualité de son exposé et la sagesse de sa méthode de prédication.\n• Il reçut le prix international du roi Fayçal pour le service de l’islam en 1414 H, 1994.\nD’après : « Encyclopédie arabe mondiale »&quot;,&quot;id&quot;:&quot;Muhammad bin Shalih Al-Utsaimin (1347–1421 H, 1928–2001 M).\nMuhammad bin Shalih bin Muhammad Utsaimin Al-Muqbil Al-Wuhaibi At-Tamimi\n• Seorang ulama dan ahli fikih Arab Saudi, dosen di Fakultas Syariah cabang Universitas Imam Muhammad bin Saud Islamiyah di wilayah Qasim, serta anggota هيئة كبار العلماء (Dewan Ulama Senior).\n• Lahir di Unaizah, wilayah Qasim, yang masjid-masjidnya menjadi tempat banyak halaqah ilmu syariat dan diskusi pemikiran.\n• Menghafal Quran sejak kecil, kemudian menuntut ilmu-ilmu syariat dan bahasa Arab dari banyak ulama spesialis, di antaranya:\n- Syekh Abdurrahman Nashir As-Sa&#039;di, yang terus ia dampingi bahkan setelah ayahnya pindah ke Riyadh. Ia menggantikan sang syekh sebagai imam dan khatib di Masjid Agung Unaizah.\n- Gurunya yang lain adalah Syekh Abdul Aziz bin Abdullah bin Baz, yang menurut pengakuannya memberinya banyak manfaat dalam perhatian terhadap hadis dan pencarian dalil.\n- Ia juga belajar kepada Syekh Muhammad Al-Mukhtar Al-Jakni Asy-Syinqithi, penulis Adhwa&#039; Al-Bayan fi Idhah Al-Quran bi Al-Quran (Cahaya Penjelasan tentang Penafsiran Al-Quran dengan Al-Quran), Syekh Ali bin Muhammad Ash-Shalihi, dan ulama lainnya.\n• Al-Utsaimin lulus dari Fakultas Syariah di Riyadh pada 1377 H. Sebelum lulus, ia telah mulai mengajar di lembaga keilmuan.\n• Ia menolak menerima jabatan hakim meskipun Syekh Muhammad bin Ibrahim Alusy-Syaikh, mufti kerajaan dan kepala hakim saat itu, mendesaknya. Ia memilih berkonsentrasi mengajar dan melepaskan diri dari taklid mazhab. Ia banyak mengambil pendapat ijtihad Ibnu Taimiyah sehingga pandangan fikihnya lebih mandiri.\n• Karya-karya ilmiah Syekh ini berjumlah lebih dari 55 judul, dan sebagian di antaranya dipilih sebagai buku ajar di lembaga-lembaga keilmuan di Arab Saudi.\n• Buku pertamanya adalah Fath Rabb Al-Bariyyah bi Talkhish Al-Hamawiyyah (Membuka Penjelasan Tuhan atas Ringkasan Al-Hamawiyyah), ditulis pada 1382 H. Buku ini merupakan ringkasan karya Ibnu Taimiyah, Al-Hamawiyyah, tentang akidah, yang merupakan fatwa panjang mengenai akidah sebagai jawaban kepada penduduk Hamat. Karya lainnya antara lain Syarh Zad Al-Mustaqni&#039; dan Syarh Riyadh Ash-Shalihin. Fatwa-fatwanya dihimpun dalam sekitar 14 jilid.\n• Ia menyampaikan banyak ceramah yang berpengaruh dalam membimbing masyarakat, khususnya kaum muda. Fatwa-fatwanya menjangkau masyarakat melalui telepon, tulisan, rekaman, atau siaran radio, terutama melalui program Nur &#039;ala Ad-Darb.\n• Ia dikenal memiliki ilmu yang luas, pemahaman agama yang jernih dalam aspek akidah dan syariat, penyampaian yang baik, serta pendekatan dakwah yang bijaksana.\n• Ia memperoleh Penghargaan Internasional Raja Faisal untuk Pengabdian kepada Islam pada 1414 H, 1994 M.\nDikutip dari: Al-Mausu&#039;ah Al-Arabiyyah Al-Alamiyyah (Ensiklopedia Arab Internasional)&quot;,&quot;ja&quot;:&quot;ムハンマド・ブン・サーリフ・アル＝ウサイミーン（ヒジュラ暦1347–1421年／西暦1928–2001年）。\nムハンマド・ブン・サーリフ・ブン・ムハンマド・ウサイミーン・アル＝ムクビル・アル＝ワヒービー・アッ＝タミーミー\n• サウジアラビアの学者・法学者。カスィーム地方のイマーム・ムハンマド・ブン・サウード・イスラーム大学シャリーア学部分校の教授であり、上級学者評議会の委員を務めた。\n• カスィーム地方のウナイザに生まれた。同地のモスクでは、法学や宗教に関する学術講座や思想的議論が数多く行われていた。\n• 幼少期にクルアーンを暗記し、その後、多くの専門学者のもとでイスラーム諸学とアラビア語の習得に努めた。その中には以下の人物がいる。\n- アブドゥッラフマーン・ナーセル・アッ＝サアディー。父親がリヤードへ移った後も師事し続け、ウナイザの大モスクのイマーム職と説教者の職を引き継いだ。\n- また、アブドゥルアズィーズ・ブン・アブドゥッラー・ブン・バーズにも師事した。本人の言葉によれば、ハディースへの配慮と根拠の探求について学んだ。\n- さらに、『アドワーウ・アル＝バヤーン・フィー・イーダーヒ・アル＝クルアーン・ビ・アル＝クルアーン』の著者ムハンマド・アル＝ムフタール・アル＝ジャクニー・アッ＝シャンキーティー、アリー・ブン・ムハンマド・アッ＝サーリヒーらからも学んだ。\n• アル＝ウサイミーンはヒジュラ暦1377年にリヤードのシャリーア学部を卒業した。学部卒業前から、科学学院で教え始めていた。\n• 当時の王国のムフティーであり、首席裁判官でもあったムハンマド・ブン・イブラーヒーム・アール・アッ＝シャイフが強く勧めたにもかかわらず、裁判官への就任を断り、教育に専念した。法学派への盲従から離れ、イブン・タイミーヤの見解を多く採用したため、法学的見解においていっそう独立性を持つようになった。\n• シェイクの学術的著作は55点を超え、その一部はサウジアラビア王国内の科学学院で教科書として採用された。\n• 最初の著作は『ファトフ・ラッビ・アル＝バリーヤ・ビ・タルヒース・アル＝ハマウィーヤ』（ヒジュラ暦1382年）である。これはイブン・タイミーヤの信条に関する著作『アル＝ハマウィーヤ』の要約であり、ハマーの人々への回答として書かれた、信条についての長いファトワーである。また、『ザード・アル＝ムスタクニウ』注解、『リヤード・アッ＝サーリヒーン』注解があり、ファトワーは約14巻にまとめられている。\n• とりわけ若者をはじめとする聴衆の導きに影響を与える講演を数多く行った。ファトワーは電話、書面、録音、ラジオなどを通じて人々に届けられ、とりわけ番組『ヌール・アラ・アッ＝ダルブ』で広く伝えられた。\n• 豊富な学識、信条と法の両面における宗教への明晰な理解、優れた説明の仕方、そして布教における賢明な手法で知られた。\n• ヒジュラ暦1414年／西暦1994年、イスラーム奉仕に対してキング・ファイサル国際賞を受賞した。\n『アル＝マウスーア・アル＝アラビーヤ・アル＝アーラミーヤ』より引用&quot;,&quot;ru&quot;:&quot;Мухаммад ибн Салих аль-Усаймин (1347–1421 гг. х., 1928–2001 гг.).\nМухаммад ибн Салих ибн Мухаммад Усаймин аль-Мукбиль аль-Вахиби ат-Тамими.\n• Саудовский учёный и факих, преподаватель факультета шариата филиала Исламского университета имама Мухаммада ибн Сауда в провинции Касим, член Совета старших учёных.\n• Родился в Унайзе, в провинции Касим, где мечети служили местом многочисленных кружков по исламским наукам и интеллектуальных дискуссий.\n• В детстве выучил Коран наизусть, а затем посвятил себя изучению исламских и арабских наук у многих выдающихся учёных, в том числе:\n— шейха Абд ар-Рахмана ибн Насира ас-Саади, с которым он оставался рядом даже после переезда отца в Эр-Рияд. Он сменил его на посту имама Большой мечети в Унайзе и стал читать там проповеди;\n— шейха Абд аль-Азиза ибн Абдуллаха ибн База, от которого, по его собственным словам, перенял внимание к хадисам и стремление искать доказательства;\n— шейха Мухаммада аль-Мухтара аль-Джакни аш-Шанкити, автора книги «Адва аль-баян фи изах аль-Куран би-ль-Куран», шейха Али ибн Мухаммада ас-Салихи и других.\n• Аль-Усаймин окончил факультет шариата в Эр-Рияде в 1377 г. х. Ещё до окончания факультета он начал преподавать в научном институте.\n• Несмотря на настойчивые просьбы шейха Мухаммада ибн Ибрахима آل аш-Шейха, муфтия королевства и главного судьи того времени, он отказался занять должность судьи и полностью посвятил себя преподаванию. Освободившись от следования мазхабу, он во многом опирался на иджтихады Ибн Таймийи, благодаря чему его взгляды в фикхе стали более самостоятельными.\n• Научное наследие шейха насчитывает более 55 трудов; некоторые из них были включены в учебные программы научных институтов Саудовской Аравии.\n• Его первой книгой стала «Фатх Рабб аль-барийя би-тальхис аль-Хамавийя» (1382 г. х.) — сокращённое изложение книги Ибн Таймийи «Аль-Хамавийя» по вопросам вероубеждения, представляющей собой пространную фетву в ответ жителям Хамы. Среди его трудов также комментарий к «Зад аль-мустакни», комментарий к «Рияд ас-салихин»; его фетвы собраны примерно в 14 томах.\n• Он прочитал множество лекций, оказавших большое влияние на слушателей, особенно на молодёжь. Его фетвы доходили до людей по телефону, в письменном виде, в записях и по радио, в частности в программе «Нур ‘аля ад-дарб».\n• Он отличался обширными знаниями, ясным пониманием религии — вероубеждения и шариата, умением ясно излагать мысли и мудрым подходом к призыву.\n• В 1414 г. х. \/ 1994 г. получил Международную премию короля Фейсала за служение исламу.\nПо материалам «Всемирной арабской энциклопедии».&quot;,&quot;sw&quot;:&quot;Muhammad bin Salih al-Uthaymin (1347 - 1421 H, 1928 - 2001 BK).\nMuhammad bin Salih bin Muhammad Uthaymin al-Muqbil al-Wuhaybi al-Tamimi\n• Mwanazuoni na faqihi wa Saudia, na mhadhiri katika Chuo cha Sharia katika tawi la Chuo Kikuu cha Imam Muhammad bin Saud al-Islamiyya katika Mkoa wa Qasim, na mjumbe wa Baraza la Wanazuoni Wakuu.\n• Alizaliwa Unayza, katika Mkoa wa Qasim, ambako misikiti yake ilikuwa mahali pa darsa nyingi za elimu za dini na mijadala ya fikra.\n• Alihifadhi Quran akiwa mdogo, kisha akaelekea kutafuta elimu za dini na Kiarabu kwa wanazuoni wengi waliobobea, miongoni mwao:\n- Sheikh Abdulrahman Nasir al-Sa&#039;di, ambaye alisoma kwake kwa ukaribu hata baada ya baba yake kuhamia Riyadh; alimrithi katika kuongoza sala na kutoa khutba katika Msikiti Mkuu wa Unayza.\n- Miongoni mwa walimu wake wengine alikuwa Sheikh Abdulaziz bin Abdullah bin Baz, ambaye, kwa mujibu wa alivyosema mwenyewe, alifaidika kwake katika kuijali Hadith na kutafuta dalili.\n- Pia alisoma kwa Sheikh Muhammad al-Mukhtar al-Jakni al-Shinqiti, mwandishi wa Adwa al-Bayan fi Idah al-Quran bi al-Quran (Mwangaza wa Ufafanuzi katika Kueleza Quran kwa Quran), Sheikh Ali bin Muhammad al-Salihi na wengineo.\n• Al-Uthaymin alihitimu katika Chuo cha Sharia mjini Riyadh mwaka 1377 H, na alianza kufundisha katika Taasisi ya Sayansi kabla ya kuhitimu chuoni.\n• Alikataa kushika nafasi ya kadhi licha ya kusisitizwa na Sheikh Muhammad bin Ibrahim Al al-Sheikh, aliyekuwa Mufti wa Ufalme na Mkuu wa Makadhi wakati huo. Alijitolea kufundisha na kujinasua na taqlidi ya madhehebu; aliegemea sana ijtihadi za Ibn Taymiyya, jambo lililomfanya awe huru zaidi katika maoni yake ya fiqhi.\n• Machapisho ya elimu ya Sheikh yalizidi hamsini na tano; baadhi yake yaliteuliwa kuwa vitabu vya masomo katika taasisi za elimu nchini Saudia.\n• Kitabu chake cha kwanza kilikuwa Fath Rabb al-Bariyya bi Talkhis al-Hamawiyya (Kumfungulia Mola wa viumbe kwa kufupisha al-Hamawiyya), kilichoandikwa mwaka 1382 H. Ni muhtasari wa kitabu cha Ibn Taymiyya al-Hamawiyya kuhusu itikadi, ambacho ni fatwa ndefu kuhusu itikadi, iliyotolewa kujibu watu wa Hama. Pia aliandika Sharh Zad al-Mustaqni; Sharh Riyad al-Salihin, na fatwa zake zilikusanywa katika takriban juzuu 14.\n• Alitoa mihadhara mingi yenye athari katika kuwaelekeza watu, hasa vijana. Fatwa zake ziliwafikia watu kwa njia ya simu, maandishi, rekodi za sauti au redio, hasa kupitia kipindi cha Nur ala al-Darb.\n• Alijulikana kwa elimu yake pana, ufahamu wake wa wazi wa dini katika itikadi na sharia, uwasilishaji mzuri na kutumia hekima katika mbinu yake ya da&#039;wa.\n• Alitunukiwa Tuzo ya Kimataifa ya Mfalme Faisal kwa kuhudumia Uislamu mwaka 1414 H, 1994 BK.\nImenukuliwa kutoka: «Ensaiklopidia ya Kiarabu ya Kimataifa»&quot;,&quot;tr&quot;:&quot;Muhammed b. Sâlih el-Useymîn (1347-1421 H, 1928-2001).\nMuhammed b. Sâlih b. Muhammed Useymîn el-Mukbil el-Vuheybî et-Temîmî\n• Suudi âlim ve fakih; İmam Muhammed b. Suûd İslâm Üniversitesi’nin Kasîm bölgesindeki Şeriat Fakültesi’nde öğretim üyesi ve Büyük Âlimler Heyeti üyesiydi.\n• Kasîm bölgesindeki Üneyze’de doğdu. Bölgedeki camiler, çok sayıda şer‘î ilim halkasına ve fikrî tartışmaya ev sahipliği yapıyordu.\n• Küçük yaşta Kur’an’ı ezberledi; ardından pek çok uzman âlimden şer‘î ve Arapça ilimler tahsil etmeye yöneldi. Hocalarından bazıları şunlardır:\n- Babası Riyad’a taşındıktan sonra da yanında kaldığı Şeyh Abdurrahman b. Nâsır es-Sa‘dî. Onun yerine Üneyze’deki Ulu Cami’de imamlık ve hatiplik yaptı.\n- Hocaları arasında ayrıca, kendi ifadesiyle hadisle ilgilenmeyi ve delil araştırmayı kendisinden öğrendiği Şeyh Abdülazîz b. Abdullah b. Bâz da vardı.\n- Kur’an’ın Kur’an’la açıklanması konusunda Edvâü’l-beyân adlı eserin yazarı Şeyh Muhammed el-Muhtâr el-Ceknî eş-Şinkītî’den, Şeyh Ali b. Muhammed es-Sâlihî’den ve başkalarından da ders aldı.\n• Useymîn, 1377 H’de Riyad Şeriat Fakültesi’nden mezun oldu. Fakülteden mezun olmadan önce ilmî enstitüde öğretime başlamıştı.\n• Dönemin müftüsü ve başkadısı Şeyh Muhammed b. İbrahim Âlü’ş-Şeyh’in ısrarına rağmen kadılık görevini kabul etmedi ve kendini öğretime verdi. Mezhep taklidinden sıyrılarak İbn Teymiyye’nin içtihatlarına büyük ölçüde başvurdu; bu da fıkhî görüşlerinde daha bağımsız olmasını sağladı.\n• Şeyhin ilmî eserlerinin sayısı elli beşi aşmıştır. Bunların bazıları Suudi Arabistan’daki ilmî enstitülerde ders kitabı olarak seçilmiştir.\n• İlk kitabı, İbn Teymiyye’nin akaid konusunda Hama halkına cevap olarak kaleme aldığı uzun bir fetva niteliğindeki el-Hameviyye adlı eserinin özeti olan Fethu Rabbi’l-beriyye bi-telhîsi’l-Hameviyye’dir (1382 H). Ayrıca Zâdü’l-müstekni‘ üzerine şerhi ve Riyâzü’s-sâlihîn şerhi vardır. Fetvaları yaklaşık 14 ciltte toplanmıştır.\n• Özellikle gençlere yönelik olmak üzere halkı yönlendiren çok sayıda etkili konferans verdi. Fetvaları insanlara telefon, yazı, kayıt veya radyo aracılığıyla, özellikle Nûr ale’d-derb programında ulaştı.\n• Derin ilmi, akaid ve şeriat konularındaki açık kavrayışı, konuları başarılı biçimde sunuşu ve davet üslubunda hikmetli davranmasıyla öne çıktı.\n• 1414 H (1994) yılında İslâm’a Hizmet dalında Kral Faysal Uluslararası Ödülü’nü aldı.\n«el-Mevsû‘atü’l-Arabiyye el-Âlemiyye»den naklen&quot;,&quot;ur&quot;:&quot;محمد بن صالح العثيمين (١٣٤٧ - ١٤٢١ ھ، ١٩٢٨ - ٢٠٠١ ء)۔\nمحمد بن صالح بن محمد عثيمين المقبل الوهيبي التميمي\n• سعودی عالم اور فقیہ، كلية الشريعة، فرع جامعة الإمام محمد ابن سعود الإسلامية، منطقة القصيم میں استاد اور هيئة كبار العلماء کے رکن تھے۔\n• عنیزہ، منطقة القصيم میں پیدا ہوئے، جہاں کی مساجد علمی شرعی حلقوں اور فکری مباحث کا مرکز تھیں۔\n• کم عمری میں قرآن کریم حفظ کیا، پھر بہت سے ماہر علما کے زیرِ تربیت شرعی اور عربی علوم حاصل کرنے کی طرف متوجہ ہوئے، جن میں شامل ہیں:\n- شیخ عبد الرحمن ناصر السعدي، جن کی صحبت میں وہ اپنے والد کے شہر ریاض منتقل ہونے کے بعد بھی رہے۔ ان کے بعد عنیزہ کی جامع مسجد کی امامت اور خطابت کی ذمہ داری سنبھالی۔\n- ان کے اساتذہ میں شیخ عبد العزيز بن عبد الله بن باز بھی تھے، جن سے، ان کے اپنے بیان کے مطابق، حدیث کی اہمیت اور دلیل کی تلاش کا شوق حاصل کیا۔\n- انھوں نے شیخ محمد المختار الجكني الشنقيطي سے بھی تعلیم حاصل کی، جو أضواء البيان في إيضاح القرآن بالقرآن کے مصنف ہیں، نیز شیخ علي بن محمد الصالحي اور دیگر علما سے بھی پڑھا۔\n• العثيمين نے ١٣٧٧ ھ میں ریاض کے كلية الشريعة سے فراغت حاصل کی۔ کالج سے فارغ ہونے سے پہلے ہی المعهد العلمي میں تدریس شروع کر دی تھی۔\n• شیخ محمد بن إبراهيم آل الشيخ، جو اس وقت مملکت کے مفتی اور چیف جسٹس تھے، کے اصرار کے باوجود منصبِ قضا قبول نہیں کیا اور تدریس کے لیے خود کو وقف کر دیا۔ وہ فقہی تقلید سے آزاد تھے اور ابن تيمية کے اجتہادات سے بہت استفادہ کرتے تھے، جس سے ان کی فقہی آرا میں زیادہ خودمختاری پیدا ہوئی۔\n• شیخ کی علمی تصانیف پچپن سے زیادہ ہیں، جن میں سے بعض کو سعودی عرب کے علمی اداروں کے نصاب میں شامل کیا گیا۔\n• ان کی پہلی کتاب فتح رب البرية بتلخيص الحموية (١٣٨٢ ھ) ہے۔ یہ ابن تيمية کی عقیدے پر کتاب الحموية کا خلاصہ ہے، جو اہلِ حماة کے جواب میں عقیدے کے موضوع پر ایک مفصل فتویٰ سمجھی جاتی ہے۔ ان کی دوسری تصانیف میں شرح زاد المستقنع اور شرح رياض الصالحين شامل ہیں۔ ان کے فتاویٰ تقریباً ١٤ جلدوں میں جمع کیے گئے ہیں۔\n• انھوں نے بہت سے مؤثر خطبات دیے، جن سے عوام، بالخصوص نوجوانوں کی رہنمائی ہوئی۔ ان کے فتاویٰ لوگوں تک ٹیلی فون، تحریر، ریکارڈنگ یا ریڈیو کے ذریعے پہنچے، خصوصاً برنامج نور على الدرب کے ذریعے۔\n• وہ وسیع علم، دین کے عقیدے اور شریعت دونوں پہلوؤں کی واضح سمجھ، عمدہ طرزِ بیان اور دعوت کے اسلوب میں حکمت اختیار کرنے کے باعث ممتاز تھے۔\n• انھیں ١٤١٤ ھ، ١٩٩٤ ء میں اسلامی خدمت کے لیے جائزة الملك فيصل العالمية سے نوازا گیا۔\nماخوذ از: «الموسوعة العربية العالمية»&quot;,&quot;zh&quot;:&quot;穆罕默德·本·萨利赫·欧塞敏（伊历1347—1421年，公元1928—2001年）。\n穆罕默德·本·萨利赫·本·穆罕默德·欧塞敏·穆格比勒·瓦海比·泰米米\n• 沙特阿拉伯学者、法学家，曾任伊玛目穆罕默德·本·沙特伊斯兰大学盖西姆分校教法学院教授，并担任大乌莱玛委员会委员。\n• 生于盖西姆地区的欧奈宰。当地的清真寺曾是许多教法学术讲习班和思想讨论的场所。\n• 年幼时背诵古兰经，随后师从许多专业学者，学习教法与阿拉伯语，其中包括：\n- 谢赫·阿卜杜·拉赫曼·纳绥尔·萨尔迪。他一直追随萨尔迪学习，即使父亲迁居利雅得后也未中断；后来他接替萨尔迪，在欧奈宰大清真寺担任伊玛目并主持讲道。\n- 他的老师还包括谢赫·阿卜杜·阿齐兹·本·阿卜杜拉·本·巴兹。据他本人所说，他从巴兹那里受益于重视圣训、寻求证据的治学方法。\n- 他还师从谢赫·穆罕默德·穆赫塔尔·杰克尼·尚基提（《以古兰经阐释古兰经之明证》的作者）、谢赫·阿里·本·穆罕默德·萨利希等人。\n• 欧塞敏于伊历1377年毕业于利雅得教法学院；在毕业之前，他已开始在科学学院任教。\n• 尽管时任王国穆夫提兼首席法官的谢赫·穆罕默德·本·易卜拉欣·阿勒谢赫再三坚持，他仍拒绝出任法官，专心教学。他摆脱了学派盲从，广泛采纳伊本·泰米叶的独立见解，因此其教法观点更具独立性。\n• 谢赫的学术著作超过五十五部，其中一些被选作沙特阿拉伯科学学院的教材。\n• 他的第一部著作是《以提要〈哈马维论〉开启养育万物的主之门》（伊历1382年），这是对伊本·泰米叶关于信仰的《哈马维论》的提要。该书是一篇有关信仰的长篇教法答复，旨在答复哈马人。他还著有《〈资粮〉详解》《〈善人品德园地〉详解》，其教法答复汇编约有十四卷。\n• 他发表了大量讲座，对公众尤其是青年产生了深远影响。他通过电话、书信、录音和广播向民众传达教法答复，尤其通过《道路之光》节目。\n• 他以渊博的学识、对信仰与教法的清晰理解、良好的讲述方式，以及在宣教中遵循智慧而著称。\n• 他于伊历1414年／公元1994年获得费萨尔国王伊斯兰服务国际奖。\n摘译自：《世界阿拉伯百科全书》&quot;}" data-original=""></div>
+                                <details
+                  class="mt-3"
+                                  >
+                  <summary class="cursor-pointer text-zinc-500 dark:text-zinc-400">Arabic original</summary>
+                  <div
+                    class="prose-sm mt-2"
+                    dir="rtl"
+                    lang="ar"
+                  >
+                    
 محمد بن صالح العثيمين (١٣٤٧ - ١٤٢١ هـ، ١٩٢٨ - ٢٠٠١ م).محمد بن صالح بن محمد عثيمين المقبل الوهيبي التميمي• عالم وفقيه سعودي، وأستاذ في كلية الشريعة بفرع جامعة الإمام محمد ابن سعود الإسلامية في منطقة القصيم، وعضو هيئة كبار العلماء.• ولد في عنيزة بمنطقة القصيم التي كانت مساجدها مكاناً لكثير من الحلقات العلمية الشرعية والنقاشات الفكرية.• حفظ القرآن الكريم في صغره، ثم اتجه إلى طلب العلوم الشرعية والعربية على أيدي كثير من العلماء المتخصصين منهم:- الشيخ عبد الرحمن ناصر السعدي الذي لازمه حتى بعد انتقال والده إلى مدينة الرياض، وخلفه في إمامة الجامع الكبير بعنيزة والخطابة فيه.- ومن شيوخه أيضاً الشيخ عبد العزيز بن عبد الله بن باز الذي استفاد منه حسب قوله في العناية بالحديث والبحث عن الدليل.- ودرس أيضاً على يد الشيخ محمد المختار الجكني الشنقيطي صاحب أضواء البيان في إيضاح القرآن بالقرآن، والشيخ علي بن محمد الصالحي وغيرهم.• تخرج العثيمين في كلية الشريعة بالرياض عام ١٣٧٧ هـ، وبدأ بالتدريس في المعهد العلمي قبل تخرجه في الكلية.• رفض تولي القضاء رغم إصرار الشيخ محمد بن إبراهيم آل الشيخ مفتي المملكة ورئيس القضاة في حينه، وتفرغ للتدريس وقد تحرر من التقليد المذهبي، وأخذ كثيراً باجتهادات ابن تيمية مما جعله أكثر استقلالاً في آرائه الفقهية.• زادت آثار الشيخ العلمية على خمسة وخمسين مؤلفاً، وقد اختير بعضها مقررات في المعاهد العلمية بالمملكة العربية السعودية.• وأول كتبه فتح رب البرية بتخليص الحموية (١٣٨٢ هـ)، وهي تلخيص لكتاب ابن تيمية الحموية في العقيدة الذي يعتبر فتوى مطولة في العقيدة جواباً لأهل حماة. وله أيضاً شرح زاد المستقنع؛ شرح رياض الصالحين، وجمعت فتاواه في نحو ١٤ مجلداً.• وألقى عدد كبيراً من المحاضرات المؤثرة في توجيه الجمهور خاصة الشباب. ووصلت فتاواه للناس بوساطة الهاتف أو الكتابة أو التسجيل أو الإذاعة وخاصة برنامج نور على الدرب.• وامتاز بالعلم الغزير، والفهم الواضح للدين؛ عقيدة وشريعة، والأسلوب الجيد في العرض واتباع الحكمة في أسلوب الدعوة.• حاز جائزة الملك فيصل العالمية لخدمة الإسلام عام ١٤١٤ هـ، ١٩٩٤ م.نقلا عن: «الموسوعة العربية العالمية»
 <hr>
 <ul><li>48 سؤالا في الصيام</li><li>60 سؤال وجواب في أحكام الحيض</li><li>أحكام الأضحية والذكاة</li><li>أخطاء يرتكبها بعض الحجاج</li><li>أسماء الله وصفاته وموقف أهل السنه منها</li><li>أصول في التفسير</li><li>الأصول من علم الأصول</li><li>الإبداع في بيان كمال الشرع وخطر الابتداع</li><li>الاعتدال في الدعوة</li><li>التعليق على رسالة حقيقة الصيام وكتاب الصيام من الفروع ومسائل مختارة منه</li><li>الخلاف بين العلماء</li><li>الذكر الثمين</li><li>الزواج</li><li>الشرح الصوتي لزاد المستقنع - ابن عثيمين</li><li>الشرح الممتع على زاد المستقنع</li><li>الضياء اللامع من الخطب الجوامع</li><li>العلم للعثيمين</li><li>الفتاوى الذهبية في بيع وشراء الذهب</li><li>القواعد المثلى في صفات الله وأسمائه الحسنى</li><li>القول المفيد على كتاب التوحيد</li><li>الكنز الثمين في سؤالات ابن سنيد لابن عثيمين</li><li>اللقاء الشهري</li><li>المداينة</li><li>المناهي اللفظية</li><li>المنتقى من فرائد الفوائد</li><li>المنهج لمريد العمرة والحج</li><li>بحوث وفتاوى في المسح على الخفين</li><li>تسهيل الفرائض</li><li>تعاون الدعاة وأثره في المجتمع</li><li>تعليق مختصر على لمعة الاعتقاد للعثيمين</li><li>تعليقات ابن عثيمين على الكافي لابن قدامة</li><li>تفسير العثيمين: آل عمران</li><li>تفسير العثيمين: الأحزاب</li><li>تفسير العثيمين: الأنعام</li><li>تفسير العثيمين: الحجرات - الحديد</li><li>تفسير العثيمين: الروم</li><li>تفسير العثيمين: الزخرف</li><li>تفسير العثيمين: الزمر</li><li>تفسير العثيمين: السجدة</li><li>تفسير العثيمين: الشعراء</li><li>تفسير العثيمين: الشورى</li><li>تفسير العثيمين: الصافات</li><li>تفسير العثيمين: العنكبوت</li><li>تفسير العثيمين: الفاتحة والبقرة</li><li>تفسير العثيمين: الفرقان</li><li>تفسير العثيمين: القصص</li><li>تفسير العثيمين: الكهف</li><li>تفسير العثيمين: المائدة</li><li>تفسير العثيمين: النساء</li><li>تفسير العثيمين: النمل</li><li>تفسير العثيمين: النور</li><li>تفسير العثيمين: جزء عم</li><li>تفسير العثيمين: سبأ</li><li>تفسير العثيمين: ص</li><li>تفسير العثيمين: غافر</li><li>تفسير العثيمين: فاطر</li><li>تفسير العثيمين: فصلت</li><li>تفسير العثيمين: لقمان</li><li>تفسير العثيمين: من جزء قد سمع وتبارك - ط مكتبة الطبري</li><li>تفسير العثيمين: من سورة محمد - ط مكتبة الطبري</li><li>تفسير العثيمين: يس</li><li>تقريب التدمرية</li><li>تلخيص فقة الفرائض</li><li>جلسات رمضانية للعثيمين</li><li>حكم تارك الصلاة - العثيمين</li><li>دروس الحرم المدني للعثيمين</li><li>دروس للشيخ العثيمين</li><li>رسالة الحجاب</li><li>رسالة في الدماء الطبيعية للنساء</li><li>رسالة في القضاء والقدر</li><li>رسالة في الوضوء والغسل والصلاة</li><li>رسالة في زكاة الحلي</li><li>رسالة في سجود السهو</li><li>زاد الداعية إلى الله</li><li>شرح ألفية ابن مالك للعثيمين</li><li>شرح الأربعين النووية للعثيمين</li><li>شرح العقيدة السفارينية</li><li>شرح العقيدة الواسطية - العثيمين</li><li>شرح المنظومة البيقونية في مصطلح الحديث</li><li>شرح ثلاثة الأصول للعثيمين</li><li>شرح حديث جابر في صفة حجة النبي لابن عثيمين</li><li>شرح دعاء قنوت الوتر</li><li>شرح رياض الصالحين لابن عثيمين</li><li>شرح كشف الشبهات ويليه شرح الأصول الستة</li><li>شرح مقدمة التفسير لابن تيمية - العثيمين</li><li>صفة صلاة النبي صلى الله عليه وسلم - العثيمين</li><li>عقيدة أهل السنة والجماعة للعثيمين</li><li>فتاوى أركان الإسلام</li><li>فتاوى الحج</li><li>فتاوى نور على الدرب للعثيمين</li><li>فتح ذي الجلال والإكرام بشرح بلوغ المرام ط المكتبة الإسلامية</li><li>فتح رب البرية بتلخيص الحموية</li><li>فصول في الصيام والتراويح والزكاة</li><li>فقه العبادات للعثيمين</li><li>لقاء الباب المفتوح</li><li>مجالس رمضان - ابن عثيمين</li><li>مجموع فتاوى ورسائل العثيمين</li><li>مجموعة أسئلة تهم الأسرة المسلمة</li><li>مختصر أحكام الأضحية والذكاة</li><li>مختصر مغني اللبيب عن كتاب الأعاريب</li><li>مذكرة على العقيدة الواسطية - العثيمين</li><li>مصطلح الحديث</li><li>مكارم الأخلاق لابن عثيمين</li><li>من الأحكام الفقهية في الطهارة والصلاة والجنائز</li><li>مناسك الحج والعمرة والمشروع في الزيارة</li><li>منهاج أهل السنة والجماعة في العقيدة والعمل</li><li>نبذ في الصيام</li><li>نبذة في العقيدة الإسلامية</li></ul>
 
-      </div>
-    </template>
-  
-      <section class="panel">
-      <h2><span data-t="About the book">About the book</span></h2>
-      <dl class="book-card">
-                              <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Title&quot;,&quot;es&quot;:&quot;Título&quot;,&quot;fr&quot;:&quot;Titre&quot;,&quot;id&quot;:&quot;Judul&quot;,&quot;ja&quot;:&quot;書名&quot;,&quot;ru&quot;:&quot;Название&quot;,&quot;sw&quot;:&quot;Jina la kitabu&quot;,&quot;tr&quot;:&quot;Kitap adı&quot;,&quot;ur&quot;:&quot;نام کتاب&quot;,&quot;zh&quot;:&quot;书名&quot;}" data-original="الكتاب">الكتاب</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Commentary on al-Nawawi&#039;s Forty Hadiths)&quot;,&quot;es&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya [Comentario de los cuarenta hadices de al-Nawawi]&quot;,&quot;fr&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Commentaire des quarante hadiths de al-Nawawi)&quot;,&quot;id&quot;:&quot;Syarah Al-Arba&#039;in An-Nawawiyyah [Penjelasan atas Empat Puluh Hadis An-Nawawi]&quot;,&quot;ja&quot;:&quot;アル＝アルバイーン・アン＝ナワウィーヤの注釈&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави»&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arobaini za Nawawi)&quot;,&quot;tr&quot;:&quot;Şerhu’l-Erbaîn en-Neveviyye (Nevevî’nin Kırk Hadis’inin Şerhi)&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية (چالیس نووی احادیث کی شرح)&quot;,&quot;zh&quot;:&quot;《四十段圣训注释》&quot;}" data-original="شرح الأربعين النووية">شرح الأربعين النووية</span></dd>
+                  </div>
+                </details>
+              </div>
             </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Author&quot;,&quot;es&quot;:&quot;Autor&quot;,&quot;fr&quot;:&quot;Auteur&quot;,&quot;id&quot;:&quot;Penulis&quot;,&quot;ja&quot;:&quot;著者&quot;,&quot;ru&quot;:&quot;Автор&quot;,&quot;sw&quot;:&quot;Mwandishi&quot;,&quot;tr&quot;:&quot;Yazar&quot;,&quot;ur&quot;:&quot;مصنف&quot;,&quot;zh&quot;:&quot;作者&quot;}" data-original="المؤلف">المؤلف</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Muhammad ibn Salih ibn Muhammad al-Uthaymin (d. 1421 AH)&quot;,&quot;es&quot;:&quot;Muhammad ibn Salih ibn Muhammad al-Uthaymin (f. 1421 H)&quot;,&quot;fr&quot;:&quot;Muhammad ibn Salih ibn Muhammad al-Uthaymin (d. 1421H)&quot;,&quot;id&quot;:&quot;Muhammad bin Shalih bin Muhammad Al-Utsaimin (w. 1421 H)&quot;,&quot;ja&quot;:&quot;ムハンマド・イブン・サーリフ・イブン・ムハンマド・アル＝ウサイミーン（没年：ヒジュラ暦1421年）&quot;,&quot;ru&quot;:&quot;Мухаммад ибн Салих ибн Мухаммад аль-Усаймин (ум. 1421 г. х.)&quot;,&quot;sw&quot;:&quot;Muhammad bin Salih bin Muhammad al-Uthaymin (aliyefariki 1421H)&quot;,&quot;tr&quot;:&quot;Muhammed b. Sâlih b. Muhammed el-Useymîn (ö. 1421 H)&quot;,&quot;ur&quot;:&quot;محمد بن صالح بن محمد العثيمين (ت ١٤٢١ھ)&quot;,&quot;zh&quot;:&quot;穆罕默德·本·萨利赫·本·穆罕默德·欧赛敏（卒于伊历1421年）&quot;}" data-original="محمد بن صالح بن محمد العثيمين (ت ١٤٢١هـ)">محمد بن صالح بن محمد العثيمين (ت ١٤٢١هـ)</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Publisher&quot;,&quot;es&quot;:&quot;Editorial&quot;,&quot;fr&quot;:&quot;Éditeur&quot;,&quot;id&quot;:&quot;Penerbit&quot;,&quot;ja&quot;:&quot;出版社&quot;,&quot;ru&quot;:&quot;Издательство&quot;,&quot;sw&quot;:&quot;Mchapishaji&quot;,&quot;tr&quot;:&quot;Yayınevi&quot;,&quot;ur&quot;:&quot;ناشر&quot;,&quot;zh&quot;:&quot;出版社&quot;}" data-original="الناشر">الناشر</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar al-Thurayya lil-Nashr&quot;,&quot;es&quot;:&quot;Dar al-Thurayya lil-Nashr&quot;,&quot;fr&quot;:&quot;Dar al-Thurayya li-l-Nashr&quot;,&quot;id&quot;:&quot;Dar ats-Tsurayya li an-Nasyr&quot;,&quot;ja&quot;:&quot;ダール・アッ＝スラーヤー出版&quot;,&quot;ru&quot;:&quot;Дар ас-Сурайя ли-н-нашр&quot;,&quot;sw&quot;:&quot;Dar al-Thurayya lil-Nashr&quot;,&quot;tr&quot;:&quot;Dar al-Thurayya lil-Nashr&quot;,&quot;zh&quot;:&quot;苏拉亚出版社&quot;}" data-original="دار الثريا للنشر">دار الثريا للنشر</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Number of pages&quot;,&quot;es&quot;:&quot;Número de páginas&quot;,&quot;fr&quot;:&quot;Nombre de pages&quot;,&quot;id&quot;:&quot;Jumlah halaman&quot;,&quot;ja&quot;:&quot;ページ数&quot;,&quot;ru&quot;:&quot;Количество страниц&quot;,&quot;sw&quot;:&quot;Idadi ya kurasa&quot;,&quot;tr&quot;:&quot;Sayfa sayısı&quot;,&quot;ur&quot;:&quot;صفحات کی تعداد&quot;,&quot;zh&quot;:&quot;页数&quot;}" data-original="عدد الصفحات">عدد الصفحات</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;405&quot;,&quot;fr&quot;:&quot;405&quot;,&quot;id&quot;:&quot;405&quot;,&quot;ja&quot;:&quot;405&quot;,&quot;ru&quot;:&quot;405&quot;}" data-original="٤٠٥">٤٠٥</span></dd>
-            </div>
-                                        <div>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;The page numbering matches the print edition&quot;,&quot;es&quot;:&quot;La paginación coincide con la edición impresa&quot;,&quot;fr&quot;:&quot;La pagination correspond à l&#039;édition imprimée&quot;,&quot;id&quot;:&quot;Penomoran halaman sesuai dengan edisi cetak&quot;,&quot;ja&quot;:&quot;ページ番号は印刷版と一致&quot;,&quot;ru&quot;:&quot;Нумерация страниц соответствует печатному изданию&quot;,&quot;sw&quot;:&quot;Kurasa zimehesabiwa sawa na nakala iliyochapishwa&quot;,&quot;tr&quot;:&quot;Sayfa numaraları basılı nüshaya uygundur&quot;,&quot;ur&quot;:&quot;صفحات کی ترقیم مطبوعہ نسخے کے مطابق ہے&quot;,&quot;zh&quot;:&quot;页码与纸质版一致&quot;}" data-original="ترقيم الكتاب موافق للمطبوع">ترقيم الكتاب موافق للمطبوع</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Author page&quot;,&quot;es&quot;:&quot;Página del autor&quot;,&quot;fr&quot;:&quot;Page de l&#039;auteur&quot;,&quot;id&quot;:&quot;Halaman penulis&quot;,&quot;ja&quot;:&quot;著者ページ&quot;,&quot;ru&quot;:&quot;Страница автора&quot;,&quot;sw&quot;:&quot;Ukurasa wa mwandishi&quot;,&quot;tr&quot;:&quot;Yazar sayfası&quot;,&quot;ur&quot;:&quot;مصنف کا صفحہ&quot;,&quot;zh&quot;:&quot;作者页面&quot;}" data-original="صفحة المؤلف">صفحة المؤلف</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Uthaymin&quot;,&quot;es&quot;:&quot;Ibn Uthaymin&quot;,&quot;fr&quot;:&quot;Ibn Uthaymin&quot;,&quot;id&quot;:&quot;Ibnu Utsaimin&quot;,&quot;ja&quot;:&quot;イブン・ウサイミーン&quot;,&quot;ru&quot;:&quot;Ибн Усаймин&quot;,&quot;sw&quot;:&quot;Ibn Uthaymin&quot;,&quot;tr&quot;:&quot;İbn Useymîn&quot;,&quot;zh&quot;:&quot;伊本·欧赛敏&quot;}" data-original="ابن عثيمين">ابن عثيمين</span></dd>
-            </div>
-                        </dl>
-    </section>
-  
-  
-  
-      <section class="panel">
-      <h2><span data-t="Books sharing the most passages with it">Books sharing the most passages with it</span></h2>
-      <table
-        class="table"
-        data-sortable
-      >
-        <thead>
-          <tr>
-            <th data-sort="text"><span data-t="Book">Book</span></th>
-            <th data-sort="text"><span data-t="Author">Author</span></th>
-            <th data-sort="number"><span data-t="Shared passages">Shared passages</span></th>
-          </tr>
-        </thead>
-        <tbody>
-                      <tr>
-              <td lang="ar">
+                  </div>
+
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Shares most with</div>
+          <ul class="space-y-1 text-sm">
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     مجلة البحوث الإسلامية
                   </span>
-                              </td>
-              <td lang="ar">مجموعة من المؤلفين</td>
-              <td data-value="151">151</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">151</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     فتاوى الشبكة الإسلامية
                   </span>
-                              </td>
-              <td lang="ar">مجموعة من المؤلفين</td>
-              <td data-value="142">142</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">142</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     جمع الجوامع المعروف بـ «الجامع الكبير»
                   </span>
-                              </td>
-              <td lang="ar">الجلال السيوطي</td>
-              <td data-value="136">136</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">136</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     البحر المحيط الثجاج في شرح صحيح الإمام مسلم بن الحجاج
                   </span>
-                              </td>
-              <td lang="ar">محمد بن علي بن آدم الأثيوبي</td>
-              <td data-value="136">136</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">136</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     مجموع فتاوى ورسائل العثيمين
                   </span>
-                              </td>
-              <td lang="ar">ابن عثيمين</td>
-              <td data-value="135">135</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">135</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     جامع الأصول
                   </span>
-                              </td>
-              <td lang="ar">ابن الأثير، مجد الدين أبو السعادات</td>
-              <td data-value="132">132</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">132</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     مجلة الجامعة الإسلامية بالمدينة المنورة
                   </span>
-                              </td>
-              <td lang="ar">مجموعة من المؤلفين</td>
-              <td data-value="125">125</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">125</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     المسند الموضوعي الجامع للكتب العشرة
                   </span>
-                              </td>
-              <td lang="ar">صهيب عبد الجبار</td>
-              <td data-value="119">119</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">119</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     موقع الإسلام سؤال وجواب
                   </span>
-                              </td>
-              <td lang="ar">محمد صالح المنجد</td>
-              <td data-value="119">119</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">119</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     جامع العلوم والحكم - ت أبي النور
                   </span>
-                              </td>
-              <td lang="ar">ابن رجب الحنبلي</td>
-              <td data-value="116">116</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">116</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     مجلة البيان
                   </span>
-                              </td>
-              <td lang="ar">مجموعة من المؤلفين</td>
-              <td data-value="114">114</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">114</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     توفيق الرب المنعم بشرح صحيح الإمام مسلم
                   </span>
-                              </td>
-              <td lang="ar">عبد العزيز بن عبد الله الراجحي</td>
-              <td data-value="110">110</td>
-            </tr>
-                  </tbody>
-      </table>
-    </section>
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <ul class="plain">
-                  <li>
-            <a href="../../../catalogue/1377/137773.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - Ibn Uthaymeen&quot;,&quot;es&quot;:&quot;Comentario de los Cuarenta de al-Nawawi — Ibn Uzaymin&quot;,&quot;fr&quot;:&quot;Commentaire des Quarante hadiths d’al-Nawawi — Ibn Uthaymin&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah—Ibn Utsaimin&quot;,&quot;ja&quot;:&quot;ナワウィーの四十ハディース注解――イブン・ウサイミーン&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» — Ибн Усаймин&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa Arubaini za al-Nawawi — Ibn Uthaymin&quot;,&quot;tr&quot;:&quot;Nevevî’nin Kırk Hadis’inin Şerhi – İbn Useymîn&quot;,&quot;zh&quot;:&quot;《脑威四十段圣训注释——伊本·欧赛敏》&quot;}" data-original="شرح الأربعين النووية- ابن عثيمين">شرح الأربعين النووية- ابن عثيمين</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/1409/140949.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - Dar Al-Thuraya&quot;,&quot;es&quot;:&quot;Comentario de los Cuarenta hadices de al-Nawawi - Dar al-Thurayya&quot;,&quot;fr&quot;:&quot;Commentaire des Quarante hadiths de al-Nawawi - Dar al-Thurayya&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah – Dar ats-Tsurayya&quot;,&quot;ja&quot;:&quot;ナワウィーの『四十ハディース』注解――ダール・アッ＝スラヤー版&quot;,&quot;ru&quot;:&quot;Шарх аль-Арба&#039;ин ан-Нававия (Комментарий к сорока хадисам ан-Навави) — Дар ас-Сурайя&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arubaini za Nawawi) - Dar al-Thurayya&quot;,&quot;tr&quot;:&quot;Nevevî&#039;nin Kırk Hadisinin Şerhi – Dar al-Thurayya&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية- دار الثريا (اربعین نووی کی شرح)&quot;,&quot;zh&quot;:&quot;《四十段圣训》注释——萨拉亚出版社版&quot;}" data-original="شرح الأربعين النووية- دار الثريا">شرح الأربعين النووية- دار الثريا</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/2267/226743.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - 16th Edition&quot;,&quot;es&quot;:&quot;Comentario sobre los Cuarenta hadices de al-Nawawi - edición 16&quot;,&quot;fr&quot;:&quot;Commentaire des Quarante hadiths d’al-Nawawi – 16e édition&quot;,&quot;id&quot;:&quot;Syarah Al-Arba&#039;in An-Nawawiyyah – Cetakan ke-16&quot;,&quot;ja&quot;:&quot;アン＝ナワウィーの『四十ハディース』注解―第16版&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» — 16-е издание&quot;,&quot;sw&quot;:&quot;Maelezo ya Al-Arba&#039;in al-Nawawiyya - toleo la 16&quot;,&quot;tr&quot;:&quot;Nevevî’nin Kırk Hadisi Şerhi – 16. Baskı&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية - ط 16 (الأربعين النووية کی شرح، طبع 16)&quot;,&quot;zh&quot;:&quot;《四十段圣训》注释——第16版&quot;}" data-original="شرح الأربعين النووية - ط 16">شرح الأربعين النووية - ط 16</span>
-            </a>
-          </li>
-              </ul>
-    </section>
-  
-      <section
-      class="panel"
-      id="contents"
-    >
-      <h2><span data-t="Contents">Contents</span></h2>
-      <ol
-        class="contents"
+                                <span class="shrink-0 text-zinc-400 tabular-nums">110</span>
+              </li>
+                      </ul>
+        
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Also in the catalogue</div>
+          <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                          <a
+  href="../../../catalogue/1377/137773.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/1377/137773.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - Ibn Uthaymeen&quot;,&quot;es&quot;:&quot;Comentario de los Cuarenta de al-Nawawi — Ibn Uzaymin&quot;,&quot;fr&quot;:&quot;Commentaire des Quarante hadiths d’al-Nawawi — Ibn Uthaymin&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah—Ibn Utsaimin&quot;,&quot;ja&quot;:&quot;ナワウィーの四十ハディース注解――イブン・ウサイミーン&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» — Ибн Усаймин&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa Arubaini za al-Nawawi — Ibn Uthaymin&quot;,&quot;tr&quot;:&quot;Nevevî’nin Kırk Hadis’inin Şerhi – İbn Useymîn&quot;,&quot;zh&quot;:&quot;《脑威四十段圣训注释——伊本·欧赛敏》&quot;}" data-original="شرح الأربعين النووية- ابن عثيمين">شرح الأربعين النووية- ابن عثيمين</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
         lang="ar"
         dir="rtl"
+        data-arabic-original
       >
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/1.html#p1">مقدمة الشارح</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/1.html#p3">الحديث الأول</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/1.html#p3">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/1.html#p11">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/17.html#p17">الحديث الثاني</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/17.html#p17">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/54.html#p54">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/54.html#p77">الحديث الثالث</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/54.html#p77">الشرح</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/54.html#p81">الحديث الرابع</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/54.html#p81">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/54.html#p87">من فوائد هذا الحديث:.</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/94.html#p94">الحديث الخامس</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/94.html#p94">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/94.html#p96">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/94.html#p103">الحديث السادس</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/94.html#p103">الشرح</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/94.html#p113">الحديث السابع</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/94.html#p113">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/94.html#p121">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/94.html#p123">الحديث الثامن</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/94.html#p123">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/94.html#p126">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/94.html#p131">الحديث التاسع</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/94.html#p131">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/133.html#p133">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/133.html#p139">الحديث العاشر</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/133.html#p139">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/133.html#p142">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/133.html#p151">الحديث الحادي عشر</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/133.html#p151">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/133.html#p154">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/133.html#p156">الحديث الثاني عشر</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/133.html#p156">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/133.html#p156">الشرح</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/133.html#p158">الحديث الثالث عشر</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/133.html#p158">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/133.html#p161">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/133.html#p163">الحديث الرابع عشر</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/133.html#p163">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/164.html#p164">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/164.html#p174">الحديث الخامس عشر</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/164.html#p174">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/164.html#p176">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/164.html#p179">الحديث السادس عشر</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/164.html#p179">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/164.html#p180">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/164.html#p183">الحديث السابع عشر</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/164.html#p183">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/164.html#p184">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/164.html#p193">الحديث الثامن عشر</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/164.html#p193">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/164.html#p195">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/164.html#p198">الحديث التاسع عشر</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/164.html#p198">الشرح</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/204.html#p204">الحديث العشرون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/204.html#p204">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/204.html#p205">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/204.html#p210">الحديث الحادي والعشرين</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/204.html#p210">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/204.html#p211">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/204.html#p213">الحديث الثاني والعشرون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/204.html#p213">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/204.html#p215">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/204.html#p218">الحديث الثالث والعشرون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/204.html#p218">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/204.html#p229">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/204.html#p233">الحديث الرابع والعشرون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/204.html#p233">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/241.html#p241">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/241.html#p249">الحديث الخامس والعشرون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/241.html#p249">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/241.html#p251">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/241.html#p257">الحديث السادس والعشرون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/241.html#p257">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/241.html#p260">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/241.html#p265">الحديث السابع والعشرون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/241.html#p265">الشرح</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/241.html#p272">الحديث الثامن والعشرون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/241.html#p272">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/275.html#p275">من فوائد هذا الحديث:.</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/275.html#p289">الحديث التاسع والعشرون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/275.html#p289">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/275.html#p294">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/307.html#p307">الحديث الثلاثون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/307.html#p307">الشرح</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/307.html#p316">الحديث الحادي والثلاثون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/307.html#p316">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/307.html#p318">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/307.html#p323">الحديث الثاني والثلاثون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/307.html#p323">الشرح</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/307.html#p326">الحديث الثالث والثلاثون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/307.html#p326">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/307.html#p327">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/307.html#p331">الحديث الرابع والثلاثون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/307.html#p331">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/307.html#p332">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/307.html#p337">الحديث الخامس والثلاثون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/307.html#p337">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/340.html#p340">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/340.html#p353">الحديث السادس والثلاثون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/340.html#p353">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/340.html#p356">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/340.html#p366">الحديث السابع والثلاثون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/340.html#p366">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/340.html#p370">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/340.html#p374">الحديث الثامن والثلاثون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/340.html#p374">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/340.html#p376">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/380.html#p380">الحديث التاسع والثلاثون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/380.html#p380">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/380.html#p381">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/380.html#p388">الحديث الأربعون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/380.html#p388">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/380.html#p390">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/380.html#p392">الحديث الحادي والأربعون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/380.html#p392">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/380.html#p393">من فوائد هذا الحديث:</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/054/5472/380.html#p395">الحديث الثاني والأربعون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/380.html#p395">الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/054/5472/380.html#p397">من فوائد هذا الحديث:</a>
-                      </li>
-              </ol>
-    </section>
-    </main>
+        شرح الأربعين النووية- ابن عثيمين
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                          <a
+  href="../../../catalogue/1409/140949.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/1409/140949.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - Dar Al-Thuraya&quot;,&quot;es&quot;:&quot;Comentario de los Cuarenta hadices de al-Nawawi - Dar al-Thurayya&quot;,&quot;fr&quot;:&quot;Commentaire des Quarante hadiths de al-Nawawi - Dar al-Thurayya&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah – Dar ats-Tsurayya&quot;,&quot;ja&quot;:&quot;ナワウィーの『四十ハディース』注解――ダール・アッ＝スラヤー版&quot;,&quot;ru&quot;:&quot;Шарх аль-Арба&#039;ин ан-Нававия (Комментарий к сорока хадисам ан-Навави) — Дар ас-Сурайя&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arubaini za Nawawi) - Dar al-Thurayya&quot;,&quot;tr&quot;:&quot;Nevevî&#039;nin Kırk Hadisinin Şerhi – Dar al-Thurayya&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية- دار الثريا (اربعین نووی کی شرح)&quot;,&quot;zh&quot;:&quot;《四十段圣训》注释——萨拉亚出版社版&quot;}" data-original="شرح الأربعين النووية- دار الثريا">شرح الأربعين النووية- دار الثريا</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح الأربعين النووية- دار الثريا
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                          <a
+  href="../../../catalogue/2267/226743.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/2267/226743.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - 16th Edition&quot;,&quot;es&quot;:&quot;Comentario sobre los Cuarenta hadices de al-Nawawi - edición 16&quot;,&quot;fr&quot;:&quot;Commentaire des Quarante hadiths d’al-Nawawi – 16e édition&quot;,&quot;id&quot;:&quot;Syarah Al-Arba&#039;in An-Nawawiyyah – Cetakan ke-16&quot;,&quot;ja&quot;:&quot;アン＝ナワウィーの『四十ハディース』注解―第16版&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» — 16-е издание&quot;,&quot;sw&quot;:&quot;Maelezo ya Al-Arba&#039;in al-Nawawiyya - toleo la 16&quot;,&quot;tr&quot;:&quot;Nevevî’nin Kırk Hadisi Şerhi – 16. Baskı&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية - ط 16 (الأربعين النووية کی شرح، طبع 16)&quot;,&quot;zh&quot;:&quot;《四十段圣训》注释——第16版&quot;}" data-original="شرح الأربعين النووية - ط 16">شرح الأربعين النووية - ط 16</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح الأربعين النووية - ط 16
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                      </div>
+        
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Contents</div>
+          <div class="rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div
+  dir="rtl"
+  x-data="staticContents(JSON.parse('{\u0022src\u0022:\u0022contents.js\u0022,\u0022pageId\u0022:null}'))"
+  x-on:load-contents.window="load()"
+   x-init="load()" >
+  <div class="w-full relative block group/input mb-3" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd"/>
+</svg>
 
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="query" placeholder="Filter contents..." aria-label="Filter contents" data-test="contents-filter"
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="entries === null" data-flux-text >Loading…</p>
+  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mb-3" x-cloak="x-cloak" x-show="entries !== null && query.trim() !== '' && shown.length === 0" data-flux-text >No entries match.</p>
+  <div class="max-h-[32rem] overflow-y-auto">
+    <ul>
+      <template
+        x-for="(entry, index) in shown"
+        :key="index"
       >
-        <span data-t="Close">Close</span>
-      </button>
+        <li
+          class="relative py-0.5"
+          x-bind:style="`padding-inline-start: ${entry.d * 0.875}rem`"
+          x-bind:data-current="entry === entries[current] ? '' : null"
+        >
+          <template
+            x-for="level in entry.d"
+            :key="level"
+          >
+            <span
+              class="absolute inset-y-0 border-s border-zinc-300 dark:border-zinc-600"
+              x-bind:style="`inset-inline-start: ${(level - 1) * 0.875 + 0.25}rem`"
+              aria-hidden="true"
+            ></span>
+          </template>
+          <a
+            class="text-base text-zinc-700 underline decoration-zinc-800/20 underline-offset-[6px] hover:decoration-current dark:text-zinc-300 dark:decoration-white/20"
+            x-bind:class="
+              entry === entries[current] &&
+              'rounded bg-amber-100 px-1 font-semibold text-zinc-900 dark:bg-amber-900/40 dark:text-white'
+            "
+            x-bind:href="entry.h"
+            x-on:click="$flux.modal('book-contents').close()"
+            x-text="entry.t"
+            data-test="contents-entry"
+          ></a>
+        </li>
+      </template>
+    </ul>
+  </div>
+</div>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

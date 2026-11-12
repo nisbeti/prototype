@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../../"
+  data-section="books"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>بلوغ المرام من أدلة الأحكام - ت الفحل</title>
   <link
-    rel="stylesheet"
-    href="../../../assets/reader.css"
+    rel="icon"
+    href="../../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,734 +70,524 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../../assets/reader.js"
+    src="../../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../../books.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Books</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
 
-  <main class="site-main">
-      <div class="book-head">
-    
-    <div class="book-head-text">
-      <h1
-        class="page-title"
-        lang="ar"
-        dir="rtl"
-      >
-        بلوغ المرام من أدلة الأحكام - ت الفحل
-      </h1>
-      <p class="muted translated-only" dir="auto" data-tr="{&quot;en&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Attainment of the Goal from the Evidences for Rulings)&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam [Alcanzar el objetivo mediante las pruebas jurídicas]&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (L&#039;accès au but grâce aux preuves des règles juridiques)&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Mencapai Tujuan dari Dalil-Dalil Hukum)&quot;,&quot;ja&quot;:&quot;ブルーグ・アル＝マラーム・ミン・アディッラティ・アル＝アフカーム（法規定の根拠からの到達）&quot;,&quot;ru&quot;:&quot;Булуг аль-марам мин адиллят аль-ахкам (Достижение цели на основании доказательств правовых предписаний)&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia lengo kwa dalili za hukumu)&quot;,&quot;tr&quot;:&quot;Bulûğu&#039;l-merâm min edilleti&#039;l-ahkâm (Ahkâm delilleriyle buluğa ermek)&quot;,&quot;ur&quot;:&quot;بلوغ المرام من أدلة الأحكام (احکام کے دلائل سے مقصود تک رسائی)&quot;,&quot;zh&quot;:&quot;《律例证据汇编》&quot;}" data-original=""></p>
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <div
+            class="flex h-56 w-full shrink-0 items-center justify-center rounded-sm border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+          >
+            <svg class="shrink-0 [:where(&amp;)]:size-6 size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+</svg>
 
-      <p class="credits">
-                  <a
-            href="../../../authors/009/921.html"
-            lang="ar"
-          >
-            ابن حجر العسقلاني
-          </a>
-                          <span class="muted">(<span data-t="d. :year" data-r="{&quot;year&quot;:852}">d. 852</span>)</span>
-                          <button
-            type="button"
-            class="button small"
-            data-open-card="author-card"
-          >
-            <span data-t="About the author">About the author</span>
-          </button>
-              </p>
-
-              <p class="credits">
-          <span data-t="Publisher">Publisher</span>:
-          <a
-            href="../../../publishers/5325/532507.html"
-            lang="ar"
-          >
-            دار القبس للنشر والتوزيع، الرياض - المملكة العربية السعودية
-          </a>
-        </p>
-      
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="../../../books/036/3611/1.html#p1"
-          >
-            <span data-t="Read">Read</span>
-          </a>
-                <span class="muted">
-          <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;1,833&quot;}" data-n="1833">1,833 pages</span>
-                  </span>
-      </p>
-    </div>
-  </div>
-
-      <template id="author-card">
-      <div
-        class="card-text"
-        lang="ar"
-        dir="rtl"
-      >
+                  </div>
         
+        <div class="mt-4 flex flex-col gap-2">
+                      <a href="../../../books/036/3611/1.html#p1" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-[var(--color-accent)] hover:bg-[color-mix(in_oklab,_var(--color-accent),_transparent_10%)] text-[var(--color-accent-foreground)] border border-black/10 dark:border-0 shadow-[inset_0px_1px_--theme(--color-white/.2)] [[data-flux-button-group]_&amp;]:border-e-0 [:is([data-flux-button-group]&gt;&amp;:last-child,_[data-flux-button-group]_:last-child&gt;&amp;)]:border-e-[1px] dark:[:is([data-flux-button-group]&gt;&amp;:last-child,_[data-flux-button-group]_:last-child&gt;&amp;)]:border-e-0 [:is([data-flux-button-group]&gt;&amp;:not(:first-child),_[data-flux-button-group]_:not(:first-child)&gt;&amp;)]:border-s-[1px]! [:is([data-flux-button-group]&gt;&amp;:not(:first-child),_[data-flux-button-group]_:not(:first-child)&gt;&amp;)]:border-s-[color-mix(in_srgb,var(--color-accent-foreground),transparent_85%)]" data-flux-group-target="data-flux-group-target" data-test="start-reading">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M7.25 3.688a8.035 8.035 0 0 0-4.872-.523A.48.48 0 0 0 2 3.64v7.994c0 .345.342.588.679.512a6.02 6.02 0 0 1 4.571.81V3.688ZM8.75 12.956a6.02 6.02 0 0 1 4.571-.81c.337.075.679-.167.679-.512V3.64a.48.48 0 0 0-.378-.475 8.034 8.034 0 0 0-4.872.523v9.268Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Read</span>
+    </a>
+          
+                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" dir="auto" lang="ar" data-flux-heading>بلوغ المرام من أدلة الأحكام - ت الفحل</h1>
+
+                <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Attainment of the Goal from the Evidences for Rulings)&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam [Alcanzar el objetivo mediante las pruebas jurídicas]&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (L&#039;accès au but grâce aux preuves des règles juridiques)&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Mencapai Tujuan dari Dalil-Dalil Hukum)&quot;,&quot;ja&quot;:&quot;ブルーグ・アル＝マラーム・ミン・アディッラティ・アル＝アフカーム（法規定の根拠からの到達）&quot;,&quot;ru&quot;:&quot;Булуг аль-марам мин адиллят аль-ахкам (Достижение цели на основании доказательств правовых предписаний)&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia lengo kwa dalili za hukumu)&quot;,&quot;tr&quot;:&quot;Bulûğu&#039;l-merâm min edilleti&#039;l-ahkâm (Ahkâm delilleriyle buluğa ermek)&quot;,&quot;ur&quot;:&quot;بلوغ المرام من أدلة الأحكام (احکام کے دلائل سے مقصود تک رسائی)&quot;,&quot;zh&quot;:&quot;《律例证据汇编》&quot;}" data-original=""></span></p>
+                  <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1 flex flex-wrap items-baseline gap-x-2" data-flux-subheading>
+    <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../authors/009/921.html" lang="ar" data-flux-link >ابن حجر العسقلاني</a>                        <bdi class="text-zinc-400">
+              (<span data-t="d. :year" data-r="{&quot;year&quot;:&quot;852 AH&quot;}">d. 852 AH</span>)
+            </bdi>
+</div>
+        
+                  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span>Publisher:</span>
+            <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../publishers/5325/532507.html" lang="ar" data-flux-link >دار القبس للنشر والتوزيع، الرياض - المملكة العربية السعودية</a></p>        
+        <div class="mt-3 flex flex-wrap gap-2">
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50">
+        <span lang="ar">كتب السنة</span>
+    </div>
+                    <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50">
+        <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;1,833&quot;}" data-n="1833">1,833 pages</span>
+    </div>
+                  </div>
+
+        
+        <div class="mt-6 grid grid-cols-1 gap-4 xl:grid-cols-2">
+                      <div class="min-w-0 rounded-xl border border-zinc-200 p-5 [overflow-wrap:anywhere] dark:border-zinc-700">
+              <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+              <dl
+  class="text-sm grid gap-x-6 gap-y-3 sm:grid-cols-[fit-content(12rem)_1fr]"
+  dir="auto"
+>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Title&quot;,&quot;es&quot;:&quot;Título&quot;,&quot;fr&quot;:&quot;Titre&quot;,&quot;id&quot;:&quot;Judul&quot;,&quot;ja&quot;:&quot;書名&quot;,&quot;ru&quot;:&quot;Название&quot;,&quot;sw&quot;:&quot;Jina la kitabu&quot;,&quot;tr&quot;:&quot;Kitap adı&quot;,&quot;ur&quot;:&quot;نام کتاب&quot;,&quot;zh&quot;:&quot;书名&quot;}" data-original="الكتاب">الكتاب</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Attainment of the Goal from the Evidences for Rulings)&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam [Alcanzar el objetivo mediante las pruebas jurídicas]&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (L&#039;accès au but grâce aux preuves des règles juridiques)&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Mencapai Tujuan dari Dalil-Dalil Hukum)&quot;,&quot;ja&quot;:&quot;ブルーグ・アル＝マラーム・ミン・アディッラティ・アル＝アフカーム（法規定の根拠からの到達）&quot;,&quot;ru&quot;:&quot;Булуг аль-марам мин адиллят аль-ахкам (Достижение цели на основании доказательств правовых предписаний)&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia lengo kwa dalili za hukumu)&quot;,&quot;tr&quot;:&quot;Bulûğu&#039;l-merâm min edilleti&#039;l-ahkâm (Ahkâm delilleriyle buluğa ermek)&quot;,&quot;ur&quot;:&quot;بلوغ المرام من أدلة الأحكام (احکام کے دلائل سے مقصود تک رسائی)&quot;,&quot;zh&quot;:&quot;《律例证据汇编》&quot;}" data-original="بلوغ المرام من أدلة الأحكام">بلوغ المرام من أدلة الأحكام</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Author&quot;,&quot;es&quot;:&quot;Autor&quot;,&quot;fr&quot;:&quot;Auteur&quot;,&quot;id&quot;:&quot;Penulis&quot;,&quot;ja&quot;:&quot;著者&quot;,&quot;ru&quot;:&quot;Автор&quot;,&quot;sw&quot;:&quot;Mwandishi&quot;,&quot;tr&quot;:&quot;Yazar&quot;,&quot;ur&quot;:&quot;مصنف&quot;,&quot;zh&quot;:&quot;作者&quot;}" data-original="المؤلف">المؤلف</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Abu al-Fadl Ahmad ibn Ali ibn Muhammad ibn Ahmad ibn Hajar al-Asqalani (d. 852 AH)&quot;,&quot;es&quot;:&quot;Abu al-Fadl Ahmad ibn Ali ibn Muhammad ibn Ahmad ibn Hajar al-Asqalani (m. 852 H)&quot;,&quot;fr&quot;:&quot;Abu al-Fadl Ahmad ibn Ali ibn Muhammad ibn Ahmad ibn Hajar al-Asqalani (mort en 852 H)&quot;,&quot;id&quot;:&quot;Abu al-Fadl Ahmad bin Ali bin Muhammad bin Ahmad bin Hajar al-Asqalani (w. 852 H)&quot;,&quot;ja&quot;:&quot;アブー・アル＝ファドル・アフマド・イブン・アリー・イブン・ムハンマド・イブン・アフマド・イブン・ハジャル・アル＝アスカラーニー（没年：ヒジュラ暦852年）&quot;,&quot;ru&quot;:&quot;Абуль-Фадль Ахмад ибн Али ибн Мухаммад ибн Ахмад ибн Хаджар аль-Аскаляни (ум. 852 г. х.)&quot;,&quot;sw&quot;:&quot;Abu al-Fadl Ahmad bin Ali bin Muhammad bin Ahmad bin Hajar al-Asqalani (alifariki 852 H)&quot;,&quot;tr&quot;:&quot;Ebü&#039;l-Fazl Ahmed b. Ali b. Muhammed b. Ahmed b. Hacer el-Askalânî (ö. 852 H)&quot;,&quot;ur&quot;:&quot;أبو الفضل أحمد بن علي بن محمد بن أحمد بن حجر العسقلاني (ت ٨٥٢ھ)&quot;,&quot;zh&quot;:&quot;艾布·法德勒·艾哈迈德·本·阿里·本·穆罕默德·本·艾哈迈德·本·哈杰尔·阿斯盖兰尼（卒于伊历852年）&quot;}" data-original="أبو الفضل أحمد بن علي بن محمد بن أحمد بن حجر العسقلاني (ت ٨٥٢ هـ)">أبو الفضل أحمد بن علي بن محمد بن أحمد بن حجر العسقلاني (ت ٨٥٢ هـ)</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Editor&quot;,&quot;es&quot;:&quot;Edición crítica&quot;,&quot;fr&quot;:&quot;Édition critique&quot;,&quot;id&quot;:&quot;Pentahkik&quot;,&quot;ja&quot;:&quot;校訂者&quot;,&quot;ru&quot;:&quot;Тахкик&quot;,&quot;sw&quot;:&quot;Mhakiki&quot;,&quot;tr&quot;:&quot;Tahkik eden&quot;,&quot;ur&quot;:&quot;محقق&quot;,&quot;zh&quot;:&quot;校勘者&quot;}" data-original="المحقق">المحقق</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Dr. Mahir Yasin al-Fahl&quot;,&quot;es&quot;:&quot;Doctor Mahir Yasin al-Fahl&quot;,&quot;fr&quot;:&quot;Dr Maher Yasin al-Fahl&quot;,&quot;id&quot;:&quot;Dr. Mahir Yasin al-Fahl&quot;,&quot;ja&quot;:&quot;マーヒル・ヤースィーン・アル＝ファハル博士&quot;,&quot;ru&quot;:&quot;Доктор Махир Ясин аль-Фахль&quot;,&quot;sw&quot;:&quot;Dkt. Mahir Yasin al-Fahl&quot;,&quot;tr&quot;:&quot;Dr. Mahir Yasin el-Fahl&quot;,&quot;zh&quot;:&quot;马希尔·亚辛·法赫勒博士&quot;}" data-original="الدكتور ماهر ياسين الفحل">الدكتور ماهر ياسين الفحل</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Publisher&quot;,&quot;es&quot;:&quot;Editorial&quot;,&quot;fr&quot;:&quot;Éditeur&quot;,&quot;id&quot;:&quot;Penerbit&quot;,&quot;ja&quot;:&quot;出版社&quot;,&quot;ru&quot;:&quot;Издательство&quot;,&quot;sw&quot;:&quot;Mchapishaji&quot;,&quot;tr&quot;:&quot;Yayınevi&quot;,&quot;ur&quot;:&quot;ناشر&quot;,&quot;zh&quot;:&quot;出版社&quot;}" data-original="الناشر">الناشر</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar al-Qabas for Publishing and Distribution, Riyadh - Kingdom of Saudi Arabia&quot;,&quot;es&quot;:&quot;Dar al-Qabas li-l-Nashr wa-l-Tawzi, Riad - Reino de Arabia Saudí&quot;,&quot;fr&quot;:&quot;Dar al-Qabas lil-Nashr wa al-Tawzi, Riyad - Royaume d&#039;Arabie saoudite&quot;,&quot;id&quot;:&quot;Dar al-Qabas li an-Nasyr wa at-Tawzi&#039;, Riyadh - Kerajaan Arab Saudi&quot;,&quot;ja&quot;:&quot;ダール・アル＝カブス出版・販売、リヤード（サウジアラビア王国）&quot;,&quot;ru&quot;:&quot;Дар аль-Кабс ли-н-нашр ва-т-тавзи&#039;, Эр-Рияд — Королевство Саудовская Аравия&quot;,&quot;sw&quot;:&quot;Dar al-Qabas lil-Nashr wa al-Tawzi, Riyadh - Ufalme wa Saudi Arabia&quot;,&quot;tr&quot;:&quot;Dar al-Qabas li&#039;l-Nashr wa&#039;l-Tawzi&#039;, Riyad - Suudi Arabistan&quot;,&quot;ur&quot;:&quot;دار القبس للنشر والتوزيع، ریاض - سعودی عرب&quot;,&quot;zh&quot;:&quot;利雅得盖卜斯出版发行社，沙特阿拉伯王国&quot;}" data-original="دار القبس للنشر والتوزيع، الرياض - المملكة العربية السعودية">دار القبس للنشر والتوزيع، الرياض - المملكة العربية السعودية</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Edition&quot;,&quot;es&quot;:&quot;Edición&quot;,&quot;fr&quot;:&quot;Édition&quot;,&quot;id&quot;:&quot;Cetakan&quot;,&quot;ja&quot;:&quot;版&quot;,&quot;ru&quot;:&quot;Издание&quot;,&quot;sw&quot;:&quot;Toleo&quot;,&quot;tr&quot;:&quot;Baskı&quot;,&quot;ur&quot;:&quot;طبع&quot;,&quot;zh&quot;:&quot;版次&quot;}" data-original="الطبعة">الطبعة</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;First, 1435 AH - 2014 CE&quot;,&quot;es&quot;:&quot;Primera, 1435 H - 2014&quot;,&quot;fr&quot;:&quot;Première, 1435 H - 2014&quot;,&quot;id&quot;:&quot;Pertama, 1435 H - 2014 M&quot;,&quot;ja&quot;:&quot;第1版、ヒジュラ暦1435年－西暦2014年&quot;,&quot;ru&quot;:&quot;Первое, 1435 г. х. — 2014 г.&quot;,&quot;sw&quot;:&quot;La kwanza, 1435 H - 2014&quot;,&quot;tr&quot;:&quot;Birinci baskı, 1435 H - 2014&quot;,&quot;ur&quot;:&quot;پہلا، ١٤٣٥ھ - ٢٠١٤ء&quot;,&quot;zh&quot;:&quot;第一版，伊历1435年－公元2014年&quot;}" data-original="الأولى، ١٤٣٥ هـ - ٢٠١٤ م">الأولى، ١٤٣٥ هـ - ٢٠١٤ م</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Number of pages&quot;,&quot;es&quot;:&quot;Número de páginas&quot;,&quot;fr&quot;:&quot;Nombre de pages&quot;,&quot;id&quot;:&quot;Jumlah halaman&quot;,&quot;ja&quot;:&quot;ページ数&quot;,&quot;ru&quot;:&quot;Количество страниц&quot;,&quot;sw&quot;:&quot;Idadi ya kurasa&quot;,&quot;tr&quot;:&quot;Sayfa sayısı&quot;,&quot;ur&quot;:&quot;صفحات کی تعداد&quot;,&quot;zh&quot;:&quot;页数&quot;}" data-original="عدد الصفحات">عدد الصفحات</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;568&quot;,&quot;es&quot;:&quot;568&quot;,&quot;fr&quot;:&quot;568&quot;,&quot;id&quot;:&quot;568&quot;,&quot;ja&quot;:&quot;568&quot;,&quot;ru&quot;:&quot;568&quot;,&quot;sw&quot;:&quot;568&quot;,&quot;tr&quot;:&quot;568&quot;,&quot;zh&quot;:&quot;568&quot;}" data-original="٥٦٨">٥٦٨</span>
+          </dd>
+          <dd
+      class="min-w-0 sm:col-span-2 text-zinc-500 dark:text-zinc-400"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The page numbering matches the print edition&quot;,&quot;es&quot;:&quot;La paginación coincide con la edición impresa&quot;,&quot;fr&quot;:&quot;La pagination correspond à l&#039;édition imprimée&quot;,&quot;id&quot;:&quot;Penomoran halaman sesuai dengan edisi cetak&quot;,&quot;ja&quot;:&quot;ページ番号は印刷版と一致&quot;,&quot;ru&quot;:&quot;Нумерация страниц соответствует печатному изданию&quot;,&quot;sw&quot;:&quot;Kurasa zimehesabiwa sawa na nakala iliyochapishwa&quot;,&quot;tr&quot;:&quot;Sayfa numaraları basılı nüshaya uygundur&quot;,&quot;ur&quot;:&quot;صفحات کی ترقیم مطبوعہ نسخے کے مطابق ہے&quot;,&quot;zh&quot;:&quot;页码与纸质版一致&quot;}" data-original="ترقيم الكتاب موافق للمطبوع">ترقيم الكتاب موافق للمطبوع</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Author page&quot;,&quot;es&quot;:&quot;Página del autor&quot;,&quot;fr&quot;:&quot;Page de l&#039;auteur&quot;,&quot;id&quot;:&quot;Halaman penulis&quot;,&quot;ja&quot;:&quot;著者ページ&quot;,&quot;ru&quot;:&quot;Страница автора&quot;,&quot;sw&quot;:&quot;Ukurasa wa mwandishi&quot;,&quot;tr&quot;:&quot;Yazar sayfası&quot;,&quot;ur&quot;:&quot;مصنف کا صفحہ&quot;,&quot;zh&quot;:&quot;作者页面&quot;}" data-original="صفحة المؤلف">صفحة المؤلف</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Hajar al-Asqalani&quot;,&quot;es&quot;:&quot;Ibn Hajar al-Asqalani&quot;,&quot;fr&quot;:&quot;Ibn Hajar al-Asqalani&quot;,&quot;id&quot;:&quot;Ibnu Hajar al-Asqalani&quot;,&quot;ja&quot;:&quot;イブン・ハジャル・アル＝アスカラーニー&quot;,&quot;ru&quot;:&quot;Ибн Хаджар аль-Аскаляни&quot;,&quot;sw&quot;:&quot;Ibn Hajar al-Asqalani&quot;,&quot;tr&quot;:&quot;İbn Hacer el-Askalânî&quot;,&quot;zh&quot;:&quot;伊本·哈杰尔·阿斯盖兰尼&quot;}" data-original="ابن حجر العسقلاني">ابن حجر العسقلاني</span>
+          </dd>
+  </dl>
+            </div>
+          
+                      <div class="min-w-0 rounded-xl border border-zinc-200 p-5 [overflow-wrap:anywhere] dark:border-zinc-700">
+              <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>About the author</div>
+              <div class="max-h-96 overflow-y-auto text-sm leading-relaxed text-zinc-800 dark:text-zinc-100">
+                                  
+                  <div class="whitespace-pre-line" dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Hajar al-Asqalani (773–852 AH = 1372–1449 CE)\nAhmad ibn Ali ibn Muhammad al-Kinani al-Asqalani, Abu al-Fadl, Shihab al-Din, known as Ibn Hajar\n• One of the leading scholars of religious learning and history. His family came from Ascalon (in Palestine), and he was born and died in Cairo.\n• He was first passionate about literature and poetry, then turned to hadith. He traveled to Yemen, the Hijaz, and elsewhere to hear hadith from scholars.\n• His fame grew, and people came to study with him. He became the leading hadith master of Islam in his era. Al-Sakhawi said: “His works spread during his lifetime, and kings exchanged them as gifts, while the leading scholars copied them.”\n• He was eloquent, a transmitter of poetry, knowledgeable about the times of earlier generations and the accounts of later ones, and handsome.\n• He served as judge of Egypt several times, then retired.\nHis works are numerous and distinguished. Among them are:\n• Al-Durar al-Kamina fi A&#039;yan al-Mi&#039;a al-Thamina (The Hidden Pearls Concerning Notable Figures of the Eighth Century) — published, in four volumes\n• Lisan al-Mizan (The Tongue of the Balance) — published, in six parts; biographies\n• Al-Ihkam li-Bayan ma fi al-Quran min al-Ahkam (Clarifying the Legal Rulings in the Quran) — manuscript\n• Diwan Shi&#039;r (Poetry Collection) — manuscript; I saw it at El Escorial (no. 444); printed in India\n• Al-Kafi al-Shafi fi Takhrij Ahadith al-Kashshaf — published\n• Dhayl al-Durar al-Kamina (Supplement to The Hidden Pearls) — manuscript\n• Alqab al-Ruwat (Epithets of Hadith Transmitters) — manuscript\n• Taqrib al-Tahdhib — published; on the names of hadith transmitters\n• Al-Isaba fi Tamyiz Asma al-Sahaba (The Correct Identification of the Names of the Companions) — published\n• Tahdhib al-Tahdhib — published; on hadith transmitters, in twelve volumes\n• Ta&#039;jil al-Manfa&#039;a bi-Zawa&#039;id Rijal al-A&#039;imma al-Arba&#039;a — published\n• Ta&#039;rif Ahl al-Taqdis — published; also known as Tabaqat al-Mudallisin (Generations of Hadith Transmitters Who Practiced Tadlis)\n• Bulugh al-Maram min Adillat al-Ahkam (Attainment of the Goal from the Proofs of the Rulings)\n• Al-Majma&#039; al-Mu&#039;assas bi-al-Mu&#039;jam al-Mufahras — manuscript, in two parts; chains of transmission and books [published]\n• Tuhfat Ahl al-Hadith an Shuyukh al-Hadith — manuscript, in three volumes\n• Nuzhat al-Nazar fi Tawdih Nukhbat al-Fikar — published; on hadith terminology\n• Al-Majalis (The Sessions) — manuscript, copied in al-Biqa&#039;i&#039;s hand, comprising 193 sessions. Al-Maymani said in his memoirs (manuscript): “A fine, important, and rare copy.”\n• Al-Qawl al-Musaddad fi al-Dhabb an Musnad al-Imam Ahmad — published\n• Diwan Khutab (Collection of Sermons) — published\n• Tasdid al-Qaws fi Mukhtasar al-Firdaws li-al-Daylami — manuscript, in six volumes; the third is missing\n• Tabsir al-Muntabih fi Tahrir al-Mushtabih — published, in four parts\n• Raf&#039; al-Isr an Qudat Misr (Removing the Burden from the Judges of Egypt) — published\n• Inba&#039; al-Ghamr bi-Anba&#039; al-Umr (Reports of the Passing Years) — published, in two large volumes\n• Ithaf al-Mahara bi-Atraf al-Ashara — manuscript; hadith [published]\n• Al-I&#039;lam fi-man Waliya Misr fi al-Islam (A Record of Those Who Governed Egypt in Islam) — manuscript\n• Nuzhat al-Albab fi al-Alqab (A Stroll Through Epithets) — manuscript; a valuable copy is held at Riyadh University (54 folios, no. 52), according to al-Maymani&#039;s memoirs (manuscript) [published]\n• Al-Dibaja — published; on hadith\n• Fath al-Bari fi Sharh Sahih al-Bukhari (The Creator&#039;s Victory: A Commentary on Sahih al-Bukhari) — published\n• Al-Talkhis al-Habir fi Takhrij Ahadith al-Rafi&#039;i al-Kabir — published\n• Bulugh al-Maram min Adillat al-Ahkam — published, together with its commentary, Subul al-Salam fi Sharh Bulugh al-Maram (The Paths of Peace: A Commentary on Bulugh al-Maram), by Muhammad ibn Isma&#039;il al-Amir\n• Taghliq al-Ta&#039;liq — six parts of it survive in manuscript; on hadith (1) [published].\nHis student al-Sakhawi wrote a biography of him entitled Al-Jawahir wa-al-Durar fi Tarjamat Shaykh al-Islam Ibn Hajar (Gems and Pearls: A Biography of the Shaykh of Islam Ibn Hajar), in one large volume (2).\n_________\n(1) Al-Azhariyya 1:432, second edition.\n(2) Al-Tabr al-Masbuk 230; Ibn Shaqda — manuscript; Al-Daw&#039; al-Lami&#039; 2:36; Al-Badr al-Tali&#039; 1:87; Khitat Mubarak 6:37; Adab al-Lugha 3:165; Lisan al-Mizan 6, the editor&#039;s epilogue; Al-Durar al-Kamina 4, the publisher&#039;s epilogue; Bada&#039;i&#039; al-Zuhur 2:32, which gives his death as 854 AH; Al-Fihris al-Tamhidi 396, 423, 424, 442, and 563; Da&#039;irat al-Ma&#039;arif al-Islamiyya 1:131. See also his own biographical account in his book Raf&#039; al-Isr 1:85.\nQuoted from Al-A&#039;lam by al-Zirikli, with a few additions in [square brackets]&quot;,&quot;es&quot;:&quot;Ibn Hajar al-Asqalani (773 - 852 H = 1372 - 1449)\nAhmad ibn Ali ibn Muhammad al-Kinani al-Asqalani, Abu al-Fadl, Shihab al-Din, Ibn Hajar\n• Fue uno de los grandes eruditos de la ciencia y la historia. Su familia era originaria de Ascalón (en Palestina); nació y murió en El Cairo.\n• Primero se apasionó por la literatura y la poesía, y luego se dedicó al hadiz. Viajó a Yemen, al Hiyaz y a otros lugares para escuchar a los maestros.\n• Alcanzó gran fama y la gente acudía a él para aprender. Llegó a ser el gran memorizador del islam de su época. Al-Sakhawi dijo: «Sus obras se difundieron en vida; los reyes se las intercambiaban y los notables las copiaban».\n• Tenía gran elocuencia, transmitía poesía y conocía bien las épocas de los antiguos y las noticias de los más recientes; además, era de rostro agraciado.\n• Ocupó varias veces el cargo de juez de Egipto y luego se retiró.\nSus obras son numerosas y de gran valor. Entre ellas:\n• (Al-Durar al-kamina fi a&#039;yan al-mi&#039;a al-thamina [Las perlas ocultas sobre las personalidades del siglo octavo] - impresa), en cuatro volúmenes.\n• (Lisan al-Mizan [La lengua de la balanza] - impresa), en seis partes; biografías.\n• (Al-Ihkam li-bayan ma fi al-Quran min al-ahkam [La exposición de las normas contenidas en el Quran] - manuscrito).\n• (Diwan de poesía - manuscrito), que vi en El Escorial (n.º 444); se imprimió en la India.\n• (Al-Kafi al-shafi fi takhrij ahadith al-Kashshaf [La obra suficiente y esclarecedora sobre la localización de los hadices de Al-Kashshaf] - impresa).\n• (Dhayl al-Durar al-kamina [Suplemento de Las perlas ocultas] - manuscrito).\n• (Alqab al-ruwat [Apelativos de los transmisores] - manuscrito).\n• (Taqrib al-Tahdhib [Resumen de Al-Tahdhib] - impresa), sobre los nombres de los transmisores de hadices.\n• (Al-Isaba fi tamyiz asma al-sahaba [La identificación correcta de los nombres de los compañeros] - impresa).\n• (Tahdhib al-Tahdhib [Depuración de Al-Tahdhib] - impresa), sobre los transmisores de hadices, en doce volúmenes.\n• (Ta&#039;jil al-manfa&#039;a bi-zawa&#039;id rijal al-a&#039;imma al-arba&#039;a [La pronta obtención de provecho mediante las adiciones sobre los transmisores de los cuatro imanes] - impresa).\n• (Ta&#039;rif ahl al-taqdis [Identificación de quienes practican el tadlis] - impresa), también conocida como Tabaqat al-mudallisin [Categorías de quienes practican el tadlis].\n• (Bulugh al-maram min adillat al-ahkam [La consecución de la meta mediante las pruebas de las normas]).\n• (Al-Majma al-mu&#039;assas bi-al-mu&#039;jam al-mufahras [La compilación fundada del repertorio alfabético] - manuscrito), en dos partes, sobre cadenas de transmisión y libros [impreso].\n• (Tuhfat ahl al-hadith an shuyukh al-hadith [Obsequio para los estudiosos del hadiz sobre los maestros del hadiz] - manuscrito), en tres volúmenes.\n• (Nuzhat al-nazar fi tawdih Nukhbat al-fikar [El deleite de la reflexión al explicar la selección de ideas] - impresa), sobre la terminología del hadiz.\n• (Al-Majalis [Las sesiones] - manuscrito), escrito de mano de al-Biqa&#039;i; contiene 193 sesiones. Al-Maymani dijo en sus Memorias (manuscrito): «Es una copia valiosa, importante y poco común».\n• (Al-Qawl al-musaddad fi al-dhabb an Musnad al-Imam Ahmad [La opinión certera en defensa del Musnad del imam Ahmad] - impresa).\n• (Diwan de sermones - impreso).\n• (Tasd id al-qaws fi mukhtasar al-Firdaws li-al-Daylami [Tensar el arco: compendio de Al-Firdaws de al-Daylami] - manuscrito), en seis volúmenes; falta el tercero.\n• (Tabsir al-muntabih fi tahrir al-mushtabih [Aclaración para el atento sobre la edición de los nombres ambiguos] - impresa), en cuatro partes.\n• (Raf al-isr an qudat Misr [Alivio de la carga sobre los jueces de Egipto] - impresa).\n• (Inba&#039; al-ghumr bi-anba&#039; al-umr [Noticias de la época sobre los acontecimientos de la vida] - impresa), en dos grandes volúmenes.\n• (It haf al-mahara bi-atraf al-ashara [Obsequio para los expertos: índices de las diez colecciones] - manuscrito), sobre el hadiz [impreso].\n• (Al-I&#039;lam bi-man waliya Misr fi al-islam [Relación de quienes gobernaron Egipto en el islam] - manuscrito).\n• (Nuzhat al-albab fi al-alqab [El deleite de las mentes en los apelativos] - manuscrito). Se conserva una copia valiosa en la Universidad de Riad (54 folios, n.º 52), según las Memorias de al-Maymani (manuscrito) [impreso].\n• (Al-Dibaja [El prólogo] - impresa), sobre el hadiz.\n• (Fath al-Bari fi sharh Sahih al-Bukhari [La victoria del Creador: comentario de Sahih al-Bukhari] - impresa).\n• (Al-Talkhis al-habir fi takhrij ahadith al-Rafi&#039;i al-kabir [El resumen exhaustivo sobre la localización de los hadices de la gran obra de al-Rafi&#039;i] - impresa).\n• (Bulugh al-maram min adillat al-ahkam [La consecución de la meta mediante las pruebas de las normas] - impresa), junto con su comentario (Subul al-salam fi sharh Bulugh al-maram [Los caminos de la paz: comentario de La consecución de la meta]), de Muhammad ibn Isma&#039;il al-Amir.\n• (Taghliq al-ta&#039;liq [Completar el comentario suspendido] - manuscrito), del que se conservan seis partes; trata del hadiz (1) [impreso].\nSu discípulo al-Sakhawi escribió una biografía suya titulada Al-Jawahir wa-al-durar fi tarjamat Shaykh al-Islam Ibn Hajar [Las joyas y las perlas: biografía del jeque del islam Ibn Hajar], en un gran volumen (2).\n_________\n(1) Al-Azhariyya, 1: 432, segunda edición.\n(2) Al-Tabr al-masbuk, p. 230; Ibn Shaqda (manuscrito); Al-Daw&#039; al-lami, 2: 36; Al-Badr al-tali, 1: 87; Khitat Mubarak, 6: 37; Adab al-lugha, 3: 165; Lisan al-Mizan, 6, colofón del editor; Al-Durar al-kamina, 4, colofón del editor; Bada&#039;i al-zuhur, 2: 32, donde se indica que murió en 854 H; Al-Fihris al-tamhidi, pp. 396, 423, 424, 442 y 563; Da&#039;irat al-ma&#039;arif al-islamiyya, 1: 131. Véase también su propia biografía en su libro Raf al-isr, 1: 85.\nTomado de Al-A&#039;lam, de al-Zirikli, con algunas adiciones menores entre corchetes.&quot;,&quot;fr&quot;:&quot;Ibn Hajar al-Asqalani (773 - 852 H = 1372 - 1449)\nAhmad ibn Ali ibn Muhammad al-Kinani al-Asqalani, Abu al-Fadl, Shihab al-Din, Ibn Hajar\n• Figure majeure du savoir et de l’histoire. Sa famille était originaire d’Ascalon, en Palestine ; il naquit et mourut au Caire.\n• D’abord passionné de littérature et de poésie, il se consacra ensuite au hadith. Il voyagea au Yémen, au Hedjaz et ailleurs pour entendre les maîtres.\n• Sa renommée grandit et les gens vinrent auprès de lui pour étudier. Il devint le grand spécialiste du hadith de son époque. Al-Sakhawi écrit : « Ses ouvrages se diffusèrent de son vivant ; les rois se les offraient et les grands personnages les copiaient. »\n• Il s’exprimait avec éloquence, connaissait bien la poésie, les événements des anciens et l’histoire des générations plus récentes ; il avait le visage agréable.\n• Il exerça à plusieurs reprises la fonction de juge en Égypte, puis s’en retira.\nSes nombreux ouvrages, remarquables, comprennent notamment :\n• (Al-Durar al-Kamina fi Ayan al-Mia al-Thamina [Les perles cachées parmi les notables du huitième siècle] - imprimé), en quatre volumes.\n• (Lisan al-Mizan [La langue de la balance] - imprimé), en six parties, notices biographiques.\n• (Al-Ihkam li-Bayan ma fi al-Quran min al-Ahkam [Les règles exposées dans le Quran] - manuscrit).\n• (Diwan shi&#039;r [Recueil de poésie] - manuscrit), que j’ai vu à l’Escurial (no 444) ; imprimé en Inde.\n• (Al-Kafi al-Shafi fi Takhrij Ahadith al-Kashshaf [Le suffisant et le guérisseur : référencement des hadiths d’Al-Kashshaf] - imprimé).\n• (Dhayl al-Durar al-Kamina [Supplément aux Perles cachées] - manuscrit).\n• (Alqab al-Ruwat [Les surnoms des transmetteurs] - manuscrit).\n• (Taqrib al-Tahdhib [Résumé de Tahdhib al-Tahdhib] - imprimé), sur les transmetteurs de hadith.\n• (Al-Isaba fi Tamyiz Asma al-Sahaba [Le discernement des noms des Compagnons] - imprimé).\n• (Tahdhib al-Tahdhib [Révision de la critique des transmetteurs] - imprimé), sur les transmetteurs de hadith, en douze volumes.\n• (Ta&#039;jil al-Manfa&#039;a bi-Zawa&#039;id Rijal al-A&#039;imma al-Arba&#039;a [Pour hâter le bénéfice des notices complémentaires sur les transmetteurs des quatre imams] - imprimé).\n• (Ta&#039;rif Ahl al-Taqdis [Présentation des adeptes de la dissimulation] - imprimé), également connu sous le titre Tabaqat al-Mudallisin [Les générations de transmetteurs pratiquant la dissimulation].\n• (Bulugh al-Maram min Adillat al-Ahkam [L’aboutissement des objectifs : preuves des règles]).\n• (Al-Majma al-Mu&#039;assas bi-al-Mu&#039;jam al-Mufahras [Le recueil fondateur avec le répertoire alphabétique] - manuscrit), en deux parties, consacré aux chaînes de transmission et aux livres [imprimé].\n• (Tuhfat Ahl al-Hadith an Shuyukh al-Hadith [Le présent des spécialistes du hadith au sujet des maîtres du hadith] - manuscrit), en trois volumes.\n• (Nuzhat al-Nazar fi Tawdih Nukhbat al-Fikar [Le plaisir du regard : éclaircissements sur l’élite de la réflexion] - imprimé), sur la terminologie du hadith.\n• (Al-Majalis [Les séances] - manuscrit), copié de la main d’al-Biqa&#039;i, comprenant 193 séances. Al-Maymani écrit dans ses mémoires (manuscrit) : « Un exemplaire remarquable, important et rare. »\n• (Al-Qawl al-Musaddad fi al-Dhabb an Musnad al-Imam Ahmad [La parole juste pour défendre le Musnad de l’imam Ahmad] - imprimé).\n• (Diwan khutab [Recueil de sermons] - imprimé).\n• (Tasdid al-Qaws fi Mukhtasar al-Firdaws li-al-Daylami [Redresser l’arc : abrégé d’Al-Firdaws d’al-Daylami] - manuscrit), en six volumes, auquel manque le troisième.\n• (Tabsir al-Muntabih fi Tahrir al-Mushtabih [Éclairer le lecteur attentif : élucidation des noms confondus] - imprimé), en quatre parties.\n• (Raf al-Isr an Qudat Misr [Libérer du fardeau : les juges d’Égypte] - imprimé).\n• (Inba al-Ghamr bi-Anba al-Umr [Nouvelles de l’abondance : événements de la vie] - imprimé), en deux gros volumes.\n• (Ithaf al-Maharah bi-Atraf al-Asharah [Offrir aux maîtres les extraits des Dix recueils] - manuscrit), sur le hadith [imprimé].\n• (Al-Ilam fi-man Waliya Misr fi al-Islam [Les gouvernants de l’Égypte en Islam] - manuscrit).\n• (Nuzhat al-Albab fi al-Alqab [Le plaisir des esprits : les surnoms] - manuscrit). Un précieux exemplaire se trouve à l’Université de Riyad (54 feuillets, no 52), d’après les mémoires d’al-Maymani (manuscrit) [imprimé].\n• (Al-Dibaja [Le prélude] - imprimé), sur le hadith.\n• (Fath al-Bari fi Sharh Sahih al-Bukhari [La victoire du Créateur : commentaire du Sahih d’al-Bukhari] - imprimé).\n• (Al-Talkhis al-Habir fi Takhrij Ahadith al-Rafi&#039;i al-Kabir [Le résumé précis : référencement des hadiths d’Al-Rafi&#039;i al-Kabir] - imprimé).\n• (Bulugh al-Maram min Adillat al-Ahkam [L’aboutissement des objectifs : preuves des règles] - imprimé), avec son commentaire (Subul al-Salam fi Sharh Bulugh al-Maram [Les voies de la paix : commentaire de Bulugh al-Maram] - imprimé), de Muhammad ibn Ismail al-Amir.\n• (Taghliq al-Ta&#039;liq [Compléter la suspension] - manuscrit), six parties conservées, sur le hadith (1) [imprimé].\nSon élève al-Sakhawi a écrit une biographie de lui intitulée Al-Jawahir wa-al-Durar fi Tarjamat Shaykh al-Islam Ibn Hajar [Les joyaux et les perles : biographie du cheikh de l’islam Ibn Hajar], en un gros volume (2).\n_________\n(1) Al-Azhariyya, 1 : 432, deuxième édition.\n(2) Al-Tabr al-Masbuk, p. 230 ; Ibn Shaqdha (manuscrit) ; Al-Daw al-Lami, 2 : 36 ; Al-Badr al-Tali, 1 : 87 ; Khitat Mubarak, 6 : 37 ; Adab al-Lugha, 3 : 165 ; Lisan al-Mizan, 6 : conclusion du correcteur de l’édition ; Al-Durar al-Kamina, 4 : conclusion de l’éditeur ; Bada&#039;i al-Zuhur, 2 : 32, où sa mort est datée de 854 H ; Al-Fihris al-Tamhidi, p. 396, 423, 424, 442 et 563 ; دائرة المعارف الإسلامية, 1 : 131. Voir aussi sa propre biographie dans son ouvrage Raf al-Isr, 1 : 85.\nReproduit d’après Al-A&#039;lam d’al-Zirikli, avec quelques ajouts entre crochets&quot;,&quot;id&quot;:&quot;Ibnu Hajar Al-Asqalani (773–852 H = 1372–1449 M)\nAhmad bin Ali bin Muhammad Al-Kinani Al-Asqalani, Abu Al-Fadl, Syihabuddin, Ibnu Hajar.\n• Salah seorang imam dalam ilmu dan sejarah. Asalnya dari Asqalan (di Palestina), sedangkan ia lahir dan wafat di Kairo.\n• Ia mula-mula menyukai sastra dan syair, lalu menekuni hadis. Ia melakukan perjalanan ke Yaman, Hijaz, dan daerah-daerah lain untuk mendengar hadis dari para syekh.\n• Namanya semakin masyhur, sehingga orang-orang datang untuk belajar kepadanya. Ia pun menjadi hafiz Islam pada masanya. As-Sakhawi berkata, “Karya-karyanya tersebar semasa hidupnya, dipertukarkan oleh para raja, dan disalin oleh para pembesar.”\n• Ia fasih bertutur, banyak meriwayatkan syair, mengenal peristiwa-peristiwa orang terdahulu dan berita orang-orang belakangan, serta berwajah tampan.\n• Ia beberapa kali menjabat sebagai hakim Mesir, kemudian mengundurkan diri.\nKarya-karyanya sangat banyak dan bernilai tinggi, di antaranya:\n• Ad-Durar Al-Kaminah fi A&#039;yan Al-Mi&#039;ah Ats-Tsaminah (Permata Tersembunyi tentang Tokoh-Tokoh Abad Kedelapan; cetak), empat jilid.\n• Lisan Al-Mizan (Lidah Timbangan; cetak), enam bagian, berisi biografi para tokoh.\n• Al-Ihkam li Bayan ma fi Al-Qur&#039;an min Al-Ahkam (Penjelasan Hukum-Hukum dalam Al-Quran; manuskrip).\n• Diwan Syair (manuskrip); saya melihatnya di El Escorial (nomor 444), dan buku ini dicetak di India.\n• Al-Kafi Asy-Syafi fi Takhrij Ahadits Al-Kasysyaf (Memadai dan Menyembuhkan dalam Menelusuri Hadis-Hadis Al-Kasysyaf; cetak).\n• Dzail Ad-Durar Al-Kaminah (Suplemen Ad-Durar Al-Kaminah; manuskrip).\n• Alqab Ar-Ruwat (Julukan Para Perawi; manuskrip).\n• Taqrib At-Tahdzib (Pendekatan terhadap Tahdzib; cetak), tentang nama-nama periwayat hadis.\n• Al-Ishabah fi Tamyiz Asma&#039; Ash-Shahabah (Ketepatan dalam Membedakan Nama-Nama Sahabat; cetak).\n• Tahdzib At-Tahdzib (Penyempurnaan Tahdzib; cetak), tentang para periwayat hadis, dua belas jilid.\n• Ta&#039;jil Al-Manfa&#039;ah bi Zawa&#039;id Rijal Al-A&#039;immah Al-Arba&#039;ah (Menyegerakan Manfaat dengan Tambahan Biografi Para Perawi Empat Imam; cetak).\n• Ta&#039;rif Ahl At-Taqdis (Mengenalkan Para Ahli Kesucian; cetak), juga dikenal sebagai Thabaqat Al-Mudallisin (Tingkatan Para Perawi yang Melakukan Tadlis).\n• Bulugh Al-Maram min Adillat Al-Ahkam (Mencapai Tujuan melalui Dalil-Dalil Hukum).\n• Al-Majma&#039; Al-Mu&#039;assas bi Al-Mu&#039;jam Al-Mufahras (Kumpulan yang Disusun berdasarkan Indeks; manuskrip), dua bagian, berisi sanad dan kitab [telah dicetak].\n• Tuhfat Ahl Al-Hadits &#039;an Syuyukh Al-Hadits (Persembahan bagi Ahli Hadis tentang Para Syekh Hadis; manuskrip), tiga jilid.\n• Nuzhat An-Nazhar fi Taudhih Nukhbat Al-Fikar (Rekreasi Pandangan dalam Menjelaskan Nukhbat Al-Fikar; cetak), tentang istilah-istilah hadis.\n• Al-Majalis (Majelis-Majelis; manuskrip), ditulis dengan tulisan tangan Al-Biqa&#039;i, terdiri atas 193 majelis. Al-Maimuni berkata dalam catatan kenangannya (manuskrip), “Sebuah salinan yang bernilai tinggi, penting, dan langka.”\n• Al-Qaul Al-Musaddad fi Adz-Dzabb &#039;an Musnad Al-Imam Ahmad (Pendapat yang Tepat untuk Membela Musnad Imam Ahmad; cetak).\n• Diwan Khuthab (Kumpulan Khutbah; cetak).\n• Tasdid Al-Qaus fi Mukhtashar Al-Firdaws li Ad-Daili (Meluruskan Busur dalam Ringkasan Al-Firdaws karya Ad-Daili; manuskrip), enam jilid; jilid ketiga tidak lengkap.\n• Tabsir Al-Muntabih fi Tahrir Al-Musytabih (Menyadarkan yang Lalai dalam Menjelaskan Hal-Hal yang Rancu; cetak), empat bagian.\n• Raf&#039; Al-Ishr &#039;an Qudhat Mishr (Menghilangkan Kesulitan tentang Para Hakim Mesir; cetak).\n• Inba&#039; Al-Ghamr bi Anba&#039; Al-&#039;Umr (Berita tentang Peristiwa-Peristiwa Zaman; cetak), dua jilid tebal.\n• Ithaf Al-Maharah bi Athraf Al-&#039;Asyarah (Persembahan bagi Para Ahli dalam Bentuk Ujung-Ujung Riwayat Sepuluh Kitab; manuskrip), tentang hadis [telah dicetak].\n• Al-I&#039;lam fi man Waliya Mishr fi Al-Islam (Pemberitahuan tentang Orang-Orang yang Memerintah Mesir dalam Islam; manuskrip).\n• Nuzhat Al-Albab fi Al-Alqab (Rekreasi Hati tentang Julukan; manuskrip). Salinan berharga tersimpan di Universitas Riyadh (54 lembar, nomor 52), sebagaimana disebutkan dalam catatan kenangan Al-Maimuni (manuskrip) [telah dicetak].\n• Ad-Dibajah (Mukadimah; cetak), tentang hadis.\n• Fath Al-Bari bi Syarh Shahih Al-Bukhari (Kemenangan Sang Pencipta, Penjelasan Shahih Al-Bukhari; cetak).\n• At-Talkhish Al-Habir fi Takhrij Ahadits Ar-Rafi&#039;i Al-Kabir (Ringkasan yang Teliti dalam Menelusuri Hadis-Hadis Ar-Rafi&#039;i Al-Kabir; cetak).\n• Bulugh Al-Maram min Adillat Al-Ahkam (Mencapai Tujuan melalui Dalil-Dalil Hukum; cetak), beserta syarahnya Subul As-Salam fi Syarh Bulugh Al-Maram (Jalan-Jalan Keselamatan dalam Menjelaskan Bulugh Al-Maram; cetak), karya Muhammad bin Ismail Al-Amir.\n• Taghliq At-Ta&#039;liq (Menggantungkan Komentar; manuskrip), enam bagian, tentang hadis (1) [telah dicetak].\nMuridnya, As-Sakhawi, menulis sebuah kitab biografi tentangnya berjudul Al-Jawahir wa Ad-Durar fi Tarjamah Syaikh Al-Islam Ibnu Hajar (Permata dan Mutiara dalam Biografi Syekh Islam Ibnu Hajar), dalam satu jilid tebal (2).\n_________\n(1) Al-Azhariyyah, 1:432, edisi kedua.\n(2) At-Tabr Al-Masbuk, 230; Ibnu Syaqdah (manuskrip); Adh-Dhau&#039; Al-Lami&#039;, 2:36; Al-Badr Ath-Thali&#039;, 1:87; Khithath Mubarak, 6:37; Adab Al-Lughah, 3:165; Lisan Al-Mizan, 6, penutup dari penyunting edisinya; Ad-Durar Al-Kaminah, 4, penutup dari penerbitnya; Bada&#039;i&#039; Az-Zuhur, 2:32, yang menyebutkan bahwa ia wafat pada 854 H; Al-Fihris At-Tamhidi, 396, 423, 424, 442, dan 563; Da&#039;irat Al-Ma&#039;arif Al-Islamiyyah, 1:131. Lihat juga biografinya yang ia tulis sendiri dalam kitab Raf&#039; Al-Ishr, 1:85.\nDikutip dari Al-A&#039;lam karya Az-Zirikli, dengan sedikit tambahan di antara tanda kurung siku.&quot;,&quot;ja&quot;:&quot;イブン・ハジャル・アル＝アスカラーニー（ヒジュラ暦773–852年／西暦1372–1449年）\nアフマド・イブン・アリー・イブン・ムハンマド・アル＝キナーニー・アル＝アスカラーニー。アブー・アル＝ファドル、シハーブッディーン。イブン・ハジャル。\n• 学問と歴史学の大家の一人。祖先はアスカラン（パレスチナ）に由来し、カイロで生まれ、同地で没した。\n• 文学と詩に熱中したのち、ハディースに取り組み、師たちから聴聞するためイエメンやヒジャーズなどへ旅した。\n• 名声が高まり、人々が教えを受けるために訪れるようになった。やがて当代のイスラームを代表するハーフィズとなった。サハーウィーはこう述べている。「彼の著作は存命中に広く流布し、王たちはそれらを贈り合い、大家たちは書き写した。」\n• 口達者で、詩を多く伝え、古人の時代や後世の人々の逸話に通じ、顔立ちも美しかった。\n• エジプトの裁判官を何度か務めたのち、退いた。\n著作は数多く、いずれも優れたものである。主なものは以下のとおり。\n• 『アッ＝ドゥラル・アル＝カーミナ・フィー・アアヤーン・アル＝ミア・アッ＝サーミナ』（第八世紀の名士録、刊行）全4巻。\n• 『リサーン・アル＝ミーザーン』（刊行）全6部、人名伝記。\n• 『アル＝イフカーム・リバヤーン・マー・フィー・アル＝クルアーン・ミナ・アル＝アフカーム』（写本）。\n• 『詩集』（写本）。エスコリアルで見た（番号444）。インドで刊行。\n• 『アル＝カーフィー・アッ＝シャーフィー・フィー・タフリージ・アハーディース・アル＝カッシャーフ』（刊行）。\n• 『ダイル・アッ＝ドゥラル・アル＝カーミナ』（写本）。\n• 『アル＝ラカーブ・アッ＝ルワート』（写本）。\n• 『タクリーブ・アッ＝タフズィーブ』（刊行）。ハディース伝承者の人名録。\n• 『アル＝イサーバ・フィー・タミーミーズ・アスマーイ・アッ＝サハーバ』（刊行）。\n• 『タフズィーブ・アッ＝タフズィーブ』（刊行）。ハディース伝承者についての全12巻。\n• 『タアジール・アル＝マンファア・ビ＝ザワーイド・リジャール・アル＝アイマ・アル＝アルバア』（刊行）。\n• 『タアリーフ・アフル・アッ＝タクディース』（刊行）。『タバカート・アル＝ムダッリスィーン』としても知られる。\n• 『ブルーグ・アル＝マラーム・ミン・アディッラト・アル＝アフカーム』。\n• 『アル＝マジュマア・アル＝ムアッサス・ビ＝アル＝ムアジャム・アル＝ムファフラス』（写本）全2部。伝承経路と書物を収録［刊行］。\n• 『トゥフファト・アフル・アル＝ハディース・アン・シュユーフ・アル＝ハディース』（写本）全3巻。\n• 『ヌズハト・アン＝ナザル・フィー・タウディーフ・ヌフバト・アル＝フィカル』（刊行）。ハディース学の用語について。\n• 『アル＝マジャーリス』（写本）。ブカーイーの筆写による193の講義。マイマニーは『回想録』（写本）で、「貴重で重要な、稀少な写本」と述べている。\n• 『アル＝カウル・アル＝ムサッダド・フィー・アッ＝ザブ・アン・ムスナド・アル＝イマーム・アフマド』（刊行）。\n• 『説教集』（刊行）。\n• 『タスディード・アル＝カウス・フィー・ムフタサル・アル＝フィルダウス・リッ＝ダイラーミー』（写本）全6巻。第3巻を欠く。\n• 『タブスィール・アル＝ムンタビフ・フィー・タフリール・アル＝ムシュタビフ』（刊行）全4部。\n• 『ラフウ・アル＝イスル・アン・クダート・ミスル』（刊行）。\n• 『インバー・アル＝グムル・ビ＝アンバー・アル＝ウムル』（刊行）大判2巻。\n• 『イトハーフ・アル＝マハラ・ビ＝アトラーフ・アル＝アシャラ』（写本）。ハディース［刊行］。\n• 『アル＝イウラーム・フィーマン・ワッラ・ミスル・フィー・アル＝イスラーム』（写本）。\n• 『ヌズハト・アル＝アルバーブ・フィー・アル＝アルカーブ』（写本）。リヤド大学に貴重な写本がある（54葉、番号52）。マイマニーの『回想録』（写本）による。［刊行］\n• 『アッ＝ディーバージャ』（刊行）。ハディースについて。\n• 『ファトフ・アル＝バーリー・フィー・シャルフ・サヒーフ・アル＝ブハーリー』（刊行）。\n• 『アッ＝タルヒース・アル＝ハビール・フィー・タフリージ・アハーディース・アッ＝ラーフィイー・アル＝カビール』（刊行）。\n• 『ブルーグ・アル＝マラーム・ミン・アディッラト・アル＝アフカーム』（刊行）。ムハンマド・イブン・イスマーイール・アル＝アミールによる注釈書『スブル・アッ＝サラーム・フィー・シャルフ・ブルーグ・アル＝マラーム』（刊行）とともに刊行。\n• 『タグリーク・アッ＝タアリーク』（写本）全6部のうち一部。ハディースについて。（1）［刊行］\n弟子のサハーウィーは彼の伝記を著し、『アル＝ジャワーヒル・ワ＝アッ＝ドゥラル・フィー・タルジャマト・シャイフ・アル＝イスラーム・イブン・ハジャル』と名付けた。大部の1巻である。（2）\n_________\n（1）『アル＝アズハリーヤ』第1巻、432頁、第2版。\n（2）『アッ＝ティブル・アル＝マスブーク』230頁、『イブン・シャクダ』（写本）、『アド＝ダウ・アル＝ラーミウ』第2巻、36頁、『アル＝バドル・アッ＝ターリウ』第1巻、87頁、『フタト・ムバーラク』第6巻、37頁、『アーダーブ・アル＝ルガ』第3巻、165頁、『リサーン・アル＝ミーザーン』第6巻、校訂者による跋文。『アッ＝ドゥラル・アル＝カーミナ』第4巻、出版者による跋文。『バダーイウ・アッ＝ズフール』第2巻、32頁には没年をヒジュラ暦854年とする。『アル＝フィフリス・アッ＝タムヒーディー』396、423、424、442、563頁。『イスラーム百科事典』第1巻、131頁。また、著者自身の伝記については、著書『ラフウ・アル＝イスル』第1巻、85頁を参照。\n\n『アル＝アアラーム』（ザルカリー）より転載。一部、角括弧内に小補を加えた。&quot;,&quot;ru&quot;:&quot;Ибн Хаджар аль-Аскаляни (773–852 г. х. = 1372–1449 г.)\nАхмад ибн Али ибн Мухаммад аль-Кинани аль-Аскаляни, Абу аль-Фадль, Шихаб ад-Дин, Ибн Хаджар.\n• Один из выдающихся знатоков исламских наук и истории. Его род происходил из Аскалана (Палестина), родился и умер он в Каире.\n• Сначала увлекался литературой и поэзией, затем обратился к хадисам. Он путешествовал в Йемен, Хиджаз и другие края, чтобы слушать учёных.\n• Он приобрёл широкую известность, люди приезжали к нему, чтобы учиться у него, и он стал хафизом ислама своего времени. Ас-Сахави писал: «Его сочинения получили распространение ещё при его жизни; короли передаривали их друг другу, а выдающиеся люди переписывали их».\n• Он был красноречив, хорошо знал поэзию, был сведущ в событиях прошлого и известиях о современниках и обладал приятной внешностью.\n• Несколько раз занимал должность судьи Египта, затем оставил её.\nЕго сочинения многочисленны и значительны. Среди них:\n• «Ад-Дурар аль-Камина фи а&#039;ян аль-миа ас-самина» (Скрытые жемчужины о выдающихся людях восьмого столетия; печатное издание), четыре тома.\n• «Лисан аль-Мизан» (Язык весов; печатное издание), шесть частей, биографии передатчиков.\n• «Аль-Ихкам ли-баян ма фи аль-Кур&#039;ан мин аль-ахкам» (Разъяснение постановлений, содержащихся в Коране; рукопись).\n• «Диван стихов» (рукопись). Я видел его в Эскориале (№ 444); издан в Индии.\n• «Аль-Кафи аш-Шафи фи тахридж ахадис аль-Кашшаф» (Достаточное и исчерпывающее извлечение хадисов из «Аль-Кашшафа»; печатное издание).\n• «Зайл ад-Дурар аль-Камина» (Дополнение к «Скрытым жемчужинам»; рукопись).\n• «Алкаб ар-руват» (Прозвища передатчиков; рукопись).\n• «Такриб ат-Тахзиб» (Краткое изложение «Тахзиба»; печатное издание), о передатчиках хадисов.\n• «Аль-Исаба фи тамйиз асма ас-сахаба» (Точное определение имён сподвижников; печатное издание).\n• «Тахзиб ат-Тахзиб» (Упорядочение «Тахзиба»; печатное издание), о передатчиках хадисов, двенадцать томов.\n• «Таъджиль аль-манфа&#039;а би-заваид риджаль аль-аимма аль-арба&#039;а» (Ускорение пользы посредством дополнительных сведений о передатчиках четырёх имамов; печатное издание).\n• «Та&#039;риф ахль ат-такдис» (Знакомство с людьми, заслуживающими почитания; печатное издание), известна также как «Табакат аль-мудаллисин» (Разряды тех, кто скрывал недостатки передачи).\n• «Булуг аль-марам мин адиллят аль-ахкам» (Достижение цели посредством доказательств постановлений).\n• «Аль-Маджма&#039; аль-муассас би-ль-му&#039;джам аль-муфахрас» (Сводный указатель; рукопись), два тома, цепочки передачи и книги [издано].\n• «Тухфат ахль аль-хадис ан шуюх аль-хадис» (Подарок знатокам хадисов о шейхах хадиса; рукопись), три тома.\n• «Нузхат ан-назар фи таудих нухбат аль-фикр» (Услада взора: разъяснение «Избранных мыслей»; печатное издание), о терминологии хадисов.\n• «Аль-Маджалис» (Собрания; рукопись), запись аль-Бикаи, 193 собрания. Аль-Маймани писал в своих воспоминаниях (рукопись): «Это великолепный, важный и редкий экземпляр».\n• «Аль-Кауль аль-мусаддад фи-з-забб ан Муснад аль-имам Ахмад» (Точный ответ в защиту «Муснада» имама Ахмада; печатное издание).\n• «Диван проповедей» (печатное издание).\n• «Тасдид аль-каус фи мухтасар аль-Фирдаус ли-д-Дайлями» (Выпрямление лука: сокращение «Аль-Фирдауса» ад-Дайлями; рукопись), шесть томов, кроме третьего.\n• «Табсир аль-мунтабих фи тахрир аль-муштабиһ» (Разъяснение сомнительных имён; печатное издание), четыре части.\n• «Рафа аль-иср ан кудат Миср» (Избавление от бремени: судьи Египта; печатное издание).\n• «Инба аль-гамр би-абна аль-умр» (Известия о времени и его людях; печатное издание), два больших тома.\n• «Итхаф аль-махара би-атраф аль-ашара» (Дар выдающимся знатокам: указатели к десяти сборникам; рукопись), хадисы [издано].\n• «Аль-И&#039;лам фи ман валя Миср фи аль-ислам» (Сведения о тех, кто правил Египтом в исламе; рукопись).\n• «Нузхат аль-альбаб фи аль-алкаб» (Услада умов: прозвища; рукопись). В университете Эр-Рияда хранится ценный экземпляр (54 листа, № 52), как указано в воспоминаниях аль-Маймани (рукопись) [издано].\n• «Ад-Дибаджа» (Предисловие; печатное издание), о хадисах.\n• «Фатх аль-Бари би-шарх Сахих аль-Бухари» (Открытие Творца: комментарий к «Сахиху» аль-Бухари; печатное издание).\n• «Ат-Тальхис аль-хабир фи тахридж ахадис ар-Рафи&#039;и аль-кабир» (Подробное резюме: извлечение хадисов из «Большого» ар-Рафи&#039;и; печатное издание).\n• «Булуг аль-марам мин адиллят аль-ахкам» (Достижение цели посредством доказательств постановлений; печатное издание) с комментарием «Субуль ас-салям фи шарх Булуг аль-марам» (Пути мира: комментарий к «Достижению цели») Мухаммада ибн Исмаила аль-Амира.\n• «Таглик ат-та&#039;лик» (Присоединение комментария; рукопись), сохранилось шесть частей, о хадисах (1) [издано].\nУ его ученика ас-Сахави есть книга о нём под названием «Аль-Джавахир ва-д-дурар фи тарджамат шейх аль-ислам Ибн Хаджар» (Драгоценные камни и жемчужины: биография шейх аль-ислама Ибн Хаджара), в одном большом томе (2).\n_________\n(1) «Аль-Азхария», 1: 432, второе издание.\n(2) «Ат-Табр аль-масбук», 230; Ибн Шакда (рукопись); «Ад-Дау аль-лами&#039;», 2: 36; «Аль-Бадр ат-тали&#039;», 1: 87; «Хутат Мубарак», 6: 37; «Адаб аль-луга», 3: 165; «Лисан аль-Мизан», 6: заключение редактора издания; «Ад-Дурар аль-Камина», 4: заключение издателя; «Бадаи&#039; аз-зухур», 2: 32, где годом его смерти указан 854 г. х.; «Аль-Фихрис ат-тамхиди», 396, 423, 424, 442 и 563; «Даират аль-маариф аль-исламия», 1: 131. См. также его собственную биографию в книге «Рафа аль-иср», 1: 85.\nПо «Аль-А&#039;лям» аз-Зирикли, с небольшими добавлениями в квадратных скобках.&quot;,&quot;sw&quot;:&quot;Ibn Hajar al-Asqalani (773 - 852 H = 1372 - 1449 CE)\nAhmad bin Ali bin Muhammad al-Kinani al-Asqalani, Abu al-Fadl, Shihab al-Din, Ibn Hajar\n• Alikuwa miongoni mwa maimamu wa elimu na historia. Asili yake ni Asqalan (Palestina), na alizaliwa na kufariki Kairo.\n• Alipendezwa na fasihi na ushairi, kisha akajishughulisha na hadithi. Alisafiri kwenda Yemen, Hijaz na sehemu nyingine ili kusikiliza hadithi kutoka kwa masheikh.\n• Umaarufu wake ulienea sana, watu wakamjia ili kujifunza kwake, na akawa hifadhi ya Uislamu katika zama zake. Al-Sakhawi alisema: “Vitabu vyake vilienea alipokuwa hai, wafalme wakivipeana na wakubwa wakavinakili.”\n• Alikuwa fasaha wa lugha, msimulizi wa mashairi, mjuzi wa historia za watu wa kale na habari za watu wa baadaye, na mwenye sura nzuri.\n• Aliwahi kushika nafasi ya kadhi wa Misri mara kadhaa, kisha akastaafu.\nVitabu vyake ni vingi na vya thamani, miongoni mwavyo ni:\n• (Al-Durar al-Kamina fi Ayan al-Mia al-Thamina [Lulu zilizofichika kuhusu watu mashuhuri wa karne ya nane] - kimechapishwa), juzuu nne\n• (Lisan al-Mizan [Ulimi wa Mizani] - kimechapishwa), sehemu sita, tawarikh za wanazuoni\n• (Al-Ihkam li-Bayan ma fi al-Quran min al-Ahkam [Ufafanuzi wa hukumu zilizomo ndani ya Quran] - mswada)\n• (Diwan ya mashairi - mswada), niliiona katika maktaba ya Escorial (namba 444), na imechapishwa India\n• (Al-Kafi al-Shafi fi Takhrij Ahadith al-Kashshaf [Kitabu kinachotosheleza na kuponya kuhusu uhakiki wa hadithi za Al-Kashshaf] - kimechapishwa)\n• (Dhayl al-Durar al-Kamina [Nyongeza ya Al-Durar al-Kamina] - mswada)\n• (Alqab al-Ruwat [Majina ya utani ya wapokezi] - mswada)\n• (Taqrib al-Tahdhib [Muhtasari wa Tahdhib al-Tahdhib] - kimechapishwa), kuhusu majina ya wapokezi wa hadithi\n• (Al-Isaba fi Tamyiz Asma al-Sahaba [Kutambua majina ya Maswahaba kwa usahihi] - kimechapishwa)\n• (Tahdhib al-Tahdhib [Usafishaji wa kitabu Tahdhib] - kimechapishwa), kuhusu wapokezi wa hadithi, juzuu kumi na mbili\n• (Tajil al-Manfaa bi-Zawaid Rijal al-Aimma al-Arbaa [Kuharakisha manufaa kwa nyongeza za wapokezi wa maimamu wanne] - kimechapishwa)\n• (Tarif Ahl al-Taqdis [Kuwafahamisha watu wa utakaso] - kimechapishwa), pia hujulikana kama Tabaka za Mudallisin\n• (Bulugh al-Maram min Adillat al-Ahkam [Kufikia lengo kwa dalili za hukumu])\n• (Al-Majma al-Muassas bi-al-Mujam al-Mufahras [Mkusanyo ulioanzishwa kwa faharasa] - mswada), sehemu mbili, misururu ya wapokezi na vitabu [umechapishwa]\n• (Tuhfat Ahl al-Hadith an Shuyukh al-Hadith [Zawadi kwa watu wa hadithi kuhusu masheikh wa hadithi] - mswada), juzuu tatu\n• (Nuzhat al-Nazar fi Tawdhih Nukhbat al-Fikar [Burudisho la kutazama katika kufafanua Nukhbat al-Fikar] - kimechapishwa), kuhusu istilahi za hadithi\n• (Al-Majalis [Mikutano] - mswada), katika mwandiko wa al-Biqai, una mikutano 193. Al-Maymani alisema (katika kumbukumbu zake - mswada): “Ni nakala yenye thamani kubwa, muhimu na adimu.”\n• (Al-Qawl al-Musaddad fi al-Dhab an Musnad al-Imam Ahmad [Kauli thabiti ya kutetea Musnad ya Imam Ahmad] - kimechapishwa)\n• (Diwan ya khutba - kimechapishwa)\n• (Tasdid al-Qaws fi Mukhtasar al-Firdaws li-al-Daylami [Kulenga upinde katika muhtasari wa Al-Firdaws wa al-Daylami] - mswada), juzuu sita, ya tatu haipo\n• (Tabsir al-Muntabih fi Tahrir al-Mushtabih [Kumfahamisha aliyeghafilika kuhusu ufafanuzi wa yanayochanganya] - kimechapishwa), katika sehemu nne\n• (Raf al-Isr an Qudat Misr [Kuondoa mzigo kuhusu makadhi wa Misri] - kimechapishwa)\n• (Inba al-Ghamr bi-Anba al-Umr [Habari za kipindi kwa habari za maisha] - kimechapishwa), katika juzuu mbili kubwa\n• (Ithaf al-Maharah bi-Atraf al-Asharah [Kuwapa hodari zawadi ya vipande vya vitabu kumi] - mswada), kuhusu hadithi [umechapishwa]\n• (Al-Ilam fi man Waliya Misr fi al-Islam [Habari kuhusu waliotawala Misri katika Uislamu] - mswada)\n• (Nuzhat al-Albab fi al-Alqab [Burudisho la akili kuhusu lakabu] - mswada), kuna nakala adimu katika Chuo Kikuu cha Riyadh (kurasa 54, namba 52), kama ilivyo katika kumbukumbu za al-Maymani - mswada [umechapishwa]\n• (Al-Dibaja [Utangulizi] - kimechapishwa), kuhusu hadithi\n• (Fath al-Bari fi Sharh Sahih al-Bukhari [Ushindi wa Muumba katika ufafanuzi wa Sahih al-Bukhari] - kimechapishwa)\n• (Al-Talkhis al-Habir fi Takhrij Ahadith al-Rafii al-Kabir [Muhtasari wenye ustadi kuhusu uhakiki wa hadithi za kitabu kikubwa cha al-Rafii] - kimechapishwa)\n• (Bulugh al-Maram min Adillat al-Ahkam [Kufikia lengo kwa dalili za hukumu] - kimechapishwa), pamoja na ufafanuzi wake (Subul al-Salam fi Sharh Bulugh al-Maram [Njia za amani katika ufafanuzi wa Bulugh al-Maram] - kimechapishwa) wa Muhammad bin Ismail al-Amir\n• (Taghliq al-Taliq [Kukamilisha maelezo yaliyoachwa] - mswada), sehemu zake sita zinahusu hadithi (1) [umechapishwa].\nMwanafunzi wake al-Sakhawi aliandika kitabu kuhusu wasifu wake kilichoitwa (Al-Jawahir wa al-Durar fi Tarjamat Shaykh al-Islam Ibn Hajar [Vito na lulu kuhusu wasifu wa Shaykh al-Islam Ibn Hajar]), katika juzuu kubwa (2).\n_________\n(1) Al-Azhariyya 1: 432, toleo la pili.\n(2) Al-Tabr al-Masbuk 230; Ibn Shaqada - mswada -; Al-Daw al-Lami 2: 36; Al-Badr al-Tali 1: 87; Khitat Mubarak 6: 37; Adab al-Lugha 3: 165; Lisan al-Mizan 6: hitimisho la msahihishaji wa chapa yake; Al-Durar al-Kamina 4: hitimisho la mchapishaji; Badai al-Zuhur 2: 32, ambamo kifo chake kimeandikwa kuwa mwaka 854 H; Al-Fihris al-Tamhidi 396, 423, 424, 442 na 563; Dairat al-Maarif al-Islamiyya 1: 131. Tazama pia wasifu wake alioandika mwenyewe katika kitabu chake Raf al-Isr 1: 85.\nImenukuliwa kutoka Al-Alam ya al-Zirikli, pamoja na nyongeza chache zilizo kwenye mabano ya mraba&quot;,&quot;tr&quot;:&quot;İbn Hacer el-Askalânî (٧٧٣ - ٨٥٢ H = ١٣٧٢ - ١٤٤٩)\nAhmed b. Ali b. Muhammed el-Kinânî el-Askalânî, Ebü’l-Fazl, Şehâbeddin, İbn Hacer\n• İlim ve tarih alanlarının önde gelen isimlerindendi. Aslı Askalân’dan (Filistin) olup Kahire’de doğdu ve burada vefat etti.\n• Önce edebiyat ve şiire ilgi duydu, ardından hadis ilmine yöneldi. Şeyhlerden hadis dinlemek için Yemen, Hicaz ve başka yerlere yolculuk yaptı.\n• Şöhreti yayıldı; insanlar kendisinden ilim almak için yanına geldi ve çağının İslâm dünyasındaki en büyük hadis hâfızı oldu. Sehâvî şöyle der: “Eserleri daha hayattayken yayıldı; hükümdarlar bunları birbirlerine hediye etti, ileri gelenler nüshalarını yazdı.”\n• Dili fasih, şiir rivayetinde güçlü, önceki nesillerin günlerini ve sonraki nesillerin haberlerini bilen, güzel yüzlü biriydi.\n• Mısır’da birkaç defa kadılık yaptı, ardından görevinden ayrıldı.\nEserleri çok sayıda ve önemlidir. Bunlardan bazıları:\n• (ed-Dürerü’l-kâmine fî a‘yâni’l-mieti’s-sâmine – basılı) Dört cilt.\n• (Lisânü’l-mîzân – basılı) Biyografi kitabı, altı cüz.\n• (el-İhkâm li-beyâni mâ fi’l-Kur’ân mine’l-ahkâm – yazma)\n• (Dîvânü şi‘r – yazma) Escorial’de gördüm (no. ٤٤٤); Hindistan’da basılmıştır.\n• (el-Kâfî eş-şâf fî tahrîci ehâdîsi’l-Keşşâf – basılı)\n• (Zeylü’d-Düreri’l-kâmine – yazma)\n• (Elkâbü’r-ruvât – yazma)\n• (Takrîbü’t-Tehzîb – basılı) Hadis râvilerinin isimleri hakkındadır.\n• (el-İsâbe fî temyîzi esmâi’s-sahâbe – basılı)\n• (Tehzîbü’t-Tehzîb – basılı) Hadis râvileri hakkındadır; on iki cilt.\n• (Ta‘cîlü’l-menfa‘a bi-zevâidi ricâli’l-eimmeti’l-erbaa – basılı)\n• (Ta‘rîfü ehli’t-takdîs – basılı) Tabakâtü’l-müdellisîn adıyla da bilinir.\n• (Bulûğü’l-merâm min edilleti’l-ahkâm)\n• (el-Mecma‘u’l-müesses bi’l-mu‘cemi’l-müfehres – yazma) İki cüz; isnadlar ve kitaplar [basılmıştır].\n• (Tuhfetü ehli’l-hadîs an şüyûhi’l-hadîs – yazma) Üç cilt.\n• (Nüzhetü’n-nazar fî tavdîhi Nuhbeti’l-fiker – basılı) Hadis usulü terimleri hakkındadır.\n• (el-Mecâlis – yazma) Bikāî’nin hattıyla 193 meclis. Meymenî, (Hatıratım – yazma) adlı eserinde şöyle der: “Önemli, kıymetli ve nadir bir nüsha.”\n• (el-Kavlü’l-müsedded fi’z-zebbi an Müsnedi’l-imâm Ahmed – basılı)\n• (Dîvânü hutab – basılı)\n• (Tesdîdü’l-kavs fî muhtasari’l-Firdevs li’d-Deylemî – yazma) Altı cilt; üçüncü cildi eksiktir.\n• (Tabsîrü’l-müntebih fî tahrîri’l-müştebih – basılı) Dört cüz.\n• (Ref‘u’l-isr an kudâti Mısr – basılı)\n• (İnbâü’l-gamr bi-ebnâi’l-umr – basılı) İki büyük cilt.\n• (İthâfü’l-mehere bi-etrâfi’l-aşere – yazma) Hadis [basılmıştır].\n• (el-İ‘lâm fîmen veliye Mısr fi’l-İslâm – yazma)\n• (Nüzhetü’l-elbâb fi’l-elkāb – yazma) Riyad Üniversitesi’nde değerli bir nüshası vardır (٥٤ varak, no. ٥٢); Meymenî’nin Hatıratım’ında da anılır – yazma [basılmıştır].\n• (ed-Dîbâce – basılı) Hadis hakkındadır.\n• (Fethu’l-bârî bi-şerhi Sahîhi’l-Buhârî – basılı)\n• (et-Telhîsü’l-habîr fî tahrîci ehâdîsi’r-Râfiî el-kebîr – basılı)\n• (Bulûğü’l-merâm min edilleti’l-ahkâm – basılı); Muhammed b. İsmail el-Emîr’in şerhi (Sübülü’s-selâm fî şerhi Bulûği’l-merâm – basılı) ile birlikte.\n• (Ta‘lîku’t-ta‘lîk – yazma) Hadis alanında altı cüzü mevcuttur (١) [basılmıştır].\nÖğrencisi Sehâvî’nin, İbn Hacer’in biyografisine dair el-Cevâhir ve’d-dürer fî tercemeti Şeyhi’l-İslâm İbn Hacer adlı, büyük boy bir ciltlik eseri vardır (٢).\n_________\n(١) el-Ezheriyye ١: ٤٣٢, ikinci baskı.\n(٢) et-Tibrü’l-mesbûk ٢٣٠; İbn Şukde – yazma –; ed-Dav’ü’l-lâmi‘ ٢: ٣٦; el-Bedrü’t-tâli‘ ١: ٨٧; Hitatü Mübârek ٦: ٣٧; Âdâbü’l-luga ٣: ١٦٥; Lisânü’l-mîzân ٦: basım tashihçisinin son sözü; ed-Dürerü’l-kâmine ٤: yayıncının son sözü; Bedâi‘u’z-zühûr ٢: ٣٢ (burada vefat yılı ٨٥٤ H olarak verilmiştir); el-Fihrisü’t-temhîdî ٣٩٦, ٤٢٣, ٤٢٤, ٤٤٢ ve ٥٦٣; Dâiretü’l-meârif el-İslâmiyye ١: ١٣١. Kendi biyografisi için Ref‘u’l-isr ١: ٨٥’e bakınız.\nEz-Ziriklî’nin el-A‘lâm’ından aktarılmış, köşeli parantez içinde küçük eklemeler yapılmıştır.&quot;,&quot;ur&quot;:&quot;ابن حجر عسقلانی (٧٧٣ - ٨٥٢ھ = ١٣٧٢ - ١٤٤٩ء)\nاحمد بن علی بن محمد کنانی عسقلانی، ابو الفضل، شہاب الدین، ابن حجر\n• علم و تاریخ کے ائمہ میں سے تھے۔ ان کا اصل تعلق عسقلان (فلسطین) سے تھا اور پیدائش و وفات قاہرہ میں ہوئی۔\n• ادب اور شاعری سے شغف رکھتے تھے، پھر حدیث کی طرف متوجہ ہوئے۔ شیوخ سے سماع کے لیے یمن، حجاز اور دیگر علاقوں کا سفر کیا۔\n• ان کی شہرت بلند ہوئی تو لوگ ان سے علم حاصل کرنے کے لیے آنے لگے، اور وہ اپنے زمانے کے حافظِ اسلام بن گئے۔ سخاوی نے کہا: «ان کی تصانیف ان کی زندگی ہی میں پھیل گئیں، بادشاہ انہیں ایک دوسرے کو تحفے میں دیتے اور بڑے لوگ ان کی نقلیں تیار کرتے تھے۔»\n• زبان کے فصیح، شعر کے راوی، قدیم لوگوں کے حالات اور متاخرین کی خبروں کے جاننے والے اور خوش شکل تھے۔\n• کئی مرتبہ مصر کے قاضی مقرر ہوئے، پھر مستعفی ہو گئے۔\nان کی تصانیف بہت زیادہ اور بلند پایہ ہیں، ان میں سے چند یہ ہیں:\n• «الدرر الكامنة في أعيان المئة الثامنة (آٹھویں صدی کی ممتاز شخصیات کے حالات)» — مطبوعہ، چار جلدیں\n• «لسان الميزان (میزان کی زبان)» — مطبوعہ، چھ حصے، تراجم\n• «الإحكام لبيان ما في القرآن من الأحكام (قرآن کے احکام کی وضاحت کے لیے فیصلہ کن بیان)» — مخطوطہ\n• «ديوان شعر (شعری مجموعہ)» — مخطوطہ؛ میں نے اسے اسکوریال میں دیکھا (نمبر ٤٤٤)، اور ہندوستان میں شائع ہوا\n• «الكافي الشاف في تخريج أحاديث الكشاف (تفسیر کشاف کی احادیث کی تخریج میں کافی و شافی کتاب)» — مطبوعہ\n• «ذيل الدرر الكامنة (الدرر الكامنة کا ذیل)» — مخطوطہ\n• «ألقاب الرواة (راویوں کے القاب)» — مخطوطہ\n• «تقريب التهذيب (تہذیب کا خلاصہ)» — مطبوعہ، علمِ حدیث کے راویوں کے ناموں کے بارے میں\n• «الإصابة في تمييز أسماء الصحابة (صحابہ کے ناموں کی شناخت میں الإصابة)» — مطبوعہ\n• «تهذيب التهذيب (تہذیب کی تہذیب)» — مطبوعہ، علمِ حدیث کے راویوں کے بارے میں، بارہ جلدیں\n• «تعجيل المنفعة بزوائد رجال الأئمة الأربعة (چار اماموں کے رجال کے اضافوں سے فوری فائدہ)» — مطبوعہ\n• «تعريف أهل التقديس (اہلِ تقدیس کا تعارف)» — مطبوعہ؛ طبقات المدلسين کے نام سے معروف\n• «بلوغ المرام من أدلة الأحكام (احکام کے دلائل سے مطلوب تک رسائی)»\n• «المجمع المؤسس بالمعجم المفهرس (فہرست وار معجم کے ساتھ قائم کردہ مجموعہ)» — مخطوطہ، دو حصے، اسناد اور کتابیں [مطبوعہ]\n• «تحفة أهل الحديث عن شيوخ الحديث (اہلِ حدیث کے لیے شیوخِ حدیث کا تحفہ)» — مخطوطہ، تین جلدیں\n• «نزهة النظر في توضيح نخبة الفكر (نخبۃ الفکر کی وضاحت میں نظر کی سیر)» — مطبوعہ، اصطلاحِ حدیث کے بارے میں\n• «المجالس (مجالس)» — مخطوطہ؛ بقاعی کے قلم سے ١٩٣ مجلسیں۔ میمنی نے اپنی یادداشتوں میں کہا: «یہ ایک عمدہ، اہم اور نادر نسخہ ہے۔»\n• «القول المسدد في الذب عن مسند الإمام أحمد (مسند امام احمد کے دفاع میں درست بات)» — مطبوعہ\n• «ديوان خطب (خطبات کا مجموعہ)» — مطبوعہ\n• «تسديد القوس في مختصر الفردوس للديلي (دیلمی کی مختصر الفردوس میں قوس کو درست کرنا)» — مخطوطہ، چھ جلدیں، تیسری جلد نامکمل\n• «تبصير المنتبه في تحرير المشتبه (مشتبہ الفاظ کی تحقیق میں خبردار کرنے والی بصیرت)» — مطبوعہ، چار حصے\n• «رفع الإصر عن قضاة مصر (مصر کے قاضیوں سے بوجھ اٹھانا)» — مطبوعہ\n• «إنباء الغمر بأنباء العمر (عمر کے واقعات کی خبر دینا)» — مطبوعہ، دو ضخیم جلدیں\n• «إتحاف المهرة بأطراف العشرة (عشرہ کی اطراف کے ساتھ ماہرین کو تحفہ دینا)» — مخطوطہ، حدیث [مطبوعہ]\n• «الإعلام في من ولي مصر في الإسلام (اسلام میں مصر کے حکمرانوں کا بیان)» — مخطوطہ\n• «نزهة الألباب في الألقاب (القاب کے باب میں عقلوں کی سیر)» — مخطوطہ؛ اس کا ایک نفیس نسخہ جامعہ ریاض میں ہے (٥٤ ورق، نمبر ٥٢)، جیسا کہ میمنی کی یادداشتوں میں ہے — مخطوطہ [مطبوعہ]\n• «الديباجة (دیباچہ)» — مطبوعہ، حدیث کے بارے میں\n• «فتح الباري في شرح صحيح البخاري (صحیح بخاری کی شرح میں فتح الباری)» — مطبوعہ\n• «التلخيص الحبير في تخريج أحاديث الرافعي الكبير (الرافعي الكبير کی احادیث کی تخریج میں جامع تلخیص)» — مطبوعہ\n• «بلوغ المرام من أدلة الأحكام (احکام کے دلائل سے مطلوب تک رسائی)» — مطبوعہ، اس کی شرح «سبل السلام في شرح بلوغ المرام (بلوغ المرام کی شرح میں سلامتی کی راہیں)»، از محمد بن اسماعیل امیر\n• «تغليق التعليق (تعلیق کی تکمیل)» — اس کے چھ حصے مخطوطہ ہیں، حدیث کے بارے میں (١) [مطبوعہ]۔\nان کے شاگرد سخاوی نے ان کے حالات میں ایک کتاب لکھی، جس کا نام «الجواهر والدرر في ترجمة شيخ الإسلام ابن حجر (شیخ الاسلام ابن حجر کے حالات میں جواہر و موتی)» رکھا۔ یہ ایک ضخیم جلد میں ہے (٢)۔\n_________\n(١) الأزهرية ١: ٤٣٢، دوسرا ایڈیشن۔\n(٢) التبر المسبوك ٢٣٠، ابن شقدة — مخطوطہ —، الضوء اللامع ٢: ٣٦، البدر الطالع ١: ٨٧، خطط مبارك ٦: ٣٧، آداب اللغة ٣: ١٦٥، لسان الميزان ٦: اس کے محقق کا اختتامیہ، اور الدرر الكامنة ٤: ناشر کا اختتامیہ۔ نیز بدائع الزهور ٢: ٣٢، جس میں ان کی وفات ٨٥٤ھ لکھی ہے؛ الفهرس التمهيدي ٣٩٦، ٤٢٣، ٤٢٤، ٤٤٢، ٥٦٣؛ دائرة المعارف الإسلامية ١: ١٣١۔ ان کے اپنے حالات کے لیے ان کی کتاب رفع الإصر ١: ٨٥ دیکھیے۔\nالزركلي کی الأعلام سے نقل، مع قوسین میں چند معمولی اضافوں کے&quot;,&quot;zh&quot;:&quot;伊本·哈杰尔·阿斯盖拉尼（773—852年／1372—1449年）\n艾哈迈德·本·阿里·本·穆罕默德·基纳尼·阿斯盖拉尼，艾布·法德勒，希哈布丁，伊本·哈杰尔。\n• 他是学术与历史领域的权威学者。祖籍阿斯盖兰（巴勒斯坦），生于开罗，卒于开罗。\n• 他起初醉心文学与诗歌，后来转向圣训学，曾前往也门、汉志等地聆听各位谢赫讲授。\n• 他声名日隆，众人纷纷前来向他求学，成为当时伊斯兰世界的圣训大师。萨哈维说：“他的著作在世时便广为流传，诸王竞相传阅，名家争相抄录。”\n• 他口才流利，擅长吟诵诗歌，熟知前代的历史与后世的掌故，仪表俊朗。\n• 他曾多次出任埃及法官，后来辞职归隐。\n他的著作数量众多，且价值卓著，其中包括：\n• 《八世纪名人传记集》（印行本），四卷。\n• 《天平之舌》（印行本），六册，收录人物传记。\n• 《阐明古兰经中的律例》（手稿）。\n• 《诗集》（手稿）；我曾在埃斯科里亚尔图书馆见到此书（编号444），后在印度刊行。\n• 《卡沙夫经圣训出处考》（印行本）。\n• 《八世纪名人传记集续编》（手稿）。\n• 《传述者的称号》（手稿）。\n• 《圣训传述者提要》（印行本），介绍圣训传述者。\n• 《辨识圣门弟子姓名》（印行本）。\n• 《圣训传述者修订》（印行本），十二卷，介绍圣训传述者。\n• 《以四大伊玛目的传述者增补获益》（印行本）。\n• 《圣训伪托者简介》（印行本），又称《伪托者阶层》。\n• 《律例证据汇编》。\n• 《分类索引汇编》（手稿），两卷，收录传承链与书目［已刊行］。\n• 《圣训学者谢赫传略》（手稿），三卷。\n• 《洞察之旅：阐释思想精粹》（印行本），论述圣训学术术语。\n• 《讲学集》（手稿），布盖伊抄本，共193场讲学。迈伊曼尼在《回忆录》（手稿）中称：“这是一个珍贵、重要而罕见的抄本。”\n• 《公正之论：为艾哈迈德伊玛目的〈穆斯奈德圣训集〉辩护》（印行本）。\n• 《讲道集》（印行本）。\n• 《迪莱伊的〈菲尔道斯提要〉补编》（手稿），六卷，缺第三卷。\n• 《警醒之辨：校订易混淆之处》（印行本），四部分。\n• 《解除埃及法官的责任》（印行本）。\n• 《岁月洪流中的往事记述》（印行本），两大卷。\n• 《圣训学者珍宝：十部圣训集的篇目索引》（手稿），圣训类［已刊行］。\n• 《伊斯兰时期埃及执政者纪事》（手稿）。\n• 《称谓之精华》（手稿）；利雅得大学藏有一部珍贵抄本（54叶，编号52），见迈伊曼尼《回忆录》（手稿）［已刊行］。\n• 《导言》（印行本），论圣训。\n• 《布哈里圣训实录注释：拜里圣训注》（印行本）。\n• 《拉菲仪大著〈圣训出处考〉补遗》（印行本）。\n• 《律例证据汇编》（印行本），附穆罕默德·本·伊斯玛仪·艾米尔所作注释《和平之路：〈律例证据汇编〉注释》；\n• 《悬挂注释考》（手稿），圣训类，共六卷之一［已刊行］。\n他的弟子萨哈维为他撰写了一部传记，题为《珠宝与珍珠：伊斯兰教长伊本·哈杰尔传》，共一大卷。\n_________\n（1）《艾资哈尔图书馆藏书目录》1：432，第二版。\n（2）《镀金珍珠》230；《伊本·沙格达》（手稿）；《璀璨之光》2：36；《升起之月》1：87；《穆巴拉克规划》6：37；《语言文学》3：165；《天平之舌》6：校订者跋；《八世纪名人传记集》4：出版者跋；《花朵奇闻》2：32（其中称其卒于伊历854年）；《导论索引》396、423、424、442、563；《伊斯兰百科全书》1：131。另见他在自己的《解除埃及法官的责任》1：85中所作自传。\n引自扎里克利《名人录》，并略有补充，补充内容以方括号标出。&quot;}" data-original=""></div>
+                                <details
+                  class="mt-3"
+                                  >
+                  <summary class="cursor-pointer text-zinc-500 dark:text-zinc-400">Arabic original</summary>
+                  <div
+                    class="prose-sm mt-2"
+                    dir="rtl"
+                    lang="ar"
+                  >
+                    
 ابن حَجَر العَسْقلاني (٧٧٣ - ٨٥٢ هـ = ١٣٧٢ - ١٤٤٩ م)أحمد بن علي بن محمد الكناني العسقلاني، أبو الفضل، شهاب الدين، ابن حَجَر• من أئمة العلم والتاريخ. أصله من عسقلان (بفلسطين) ومولده ووفاته بالقاهرة.• ولع بالأدب والشعر ثم أقبل على الحديث، ورحل إلى اليمن والحجاز وغيرهما لسماع الشيوخ،• وعلت له شهرة فقصده الناس للأخذ عنه وأصبح حافظ الإسلام في عصره، قال السخاويّ: (انتشرت مصنفاته في حياته وتهادتها الملوك وكتبها الأكابر)• وكان فصيح اللسان، راوية للشعر، عارفا بأيام المتقدمين وأخبار المتأخرين، صبيح الوجه.• وولي قضاء مصر مرات ثم اعتزل.أما تصانيفه فكثيرة جليلة، منها:• (الدرر الكامنة في أعيان المئة الثامنة - ط) أربعة مجلدات• (لسان الميزان - ط) ستة أجزاء، تراجم،• (الإحكام لبيان ما في القرآن من الأحكام - خ)• (ديوان شعر - خ) رأيته في الاسكوريال (الرقم ٤٤٤) وطبع في الهند• (الكافي الشاف في تخريج أحاديث الكشاف - ط)• (ذيل الدرر الكامنة - خ)• (ألقاب الرواة - خ)• (تقريب التهذيب - ط) في أسماء رجال الحديث• (الإصابة في تمييز أسماء الصحابة - ط)• (تهذيب التهذيب - ط) في رجال الحديث، اثنا عشر مجلدا• (تعجيل المنفعة بزوائد رجال الأئمة الأربعة - ط)• (تعريف أهل التقديس - ط) ويعرف بطبقات المدلّسين• (بلوغ المرام من أدلة الأحكام)• (المجمع المؤسس بالمعجم المفهرس - خ) جزآن، أسانيد وكتب [طُبع]• (تحفة أهل الحديث عن شيوخ الحديث - خ) ثلاث مجلدات• (نزهة النظر في توضيح نخبة الفكر - ط) في اصطلاح الحديث• (المجالس - خ) بخط البقاعي ١٩٣ مجلسا، قال الميمني (في مذكراته - خ): نسخة جليلة مهمة نادرة• (القول المسدَّد في الذب عن مسند الإمام أحمد - ط)• (ديوان خطب - ط)• (تسديد القوس في مختصر الفردوس للديلي - خ) ستة مجلدات، تنقص الثالث• (تبصير المنتبه في تحرير المشتبه - ط) في أربعة أجزاء• (رفع الإصر عن قضاة مصر - ط)• (إنباء الغمر بأنباء العمر - ط) في مجلدين ضخمين• (إتحاف المَهرة بأطراف العشرة - خ) حديث [طُبع]• (الإعلام في من ولي مصر في الإسلام - خ)• (نزهة الألباب في الألقاب - خ) منه نسخة نفيسة في جامعة الرياض (٥٤ ورقة الرقم ٥٢) كما في مذكرات الميمني - خ [طُبع]• (الديباجة - ط) في الحديث• (فتح الباري في شرح صحيح البخاري - ط)• (التلخيص الحبير في تخريج أحاديث الرافعي الكبير - ط)• (بلوغ المرام من أدلة الأحكام - ط) مع شرحه (سبل السلام في شرح بلوغ المرام - ط) لمحمد بن إسماعيل الأمير• (تغليق التعليق - خ) ستة أجزاء منه، في الحديث <span class="footnote-mark">(١)</span> [طُبع].ولتلميذه السخاوي كتاب في ترجمته سماه (الجواهر والدرر في ترجمة شيخ الإسلام ابن حجر) في مجلد ضخم <span class="footnote-mark">(٢)</span>._________<span class="footnote-mark">(١)</span> الأزهرية ١: ٤٣٢ الطبعة الثانية.<span class="footnote-mark">(٢)</span> التبر المسبوك ٢٣٠ وابن شقدة - خ - والضوء اللامع ٢: ٣٦ والبدر الطالع ١: ٨٧ وخطط مبارك ٦: ٣٧ وآداب اللغة ٣: ١٦٥ ولسان الميزان ٦: خاتمته لمصحح طبعه. والدرر الكامنة ٤: خاتمته للناشر. وبدائع الزهور ٢: ٣٢ وفيه وفاته سنة ٨٥٤ هـ والفهرس التمهيدي ٣٩٦ و ٤٢٣ و ٤٢٤ و ٤٤٢، و ٥٦٣ ودائرة المعارف الإسلامية ١: ١٣١ وانظر ترجمته لنفسه في كتابه رفع الإصر ١: ٨٥.نقلا عن الأعلام للزركلي، مع إضافات يسيرة بين [معقوفين]
 <hr>
 <ul><li>أمالي الأذكار في فضل صلاة التسبيح</li><li>إتحاف المهرة بالفوائد المبتكرة من أطراف العشرة</li><li>إطراف المسند المعتلي بأطراف المسند الحنبلي</li><li>إنباء الغمر بأبناء العمر - ت حبشي</li><li>إنباء الغمر بأبناء العمر - ط الهندية</li><li>الأحاديث العشرة العشارية الاختيارية لابن حجر</li><li>الأمالي الحلبية</li><li>الأمالي السفرية الحلبية</li><li>الأمالي المطلقة</li><li>الإصابة في تمييز الصحابة</li><li>الإمتاع بالأربعين المتباينة السماع</li><li>الإيثار بمعرفة رواة الآثار</li><li>التلخيص الحبير - ط أضواء السلف</li><li>التلخيص الحبير - ط العلمية</li><li>التلخيص الحبير - ط قرطبة</li><li>الدراية في تخريج أحاديث الهداية</li><li>الدرر الكامنة في أعيان المائة الثامنة - ط الهندية الأولى</li><li>الدرر الكامنة في أعيان المائة الثامنة - ط الهندية الثانية</li><li>الزهر النضر في حال الخضر</li><li>العجاب في بيان الأسباب</li><li>القول المسدد في الذب عن مسند أحمد</li><li>الكلام على حديث امرأتي لا ترد يد لامس لابن حجر</li><li>المجمع المؤسس للمعجم المفهرس</li><li>المرحمة الغيثية بالترجمة الليثية</li><li>المطالب العالية بزوائد المسانيد الثمانية</li><li>المطالب العالية محققا</li><li>المعجم المفهرس = تجريد أسانيد الكتب المشهورة والأجزاء المنثورة</li><li>المنتخب من أمالي ابن حجر من تخريج مختصر ابن الحاجب</li><li>النكت على صحيح البخاري</li><li>النكت على كتاب ابن الصلاح لابن حجر</li><li>الوقوف على الموقوف</li><li>انتقاض الاعتراض في الرد على العيني في شرح البخاري</li><li>بلوغ المرام من أدلة الأحكام - ت الفحل</li><li>بلوغ المرام من أدلة الأحكام ت الزهيري</li><li>تبصير المنتبه بتحرير المشتبه</li><li>تخريج حديث الأسماء الحسنى</li><li>تعجيل المنفعة</li><li>تغليق التعليق</li><li>تقريب التهذيب</li><li>تقريظ لابن حجر على الرد الوافر</li><li>تهذيب التهذيب - ط الرسالة</li><li>تهذيب التهذيب - ط المعرفة</li><li>تهذيب التهذيب - ط الهندية</li><li>تهذيب التهذيب - ط دبي</li><li>جزء في طرق حديث لا تسبوا أصحابي</li><li>رفع الإصر عن قضاة مصر</li><li>زهر الفردوس = الغرائب الملتقطة من مسند الفردوس</li><li>سلسلة الذهب</li><li>طبقات المدلسين = تعريف أهل التقديس بمراتب الموصوفين بالتدليس</li><li>عوالي مسلم لابن حجر</li><li>فتح الباري بشرح البخاري - ط السلفية</li><li>قطعة من نتائج الأفكار في تخريج أحاديث الأذكار</li><li>لسان الميزان - ت أبي غدة</li><li>لسان الميزان - ط الهندية</li><li>مختصر زوائد مسند البزار على الكتب الستة ومسند أحمد</li><li>مسائل أجاب عنها الحافظ ابن حجر العسقلاني</li><li>معجم الشيخة مريم - رسالة جامعية</li><li>معجم الشيخة مريم - ط الثقافة</li><li>موافقة الخبر الخبر في تخريج أحاديث المختصر</li><li>نتائج الأفكار في تخريج أحاديث الأذكار</li><li>نخبة الفكر - ت القاسم</li><li>نخبة الفكر - ط دار الحديث</li><li>نزهة الألباب في الألقاب</li><li>نزهة السامعين في رواية الصحابة عن التابعين</li><li>نزهة النظر في توضيح نخبة الفكر - ت الرحيلي ط 3</li><li>نزهة النظر في توضيح نخبة الفكر - ت القاسم</li><li>نزهة النظر في توضيح نخبة الفكر - ت عتر</li><li>نظم اللآلي بالمائة العوالي</li><li>هداية الرواة - مع تخريج المشكاة الثاني للألباني</li><li>هدي الساري مقدمة فتح الباري - ط السلفية</li></ul>
 
-      </div>
-    </template>
-  
-      <section class="panel">
-      <h2><span data-t="About the book">About the book</span></h2>
-      <dl class="book-card">
-                              <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Title&quot;,&quot;es&quot;:&quot;Título&quot;,&quot;fr&quot;:&quot;Titre&quot;,&quot;id&quot;:&quot;Judul&quot;,&quot;ja&quot;:&quot;書名&quot;,&quot;ru&quot;:&quot;Название&quot;,&quot;sw&quot;:&quot;Jina la kitabu&quot;,&quot;tr&quot;:&quot;Kitap adı&quot;,&quot;ur&quot;:&quot;نام کتاب&quot;,&quot;zh&quot;:&quot;书名&quot;}" data-original="الكتاب">الكتاب</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Attainment of the Goal from the Evidences for Rulings)&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam [Alcanzar el objetivo mediante las pruebas jurídicas]&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (L&#039;accès au but grâce aux preuves des règles juridiques)&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Mencapai Tujuan dari Dalil-Dalil Hukum)&quot;,&quot;ja&quot;:&quot;ブルーグ・アル＝マラーム・ミン・アディッラティ・アル＝アフカーム（法規定の根拠からの到達）&quot;,&quot;ru&quot;:&quot;Булуг аль-марам мин адиллят аль-ахкам (Достижение цели на основании доказательств правовых предписаний)&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia lengo kwa dalili za hukumu)&quot;,&quot;tr&quot;:&quot;Bulûğu&#039;l-merâm min edilleti&#039;l-ahkâm (Ahkâm delilleriyle buluğa ermek)&quot;,&quot;ur&quot;:&quot;بلوغ المرام من أدلة الأحكام (احکام کے دلائل سے مقصود تک رسائی)&quot;,&quot;zh&quot;:&quot;《律例证据汇编》&quot;}" data-original="بلوغ المرام من أدلة الأحكام">بلوغ المرام من أدلة الأحكام</span></dd>
+                  </div>
+                </details>
+              </div>
             </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Author&quot;,&quot;es&quot;:&quot;Autor&quot;,&quot;fr&quot;:&quot;Auteur&quot;,&quot;id&quot;:&quot;Penulis&quot;,&quot;ja&quot;:&quot;著者&quot;,&quot;ru&quot;:&quot;Автор&quot;,&quot;sw&quot;:&quot;Mwandishi&quot;,&quot;tr&quot;:&quot;Yazar&quot;,&quot;ur&quot;:&quot;مصنف&quot;,&quot;zh&quot;:&quot;作者&quot;}" data-original="المؤلف">المؤلف</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Abu al-Fadl Ahmad ibn Ali ibn Muhammad ibn Ahmad ibn Hajar al-Asqalani (d. 852 AH)&quot;,&quot;es&quot;:&quot;Abu al-Fadl Ahmad ibn Ali ibn Muhammad ibn Ahmad ibn Hajar al-Asqalani (m. 852 H)&quot;,&quot;fr&quot;:&quot;Abu al-Fadl Ahmad ibn Ali ibn Muhammad ibn Ahmad ibn Hajar al-Asqalani (mort en 852 H)&quot;,&quot;id&quot;:&quot;Abu al-Fadl Ahmad bin Ali bin Muhammad bin Ahmad bin Hajar al-Asqalani (w. 852 H)&quot;,&quot;ja&quot;:&quot;アブー・アル＝ファドル・アフマド・イブン・アリー・イブン・ムハンマド・イブン・アフマド・イブン・ハジャル・アル＝アスカラーニー（没年：ヒジュラ暦852年）&quot;,&quot;ru&quot;:&quot;Абуль-Фадль Ахмад ибн Али ибн Мухаммад ибн Ахмад ибн Хаджар аль-Аскаляни (ум. 852 г. х.)&quot;,&quot;sw&quot;:&quot;Abu al-Fadl Ahmad bin Ali bin Muhammad bin Ahmad bin Hajar al-Asqalani (alifariki 852 H)&quot;,&quot;tr&quot;:&quot;Ebü&#039;l-Fazl Ahmed b. Ali b. Muhammed b. Ahmed b. Hacer el-Askalânî (ö. 852 H)&quot;,&quot;ur&quot;:&quot;أبو الفضل أحمد بن علي بن محمد بن أحمد بن حجر العسقلاني (ت ٨٥٢ھ)&quot;,&quot;zh&quot;:&quot;艾布·法德勒·艾哈迈德·本·阿里·本·穆罕默德·本·艾哈迈德·本·哈杰尔·阿斯盖兰尼（卒于伊历852年）&quot;}" data-original="أبو الفضل أحمد بن علي بن محمد بن أحمد بن حجر العسقلاني (ت ٨٥٢ هـ)">أبو الفضل أحمد بن علي بن محمد بن أحمد بن حجر العسقلاني (ت ٨٥٢ هـ)</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Editor&quot;,&quot;es&quot;:&quot;Edición crítica&quot;,&quot;fr&quot;:&quot;Édition critique&quot;,&quot;id&quot;:&quot;Pentahkik&quot;,&quot;ja&quot;:&quot;校訂者&quot;,&quot;ru&quot;:&quot;Тахкик&quot;,&quot;sw&quot;:&quot;Mhakiki&quot;,&quot;tr&quot;:&quot;Tahkik eden&quot;,&quot;ur&quot;:&quot;محقق&quot;,&quot;zh&quot;:&quot;校勘者&quot;}" data-original="المحقق">المحقق</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dr. Mahir Yasin al-Fahl&quot;,&quot;es&quot;:&quot;Doctor Mahir Yasin al-Fahl&quot;,&quot;fr&quot;:&quot;Dr Maher Yasin al-Fahl&quot;,&quot;id&quot;:&quot;Dr. Mahir Yasin al-Fahl&quot;,&quot;ja&quot;:&quot;マーヒル・ヤースィーン・アル＝ファハル博士&quot;,&quot;ru&quot;:&quot;Доктор Махир Ясин аль-Фахль&quot;,&quot;sw&quot;:&quot;Dkt. Mahir Yasin al-Fahl&quot;,&quot;tr&quot;:&quot;Dr. Mahir Yasin el-Fahl&quot;,&quot;zh&quot;:&quot;马希尔·亚辛·法赫勒博士&quot;}" data-original="الدكتور ماهر ياسين الفحل">الدكتور ماهر ياسين الفحل</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Publisher&quot;,&quot;es&quot;:&quot;Editorial&quot;,&quot;fr&quot;:&quot;Éditeur&quot;,&quot;id&quot;:&quot;Penerbit&quot;,&quot;ja&quot;:&quot;出版社&quot;,&quot;ru&quot;:&quot;Издательство&quot;,&quot;sw&quot;:&quot;Mchapishaji&quot;,&quot;tr&quot;:&quot;Yayınevi&quot;,&quot;ur&quot;:&quot;ناشر&quot;,&quot;zh&quot;:&quot;出版社&quot;}" data-original="الناشر">الناشر</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar al-Qabas for Publishing and Distribution, Riyadh - Kingdom of Saudi Arabia&quot;,&quot;es&quot;:&quot;Dar al-Qabas li-l-Nashr wa-l-Tawzi, Riad - Reino de Arabia Saudí&quot;,&quot;fr&quot;:&quot;Dar al-Qabas lil-Nashr wa al-Tawzi, Riyad - Royaume d&#039;Arabie saoudite&quot;,&quot;id&quot;:&quot;Dar al-Qabas li an-Nasyr wa at-Tawzi&#039;, Riyadh - Kerajaan Arab Saudi&quot;,&quot;ja&quot;:&quot;ダール・アル＝カブス出版・販売、リヤード（サウジアラビア王国）&quot;,&quot;ru&quot;:&quot;Дар аль-Кабс ли-н-нашр ва-т-тавзи&#039;, Эр-Рияд — Королевство Саудовская Аравия&quot;,&quot;sw&quot;:&quot;Dar al-Qabas lil-Nashr wa al-Tawzi, Riyadh - Ufalme wa Saudi Arabia&quot;,&quot;tr&quot;:&quot;Dar al-Qabas li&#039;l-Nashr wa&#039;l-Tawzi&#039;, Riyad - Suudi Arabistan&quot;,&quot;ur&quot;:&quot;دار القبس للنشر والتوزيع، ریاض - سعودی عرب&quot;,&quot;zh&quot;:&quot;利雅得盖卜斯出版发行社，沙特阿拉伯王国&quot;}" data-original="دار القبس للنشر والتوزيع، الرياض - المملكة العربية السعودية">دار القبس للنشر والتوزيع، الرياض - المملكة العربية السعودية</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Edition&quot;,&quot;es&quot;:&quot;Edición&quot;,&quot;fr&quot;:&quot;Édition&quot;,&quot;id&quot;:&quot;Cetakan&quot;,&quot;ja&quot;:&quot;版&quot;,&quot;ru&quot;:&quot;Издание&quot;,&quot;sw&quot;:&quot;Toleo&quot;,&quot;tr&quot;:&quot;Baskı&quot;,&quot;ur&quot;:&quot;طبع&quot;,&quot;zh&quot;:&quot;版次&quot;}" data-original="الطبعة">الطبعة</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;First, 1435 AH - 2014 CE&quot;,&quot;es&quot;:&quot;Primera, 1435 H - 2014&quot;,&quot;fr&quot;:&quot;Première, 1435 H - 2014&quot;,&quot;id&quot;:&quot;Pertama, 1435 H - 2014 M&quot;,&quot;ja&quot;:&quot;第1版、ヒジュラ暦1435年－西暦2014年&quot;,&quot;ru&quot;:&quot;Первое, 1435 г. х. — 2014 г.&quot;,&quot;sw&quot;:&quot;La kwanza, 1435 H - 2014&quot;,&quot;tr&quot;:&quot;Birinci baskı, 1435 H - 2014&quot;,&quot;ur&quot;:&quot;پہلا، ١٤٣٥ھ - ٢٠١٤ء&quot;,&quot;zh&quot;:&quot;第一版，伊历1435年－公元2014年&quot;}" data-original="الأولى، ١٤٣٥ هـ - ٢٠١٤ م">الأولى، ١٤٣٥ هـ - ٢٠١٤ م</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Number of pages&quot;,&quot;es&quot;:&quot;Número de páginas&quot;,&quot;fr&quot;:&quot;Nombre de pages&quot;,&quot;id&quot;:&quot;Jumlah halaman&quot;,&quot;ja&quot;:&quot;ページ数&quot;,&quot;ru&quot;:&quot;Количество страниц&quot;,&quot;sw&quot;:&quot;Idadi ya kurasa&quot;,&quot;tr&quot;:&quot;Sayfa sayısı&quot;,&quot;ur&quot;:&quot;صفحات کی تعداد&quot;,&quot;zh&quot;:&quot;页数&quot;}" data-original="عدد الصفحات">عدد الصفحات</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;568&quot;,&quot;es&quot;:&quot;568&quot;,&quot;fr&quot;:&quot;568&quot;,&quot;id&quot;:&quot;568&quot;,&quot;ja&quot;:&quot;568&quot;,&quot;ru&quot;:&quot;568&quot;,&quot;sw&quot;:&quot;568&quot;,&quot;tr&quot;:&quot;568&quot;,&quot;zh&quot;:&quot;568&quot;}" data-original="٥٦٨">٥٦٨</span></dd>
-            </div>
-                                        <div>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;The page numbering matches the print edition&quot;,&quot;es&quot;:&quot;La paginación coincide con la edición impresa&quot;,&quot;fr&quot;:&quot;La pagination correspond à l&#039;édition imprimée&quot;,&quot;id&quot;:&quot;Penomoran halaman sesuai dengan edisi cetak&quot;,&quot;ja&quot;:&quot;ページ番号は印刷版と一致&quot;,&quot;ru&quot;:&quot;Нумерация страниц соответствует печатному изданию&quot;,&quot;sw&quot;:&quot;Kurasa zimehesabiwa sawa na nakala iliyochapishwa&quot;,&quot;tr&quot;:&quot;Sayfa numaraları basılı nüshaya uygundur&quot;,&quot;ur&quot;:&quot;صفحات کی ترقیم مطبوعہ نسخے کے مطابق ہے&quot;,&quot;zh&quot;:&quot;页码与纸质版一致&quot;}" data-original="ترقيم الكتاب موافق للمطبوع">ترقيم الكتاب موافق للمطبوع</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Author page&quot;,&quot;es&quot;:&quot;Página del autor&quot;,&quot;fr&quot;:&quot;Page de l&#039;auteur&quot;,&quot;id&quot;:&quot;Halaman penulis&quot;,&quot;ja&quot;:&quot;著者ページ&quot;,&quot;ru&quot;:&quot;Страница автора&quot;,&quot;sw&quot;:&quot;Ukurasa wa mwandishi&quot;,&quot;tr&quot;:&quot;Yazar sayfası&quot;,&quot;ur&quot;:&quot;مصنف کا صفحہ&quot;,&quot;zh&quot;:&quot;作者页面&quot;}" data-original="صفحة المؤلف">صفحة المؤلف</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Hajar al-Asqalani&quot;,&quot;es&quot;:&quot;Ibn Hajar al-Asqalani&quot;,&quot;fr&quot;:&quot;Ibn Hajar al-Asqalani&quot;,&quot;id&quot;:&quot;Ibnu Hajar al-Asqalani&quot;,&quot;ja&quot;:&quot;イブン・ハジャル・アル＝アスカラーニー&quot;,&quot;ru&quot;:&quot;Ибн Хаджар аль-Аскаляни&quot;,&quot;sw&quot;:&quot;Ibn Hajar al-Asqalani&quot;,&quot;tr&quot;:&quot;İbn Hacer el-Askalânî&quot;,&quot;zh&quot;:&quot;伊本·哈杰尔·阿斯盖兰尼&quot;}" data-original="ابن حجر العسقلاني">ابن حجر العسقلاني</span></dd>
-            </div>
-                        </dl>
-    </section>
-  
-  
-  
-      <section class="panel">
-      <h2><span data-t="Books sharing the most passages with it">Books sharing the most passages with it</span></h2>
-      <table
-        class="table"
-        data-sortable
-      >
-        <thead>
-          <tr>
-            <th data-sort="text"><span data-t="Book">Book</span></th>
-            <th data-sort="text"><span data-t="Author">Author</span></th>
-            <th data-sort="number"><span data-t="Shared passages">Shared passages</span></th>
-          </tr>
-        </thead>
-        <tbody>
-                      <tr>
-              <td lang="ar">
+                  </div>
+
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Shares most with</div>
+          <ul class="space-y-1 text-sm">
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     شرح بلوغ المرام - اللهيميد
                   </span>
-                              </td>
-              <td lang="ar">سليمان بن محمد اللهيميد</td>
-              <td data-value="1284">1,284</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">1,284</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     بلوغ المرام من أدلة الأحكام ت الزهيري
                   </span>
-                              </td>
-              <td lang="ar">ابن حجر العسقلاني</td>
-              <td data-value="1283">1,283</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">1,283</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     منحة العلام في شرح بلوغ المرام
                   </span>
-                              </td>
-              <td lang="ar">عبد الله بن صالح الفوزان</td>
-              <td data-value="1281">1,281</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">1,281</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     التبيان في تخريج وتبويب أحاديث بلوغ المرام
                   </span>
-                              </td>
-              <td lang="ar">خالد بن ضيف الله الشلاحي</td>
-              <td data-value="1274">1,274</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">1,274</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     الجامع لفوائد بلوغ المرام
                   </span>
-                              </td>
-              <td lang="ar">عبد الرحمن بن ناصر البراك</td>
-              <td data-value="1264">1,264</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">1,264</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     متون طالب العلم - المستوى الخامس - 1
                   </span>
-                              </td>
-              <td lang="ar">عبد المحسن القاسم</td>
-              <td data-value="1260">1,260</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">1,260</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     سبل السلام شرح بلوغ المرام - ط الحديث
                   </span>
-                              </td>
-              <td lang="ar">الصنعاني</td>
-              <td data-value="1257">1,257</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">1,257</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     توضيح الأحكام من بلوغ المرام
                   </span>
-                              </td>
-              <td lang="ar">عبد الله البسام</td>
-              <td data-value="1248">1,248</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">1,248</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     البدر التمام شرح بلوغ المرام ت الزبن
                   </span>
-                              </td>
-              <td lang="ar">الحسين بن محمد المغربي</td>
-              <td data-value="1240">1,240</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">1,240</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     فقه الإسلام = شرح بلوغ المرام
                   </span>
-                              </td>
-              <td lang="ar">عبد القادر شيبة الحمد</td>
-              <td data-value="1240">1,240</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">1,240</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     سبل السلام شرح بلوغ المرام - ت حلاق
                   </span>
-                              </td>
-              <td lang="ar">الصنعاني</td>
-              <td data-value="1232">1,232</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">1,232</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     فتح العلام في دراسة أحاديث بلوغ المرام ط 4
                   </span>
-                              </td>
-              <td lang="ar">محمد بن علي بن حزام البعداني</td>
-              <td data-value="1231">1,231</td>
-            </tr>
-                  </tbody>
-      </table>
-    </section>
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <ul class="plain">
-                  <li>
-            <a href="../../../catalogue/1381/138184.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Objectives from the Evidence of the Rules - by Al-Baghdadi&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (El logro de la meta a partir de las pruebas de las normas jurídicas) - edición crítica de al-Baghdani&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Le but recherché à partir des preuves des règles juridiques) - éd. al-Baghdani&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (tahkik Al-Baghdani)&quot;,&quot;ja&quot;:&quot;法規定の根拠に基づく『ブルーグ・アル＝マラーム』―アル＝バグダーディー校訂&quot;,&quot;ru&quot;:&quot;«Булуг аль-марам» из доказательств правовых постановлений — тахкик аль-Багдади&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia lengo kutokana na dalili za hukumu) — tahkiki ya al-Baghdani&quot;,&quot;tr&quot;:&quot;Bulûğu’l-merâm min edilleti’l-ahkâm (Ahkâm Delillerinden Bulûğu’l-merâm) – tahkik eden: el-Bağdânî&quot;,&quot;zh&quot;:&quot;《律例证据纲要》——巴格达尼校勘版&quot;}" data-original="بلوغ المرام من أدلة الاحكام - ت. البغداني">بلوغ المرام من أدلة الاحكام - ت. البغداني</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/1427/142796.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Objectives from the Evidence of the Rules - Translated by: Tarek Awad Allah&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (El logro de las metas a partir de las pruebas de las normas) — ed. Tareq Awadallah&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (L’Aboutissement des aspirations d’après les preuves des règles juridiques) — éd. critique de Tariq Awad Allah&quot;,&quot;id&quot;:&quot;Bulughul Maram min Adillatil Ahkam (Pencapaian Harapan dari Dalil-Dalil Hukum) — Tahkik Tariq Awadullah&quot;,&quot;ja&quot;:&quot;『ブルーグ・アル＝マラーム』――法規定の根拠から、ターレク・アウドゥッラー校訂&quot;,&quot;ru&quot;:&quot;«Булуг аль-марам» из доказательств правовых положений — тахкик Тарика Авад Аллаха&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia Lengo kwa Dalili za Hukumu) — uhakiki wa Tariq Awad Allah&quot;,&quot;tr&quot;:&quot;Bülûğü’l-merâm min edilleti’l-ahkâm [Hükümlerin delillerinden murada erişmek] — Târık Avdullah’ın tahkiki&quot;,&quot;ur&quot;:&quot;بلوغ المرام من أدلة الاحكام- ت. طارق عوض الله (بلوغ المرام از ادلۂ احکام، تحقیق: طارق عوض اللہ)&quot;,&quot;zh&quot;:&quot;《〈通达愿望：教法判例证据〉——塔里克·阿瓦杜拉校勘》&quot;}" data-original="بلوغ المرام من أدلة الاحكام- ت. طارق عوض الله">بلوغ المرام من أدلة الاحكام- ت. طارق عوض الله</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/1477/147701.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Aims from the Evidence of the Rulers - Maher Al-Fahl&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam [La meta deseada a partir de las pruebas de las normas] — Mahir al-Fahl&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min adillat al-ahkam [L’aboutissement des aspirations à partir des preuves des normes juridiques] — Mahir al-Fahl&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam [Sampainya Tujuan dari Dalil-Dalil Hukum] – Mahir al-Fahl&quot;,&quot;ja&quot;:&quot;ブルーグ・アル＝マラーム――法規範の根拠から――マーヒル・アル＝ファフル校訂版&quot;,&quot;ru&quot;:&quot;Булуг аль-марам мин адиллят аль-ахкам (Достижение цели на основе доказательств установлений) — Махир аль-Фахль&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia Lengo kwa Dalili za Hukumu) — Mahir al-Fahl&quot;,&quot;tr&quot;:&quot;Bulûğu&#039;l-merâm min edilleti&#039;l-ahkâm (Hükümlerin Delillerinden Amaçlara Ulaşmak) - Mâhir el-Fahl&quot;,&quot;ur&quot;:&quot;بلوغ المرام من أدلة الحكام- ماهر الفحل (احکام کے دلائل سے بلوغ المرام)&quot;,&quot;zh&quot;:&quot;《明证之巅：统治者的证据》—马希尔·法赫勒校订&quot;}" data-original="بلوغ المرام من أدلة الحكام- ماهر الفحل">بلوغ المرام من أدلة الحكام- ماهر الفحل</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/2346/234652.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Objectives from the Evidence of the Rules&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (La consecución del objetivo mediante las pruebas de las normas)&quot;,&quot;fr&quot;:&quot;Atteindre le but à partir des preuves des règles religieuses (Bulugh al-Maram)&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Puncak Tujuan dari Dalil-Dalil Hukum)&quot;,&quot;ja&quot;:&quot;法規定の根拠による『ブルーグ・アル＝マラーム』&quot;,&quot;ru&quot;:&quot;Достижение желаемого из доказательств правовых установлений&quot;,&quot;sw&quot;:&quot;Kufikia lengo kwa ushahidi wa hukumu (Bulugh al-Maram)&quot;,&quot;tr&quot;:&quot;Bülûğu’l-Merâm min Edilleti’l-Ahkâm (Ahkâm Delillerinden İstenen Maksada Ulaşmak)&quot;,&quot;ur&quot;:&quot;بلوغ المرام من أدلة الأحكام (احکام کے دلائل سے مطلوب تک رسائی)&quot;,&quot;zh&quot;:&quot;《达成目标：教法律例证据》&quot;}" data-original="بلوغ المرام من أدلة الأحكام">بلوغ المرام من أدلة الأحكام</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/2478/247839.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Objective from the Evidence of the Rules&quot;,&quot;es&quot;:&quot;Bulugh al-maram min adillat al-ahkam [La consecución de la meta mediante las pruebas de las normas]&quot;,&quot;fr&quot;:&quot;Bulugh al-maram min adillat al-ahkam (L&#039;aboutissement des aspirations : preuves des prescriptions juridiques)&quot;,&quot;id&quot;:&quot;Bulugh Al-Maram min Adillat Al-Ahkam (Mencapai Tujuan dari Dalil-Dalil Hukum)&quot;,&quot;ja&quot;:&quot;ブルーグ・アル＝マラーム――法規定の根拠から&quot;,&quot;ru&quot;:&quot;Булюг аль-марам мин адиллят аль-ахкам (Достижение цели на основании доказательств установлений)&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram (Kufikia lengo) kutoka katika dalili za hukumu&quot;,&quot;tr&quot;:&quot;Bulûğu&#039;l-Merâm min Edilleti&#039;l-Ahkâm (Ahkâm Delillerinden İstenen Hedefe Ulaşma)&quot;,&quot;ur&quot;:&quot;بلوغ المرام من أدلة الأحكام (احکام کے دلائل سے مقصود تک رسائی)&quot;,&quot;zh&quot;:&quot;《达到愿望：教法判例的证据》&quot;}" data-original="بلوغ المرام من أدلة الأحكام">بلوغ المرام من أدلة الأحكام</span>
-            </a>
-          </li>
-              </ul>
-    </section>
-  
-      <section
-      class="panel"
-      id="contents"
-    >
-      <h2><span data-t="Contents">Contents</span></h2>
-      <ol
-        class="contents"
+                                <span class="shrink-0 text-zinc-400 tabular-nums">1,231</span>
+              </li>
+                      </ul>
+        
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Also in the catalogue</div>
+          <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                          <a
+  href="../../../catalogue/1381/138184.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/1381/138184.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Objectives from the Evidence of the Rules - by Al-Baghdadi&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (El logro de la meta a partir de las pruebas de las normas jurídicas) - edición crítica de al-Baghdani&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Le but recherché à partir des preuves des règles juridiques) - éd. al-Baghdani&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (tahkik Al-Baghdani)&quot;,&quot;ja&quot;:&quot;法規定の根拠に基づく『ブルーグ・アル＝マラーム』―アル＝バグダーディー校訂&quot;,&quot;ru&quot;:&quot;«Булуг аль-марам» из доказательств правовых постановлений — тахкик аль-Багдади&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia lengo kutokana na dalili za hukumu) — tahkiki ya al-Baghdani&quot;,&quot;tr&quot;:&quot;Bulûğu’l-merâm min edilleti’l-ahkâm (Ahkâm Delillerinden Bulûğu’l-merâm) – tahkik eden: el-Bağdânî&quot;,&quot;zh&quot;:&quot;《律例证据纲要》——巴格达尼校勘版&quot;}" data-original="بلوغ المرام من أدلة الاحكام - ت. البغداني">بلوغ المرام من أدلة الاحكام - ت. البغداني</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
         lang="ar"
         dir="rtl"
+        data-arabic-original
       >
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/1.html#p2">[مقدمة المحقق]</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1.html#p6">ترجمة المصنف</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1.html#p28">وصف النسخ الخطية</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/30.html#p30">منهج التحقيق في الكتاب</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/30.html#p42">[مقدمة المؤلف]</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/30.html#p43">كتاب الطهارة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/30.html#p44">باب المياه</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/30.html#p61">باب الآنية</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/70.html#p70">باب إزالة النجاسة وبيانها</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/70.html#p79">باب الوضوء</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/107.html#p107">باب المسح على الخفين</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/107.html#p118">باب نواقض الوضوء</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/140.html#p140">باب قضاء الحاجة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/164.html#p164">باب الغسل وحكم الجنب</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/164.html#p184">باب التيمم</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/200.html#p200">باب الحيض</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/200.html#p214">كتاب الصلاة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/215.html#p215">باب المواقيت</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/248.html#p248">باب الأذان</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/275.html#p275">باب شروط الصلاة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/275.html#p300">باب سترة المصلي</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/311.html#p311">باب الحث على الخشوع في الصلاة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/311.html#p327">باب المساجد</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/344.html#p344">باب صفة الصلاة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/415.html#p415">باب سجود السهو وغيره</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/438.html#p438">باب صلاة التطوع</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/487.html#p487">باب صلاة الجماعة والإمامة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/521.html#p521">باب صلاة المسافر والمريض</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/540.html#p540">باب صلاة الجمعة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/573.html#p573">باب صلاة الخوف</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/573.html#p584">باب صلاة العيدين</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/603.html#p603">باب صلاة الكسوف</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/603.html#p616">باب صلاة الاستسقاء</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/603.html#p630">باب اللباس</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/643.html#p643">كتاب الجنائز</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/710.html#p710">كتاب الزكاة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/710.html#p740">باب صدقة الفطر</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/746.html#p746">باب صدقة التطوع</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/746.html#p761">باب قسم الصدقات</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/769.html#p769">كتاب الصيام</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/800.html#p800">باب صوم التطوع وما نهي عن صومه</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/800.html#p818">باب الاعتكاف وقيام رمضان</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/800.html#p830">كتاب الحج</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/831.html#p831">باب فضله وبيان من فرض عليه</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/831.html#p846">باب المواقيت</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/831.html#p852">باب وجوه الإحرام وصفته</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/831.html#p854">باب الإحرام وما يتعلق به</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/870.html#p870">باب صفة الحج ودخول مكة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/910.html#p910">باب الفوات والإحصار</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/910.html#p915">كتاب البيوع</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/916.html#p916">باب شروطه وما نهي عنه منه</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/956.html#p964">باب الخيار</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/956.html#p970">باب الربا</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/993.html#p993">باب الرخصة في العرايا وبيع الأصول والثمار</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/993.html#p1003">أبواب السلم والقرض والرهن</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/993.html#p1014">باب التفليس والحجر</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/993.html#p1026">باب الصلح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1032.html#p1032">باب الحوالة والضمان</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1032.html#p1038">باب الشركة والوكالة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1032.html#p1047">باب الإقرار</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1032.html#p1050">باب العارية</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1032.html#p1056">باب الغصب</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1032.html#p1063">باب الشفعة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1032.html#p1069">باب القراض</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1071.html#p1071">باب المساقاة والإجارة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1071.html#p1082">باب إحياء الموات</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1071.html#p1093">باب الوقف</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1098.html#p1098">باب الهبة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1098.html#p1112">باب اللقطة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1098.html#p1119">باب الفرائض</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1134.html#p1134">باب الوصايا</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1134.html#p1144">باب الوديعة</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/1146.html#p1146">كتاب النكاح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1184.html#p1184">باب الكفاءة والخيار</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1184.html#p1197">باب عشرة النساء</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1215.html#p1215">باب الصداق</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1215.html#p1228">باب الوليمة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1247.html#p1247">باب القسم</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1247.html#p1258">باب الخلع</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/1247.html#p1263">كتاب الطلاق</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1247.html#p1282">باب الرجعة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1285.html#p1285">باب الإيلاء والظهار والكفارة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1285.html#p1292">باب اللعان</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1304.html#p1304">باب العدة والإحداد</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1304.html#p1330">باب الرضاع</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1342.html#p1342">باب النفقات</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1342.html#p1357">باب الحضانة</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/1365.html#p1365">كتاب الجنايات</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1365.html#p1387">باب الديات</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1403.html#p1403">باب دعوى الدم والقسامة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1403.html#p1406">باب قتال أهل البغي</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1403.html#p1414">باب قتال الجاني وقتل المرتد</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/1403.html#p1424">كتاب الحدود</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1425.html#p1425">باب حد الزاني</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1425.html#p1447">باب حد القذف</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1453.html#p1453">باب حد السرقة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1453.html#p1468">باب حد الشارب وبيان المسكر</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1453.html#p1482">باب التعزير وحكم الصائل</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/1489.html#p1489">كتاب الجهاد</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1529.html#p1541">باب الجزية والهدنة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1529.html#p1550">باب السبق والرمي</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/1556.html#p1556">كتاب الأطعمة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1556.html#p1570">باب الصيد والذبائح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1556.html#p1585">باب الأضاحي</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1596.html#p1596">باب العقيقة</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/1596.html#p1602">كتاب الأيمان والنذور</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/1627.html#p1627">كتاب القضاء</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1627.html#p1645">باب الشهادات</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1627.html#p1655">باب الدعوى والبينات</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/1666.html#p1666">كتاب العتق</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1666.html#p1679">باب المدبر والمكاتب وأم الولد</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/036/3611/1666.html#p1687">كتاب الجامع</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1666.html#p1688">باب الأدب</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1706.html#p1706">باب البر والصلة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1706.html#p1721">باب الزهد والورع</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1734.html#p1734">باب الرهب من مساوئ الأخلاق</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1774.html#p1776">باب الترغيب في مكارم الأخلاق</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/036/3611/1797.html#p1797">باب الذكر والدعاء</a>
-                      </li>
-              </ol>
-    </section>
-    </main>
+        بلوغ المرام من أدلة الاحكام - ت. البغداني
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                          <a
+  href="../../../catalogue/1427/142796.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/1427/142796.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Objectives from the Evidence of the Rules - Translated by: Tarek Awad Allah&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (El logro de las metas a partir de las pruebas de las normas) — ed. Tareq Awadallah&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (L’Aboutissement des aspirations d’après les preuves des règles juridiques) — éd. critique de Tariq Awad Allah&quot;,&quot;id&quot;:&quot;Bulughul Maram min Adillatil Ahkam (Pencapaian Harapan dari Dalil-Dalil Hukum) — Tahkik Tariq Awadullah&quot;,&quot;ja&quot;:&quot;『ブルーグ・アル＝マラーム』――法規定の根拠から、ターレク・アウドゥッラー校訂&quot;,&quot;ru&quot;:&quot;«Булуг аль-марам» из доказательств правовых положений — тахкик Тарика Авад Аллаха&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia Lengo kwa Dalili za Hukumu) — uhakiki wa Tariq Awad Allah&quot;,&quot;tr&quot;:&quot;Bülûğü’l-merâm min edilleti’l-ahkâm [Hükümlerin delillerinden murada erişmek] — Târık Avdullah’ın tahkiki&quot;,&quot;ur&quot;:&quot;بلوغ المرام من أدلة الاحكام- ت. طارق عوض الله (بلوغ المرام از ادلۂ احکام، تحقیق: طارق عوض اللہ)&quot;,&quot;zh&quot;:&quot;《〈通达愿望：教法判例证据〉——塔里克·阿瓦杜拉校勘》&quot;}" data-original="بلوغ المرام من أدلة الاحكام- ت. طارق عوض الله">بلوغ المرام من أدلة الاحكام- ت. طارق عوض الله</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        بلوغ المرام من أدلة الاحكام- ت. طارق عوض الله
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                          <a
+  href="../../../catalogue/1477/147701.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/1477/147701.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Aims from the Evidence of the Rulers - Maher Al-Fahl&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam [La meta deseada a partir de las pruebas de las normas] — Mahir al-Fahl&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min adillat al-ahkam [L’aboutissement des aspirations à partir des preuves des normes juridiques] — Mahir al-Fahl&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam [Sampainya Tujuan dari Dalil-Dalil Hukum] – Mahir al-Fahl&quot;,&quot;ja&quot;:&quot;ブルーグ・アル＝マラーム――法規範の根拠から――マーヒル・アル＝ファフル校訂版&quot;,&quot;ru&quot;:&quot;Булуг аль-марам мин адиллят аль-ахкам (Достижение цели на основе доказательств установлений) — Махир аль-Фахль&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia Lengo kwa Dalili za Hukumu) — Mahir al-Fahl&quot;,&quot;tr&quot;:&quot;Bulûğu&#039;l-merâm min edilleti&#039;l-ahkâm (Hükümlerin Delillerinden Amaçlara Ulaşmak) - Mâhir el-Fahl&quot;,&quot;ur&quot;:&quot;بلوغ المرام من أدلة الحكام- ماهر الفحل (احکام کے دلائل سے بلوغ المرام)&quot;,&quot;zh&quot;:&quot;《明证之巅：统治者的证据》—马希尔·法赫勒校订&quot;}" data-original="بلوغ المرام من أدلة الحكام- ماهر الفحل">بلوغ المرام من أدلة الحكام- ماهر الفحل</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        بلوغ المرام من أدلة الحكام- ماهر الفحل
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                          <a
+  href="../../../catalogue/2346/234652.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/2346/234652.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Objectives from the Evidence of the Rules&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (La consecución del objetivo mediante las pruebas de las normas)&quot;,&quot;fr&quot;:&quot;Atteindre le but à partir des preuves des règles religieuses (Bulugh al-Maram)&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Puncak Tujuan dari Dalil-Dalil Hukum)&quot;,&quot;ja&quot;:&quot;法規定の根拠による『ブルーグ・アル＝マラーム』&quot;,&quot;ru&quot;:&quot;Достижение желаемого из доказательств правовых установлений&quot;,&quot;sw&quot;:&quot;Kufikia lengo kwa ushahidi wa hukumu (Bulugh al-Maram)&quot;,&quot;tr&quot;:&quot;Bülûğu’l-Merâm min Edilleti’l-Ahkâm (Ahkâm Delillerinden İstenen Maksada Ulaşmak)&quot;,&quot;ur&quot;:&quot;بلوغ المرام من أدلة الأحكام (احکام کے دلائل سے مطلوب تک رسائی)&quot;,&quot;zh&quot;:&quot;《达成目标：教法律例证据》&quot;}" data-original="بلوغ المرام من أدلة الأحكام">بلوغ المرام من أدلة الأحكام</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        بلوغ المرام من أدلة الأحكام
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                          <a
+  href="../../../catalogue/2478/247839.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/2478/247839.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Objective from the Evidence of the Rules&quot;,&quot;es&quot;:&quot;Bulugh al-maram min adillat al-ahkam [La consecución de la meta mediante las pruebas de las normas]&quot;,&quot;fr&quot;:&quot;Bulugh al-maram min adillat al-ahkam (L&#039;aboutissement des aspirations : preuves des prescriptions juridiques)&quot;,&quot;id&quot;:&quot;Bulugh Al-Maram min Adillat Al-Ahkam (Mencapai Tujuan dari Dalil-Dalil Hukum)&quot;,&quot;ja&quot;:&quot;ブルーグ・アル＝マラーム――法規定の根拠から&quot;,&quot;ru&quot;:&quot;Булюг аль-марам мин адиллят аль-ахкам (Достижение цели на основании доказательств установлений)&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram (Kufikia lengo) kutoka katika dalili za hukumu&quot;,&quot;tr&quot;:&quot;Bulûğu&#039;l-Merâm min Edilleti&#039;l-Ahkâm (Ahkâm Delillerinden İstenen Hedefe Ulaşma)&quot;,&quot;ur&quot;:&quot;بلوغ المرام من أدلة الأحكام (احکام کے دلائل سے مقصود تک رسائی)&quot;,&quot;zh&quot;:&quot;《达到愿望：教法判例的证据》&quot;}" data-original="بلوغ المرام من أدلة الأحكام">بلوغ المرام من أدلة الأحكام</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        بلوغ المرام من أدلة الأحكام
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                      </div>
+        
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Contents</div>
+          <div class="rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div
+  dir="rtl"
+  x-data="staticContents(JSON.parse('{\u0022src\u0022:\u0022contents.js\u0022,\u0022pageId\u0022:null}'))"
+  x-on:load-contents.window="load()"
+   x-init="load()" >
+  <div class="w-full relative block group/input mb-3" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd"/>
+</svg>
 
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="query" placeholder="Filter contents..." aria-label="Filter contents" data-test="contents-filter"
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="entries === null" data-flux-text >Loading…</p>
+  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mb-3" x-cloak="x-cloak" x-show="entries !== null && query.trim() !== '' && shown.length === 0" data-flux-text >No entries match.</p>
+  <div class="max-h-[32rem] overflow-y-auto">
+    <ul>
+      <template
+        x-for="(entry, index) in shown"
+        :key="index"
       >
-        <span data-t="Close">Close</span>
-      </button>
+        <li
+          class="relative py-0.5"
+          x-bind:style="`padding-inline-start: ${entry.d * 0.875}rem`"
+          x-bind:data-current="entry === entries[current] ? '' : null"
+        >
+          <template
+            x-for="level in entry.d"
+            :key="level"
+          >
+            <span
+              class="absolute inset-y-0 border-s border-zinc-300 dark:border-zinc-600"
+              x-bind:style="`inset-inline-start: ${(level - 1) * 0.875 + 0.25}rem`"
+              aria-hidden="true"
+            ></span>
+          </template>
+          <a
+            class="text-base text-zinc-700 underline decoration-zinc-800/20 underline-offset-[6px] hover:decoration-current dark:text-zinc-300 dark:decoration-white/20"
+            x-bind:class="
+              entry === entries[current] &&
+              'rounded bg-amber-100 px-1 font-semibold text-zinc-900 dark:bg-amber-900/40 dark:text-white'
+            "
+            x-bind:href="entry.h"
+            x-on:click="$flux.modal('book-contents').close()"
+            x-text="entry.t"
+            data-test="contents-entry"
+          ></a>
+        </li>
+      </template>
+    </ul>
+  </div>
+</div>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>دار ابن القيم</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,134 +70,177 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Ibn Al-Qayyim&quot;,&quot;es&quot;:&quot;Dar Ibn al-Qayyim&quot;,&quot;fr&quot;:&quot;Dar Ibn al-Qayyim&quot;,&quot;id&quot;:&quot;Dar Ibnu Al-Qayyim&quot;,&quot;ja&quot;:&quot;ダール・イブン・アル＝カイイム&quot;,&quot;ru&quot;:&quot;Дар Ибн аль-Каййим&quot;,&quot;sw&quot;:&quot;Dar Ibn al-Qayyim&quot;,&quot;tr&quot;:&quot;Dâr İbn Kayyim&quot;,&quot;zh&quot;:&quot;伊本·盖伊姆出版社&quot;}" data-original="دار ابن القيم">دار ابن القيم</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/591/59192.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/591/59192.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Fatwas on Hajj Answered by Sheikh Muhammad bin Saleh Al-Uthaymeen&quot;,&quot;es&quot;:&quot;Dictámenes jurídicos sobre la peregrinación, respondidos por el jeque Muhammad ibn Salih ibn Uthaymin&quot;,&quot;fr&quot;:&quot;Fatwas sur le pèlerinage auxquelles a répondu le cheikh Muhammad ibn Salih ibn Uthaymin&quot;,&quot;id&quot;:&quot;Fatwa tentang Haji yang Dijawab oleh Syekh Muhammad bin Shalih bin Utsaimin&quot;,&quot;ja&quot;:&quot;シェイフ・ムハンマド・イブン・サーリフ・イブン・ウサイミーンが回答した巡礼に関するファトワー&quot;,&quot;ru&quot;:&quot;Фетвы о хадже, данные шейхом Мухаммадом ибн Салихом ибн Усаймином&quot;,&quot;sw&quot;:&quot;Fatwa za Hija zilizojibiwa na Sheikh Muhammad bin Saleh bin Uthaymin&quot;,&quot;tr&quot;:&quot;Hac fetvaları: Şeyh Muhammed b. Salih b. Useymîn’in cevapları&quot;,&quot;ur&quot;:&quot;فتاوي الحج أجاب عليها الشيخ محمد بن صالح بن عثيمين (حج کے فتاویٰ، جن کے جوابات شیخ محمد بن صالح بن عثيمين نے دیے)&quot;,&quot;zh&quot;:&quot;朝觐教法判令：穆罕默德·本·萨利赫·欧赛敏长老答复&quot;}" data-original="فتاوي الحج أجاب عليها الشيخ محمد بن صالح بن عثيمين">فتاوي الحج أجاب عليها الشيخ محمد بن صالح بن عثيمين</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Ibn Al-Qayyim&quot;,&quot;es&quot;:&quot;Dar Ibn al-Qayyim&quot;,&quot;fr&quot;:&quot;Dar Ibn al-Qayyim&quot;,&quot;id&quot;:&quot;Dar Ibnu Al-Qayyim&quot;,&quot;ja&quot;:&quot;ダール・イブン・アル＝カイイム&quot;,&quot;ru&quot;:&quot;Дар Ибн аль-Каййим&quot;,&quot;sw&quot;:&quot;Dar Ibn al-Qayyim&quot;,&quot;tr&quot;:&quot;Dâr İbn Kayyim&quot;,&quot;zh&quot;:&quot;伊本·盖伊姆出版社&quot;}" data-original="دار ابن القيم">دار ابن القيم</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/591/59192.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Fatwas on Hajj Answered by Sheikh Muhammad bin Saleh Al-Uthaymeen&quot;,&quot;es&quot;:&quot;Dictámenes jurídicos sobre la peregrinación, respondidos por el jeque Muhammad ibn Salih ibn Uthaymin&quot;,&quot;fr&quot;:&quot;Fatwas sur le pèlerinage auxquelles a répondu le cheikh Muhammad ibn Salih ibn Uthaymin&quot;,&quot;id&quot;:&quot;Fatwa tentang Haji yang Dijawab oleh Syekh Muhammad bin Shalih bin Utsaimin&quot;,&quot;ja&quot;:&quot;シェイフ・ムハンマド・イブン・サーリフ・イブン・ウサイミーンが回答した巡礼に関するファトワー&quot;,&quot;ru&quot;:&quot;Фетвы о хадже, данные шейхом Мухаммадом ибн Салихом ибн Усаймином&quot;,&quot;sw&quot;:&quot;Fatwa za Hija zilizojibiwa na Sheikh Muhammad bin Saleh bin Uthaymin&quot;,&quot;tr&quot;:&quot;Hac fetvaları: Şeyh Muhammed b. Salih b. Useymîn’in cevapları&quot;,&quot;ur&quot;:&quot;فتاوي الحج أجاب عليها الشيخ محمد بن صالح بن عثيمين (حج کے فتاویٰ، جن کے جوابات شیخ محمد بن صالح بن عثيمين نے دیے)&quot;,&quot;zh&quot;:&quot;朝觐教法判令：穆罕默德·本·萨利赫·欧赛敏长老答复&quot;}" data-original="فتاوي الحج أجاب عليها الشيخ محمد بن صالح بن عثيمين">فتاوي الحج أجاب عليها الشيخ محمد بن صالح بن عثيمين</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح بن عثيمين</td>
-        <td dir="auto">دار ابن القيم</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1375/137550.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Guidance for Narrators on the Verification of the Hadiths of Al-Masabih and Al-Mishkat, with a Critical Commentary&quot;,&quot;es&quot;:&quot;Hidayat al-Ruwat ila Takhrij Ahadith al-Masabih wa al-Mishkat wa bi-Hamishihi al-Naqd al-Sarih (Guía para identificar los hadices de al-Masabih y al-Mishkat, con la crítica explícita al margen)&quot;,&quot;fr&quot;:&quot;Hidayat al-Ruwat ila Takhrij Ahadith al-Masabih wa al-Mishkat (Guide des transmetteurs : référencement des hadiths des Lampes et de la Niche), avec en marge al-Naqd al-Sarih&quot;,&quot;id&quot;:&quot;Hidayat ar-Ruwat ila Takhrij Ahadits al-Mashabih wa al-Misykah wa bi Hamisyihi an-Naqd ash-Sharih [Petunjuk bagi Para Perawi dalam Menelusuri Hadis-Hadis al-Mashabih dan al-Misykah, dengan Catatan an-Naqd ash-Sharih]&quot;,&quot;ja&quot;:&quot;伝承者たちへの導き――『マサービーフ』と『ミシュカート』のハディース出典特定、欄外に『アン＝ナクド・アッ＝サリー』（明快な批判）&quot;,&quot;ru&quot;:&quot;Наставление передатчикам: тахридж хадисов «Масабих» и «Мишкат», с примечаниями «Ясная критика»&quot;,&quot;sw&quot;:&quot;Hidayat al-Ruwat ila Takhrij Ahadith al-Masabih wa al-Mishkat (Mwongozo wa Wasimulizi katika Kurejea Hadithi za al-Masabih na al-Mishkat), na pembeni yake al-Naqd al-Sarih&quot;,&quot;tr&quot;:&quot;Râvilerin Hidâye, Mesâbîh ve Mişkât hadislerine tahrici; kenarında en-Nakdü’s-sarîh (Açık tenkit)&quot;,&quot;ur&quot;:&quot;هداية الرواة إلى تخريج أحاديث المصابيح والمشكاة وبهامشه النقد الصريح (مصابیح اور مشکاۃ کی احادیث کی تخریج کے لیے راویوں کی رہنمائی، حاشیے میں النقد الصريح کے ساتھ)&quot;,&quot;zh&quot;:&quot;《传述者指引：考证〈灯盏〉与〈龛灯〉中的圣训》，附《坦率批评》&quot;}" data-original="هداية الرواة إلى تخريج أحاديث المصابيح والمشكاة وبهامشه النقد الصريح">هداية الرواة إلى تخريج أحاديث المصابيح والمشكاة وبهامشه النقد الصريح</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار ابن القيم • دار ابن عفان</td>
-        <td dir="auto">1422هـ 2001م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1445/144557.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Guidance for Narrators on the Verification of the Hadiths of Al-Masabih and Al-Mishkat&quot;,&quot;es&quot;:&quot;Guía de los narradores para la verificación de los hadices de al-Masabih y al-Mishkat&quot;,&quot;fr&quot;:&quot;Le guide des transmetteurs vers la référence des hadiths d&#039;al-Masabih et d&#039;al-Mishkat&quot;,&quot;id&quot;:&quot;Hidayatur Ruwat ila Takhrij Ahadits Al-Mashabih wal-Misykat [Petunjuk Perawi untuk Menelusuri Sumber Hadis dalam Al-Mashabih dan Al-Misykat]&quot;,&quot;ja&quot;:&quot;伝承者の導き――『マサービーフ』と『ミシュカート』のハディース出典同定&quot;,&quot;ru&quot;:&quot;Хидаят ар-руват к тахриджу хадисов «Масабих» и «Мишкат»&quot;,&quot;sw&quot;:&quot;Hidayat al-Ruwat (Mwongozo wa wapokezi) katika kurejelea asili ya hadithi za al-Masabih na al-Mishkat&quot;,&quot;tr&quot;:&quot;Hidayetü’r-ruvât: Mesâbîh ve Mişkât Hadislerinin Tahrici&quot;,&quot;zh&quot;:&quot;《引导传述者：〈灯盏〉与〈壁龛〉圣训的出处考证》&quot;}" data-original="هداية الرواة إلى تخريج أحاديث المصابيح والمشكاة">هداية الرواة إلى تخريج أحاديث المصابيح والمشكاة</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني • محمد ناصر الدين الألباني</td>
-        <td dir="auto">دار ابن القيم • دار ابن عفان</td>
-        <td dir="auto">1422هـ 2001م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2196/219658.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Fatwas on Hajj&quot;,&quot;es&quot;:&quot;Dictámenes jurídicos sobre la peregrinación&quot;,&quot;fr&quot;:&quot;Fatwas sur le pèlerinage&quot;,&quot;id&quot;:&quot;Fatwa-Fatwa Haji&quot;,&quot;ja&quot;:&quot;ハッジに関するファトワー&quot;,&quot;ru&quot;:&quot;Фетвы о хадже&quot;,&quot;sw&quot;:&quot;Fatwa za Hija&quot;,&quot;tr&quot;:&quot;Hac Fetvaları&quot;,&quot;zh&quot;:&quot;朝觐教法裁决&quot;}" data-original="فتاوى الحج">فتاوى الحج</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح بن عثيمين</td>
-        <td dir="auto">دار ابن القيم</td>
-        <td dir="auto"></td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        فتاوي الحج أجاب عليها الشيخ محمد بن صالح بن عثيمين
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح بن عثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1375/137550.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1375/137550.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Guidance for Narrators on the Verification of the Hadiths of Al-Masabih and Al-Mishkat, with a Critical Commentary&quot;,&quot;es&quot;:&quot;Hidayat al-Ruwat ila Takhrij Ahadith al-Masabih wa al-Mishkat wa bi-Hamishihi al-Naqd al-Sarih (Guía para identificar los hadices de al-Masabih y al-Mishkat, con la crítica explícita al margen)&quot;,&quot;fr&quot;:&quot;Hidayat al-Ruwat ila Takhrij Ahadith al-Masabih wa al-Mishkat (Guide des transmetteurs : référencement des hadiths des Lampes et de la Niche), avec en marge al-Naqd al-Sarih&quot;,&quot;id&quot;:&quot;Hidayat ar-Ruwat ila Takhrij Ahadits al-Mashabih wa al-Misykah wa bi Hamisyihi an-Naqd ash-Sharih [Petunjuk bagi Para Perawi dalam Menelusuri Hadis-Hadis al-Mashabih dan al-Misykah, dengan Catatan an-Naqd ash-Sharih]&quot;,&quot;ja&quot;:&quot;伝承者たちへの導き――『マサービーフ』と『ミシュカート』のハディース出典特定、欄外に『アン＝ナクド・アッ＝サリー』（明快な批判）&quot;,&quot;ru&quot;:&quot;Наставление передатчикам: тахридж хадисов «Масабих» и «Мишкат», с примечаниями «Ясная критика»&quot;,&quot;sw&quot;:&quot;Hidayat al-Ruwat ila Takhrij Ahadith al-Masabih wa al-Mishkat (Mwongozo wa Wasimulizi katika Kurejea Hadithi za al-Masabih na al-Mishkat), na pembeni yake al-Naqd al-Sarih&quot;,&quot;tr&quot;:&quot;Râvilerin Hidâye, Mesâbîh ve Mişkât hadislerine tahrici; kenarında en-Nakdü’s-sarîh (Açık tenkit)&quot;,&quot;ur&quot;:&quot;هداية الرواة إلى تخريج أحاديث المصابيح والمشكاة وبهامشه النقد الصريح (مصابیح اور مشکاۃ کی احادیث کی تخریج کے لیے راویوں کی رہنمائی، حاشیے میں النقد الصريح کے ساتھ)&quot;,&quot;zh&quot;:&quot;《传述者指引：考证〈灯盏〉与〈龛灯〉中的圣训》，附《坦率批评》&quot;}" data-original="هداية الرواة إلى تخريج أحاديث المصابيح والمشكاة وبهامشه النقد الصريح">هداية الرواة إلى تخريج أحاديث المصابيح والمشكاة وبهامشه النقد الصريح</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        هداية الرواة إلى تخريج أحاديث المصابيح والمشكاة وبهامشه النقد الصريح
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1445/144557.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1445/144557.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Guidance for Narrators on the Verification of the Hadiths of Al-Masabih and Al-Mishkat&quot;,&quot;es&quot;:&quot;Guía de los narradores para la verificación de los hadices de al-Masabih y al-Mishkat&quot;,&quot;fr&quot;:&quot;Le guide des transmetteurs vers la référence des hadiths d&#039;al-Masabih et d&#039;al-Mishkat&quot;,&quot;id&quot;:&quot;Hidayatur Ruwat ila Takhrij Ahadits Al-Mashabih wal-Misykat [Petunjuk Perawi untuk Menelusuri Sumber Hadis dalam Al-Mashabih dan Al-Misykat]&quot;,&quot;ja&quot;:&quot;伝承者の導き――『マサービーフ』と『ミシュカート』のハディース出典同定&quot;,&quot;ru&quot;:&quot;Хидаят ар-руват к тахриджу хадисов «Масабих» и «Мишкат»&quot;,&quot;sw&quot;:&quot;Hidayat al-Ruwat (Mwongozo wa wapokezi) katika kurejelea asili ya hadithi za al-Masabih na al-Mishkat&quot;,&quot;tr&quot;:&quot;Hidayetü’r-ruvât: Mesâbîh ve Mişkât Hadislerinin Tahrici&quot;,&quot;zh&quot;:&quot;《引导传述者：〈灯盏〉与〈壁龛〉圣训的出处考证》&quot;}" data-original="هداية الرواة إلى تخريج أحاديث المصابيح والمشكاة">هداية الرواة إلى تخريج أحاديث المصابيح والمشكاة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        هداية الرواة إلى تخريج أحاديث المصابيح والمشكاة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني • محمد ناصر الدين الألباني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2196/219658.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2196/219658.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Fatwas on Hajj&quot;,&quot;es&quot;:&quot;Dictámenes jurídicos sobre la peregrinación&quot;,&quot;fr&quot;:&quot;Fatwas sur le pèlerinage&quot;,&quot;id&quot;:&quot;Fatwa-Fatwa Haji&quot;,&quot;ja&quot;:&quot;ハッジに関するファトワー&quot;,&quot;ru&quot;:&quot;Фетвы о хадже&quot;,&quot;sw&quot;:&quot;Fatwa za Hija&quot;,&quot;tr&quot;:&quot;Hac Fetvaları&quot;,&quot;zh&quot;:&quot;朝觐教法裁决&quot;}" data-original="فتاوى الحج">فتاوى الحج</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        فتاوى الحج
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح بن عثيمين
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

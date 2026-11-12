@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../../"
+  data-section="books"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>جامع العلوم والحكم - ت الأرنؤوط</title>
   <link
-    rel="stylesheet"
-    href="../../../assets/reader.css"
+    rel="icon"
+    href="../../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,666 +70,610 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../../assets/reader.js"
+    src="../../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../../books.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Books</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
 
-  <main class="site-main">
-      <div class="book-head">
-          <img
-        class="cover"
-        src="../../../books/033/3325/cover.png"
-        alt=""
-      />
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <img
+            src="../../../books/033/3325/cover.png"
+            alt=""
+            class="h-56 w-40 w-full shrink-0 rounded-sm border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+            data-test="book-cover"
+          />
+        
+        <div class="mt-4 flex flex-col gap-2">
+                      <a href="../../../books/033/3325/1.html#p1" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-[var(--color-accent)] hover:bg-[color-mix(in_oklab,_var(--color-accent),_transparent_10%)] text-[var(--color-accent-foreground)] border border-black/10 dark:border-0 shadow-[inset_0px_1px_--theme(--color-white/.2)] [[data-flux-button-group]_&amp;]:border-e-0 [:is([data-flux-button-group]&gt;&amp;:last-child,_[data-flux-button-group]_:last-child&gt;&amp;)]:border-e-[1px] dark:[:is([data-flux-button-group]&gt;&amp;:last-child,_[data-flux-button-group]_:last-child&gt;&amp;)]:border-e-0 [:is([data-flux-button-group]&gt;&amp;:not(:first-child),_[data-flux-button-group]_:not(:first-child)&gt;&amp;)]:border-s-[1px]! [:is([data-flux-button-group]&gt;&amp;:not(:first-child),_[data-flux-button-group]_:not(:first-child)&gt;&amp;)]:border-s-[color-mix(in_srgb,var(--color-accent-foreground),transparent_85%)]" data-flux-group-target="data-flux-group-target" data-test="start-reading">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M7.25 3.688a8.035 8.035 0 0 0-4.872-.523A.48.48 0 0 0 2 3.64v7.994c0 .345.342.588.679.512a6.02 6.02 0 0 1 4.571.81V3.688ZM8.75 12.956a6.02 6.02 0 0 1 4.571-.81c.337.075.679-.167.679-.512V3.64a.48.48 0 0 0-.378-.475 8.034 8.034 0 0 0-4.872.523v9.268Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Read</span>
+    </a>
+          
+          <div
+    class="contents"
+    x-data
+    x-on:click="$el.querySelector('button[disabled]') || $dispatch('modal-show', { name: 'book-pdfs' })"
+        data-flux-modal-trigger
+>
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" data-test="pdfs-toggle">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z"/>
+  <path d="M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Downloads</span>
+    </button>
+</div>
+
+  <ui-modal  data-flux-modal>
     
-    <div class="book-head-text">
-      <h1
-        class="page-title"
-        lang="ar"
-        dir="rtl"
-      >
-        جامع العلوم والحكم - ت الأرنؤوط
-      </h1>
-      <p class="muted translated-only" dir="auto" data-tr="{&quot;en&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim (The Compendium of Knowledge and Wisdom: A Commentary on Fifty Hadiths of Concise Speech)&quot;,&quot;es&quot;:&quot;Jami al-Ulum wa al-Hikam [Compendio de ciencias y sabiduría] fi sharh khamsin hadithan min jawami al-kalim [Comentario de cincuenta hadices de las máximas concisas]&quot;,&quot;fr&quot;:&quot;Jami al-Ulum wa al-Hikam (La somme des sciences et des sagesses), commentaire de cinquante hadiths parmi les paroles concises&quot;,&quot;id&quot;:&quot;Jami&#039; al-&#039;Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim [Kumpulan Ilmu dan Hikmah dalam Penjelasan Lima Puluh Hadis dari Ungkapan Ringkas]&quot;,&quot;ja&quot;:&quot;ジャーミウ・アル＝ウルーム・ワル＝ヒカム（五十の包括的な言葉のハディース注釈）&quot;,&quot;ru&quot;:&quot;Джами‘ аль-‘улюм ва-ль-хикам фи шарх хамсин хадисан мин джавами‘ аль-калим (Собрание знаний и мудростей: комментарий к пятидесяти хадисам из кратких изречений)&quot;,&quot;sw&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim (Mkusanyo wa elimu na hekima katika ufafanuzi wa hadithi hamsini kati ya maneno mafupi yenye maana pana)&quot;,&quot;tr&quot;:&quot;Câmiʿu’l-ulûm ve’l-hikem fî şerhi hamsîne hadîsen min cevâmiʿi’l-kelim (Özlü sözlerden elli hadisin şerhinde ilim ve hikmetleri bir araya getiren eser)&quot;,&quot;ur&quot;:&quot;جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم (علوم و حکمت کا مجموعہ، جو جامع کلمات کی پچاس حدیثوں کی شرح ہے)&quot;,&quot;zh&quot;:&quot;《汇集诸学问与格言：注释五十段精炼圣训》&quot;}" data-original=""></p>
+    <dialog
+        wire:ignore.self 
+        class="fixed m-0 p-8 min-w-[100%] overflow-y-auto mt-auto [--flux-flyout-translate:translateY(50px)] border-t bg-white dark:bg-zinc-800 border-transparent dark:border-zinc-700 max-h-[70vh] p-0!"
+         data-modal="book-pdfs"          data-flux-flyout                         x-data="fluxModal('book-pdfs', null)"
+                x-on:modal-show.document="handleShow($event)"
+        x-on:modal-close.document="handleClose($event)"
+    >
+                    <div class="mx-auto max-w-3xl">
+    <div
+      class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-zinc-200 bg-white px-6 py-3 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 min-w-0 truncate text-2xl!" data-flux-heading>Downloads</div>
 
-      <p class="credits">
-                  <a
-            href="../../../authors/216/21663.html"
-            lang="ar"
-          >
-            ابن رجب الحنبلي
-          </a>
-                          <span class="muted">(<span data-t="d. :year" data-r="{&quot;year&quot;:795}">d. 795</span>)</span>
-                          <button
-            type="button"
-            class="button small"
-            data-open-card="author-card"
-          >
-            <span data-t="About the author">About the author</span>
-          </button>
-              </p>
+      <ui-close data-flux-modal-close >
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]    shrink-0" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" data-test="book-pdfs-close">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
 
-              <p class="credits">
-          <span data-t="Publisher">Publisher</span>:
-          <a
-            href="../../../publishers/5311/531113.html"
-            lang="ar"
-          >
-            مؤسسة الرسالة - بيروت
-          </a>
-        </p>
-      
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="../../../books/033/3325/1.html#p1"
-          >
-            <span data-t="Read">Read</span>
-          </a>
-                <span class="muted">
-          <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;1,052&quot;}" data-n="1052">1,052 pages</span>
-                      · <span data-t=":count part|:count parts" data-r="{&quot;count&quot;:2}" data-n="2">2 parts</span>
-                  </span>
-      </p>
+                
+                    
+            
+            <span>Close</span>
+    </button>
+</ui-close>
     </div>
+
+    <div class="px-6 pt-4 pb-8"><ul class="divide-y divide-zinc-200 dark:divide-zinc-700">
+              <li
+          class="flex items-center gap-3 py-3"
+          data-test="book-pdf"
+        >
+          <svg class="shrink-0 [:where(&amp;)]:size-6 size-6 shrink-0 text-zinc-500 dark:text-zinc-400" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+                  <div class="min-w-0 flex-1">
+            <div class="truncate font-mono text-sm text-zinc-600 dark:text-zinc-300">
+              <bdi>01_157821</bdi>
+            </div>
+          </div>
+          <div class="shrink-0 text-end text-sm text-zinc-500 dark:text-zinc-400">
+                          <div><bdi>7.7MB</bdi></div>
+                                      <div>
+                <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;532&quot;}" data-n="532">532 pages</span>
+              </div>
+                      </div>
+          <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/books/app/book-pdfs/3/25/03/00/3325/5551.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T181813Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=85f99995604db775ed447459896f55a5ca25b3f4457a15aad68887367cf34af6" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 w-8 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" aria-label="Download">
+        <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z"/>
+  <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z"/>
+</svg>
+    </a>
+        </li>
+              <li
+          class="flex items-center gap-3 py-3"
+          data-test="book-pdf"
+        >
+          <svg class="shrink-0 [:where(&amp;)]:size-6 size-6 shrink-0 text-zinc-500 dark:text-zinc-400" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+                  <div class="min-w-0 flex-1">
+            <div class="truncate font-mono text-sm text-zinc-600 dark:text-zinc-300">
+              <bdi>جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم</bdi>
+            </div>
+          </div>
+          <div class="shrink-0 text-end text-sm text-zinc-500 dark:text-zinc-400">
+                          <div><bdi>7.7MB</bdi></div>
+                                      <div>
+                <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;540&quot;}" data-n="540">540 pages</span>
+              </div>
+                      </div>
+          <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/books/app/book-pdfs/3/25/03/00/3325/5552.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T181813Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=7d8aa35c6d3badc7a2644622014725847a8218e38f7e090edb16148947f34cd1" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 w-8 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" aria-label="Download">
+        <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z"/>
+  <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z"/>
+</svg>
+    </a>
+        </li>
+              <li
+          class="flex items-center gap-3 py-3"
+          data-test="book-pdf"
+        >
+          <svg class="shrink-0 [:where(&amp;)]:size-6 size-6 shrink-0 text-zinc-500 dark:text-zinc-400" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+                  <div class="min-w-0 flex-1">
+            <div class="truncate font-mono text-sm text-zinc-600 dark:text-zinc-300">
+              <bdi></bdi>
+            </div>
+          </div>
+          <div class="shrink-0 text-end text-sm text-zinc-500 dark:text-zinc-400">
+                          <div><bdi>7.5MB</bdi></div>
+                                      <div>
+                <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;532&quot;}" data-n="532">532 pages</span>
+              </div>
+                      </div>
+          <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/books/app/book-pdfs/3/25/03/00/3325/5560.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T181813Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=ceae6d11e25bc011d862b511953adcfe7fd7725d5516134d0072bae8d6111f43" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 w-8 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" aria-label="Download">
+        <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z"/>
+  <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z"/>
+</svg>
+    </a>
+        </li>
+              <li
+          class="flex items-center gap-3 py-3"
+          data-test="book-pdf"
+        >
+          <svg class="shrink-0 [:where(&amp;)]:size-6 size-6 shrink-0 text-zinc-500 dark:text-zinc-400" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+                  <div class="min-w-0 flex-1">
+            <div class="truncate font-mono text-sm text-zinc-600 dark:text-zinc-300">
+              <bdi>جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم</bdi>
+            </div>
+          </div>
+          <div class="shrink-0 text-end text-sm text-zinc-500 dark:text-zinc-400">
+                          <div><bdi>7.6MB</bdi></div>
+                                      <div>
+                <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;540&quot;}" data-n="540">540 pages</span>
+              </div>
+                      </div>
+          <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/books/app/book-pdfs/3/25/03/00/3325/5561.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T181813Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=cd6b4dd7ca2d00be5fe7d7e9ff34b84062c685a9aeded43c096c2479144be718" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 w-8 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" aria-label="Download">
+        <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M10.75 2.75a.75.75 0 0 0-1.5 0v8.614L6.295 8.235a.75.75 0 1 0-1.09 1.03l4.25 4.5a.75.75 0 0 0 1.09 0l4.25-4.5a.75.75 0 0 0-1.09-1.03l-2.955 3.129V2.75Z"/>
+  <path d="M3.5 12.75a.75.75 0 0 0-1.5 0v2.5A2.75 2.75 0 0 0 4.75 18h10.5A2.75 2.75 0 0 0 18 15.25v-2.5a.75.75 0 0 0-1.5 0v2.5c0 .69-.56 1.25-1.25 1.25H4.75c-.69 0-1.25-.56-1.25-1.25v-2.5Z"/>
+</svg>
+    </a>
+        </li>
+          </ul></div>
   </div>
 
-      <template id="author-card">
-      <div
-        class="card-text"
-        lang="ar"
-        dir="rtl"
-      >
+                        </dialog>
+</ui-modal>
+        </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" dir="auto" lang="ar" data-flux-heading>جامع العلوم والحكم - ت الأرنؤوط</h1>
+
+                <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim (The Compendium of Knowledge and Wisdom: A Commentary on Fifty Hadiths of Concise Speech)&quot;,&quot;es&quot;:&quot;Jami al-Ulum wa al-Hikam [Compendio de ciencias y sabiduría] fi sharh khamsin hadithan min jawami al-kalim [Comentario de cincuenta hadices de las máximas concisas]&quot;,&quot;fr&quot;:&quot;Jami al-Ulum wa al-Hikam (La somme des sciences et des sagesses), commentaire de cinquante hadiths parmi les paroles concises&quot;,&quot;id&quot;:&quot;Jami&#039; al-&#039;Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim [Kumpulan Ilmu dan Hikmah dalam Penjelasan Lima Puluh Hadis dari Ungkapan Ringkas]&quot;,&quot;ja&quot;:&quot;ジャーミウ・アル＝ウルーム・ワル＝ヒカム（五十の包括的な言葉のハディース注釈）&quot;,&quot;ru&quot;:&quot;Джами‘ аль-‘улюм ва-ль-хикам фи шарх хамсин хадисан мин джавами‘ аль-калим (Собрание знаний и мудростей: комментарий к пятидесяти хадисам из кратких изречений)&quot;,&quot;sw&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim (Mkusanyo wa elimu na hekima katika ufafanuzi wa hadithi hamsini kati ya maneno mafupi yenye maana pana)&quot;,&quot;tr&quot;:&quot;Câmiʿu’l-ulûm ve’l-hikem fî şerhi hamsîne hadîsen min cevâmiʿi’l-kelim (Özlü sözlerden elli hadisin şerhinde ilim ve hikmetleri bir araya getiren eser)&quot;,&quot;ur&quot;:&quot;جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم (علوم و حکمت کا مجموعہ، جو جامع کلمات کی پچاس حدیثوں کی شرح ہے)&quot;,&quot;zh&quot;:&quot;《汇集诸学问与格言：注释五十段精炼圣训》&quot;}" data-original=""></span></p>
+                  <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1 flex flex-wrap items-baseline gap-x-2" data-flux-subheading>
+    <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../authors/216/21663.html" lang="ar" data-flux-link >ابن رجب الحنبلي</a>                        <bdi class="text-zinc-400">
+              (<span data-t="d. :year" data-r="{&quot;year&quot;:&quot;795 AH&quot;}">d. 795 AH</span>)
+            </bdi>
+</div>
         
+                  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span>Publisher:</span>
+            <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../publishers/5311/531113.html" lang="ar" data-flux-link >مؤسسة الرسالة - بيروت</a></p>        
+        <div class="mt-3 flex flex-wrap gap-2">
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50">
+        <span lang="ar">شروح الحديث</span>
+    </div>
+                    <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50">
+        <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;1,052&quot;}" data-n="1052">1,052 pages</span>
+    </div>
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50">
+        <span data-t=":count part|:count parts" data-r="{&quot;count&quot;:2}" data-n="2">2 parts</span>
+    </div>
+                  </div>
+
+                  <div
+            class="mt-4"
+            data-test="other-editions"
+          >
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Other editions</div>
+            <ul class="mt-1 space-y-1 text-sm">
+                              <li>
+                                      <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../books/033/3318/index.html" dir="auto" data-flux-link >جامع العلوم والحكم - ت الفحل</a>                                                        <span class="text-zinc-400">(ت الفحل)</span>
+                                  </li>
+                              <li>
+                                      <span
+                      dir="auto"
+                      title="Not in this edition"
+                    >
+                      جامع العلوم والحكم - ت أبي النور
+                    </span>
+                                                        <span class="text-zinc-400">(ت أبي النور)</span>
+                                  </li>
+                          </ul>
+          </div>
+        
+        <div class="mt-6 grid grid-cols-1 gap-4 xl:grid-cols-2">
+                      <div class="min-w-0 rounded-xl border border-zinc-200 p-5 [overflow-wrap:anywhere] dark:border-zinc-700">
+              <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+              <dl
+  class="text-sm grid gap-x-6 gap-y-3 sm:grid-cols-[fit-content(12rem)_1fr]"
+  dir="auto"
+>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Title&quot;,&quot;es&quot;:&quot;Título&quot;,&quot;fr&quot;:&quot;Titre&quot;,&quot;id&quot;:&quot;Judul&quot;,&quot;ja&quot;:&quot;書名&quot;,&quot;ru&quot;:&quot;Название&quot;,&quot;sw&quot;:&quot;Jina la kitabu&quot;,&quot;tr&quot;:&quot;Kitap adı&quot;,&quot;ur&quot;:&quot;نام کتاب&quot;,&quot;zh&quot;:&quot;书名&quot;}" data-original="الكتاب">الكتاب</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim (The Compendium of Knowledge and Wisdom: A Commentary on Fifty Hadiths of Concise Speech)&quot;,&quot;es&quot;:&quot;Jami al-Ulum wa al-Hikam [Compendio de ciencias y sabiduría] fi sharh khamsin hadithan min jawami al-kalim [Comentario de cincuenta hadices de las máximas concisas]&quot;,&quot;fr&quot;:&quot;Jami al-Ulum wa al-Hikam (La somme des sciences et des sagesses), commentaire de cinquante hadiths parmi les paroles concises&quot;,&quot;id&quot;:&quot;Jami&#039; al-&#039;Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim [Kumpulan Ilmu dan Hikmah dalam Penjelasan Lima Puluh Hadis dari Ungkapan Ringkas]&quot;,&quot;ja&quot;:&quot;ジャーミウ・アル＝ウルーム・ワル＝ヒカム（五十の包括的な言葉のハディース注釈）&quot;,&quot;ru&quot;:&quot;Джами‘ аль-‘улюм ва-ль-хикам фи шарх хамсин хадисан мин джавами‘ аль-калим (Собрание знаний и мудростей: комментарий к пятидесяти хадисам из кратких изречений)&quot;,&quot;sw&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim (Mkusanyo wa elimu na hekima katika ufafanuzi wa hadithi hamsini kati ya maneno mafupi yenye maana pana)&quot;,&quot;tr&quot;:&quot;Câmiʿu’l-ulûm ve’l-hikem fî şerhi hamsîne hadîsen min cevâmiʿi’l-kelim (Özlü sözlerden elli hadisin şerhinde ilim ve hikmetleri bir araya getiren eser)&quot;,&quot;ur&quot;:&quot;جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم (علوم و حکمت کا مجموعہ، جو جامع کلمات کی پچاس حدیثوں کی شرح ہے)&quot;,&quot;zh&quot;:&quot;《汇集诸学问与格言：注释五十段精炼圣训》&quot;}" data-original="جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم">جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Author&quot;,&quot;es&quot;:&quot;Autor&quot;,&quot;fr&quot;:&quot;Auteur&quot;,&quot;id&quot;:&quot;Penulis&quot;,&quot;ja&quot;:&quot;著者&quot;,&quot;ru&quot;:&quot;Автор&quot;,&quot;sw&quot;:&quot;Mwandishi&quot;,&quot;tr&quot;:&quot;Yazar&quot;,&quot;ur&quot;:&quot;مصنف&quot;,&quot;zh&quot;:&quot;作者&quot;}" data-original="المؤلف">المؤلف</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Zayn al-Din Abu al-Faraj Abd al-Rahman ibn Shihab al-Din al-Baghdadi, later of Damascus, known as Ibn Rajab (736–795 AH)&quot;,&quot;es&quot;:&quot;Zayn al-Din Abu al-Faraj Abd al-Rahman ibn Shihab al-Din al-Baghdadi, luego al-Dimashqi, conocido como Ibn Rajab (736 - 795 H)&quot;,&quot;fr&quot;:&quot;Zayn al-Din Abu al-Faraj Abd al-Rahman ibn Shihab al-Din al-Baghdadi, puis al-Dimashqi, connu sous le nom d&#039;Ibn Rajab (736 - 795 H)&quot;,&quot;id&quot;:&quot;Zainuddin Abu al-Faraj Abdurrahman bin Syihabuddin al-Baghdadi, kemudian ad-Dimasyqi, yang dikenal sebagai Ibnu Rajab (٧٣٦ - ٧٩٥ H)&quot;,&quot;ja&quot;:&quot;ザインッディーン・アブー・アル＝ファラジュ・アブドゥッラフマーン・イブン・シハーブッディーン・アル＝バグダーディー、のちのダマスカス在住者。イブン・ラジャブとして知られる（ヒジュラ暦736～795年）&quot;,&quot;ru&quot;:&quot;Зайн ад-Дин Абу аль-Фарадж Абд ар-Рахман ибн Шихаб ад-Дин аль-Багдади, затем ад-Димашки, известный как Ибн Раджаб (736–795 гг. х.)&quot;,&quot;sw&quot;:&quot;Zayn al-Din Abu al-Faraj Abdulrahman bin Shihab al-Din al-Baghdadi, kisha al-Dimashqi, maarufu kwa jina la Ibn Rajab (736 - 795 H)&quot;,&quot;tr&quot;:&quot;Zeynüddin Ebü’l-Ferec Abdurrahman b. Şihâbüddin el-Bağdâdî, ardından Dımaşkî; İbn Receb diye tanınır (736-795 H)&quot;,&quot;ur&quot;:&quot;زين الدين أبو الفرج عبد الرحمن بن شهاب الدين البغدادي ثم الدمشقي الشهير بابن رجب (٧٣٦ - ٧٩٥ ھ)&quot;,&quot;zh&quot;:&quot;宰因丁·艾布·法拉吉·阿卜杜·拉赫曼·本·希哈卜丁·巴格达迪，后迁居大马士革，著名为伊本·拉杰卜（伊历736—795年）&quot;}" data-original="زين الدين أبو الفرج عبد الرحمن بن شهاب الدين البغدادي ثم الدمشقي الشهير بابن رجب (٧٣٦ - ٧٩٥ هـ)">زين الدين أبو الفرج عبد الرحمن بن شهاب الدين البغدادي ثم الدمشقي الشهير بابن رجب (٧٣٦ - ٧٩٥ هـ)</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Editor&quot;,&quot;es&quot;:&quot;Edición crítica&quot;,&quot;fr&quot;:&quot;Édition critique&quot;,&quot;id&quot;:&quot;Pentahkik&quot;,&quot;ja&quot;:&quot;校訂者&quot;,&quot;ru&quot;:&quot;Тахкик&quot;,&quot;sw&quot;:&quot;Mhakiki&quot;,&quot;tr&quot;:&quot;Tahkik eden&quot;,&quot;ur&quot;:&quot;محقق&quot;,&quot;zh&quot;:&quot;校勘者&quot;}" data-original="المحقق">المحقق</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Shu&#039;ayb al-Arna&#039;ut [d. 1438 AH] - Ibrahim Bajis&quot;,&quot;es&quot;:&quot;Shuayb al-Arnaut [f. 1438 H] - Ibrahim Bajis&quot;,&quot;fr&quot;:&quot;Shuayb al-Arnaut [d. 1438 H] - Ibrahim Bajis&quot;,&quot;id&quot;:&quot;Syu&#039;aib al-Arna&#039;uth [w. ١٤٣٨ H] - Ibrahim Bajis&quot;,&quot;ja&quot;:&quot;シュアイブ・アル＝アルナーウト（ヒジュラ暦1438年没）- イブラーヒーム・バージス&quot;,&quot;ru&quot;:&quot;Шу‘айб аль-Арнаут [ум. 1438 г. х.] — Ибрахим Баджис&quot;,&quot;sw&quot;:&quot;Shuayb al-Arnaut [aliyefariki 1438 H] - Ibrahim Bajis&quot;,&quot;tr&quot;:&quot;Şuayb el-Arnaût [ö. 1438 H] - İbrahim Bâcis&quot;,&quot;ur&quot;:&quot;شعيب الأرناؤوط [ت ١٤٣٨ ھ]- إبراهيم باجس&quot;,&quot;zh&quot;:&quot;舒艾卜·艾尔纳乌特（卒于伊历1438年）—易卜拉欣·巴杰斯&quot;}" data-original="شعيب الأرناؤوط [ت ١٤٣٨ هـ]- إبراهيم باجس">شعيب الأرناؤوط [ت ١٤٣٨ هـ]- إبراهيم باجس</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Publisher&quot;,&quot;es&quot;:&quot;Editorial&quot;,&quot;fr&quot;:&quot;Éditeur&quot;,&quot;id&quot;:&quot;Penerbit&quot;,&quot;ja&quot;:&quot;出版社&quot;,&quot;ru&quot;:&quot;Издательство&quot;,&quot;sw&quot;:&quot;Mchapishaji&quot;,&quot;tr&quot;:&quot;Yayınevi&quot;,&quot;ur&quot;:&quot;ناشر&quot;,&quot;zh&quot;:&quot;出版社&quot;}" data-original="الناشر">الناشر</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Mu&#039;assasat al-Risala - Beirut&quot;,&quot;es&quot;:&quot;Mu&#039;assasat al-Risala - Beirut&quot;,&quot;fr&quot;:&quot;Mu&#039;assasat al-Risala - Beyrouth&quot;,&quot;id&quot;:&quot;Mu&#039;assasat ar-Risala - Beirut&quot;,&quot;ja&quot;:&quot;ムアッササト・アッ＝リサーラ（ベイルート）&quot;,&quot;ru&quot;:&quot;Муассасат ар-Рисаля — Бейрут&quot;,&quot;sw&quot;:&quot;Mu&#039;assasat al-Risala - Beirut&quot;,&quot;tr&quot;:&quot;Mu&#039;assasat al-Risala - Beyrut&quot;,&quot;ur&quot;:&quot;مؤسسة الرسالة - بیروت&quot;,&quot;zh&quot;:&quot;الرسالة 出版社—贝鲁特&quot;}" data-original="مؤسسة الرسالة - بيروت">مؤسسة الرسالة - بيروت</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Edition&quot;,&quot;es&quot;:&quot;Edición&quot;,&quot;fr&quot;:&quot;Édition&quot;,&quot;id&quot;:&quot;Cetakan&quot;,&quot;ja&quot;:&quot;版&quot;,&quot;ru&quot;:&quot;Издание&quot;,&quot;sw&quot;:&quot;Toleo&quot;,&quot;tr&quot;:&quot;Baskı&quot;,&quot;ur&quot;:&quot;طبع&quot;,&quot;zh&quot;:&quot;版次&quot;}" data-original="الطبعة">الطبعة</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Seventh, 1417 AH - 1997 CE&quot;,&quot;es&quot;:&quot;Séptima, 1417 H - 1997&quot;,&quot;fr&quot;:&quot;Septième, 1417 H - 1997&quot;,&quot;id&quot;:&quot;Ketujuh, ١٤١٧ H - ١٩٩٧ M&quot;,&quot;ja&quot;:&quot;第7版、ヒジュラ暦1417年／西暦1997年&quot;,&quot;ru&quot;:&quot;Седьмое, 1417 г. х. — 1997 г.&quot;,&quot;sw&quot;:&quot;La saba, 1417 H - 1997&quot;,&quot;tr&quot;:&quot;Yedinci, 1417 H - 1997&quot;,&quot;ur&quot;:&quot;ساتویں، ١٤١٧ ھ - ١٩٩٧ ء&quot;,&quot;zh&quot;:&quot;第七版，伊历1417年—公元1997年&quot;}" data-original="السابعة، ١٤١٧ هـ - ١٩٩٧ م">السابعة، ١٤١٧ هـ - ١٩٩٧ م</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Number of parts&quot;,&quot;es&quot;:&quot;Número de volúmenes&quot;,&quot;fr&quot;:&quot;Nombre de volumes&quot;,&quot;id&quot;:&quot;Jumlah jilid&quot;,&quot;ja&quot;:&quot;巻数&quot;,&quot;ru&quot;:&quot;Количество томов&quot;,&quot;sw&quot;:&quot;Idadi ya juzuu&quot;,&quot;tr&quot;:&quot;Cilt sayısı&quot;,&quot;ur&quot;:&quot;جلدوں کی تعداد&quot;,&quot;zh&quot;:&quot;册数&quot;}" data-original="عدد الأجزاء">عدد الأجزاء</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;2 (in one volume)&quot;,&quot;es&quot;:&quot;2 (en un solo volumen)&quot;,&quot;fr&quot;:&quot;2 (en un seul volume)&quot;,&quot;id&quot;:&quot;٢ (dalam satu jilid)&quot;,&quot;ja&quot;:&quot;2巻（1冊）&quot;,&quot;ru&quot;:&quot;2 (в одном томе)&quot;,&quot;sw&quot;:&quot;2 (katika jalada moja)&quot;,&quot;tr&quot;:&quot;2 (tek ciltte)&quot;,&quot;ur&quot;:&quot;٢ (ایک جلد میں)&quot;,&quot;zh&quot;:&quot;2册（合为一卷）&quot;}" data-original="٢ (في مجلد واحد)">٢ (في مجلد واحد)</span>
+          </dd>
+          <dd
+      class="min-w-0 sm:col-span-2 text-zinc-500 dark:text-zinc-400"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The page numbering matches the print edition&quot;,&quot;es&quot;:&quot;La paginación coincide con la edición impresa&quot;,&quot;fr&quot;:&quot;La pagination correspond à l&#039;édition imprimée&quot;,&quot;id&quot;:&quot;Penomoran halaman sesuai dengan edisi cetak&quot;,&quot;ja&quot;:&quot;ページ番号は印刷版と一致&quot;,&quot;ru&quot;:&quot;Нумерация страниц соответствует печатному изданию&quot;,&quot;sw&quot;:&quot;Kurasa zimehesabiwa sawa na nakala iliyochapishwa&quot;,&quot;tr&quot;:&quot;Sayfa numaraları basılı nüshaya uygundur&quot;,&quot;ur&quot;:&quot;صفحات کی ترقیم مطبوعہ نسخے کے مطابق ہے&quot;,&quot;zh&quot;:&quot;页码与纸质版一致&quot;}" data-original="ترقيم الكتاب موافق للمطبوع">ترقيم الكتاب موافق للمطبوع</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Author page&quot;,&quot;es&quot;:&quot;Página del autor&quot;,&quot;fr&quot;:&quot;Page de l&#039;auteur&quot;,&quot;id&quot;:&quot;Halaman penulis&quot;,&quot;ja&quot;:&quot;著者ページ&quot;,&quot;ru&quot;:&quot;Страница автора&quot;,&quot;sw&quot;:&quot;Ukurasa wa mwandishi&quot;,&quot;tr&quot;:&quot;Yazar sayfası&quot;,&quot;ur&quot;:&quot;مصنف کا صفحہ&quot;,&quot;zh&quot;:&quot;作者页面&quot;}" data-original="صفحة المؤلف">صفحة المؤلف</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;es&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;id&quot;:&quot;Ibnu Rajab al-Hanbali&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ・アル＝ハンバリー&quot;,&quot;ru&quot;:&quot;Ибн Раджаб аль-Ханбали&quot;,&quot;sw&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;İbn Receb el-Hanbelî&quot;,&quot;zh&quot;:&quot;罕百里派的伊本·拉杰卜&quot;}" data-original="ابن رجب الحنبلي">ابن رجب الحنبلي</span>
+          </dd>
+  </dl>
+            </div>
+          
+                      <div class="min-w-0 rounded-xl border border-zinc-200 p-5 [overflow-wrap:anywhere] dark:border-zinc-700">
+              <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>About the author</div>
+              <div class="max-h-96 overflow-y-auto text-sm leading-relaxed text-zinc-800 dark:text-zinc-100">
+                                  
+                  <div class="whitespace-pre-line" dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Rajab al-Hanbali (736 - 795 AH, 1336 - 1393 CE).\nZayn al-Din Abd al-Rahman ibn Ahmad ibn Rajab ibn al-Hasan al-Salami, al-Baghdadi, later al-Dimashqi, al-Hanbali, the preacher. He was an imam, hadith scholar, and jurist. He was born in Baghdad and studied under Abu al-Fath al-Maydumi.\nHe wrote many works, including:\n• Sharh al-Tirmidhi\n• Sharh Ilal al-Tirmidhi\n• Tabaqat al-Hanabila\n• Fath al-Bari, a commentary on Sahih al-Bukhari, which he did not complete\n• Jami al-Ulum wa al-Hikam, a commentary on fifty hadiths of the Prophet&#039;s comprehensive words;\n• al-Tawhid\nand others.\nHe grew up and died in Damascus.\nQuoted from\nThe Universal Arabic Encyclopedia http:\/\/www.mawsoah.net&quot;,&quot;es&quot;:&quot;Ibn Rajab al-Hanbali (736-795 H, 1336-1393 d. C.).\nZayn al-Din Abd al-Rahman ibn Ahmad ibn Rajab ibn al-Hasan, al-Salami, de Bagdad y más tarde de Damasco, hanbalí y predicador. Imán, hafiz, estudioso del hadiz y jurista. Nació en Bagdad y escuchó hadices de Abu al-Fath al-Maydumi.\nEs autor de numerosas obras, entre ellas:\n• Comentario de al-Tirmidhi\n• Comentario de las causas ocultas en los hadices de al-Tirmidhi\n• Categorías de los hanbalíes\n• Fath al-Bari, comentario del Sahih de al-Bujari, que dejó inconcluso\n• Yami al-ulum wa-l-hikam (Compendio de ciencias y sentencias), comentario de cincuenta hadices de las palabras concisas\n• El monoteísmo\ny otras.\nSe crio y murió en Damasco.\nTomado de\nEnciclopedia Árabe Mundial http:\/\/www.mawsoah.net&quot;,&quot;fr&quot;:&quot;Ibn Rajab al-Hanbali (736 - 795 H, 1336 - 1393).\nZayn al-Din Abd al-Rahman ibn Ahmad ibn Rajab ibn al-Hasan, al-Salami, de Bagdad, puis de Damas, hanbalite et prédicateur. Imam, traditionniste de grande autorité, spécialiste du hadith et juriste, il naquit à Bagdad et reçut des traditions d&#039;Abu al-Fath al-Maydhumi.\nIl a laissé de nombreux ouvrages, notamment :\n• Commentaire de al-Tirmidhi\n• Commentaire des défauts relevés dans les hadiths par al-Tirmidhi\n• Les générations des hanbalites\n• Fath al-Bari, commentaire du Sahih al-Bukhari, qu&#039;il ne put achever\n• Jami al-Ulum wa al-Hikam, commentaire de cinquante hadiths parmi les paroles concises\n• Le monothéisme\nEt d&#039;autres ouvrages.\nIl grandit et mourut à Damas.\nD&#039;après\nEncyclopédie arabe mondiale http:\/\/www.mawsoah.net&quot;,&quot;id&quot;:&quot;Ibnu Rajab Al-Hanbali (736–795 H, 1336–1393 M).\nZainuddin Abdurrahman bin Ahmad bin Rajab bin Al-Hasan, As-Salami, Al-Baghdadi, kemudian Ad-Dimasyqi, Al-Hanbali, seorang pemberi nasihat. Seorang imam, hafiz, ahli hadis, dan fakih. Ia lahir di Baghdad dan mendengar hadis dari Abu Al-Fath Al-Maidumi.\nIa memiliki banyak karya, di antaranya:\n• Syarah At-Tirmidzi\n• Syarah Ilal At-Tirmidzi\n• Thabaqat Al-Hanabilah\n• Fath Al-Bari, Syarah Shahih Al-Bukhari (belum diselesaikan)\n• Jami&#039; Al-Ulum wa Al-Hikam, Syarah Lima Puluh Hadis tentang Jawami&#039; Al-Kalim;\n• At-Tauhid\nDan karya-karya lainnya.\nIa tumbuh besar dan wafat di Damaskus.\nDikutip dari\nEnsiklopedia Arab Dunia http:\/\/www.mawsoah.net&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ・アル＝ハンバリー（ヒジュラ暦736～795年／西暦1336～1393年）。\nザイン・アッディーン・アブドゥッラフマーン・イブン・アフマド・イブン・ラジャブ・イブン・アル＝ハサン・アッ＝サラーミー、アル＝バグダーディー、のちのアッ＝ディマシュキー。ハンバリー派の説教師。イマーム、ハーフィズ、ハディース学者、法学者。バグダードで生まれ、アブー・アル＝ファトフ・アル＝マイダーミーから学んだ。\n多くの著作があり、以下のものが含まれる。\n• ティルミズィーの注釈\n• ティルミズィーの『イラル』注釈\n• ハンバリー派法学者列伝\n• 『ファトフ・アル＝バーリー』――『サヒーフ・アル＝ブハーリー』注釈（未完）\n• 『ジャーミウ・アル＝ウルーム・ワル＝ヒカム』（包括的な言葉からなる50のハディースの注釈）\n• タウヒード\nほかにも著作がある。\nダマスカスで育ち、同地で没した。\n出典：\n世界アラビア百科事典 http:\/\/www.mawsoah.net&quot;,&quot;ru&quot;:&quot;Ибн Раджаб аль-Ханбали (736–795 гг. х. \/ 1336–1393 гг.).\nЗайн ад-Дин Абд ар-Рахман ибн Ахмад ибн Раджаб ибн аль-Хасан ас-Салями, аль-Багдади, затем ад-Димашки, ханбалит, проповедник. Имам, хафиз, знаток хадисов, правовед. Родился в Багдаде и слушал хадисы у Абу аль-Фатха аль-Майдуми.\nОставил множество трудов, среди них:\n• «Шарх ат-Тирмизи» (Комментарий к сборнику ат-Тирмизи)\n• «Шарх иляль ат-Тирмизи» (Комментарий к разделу о скрытых недостатках хадисов у ат-Тирмизи)\n• «Табакат аль-ханабиля» (Поколения ханбалитов)\n• «Фатх аль-Бари: шарх Сахих аль-Бухари» (Победа Творца: комментарий к «Сахиху» аль-Бухари), не завершён\n• «Джами&#039; аль-&#039;улюм ва-ль-хикам: шарх хамсин хадисан мин джавами&#039; аль-калим» (Собрание знаний и мудростей: комментарий к пятидесяти хадисам из кратких и ёмких изречений)\n• «Ат-таухид» (Единобожие)\nИ другие.\nВырос и умер в Дамаске.\n\nПереведено по источнику:\n«Всемирная арабская энциклопедия» http:\/\/www.mawsoah.net&quot;,&quot;sw&quot;:&quot;Ibn Rajab al-Hanbali (736 - 795 H, 1336 - 1393 Miladia).\nZayn al-Din Abdulrahman bin Ahmad bin Rajab bin al-Hasan al-Salami, al-Baghdadi, kisha al-Dimashqi, al-Hanbali, mhubiri. Imamu, hafidh, mwanazuoni wa hadithi na faqihi. Alizaliwa Baghdad na akasikia hadithi kutoka kwa Abu al-Fath al-Maydumi.\nAna vitabu vingi, vikiwemo:\n• Ufafanuzi wa Jami al-Tirmidhi\n• Ufafanuzi wa Kasoro za Jami al-Tirmidhi\n• Tabaka za Wanazuoni wa Hanbali\n• Fath al-Bari (Ushindi wa Muumba): Ufafanuzi wa Sahih al-Bukhari; hakukikamilisha\n• Jami al-Ulum wa al-Hikam (Jumla ya Elimu na Hukumu): Ufafanuzi wa hadithi hamsini za maneno yenye hekima;\n• Tauhidi\nna vinginevyo.\nAlikulia na akafariki Dameski.\nImenukuliwa kutoka\nMausua ya Kiarabu ya Kimataifa http:\/\/www.mawsoah.net&quot;,&quot;tr&quot;:&quot;İbn Receb el-Hanbelî (736 - 795 H, 1336 - 1393 m.).\nZeynüddin Abdurrahman b. Ahmed b. Receb b. Hasan es-Selâmî el-Bağdâdî, ardından Dımaşkî; Hanbelî, vaiz. İmam, hâfız, muhaddis ve fakih. Bağdat’ta doğdu; Ebü’l-Feth el-Meyzûmî’den hadis dinledi.\nÇok sayıda eseri vardır. Bunlardan bazıları:\n• Şerhu’t-Tirmizî\n• Şerhu İleli’t-Tirmizî\n• Tabakâtü’l-Hanâbile\n• Fethu’l-bârî Şerhu Sahîhi’l-Buhârî (tamamlayamamıştır)\n• Câmiu’l-ulûm ve’l-hikem: Cevâmiu’l-kelim’den elli hadisin şerhi;\n• et-Tevhîd\nve diğerleri.\nDımaşk’ta yetişti ve orada vefat etti.\n\nŞu kaynaktan aktarılmıştır:\nel-Mevsûatü’l-Arabiyye el-Âlemiyye http:\/\/www.mawsoah.net&quot;,&quot;ur&quot;:&quot;ابن رجب الحنبلی (٧٣٦ - ٧٩٥ ھ، ١٣٣٦ - ١٣٩٣ ء)۔\nزین الدین عبد الرحمن بن أحمد بن رجب بن الحسن، السَلامی، البغدادی، پھر دمشقی، حنبلی، واعظ تھے۔ امام، حافظ، محدث اور فقیہ تھے۔ بغداد میں پیدا ہوئے اور أبو الفتح الميدومي سے علم حاصل کیا۔\nان کی متعدد تصانیف ہیں، جن میں سے چند یہ ہیں:\n• شرح الترمذي\n• شرح علل الترمذي\n• طبقات الحنابلة\n• فتح الباري شرح صحيح البخاري، جسے مکمل نہیں کر سکے\n• جامع العلوم والحكم شرح خمسين حديثًا من جوامع الكلم؛\n• التوحيد\nاور دیگر تصانیف۔\nدمشق میں پرورش پائی اور وہیں وفات پائی۔\nماخوذ از\nالموسوعة العربية العالمية http:\/\/www.mawsoah.net&quot;,&quot;zh&quot;:&quot;伊本·拉杰卜·罕百里（伊历736—795年，公元1336—1393年）。\n宰因丁·阿卜杜·拉赫曼·本·艾哈迈德·本·拉杰卜·本·哈桑·萨拉米，巴格达人，后居大马士革，罕百里派，劝诫者。伊玛目、圣训背记家、圣训学家、法学家，生于巴格达，曾听受艾布·法特赫·迈杜米的传述。\n著作颇多，包括：\n•《提尔密济圣训集注释》\n•《提尔密济圣训集缺陷学注释》\n•《罕百里派人物传》\n•《布哈里圣训实录注释·法特赫·巴里》（未完成）\n•《学问与智慧汇编——五十则箴言圣训注释》；\n•《认主独一》\n以及其他著作。\n他在大马士革长大，并在那里去世。\n引自：\n《世界阿拉伯百科全书》 http:\/\/www.mawsoah.net&quot;}" data-original=""></div>
+                                <details
+                  class="mt-3"
+                                  >
+                  <summary class="cursor-pointer text-zinc-500 dark:text-zinc-400">Arabic original</summary>
+                  <div
+                    class="prose-sm mt-2"
+                    dir="rtl"
+                    lang="ar"
+                  >
+                    
 ابن رجب الحنبلي (٧٣٦ - ٧٩٥ هـ، ١٣٣٦ - ١٣٩٣ م).زين الدين عبد الرحمن بن أحمد بن رجب بن الحسن، السَلامي، البغدادي، ثم الدمشقي، الحنبلي، الواعظ. الإمام الحافظ، المحدّث، الفقيه، ولد في بغداد وسمع من أبي الفتح الميدومي.له مصنفات عديدة، منها:• شرح الترمذي• شرح علل الترمذي• طبقات الحنابلة• فتح الباري شرح صحيح البخاري لم يتمه• جامع العلوم والحكم شرح خمسين حديثًا من جوامع الكلم؛• التوحيدوغيرها.نشأ وتوفي بدمشق.نقلا عنالموسوعة العربية العالمية http://www.mawsoah.net
 <hr>
 <ul><li>أحكام الاختلاف في رؤية هلال ذي الحجة</li><li>أحكام الخواتيم</li><li>أسباب المغفرة</li><li>أهوال القبور وأحوال أهلها إلى النشور</li><li>اختيار الأولى في شرح حديث اختصام الملأ الأعلى - ت الدوسري</li><li>اختيار الأولى في شرح حديث اختصام الملأ الأعلى - ضمن مجموع رسائل ابن رجب</li><li>استنشاق نسيم الأنس من نفحات رياض القدس</li><li>الاستخراج لأحكام الخراج</li><li>البشارة العظمى للمؤمن بأن حظه من النار الحمى</li><li>التخويف من النار والتعريف بحال دار البوار</li><li>التخويف من النار والتعريف بحال دار البوار</li><li>الحكم الجديرة بالإذاعة - ت الأرنؤوط</li><li>الحكم الجديرة بالإذاعة - ضمن مجموع رسائل ابن رجب</li><li>الذل والانكسار للعزيز الجبار</li><li>الرد على من اتبع غير المذاهب الأربعة</li><li>الفرق بين النصيحة والتعيير</li><li>الفرق بين النصيحة والتعيير</li><li>القاعدة الذهبية لا ضرر ولا ضرار</li><li>القول الصواب في تزويج أمهات أولاد الغياب</li><li>الكلام على قوله تعالى {إنما يخشى الله من عباده العلماء}</li><li>المحجة في سير الدلجة</li><li>بيان فضل علم السلف على علم الخلف</li><li>تسلية نفوس النساء والرجال عند فقد الأطفال</li><li>تسلية نفوس النساء والرجال عند فقد الأطفال</li><li>تفسير ابن رجب الحنبلي</li><li>تفسير سورة الإخلاص</li><li>تفسير سورة الفاتحة لابن رجب</li><li>تفسير سورة النصر</li><li>جامع العلوم والحكم - ت أبي النور</li><li>جامع العلوم والحكم - ت الأرنؤوط</li><li>جامع العلوم والحكم - ت الفحل</li><li>جزء فيه الكلام على حديث يتبع الميت ثلاث</li><li>جزء من الكلام على حديث شداد بن أوس «إذا كنز الناس الذهب والفضة»</li><li>ذم الخمر</li><li>ذم قسوة القلب</li><li>ذيل طبقات الحنابلة - لابن رجب - ت العثيمين</li><li>ذيل طبقات الحنابلة - لابن رجب - ت الفقي</li><li>رسالة في رؤية هلال ذي الحجة</li><li>سيرة عبد الملك بن عمر بن عبد العزيز</li><li>شرح حديث «إن أغبط أوليائي»</li><li>شرح حديث «لبيك اللهم لبيك»</li><li>شرح حديث «ما ذئبان جائعان»</li><li>شرح حديث «مثل الإسلام»</li><li>شرح حديث عمار بن ياسر - رضي الله عنه -</li><li>شرح حديث لبيك اللهم لبيك</li><li>شرح علل الترمذي</li><li>صدقة السر وفضلها</li><li>غاية النفع في شرح حديث «تمثيل المؤمن بخامة الزرع»</li><li>فتح الباري لابن رجب</li><li>فضائل الشام</li><li>فضل علم السلف على علم الخلف</li><li>قاعدة في إخراج الزكاة على الفور</li><li>قواعد ابن رجب - ت مشهور</li><li>قواعد ابن رجب - ط الخانجي</li><li>قواعد ابن رجب - ط ركائز</li><li>كشف الكربة في وصف أهل الغربة</li><li>كشف الكربة في وصف حال أهل الغربة</li><li>كلمة الإخلاص وتحقيق معناها - ضمن رسائل ابن رجب</li><li>كلمة الإخلاص وتحقيق معناها - ط المكتب الإسلامي</li><li>لطائف المعارف فيما لمواسم العام من الوظائف - ت السواس</li><li>لطائف المعارف فيما لمواسم العام من الوظائف - ت عامر</li><li>لطائف المعارف فيما لمواسم العام من الوظائف - ت عوض الله</li><li>لطائف المعارف فيما لمواسم العام من الوظائف - ط ابن حزم</li><li>مجموع رسائل ابن رجب</li><li>مختصر في معاملة الظالم السارق</li><li>مقدمة تشتمل على أن جميع الرسل كان دينهم الإسلام</li><li>نزهة الأسماع في مسألة السماع «أحكام الغناء والمعازف»</li><li>نور الاقتباس في مشكاة وصية النبي - صلى الله عليه وسلم - لابن عباس</li><li>ورثة الأنبياء شرح حديث أبي الدرداء</li></ul>
 
-      </div>
-    </template>
-  
-      <section class="panel">
-      <h2><span data-t="About the book">About the book</span></h2>
-      <dl class="book-card">
-                              <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Title&quot;,&quot;es&quot;:&quot;Título&quot;,&quot;fr&quot;:&quot;Titre&quot;,&quot;id&quot;:&quot;Judul&quot;,&quot;ja&quot;:&quot;書名&quot;,&quot;ru&quot;:&quot;Название&quot;,&quot;sw&quot;:&quot;Jina la kitabu&quot;,&quot;tr&quot;:&quot;Kitap adı&quot;,&quot;ur&quot;:&quot;نام کتاب&quot;,&quot;zh&quot;:&quot;书名&quot;}" data-original="الكتاب">الكتاب</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim (The Compendium of Knowledge and Wisdom: A Commentary on Fifty Hadiths of Concise Speech)&quot;,&quot;es&quot;:&quot;Jami al-Ulum wa al-Hikam [Compendio de ciencias y sabiduría] fi sharh khamsin hadithan min jawami al-kalim [Comentario de cincuenta hadices de las máximas concisas]&quot;,&quot;fr&quot;:&quot;Jami al-Ulum wa al-Hikam (La somme des sciences et des sagesses), commentaire de cinquante hadiths parmi les paroles concises&quot;,&quot;id&quot;:&quot;Jami&#039; al-&#039;Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim [Kumpulan Ilmu dan Hikmah dalam Penjelasan Lima Puluh Hadis dari Ungkapan Ringkas]&quot;,&quot;ja&quot;:&quot;ジャーミウ・アル＝ウルーム・ワル＝ヒカム（五十の包括的な言葉のハディース注釈）&quot;,&quot;ru&quot;:&quot;Джами‘ аль-‘улюм ва-ль-хикам фи шарх хамсин хадисан мин джавами‘ аль-калим (Собрание знаний и мудростей: комментарий к пятидесяти хадисам из кратких изречений)&quot;,&quot;sw&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim (Mkusanyo wa elimu na hekima katika ufafanuzi wa hadithi hamsini kati ya maneno mafupi yenye maana pana)&quot;,&quot;tr&quot;:&quot;Câmiʿu’l-ulûm ve’l-hikem fî şerhi hamsîne hadîsen min cevâmiʿi’l-kelim (Özlü sözlerden elli hadisin şerhinde ilim ve hikmetleri bir araya getiren eser)&quot;,&quot;ur&quot;:&quot;جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم (علوم و حکمت کا مجموعہ، جو جامع کلمات کی پچاس حدیثوں کی شرح ہے)&quot;,&quot;zh&quot;:&quot;《汇集诸学问与格言：注释五十段精炼圣训》&quot;}" data-original="جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم">جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم</span></dd>
+                  </div>
+                </details>
+              </div>
             </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Author&quot;,&quot;es&quot;:&quot;Autor&quot;,&quot;fr&quot;:&quot;Auteur&quot;,&quot;id&quot;:&quot;Penulis&quot;,&quot;ja&quot;:&quot;著者&quot;,&quot;ru&quot;:&quot;Автор&quot;,&quot;sw&quot;:&quot;Mwandishi&quot;,&quot;tr&quot;:&quot;Yazar&quot;,&quot;ur&quot;:&quot;مصنف&quot;,&quot;zh&quot;:&quot;作者&quot;}" data-original="المؤلف">المؤلف</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Zayn al-Din Abu al-Faraj Abd al-Rahman ibn Shihab al-Din al-Baghdadi, later of Damascus, known as Ibn Rajab (736–795 AH)&quot;,&quot;es&quot;:&quot;Zayn al-Din Abu al-Faraj Abd al-Rahman ibn Shihab al-Din al-Baghdadi, luego al-Dimashqi, conocido como Ibn Rajab (736 - 795 H)&quot;,&quot;fr&quot;:&quot;Zayn al-Din Abu al-Faraj Abd al-Rahman ibn Shihab al-Din al-Baghdadi, puis al-Dimashqi, connu sous le nom d&#039;Ibn Rajab (736 - 795 H)&quot;,&quot;id&quot;:&quot;Zainuddin Abu al-Faraj Abdurrahman bin Syihabuddin al-Baghdadi, kemudian ad-Dimasyqi, yang dikenal sebagai Ibnu Rajab (٧٣٦ - ٧٩٥ H)&quot;,&quot;ja&quot;:&quot;ザインッディーン・アブー・アル＝ファラジュ・アブドゥッラフマーン・イブン・シハーブッディーン・アル＝バグダーディー、のちのダマスカス在住者。イブン・ラジャブとして知られる（ヒジュラ暦736～795年）&quot;,&quot;ru&quot;:&quot;Зайн ад-Дин Абу аль-Фарадж Абд ар-Рахман ибн Шихаб ад-Дин аль-Багдади, затем ад-Димашки, известный как Ибн Раджаб (736–795 гг. х.)&quot;,&quot;sw&quot;:&quot;Zayn al-Din Abu al-Faraj Abdulrahman bin Shihab al-Din al-Baghdadi, kisha al-Dimashqi, maarufu kwa jina la Ibn Rajab (736 - 795 H)&quot;,&quot;tr&quot;:&quot;Zeynüddin Ebü’l-Ferec Abdurrahman b. Şihâbüddin el-Bağdâdî, ardından Dımaşkî; İbn Receb diye tanınır (736-795 H)&quot;,&quot;ur&quot;:&quot;زين الدين أبو الفرج عبد الرحمن بن شهاب الدين البغدادي ثم الدمشقي الشهير بابن رجب (٧٣٦ - ٧٩٥ ھ)&quot;,&quot;zh&quot;:&quot;宰因丁·艾布·法拉吉·阿卜杜·拉赫曼·本·希哈卜丁·巴格达迪，后迁居大马士革，著名为伊本·拉杰卜（伊历736—795年）&quot;}" data-original="زين الدين أبو الفرج عبد الرحمن بن شهاب الدين البغدادي ثم الدمشقي الشهير بابن رجب (٧٣٦ - ٧٩٥ هـ)">زين الدين أبو الفرج عبد الرحمن بن شهاب الدين البغدادي ثم الدمشقي الشهير بابن رجب (٧٣٦ - ٧٩٥ هـ)</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Editor&quot;,&quot;es&quot;:&quot;Edición crítica&quot;,&quot;fr&quot;:&quot;Édition critique&quot;,&quot;id&quot;:&quot;Pentahkik&quot;,&quot;ja&quot;:&quot;校訂者&quot;,&quot;ru&quot;:&quot;Тахкик&quot;,&quot;sw&quot;:&quot;Mhakiki&quot;,&quot;tr&quot;:&quot;Tahkik eden&quot;,&quot;ur&quot;:&quot;محقق&quot;,&quot;zh&quot;:&quot;校勘者&quot;}" data-original="المحقق">المحقق</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Shu&#039;ayb al-Arna&#039;ut [d. 1438 AH] - Ibrahim Bajis&quot;,&quot;es&quot;:&quot;Shuayb al-Arnaut [f. 1438 H] - Ibrahim Bajis&quot;,&quot;fr&quot;:&quot;Shuayb al-Arnaut [d. 1438 H] - Ibrahim Bajis&quot;,&quot;id&quot;:&quot;Syu&#039;aib al-Arna&#039;uth [w. ١٤٣٨ H] - Ibrahim Bajis&quot;,&quot;ja&quot;:&quot;シュアイブ・アル＝アルナーウト（ヒジュラ暦1438年没）- イブラーヒーム・バージス&quot;,&quot;ru&quot;:&quot;Шу‘айб аль-Арнаут [ум. 1438 г. х.] — Ибрахим Баджис&quot;,&quot;sw&quot;:&quot;Shuayb al-Arnaut [aliyefariki 1438 H] - Ibrahim Bajis&quot;,&quot;tr&quot;:&quot;Şuayb el-Arnaût [ö. 1438 H] - İbrahim Bâcis&quot;,&quot;ur&quot;:&quot;شعيب الأرناؤوط [ت ١٤٣٨ ھ]- إبراهيم باجس&quot;,&quot;zh&quot;:&quot;舒艾卜·艾尔纳乌特（卒于伊历1438年）—易卜拉欣·巴杰斯&quot;}" data-original="شعيب الأرناؤوط [ت ١٤٣٨ هـ]- إبراهيم باجس">شعيب الأرناؤوط [ت ١٤٣٨ هـ]- إبراهيم باجس</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Publisher&quot;,&quot;es&quot;:&quot;Editorial&quot;,&quot;fr&quot;:&quot;Éditeur&quot;,&quot;id&quot;:&quot;Penerbit&quot;,&quot;ja&quot;:&quot;出版社&quot;,&quot;ru&quot;:&quot;Издательство&quot;,&quot;sw&quot;:&quot;Mchapishaji&quot;,&quot;tr&quot;:&quot;Yayınevi&quot;,&quot;ur&quot;:&quot;ناشر&quot;,&quot;zh&quot;:&quot;出版社&quot;}" data-original="الناشر">الناشر</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Mu&#039;assasat al-Risala - Beirut&quot;,&quot;es&quot;:&quot;Mu&#039;assasat al-Risala - Beirut&quot;,&quot;fr&quot;:&quot;Mu&#039;assasat al-Risala - Beyrouth&quot;,&quot;id&quot;:&quot;Mu&#039;assasat ar-Risala - Beirut&quot;,&quot;ja&quot;:&quot;ムアッササト・アッ＝リサーラ（ベイルート）&quot;,&quot;ru&quot;:&quot;Муассасат ар-Рисаля — Бейрут&quot;,&quot;sw&quot;:&quot;Mu&#039;assasat al-Risala - Beirut&quot;,&quot;tr&quot;:&quot;Mu&#039;assasat al-Risala - Beyrut&quot;,&quot;ur&quot;:&quot;مؤسسة الرسالة - بیروت&quot;,&quot;zh&quot;:&quot;الرسالة 出版社—贝鲁特&quot;}" data-original="مؤسسة الرسالة - بيروت">مؤسسة الرسالة - بيروت</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Edition&quot;,&quot;es&quot;:&quot;Edición&quot;,&quot;fr&quot;:&quot;Édition&quot;,&quot;id&quot;:&quot;Cetakan&quot;,&quot;ja&quot;:&quot;版&quot;,&quot;ru&quot;:&quot;Издание&quot;,&quot;sw&quot;:&quot;Toleo&quot;,&quot;tr&quot;:&quot;Baskı&quot;,&quot;ur&quot;:&quot;طبع&quot;,&quot;zh&quot;:&quot;版次&quot;}" data-original="الطبعة">الطبعة</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Seventh, 1417 AH - 1997 CE&quot;,&quot;es&quot;:&quot;Séptima, 1417 H - 1997&quot;,&quot;fr&quot;:&quot;Septième, 1417 H - 1997&quot;,&quot;id&quot;:&quot;Ketujuh, ١٤١٧ H - ١٩٩٧ M&quot;,&quot;ja&quot;:&quot;第7版、ヒジュラ暦1417年／西暦1997年&quot;,&quot;ru&quot;:&quot;Седьмое, 1417 г. х. — 1997 г.&quot;,&quot;sw&quot;:&quot;La saba, 1417 H - 1997&quot;,&quot;tr&quot;:&quot;Yedinci, 1417 H - 1997&quot;,&quot;ur&quot;:&quot;ساتویں، ١٤١٧ ھ - ١٩٩٧ ء&quot;,&quot;zh&quot;:&quot;第七版，伊历1417年—公元1997年&quot;}" data-original="السابعة، ١٤١٧ هـ - ١٩٩٧ م">السابعة، ١٤١٧ هـ - ١٩٩٧ م</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Number of parts&quot;,&quot;es&quot;:&quot;Número de volúmenes&quot;,&quot;fr&quot;:&quot;Nombre de volumes&quot;,&quot;id&quot;:&quot;Jumlah jilid&quot;,&quot;ja&quot;:&quot;巻数&quot;,&quot;ru&quot;:&quot;Количество томов&quot;,&quot;sw&quot;:&quot;Idadi ya juzuu&quot;,&quot;tr&quot;:&quot;Cilt sayısı&quot;,&quot;ur&quot;:&quot;جلدوں کی تعداد&quot;,&quot;zh&quot;:&quot;册数&quot;}" data-original="عدد الأجزاء">عدد الأجزاء</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;2 (in one volume)&quot;,&quot;es&quot;:&quot;2 (en un solo volumen)&quot;,&quot;fr&quot;:&quot;2 (en un seul volume)&quot;,&quot;id&quot;:&quot;٢ (dalam satu jilid)&quot;,&quot;ja&quot;:&quot;2巻（1冊）&quot;,&quot;ru&quot;:&quot;2 (в одном томе)&quot;,&quot;sw&quot;:&quot;2 (katika jalada moja)&quot;,&quot;tr&quot;:&quot;2 (tek ciltte)&quot;,&quot;ur&quot;:&quot;٢ (ایک جلد میں)&quot;,&quot;zh&quot;:&quot;2册（合为一卷）&quot;}" data-original="٢ (في مجلد واحد)">٢ (في مجلد واحد)</span></dd>
-            </div>
-                                        <div>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;The page numbering matches the print edition&quot;,&quot;es&quot;:&quot;La paginación coincide con la edición impresa&quot;,&quot;fr&quot;:&quot;La pagination correspond à l&#039;édition imprimée&quot;,&quot;id&quot;:&quot;Penomoran halaman sesuai dengan edisi cetak&quot;,&quot;ja&quot;:&quot;ページ番号は印刷版と一致&quot;,&quot;ru&quot;:&quot;Нумерация страниц соответствует печатному изданию&quot;,&quot;sw&quot;:&quot;Kurasa zimehesabiwa sawa na nakala iliyochapishwa&quot;,&quot;tr&quot;:&quot;Sayfa numaraları basılı nüshaya uygundur&quot;,&quot;ur&quot;:&quot;صفحات کی ترقیم مطبوعہ نسخے کے مطابق ہے&quot;,&quot;zh&quot;:&quot;页码与纸质版一致&quot;}" data-original="ترقيم الكتاب موافق للمطبوع">ترقيم الكتاب موافق للمطبوع</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Author page&quot;,&quot;es&quot;:&quot;Página del autor&quot;,&quot;fr&quot;:&quot;Page de l&#039;auteur&quot;,&quot;id&quot;:&quot;Halaman penulis&quot;,&quot;ja&quot;:&quot;著者ページ&quot;,&quot;ru&quot;:&quot;Страница автора&quot;,&quot;sw&quot;:&quot;Ukurasa wa mwandishi&quot;,&quot;tr&quot;:&quot;Yazar sayfası&quot;,&quot;ur&quot;:&quot;مصنف کا صفحہ&quot;,&quot;zh&quot;:&quot;作者页面&quot;}" data-original="صفحة المؤلف">صفحة المؤلف</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;es&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;id&quot;:&quot;Ibnu Rajab al-Hanbali&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ・アル＝ハンバリー&quot;,&quot;ru&quot;:&quot;Ибн Раджаб аль-Ханбали&quot;,&quot;sw&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;İbn Receb el-Hanbelî&quot;,&quot;zh&quot;:&quot;罕百里派的伊本·拉杰卜&quot;}" data-original="ابن رجب الحنبلي">ابن رجب الحنبلي</span></dd>
-            </div>
-                        </dl>
-    </section>
-  
-      <section class="panel">
-      <h2><span data-t="PDFs">PDFs</span></h2>
-      <p class="muted"><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></p>
-      <ul class="plain">
-                  <li>
-            <a
-              href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/books/app/book-pdfs/3/25/03/00/3325/5551.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T101857Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=b1e01b02b9e0f1ce1f23d6109563d4fe7c8be2cedaf15bc15ba64c13e9c946d2"
-              rel="noopener"
-              target="_blank"
-              dir="auto"
-            >
-              01_157821
-            </a>
-            <span class="muted">
-                              7.7MB
-                                            · <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:532}" data-n="532">532 pages</span>
-                          </span>
-          </li>
-                  <li>
-            <a
-              href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/books/app/book-pdfs/3/25/03/00/3325/5552.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T101857Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=75e2e4fc989b99114990a22241c7b31d01838ca50cace4153daac0f943f94556"
-              rel="noopener"
-              target="_blank"
-              dir="auto"
-            >
-              جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم
-            </a>
-            <span class="muted">
-                              7.7MB
-                                            · <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:540}" data-n="540">540 pages</span>
-                          </span>
-          </li>
-                  <li>
-            <a
-              href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/books/app/book-pdfs/3/25/03/00/3325/5560.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T101857Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=36f298a011e89de303ad29caf673821a338b60a03dd348d008cb7fcaef008b46"
-              rel="noopener"
-              target="_blank"
-              dir="auto"
-            >
-              
-            </a>
-            <span class="muted">
-                              7.5MB
-                                            · <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:532}" data-n="532">532 pages</span>
-                          </span>
-          </li>
-                  <li>
-            <a
-              href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/books/app/book-pdfs/3/25/03/00/3325/5561.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T101857Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=5c808a37dacac818181469a4457444e22a1e83596a5589148213e09f8f11577b"
-              rel="noopener"
-              target="_blank"
-              dir="auto"
-            >
-              جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم
-            </a>
-            <span class="muted">
-                              7.6MB
-                                            · <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:540}" data-n="540">540 pages</span>
-                          </span>
-          </li>
-              </ul>
-    </section>
-  
-      <section class="panel">
-      <h2><span data-t="Other editions">Other editions</span></h2>
-      <ul class="plain">
-                  <li lang="ar">
-                          <a href="../../../books/033/3318/index.html">جامع العلوم والحكم - ت الفحل</a>
-                      </li>
-                  <li lang="ar">
-                          <span
-                class="absent"
-                title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
-              >
-                جامع العلوم والحكم - ت أبي النور
-              </span>
-                      </li>
-              </ul>
-    </section>
-  
-      <section class="panel">
-      <h2><span data-t="Books sharing the most passages with it">Books sharing the most passages with it</span></h2>
-      <table
-        class="table"
-        data-sortable
-      >
-        <thead>
-          <tr>
-            <th data-sort="text"><span data-t="Book">Book</span></th>
-            <th data-sort="text"><span data-t="Author">Author</span></th>
-            <th data-sort="number"><span data-t="Shared passages">Shared passages</span></th>
-          </tr>
-        </thead>
-        <tbody>
-                      <tr>
-              <td lang="ar">
-                                  <a href="../../../books/033/3318/index.html">جامع العلوم والحكم - ت الفحل</a>
-                              </td>
-              <td lang="ar">ابن رجب الحنبلي</td>
-              <td data-value="1315">1,315</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                  </div>
+
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Shares most with</div>
+          <ul class="space-y-1 text-sm">
+                          <li class="flex items-baseline justify-between gap-3">
+                                  <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../books/033/3318/index.html" lang="ar" data-flux-link >جامع العلوم والحكم - ت الفحل</a>                                <span class="shrink-0 text-zinc-400 tabular-nums">1,315</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     جامع العلوم والحكم - ت أبي النور
                   </span>
-                              </td>
-              <td lang="ar">ابن رجب الحنبلي</td>
-              <td data-value="1293">1,293</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">1,293</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     البحر المحيط الثجاج في شرح صحيح الإمام مسلم بن الحجاج
                   </span>
-                              </td>
-              <td lang="ar">محمد بن علي بن آدم الأثيوبي</td>
-              <td data-value="906">906</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">906</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     جمع الجوامع المعروف بـ «الجامع الكبير»
                   </span>
-                              </td>
-              <td lang="ar">الجلال السيوطي</td>
-              <td data-value="821">821</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">821</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     المسند الموضوعي الجامع للكتب العشرة
                   </span>
-                              </td>
-              <td lang="ar">صهيب عبد الجبار</td>
-              <td data-value="816">816</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">817</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     المسند المصنف المعلل
                   </span>
-                              </td>
-              <td lang="ar">مجموعة من المؤلفين</td>
-              <td data-value="805">805</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">806</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     فتاوى الشبكة الإسلامية
                   </span>
-                              </td>
-              <td lang="ar">مجموعة من المؤلفين</td>
-              <td data-value="729">729</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">728</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     المسند الجامع
                   </span>
-                              </td>
-              <td lang="ar">مجموعة من المؤلفين</td>
-              <td data-value="721">721</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">722</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     الجامع الكامل في الحديث الصحيح الشامل المرتب على أبواب الفقه
                   </span>
-                              </td>
-              <td lang="ar">محمد ضياء الرحمن الأعظمي</td>
-              <td data-value="706">706</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">706</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     جامع الأحاديث
                   </span>
-                              </td>
-              <td lang="ar">الجلال السيوطي</td>
-              <td data-value="693">693</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">694</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     مسند أحمد - ط الرسالة
                   </span>
-                              </td>
-              <td lang="ar">أحمد بن حنبل</td>
-              <td data-value="675">675</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">675</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     كنز العمال في سنن الأقوال والأفعال - ط الرسالة
                   </span>
-                              </td>
-              <td lang="ar">المتقي الهندي</td>
-              <td data-value="655">655</td>
-            </tr>
-                  </tbody>
-      </table>
-    </section>
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <ul class="plain">
-                  <li>
-            <a href="../../../catalogue/1443/144391.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Collection of Sciences and Judgments in Explaining Fifty Hadiths from the Comprehensive Sayings - Dar Al-Risalah&quot;,&quot;es&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim [Compendio de las ciencias y las máximas: comentario de cincuenta hadices de las palabras concisas], edición de al-Risala&quot;,&quot;fr&quot;:&quot;Jami al-Ulum wa al-Hikam (Le recueil des sciences et des sagesses), commentaire de cinquante hadiths parmi les paroles concises du Prophète — édition de la Risala&quot;,&quot;id&quot;:&quot;Jami&#039; al-Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim (Himpunan Ilmu dan Hikmah dalam Penjelasan Lima Puluh Hadis dari Ucapan Ringkas), cetakan Ar-Risalah&quot;,&quot;ja&quot;:&quot;『ジャーミウ・アル＝ウルーム・ワル＝ヒカム』—簡潔な言葉を集めた五十のハディースの注解（リサーラ社版）&quot;,&quot;ru&quot;:&quot;Джами аль-улюм ва-ль-хикам фи шарх хамсин хадисан мин джавами аль-калим (Собрание знаний и мудростей: комментарий к пятидесяти хадисам из кратких речений) — издание «ар-Рисаля»&quot;,&quot;sw&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim (Jumla ya elimu na hekima katika ufafanuzi wa hadithi hamsini kutoka maneno mafupi yenye maana pana) - toleo la Mu&#039;assasat al-Risala&quot;,&quot;tr&quot;:&quot;Câmiu&#039;l-ulûm ve&#039;l-hikem fî şerhi hamsîne hadîsen min cevâmii&#039;l-kelim (Cevâmiu&#039;l-kelimden elli hadisin şerhi) – Risâle baskısı&quot;,&quot;zh&quot;:&quot;《知识与智慧总汇：注释五十则精炼圣训》—— الرسالة版&quot;}" data-original="جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط الرسالة">جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط الرسالة</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/1464/146460.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Collection of Sciences and Wisdom in Explaining Fifty Hadiths from the Comprehensive Sayings - Translated by Abdul Moneim Ibrahim&quot;,&quot;es&quot;:&quot;Compendio de las ciencias y las sentencias, comentario de cincuenta hadices de las máximas concisas, ed. Abd al-Mun&#039;im Ibrahim&quot;,&quot;fr&quot;:&quot;Jami&#039; al-ulum wa-l-hikam fi sharh khamsin hadithan min jawami&#039; al-kalim (Synthèse des sciences et des sagesses, commentaire de cinquante paroles concises) — éd. Abd al-Mun&#039;im Ibrahim&quot;,&quot;id&quot;:&quot;Jami&#039; al-Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim [Kompilasi Ilmu dan Hikmah dalam Menjelaskan Lima Puluh Hadis Pilihan] — Tahkik Abdul Mun&#039;im Ibrahim&quot;,&quot;ja&quot;:&quot;『諸学と格言の集成―簡潔な言葉の総合的ハディース50篇の解説』―校訂：アブドゥルムニイム・イブラーヒーム&quot;,&quot;ru&quot;:&quot;Собрание наук и мудростей в комментарии к пятидесяти хадисам из кратких назидательных изречений — тахкик Абд аль-Мун&#039;има Ибрахима&quot;,&quot;sw&quot;:&quot;Jami al-Ulum wa-al-Hikam (Mkusanyiko wa elimu na hikima) katika ufafanuzi wa hadithi hamsini kati ya maneno yenye hikima - mhakiki: Abdulmunim Ibrahim&quot;,&quot;tr&quot;:&quot;Câmiu’l-Ulûm ve’l-Hikem fî Şerhi Ham­sîne Hadîsen min Cevâmi‘i’l-Kelim (Özlü Sözlerden Elli Hadisin Şerhinde İlimler ve Hikmetler Derlemesi) - Tahkik eden: Abdülmün‘im İbrahim&quot;,&quot;ur&quot;:&quot;جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم (علوم و حکمتوں کا جامع، جامع کلمات کی پچاس احادیث کی شرح)&quot;,&quot;zh&quot;:&quot;《知识与智慧汇编：阐释五十则精辟圣训》——阿卜杜·穆奈姆·易卜拉欣校勘&quot;}" data-original="جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ت. عبد المنعم إبراهيم">جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ت. عبد المنعم إبراهيم</span>
-            </a>
-          </li>
-              </ul>
-    </section>
-  
-      <section
-      class="panel"
-      id="contents"
-    >
-      <h2><span data-t="Contents">Contents</span></h2>
-      <ol
-        class="contents"
+                                <span class="shrink-0 text-zinc-400 tabular-nums">656</span>
+              </li>
+                      </ul>
+        
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Also in the catalogue</div>
+          <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                          <a
+  href="../../../catalogue/1443/144391.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/1443/144391.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Collection of Sciences and Judgments in Explaining Fifty Hadiths from the Comprehensive Sayings - Dar Al-Risalah&quot;,&quot;es&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim [Compendio de las ciencias y las máximas: comentario de cincuenta hadices de las palabras concisas], edición de al-Risala&quot;,&quot;fr&quot;:&quot;Jami al-Ulum wa al-Hikam (Le recueil des sciences et des sagesses), commentaire de cinquante hadiths parmi les paroles concises du Prophète — édition de la Risala&quot;,&quot;id&quot;:&quot;Jami&#039; al-Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim (Himpunan Ilmu dan Hikmah dalam Penjelasan Lima Puluh Hadis dari Ucapan Ringkas), cetakan Ar-Risalah&quot;,&quot;ja&quot;:&quot;『ジャーミウ・アル＝ウルーム・ワル＝ヒカム』—簡潔な言葉を集めた五十のハディースの注解（リサーラ社版）&quot;,&quot;ru&quot;:&quot;Джами аль-улюм ва-ль-хикам фи шарх хамсин хадисан мин джавами аль-калим (Собрание знаний и мудростей: комментарий к пятидесяти хадисам из кратких речений) — издание «ар-Рисаля»&quot;,&quot;sw&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim (Jumla ya elimu na hekima katika ufafanuzi wa hadithi hamsini kutoka maneno mafupi yenye maana pana) - toleo la Mu&#039;assasat al-Risala&quot;,&quot;tr&quot;:&quot;Câmiu&#039;l-ulûm ve&#039;l-hikem fî şerhi hamsîne hadîsen min cevâmii&#039;l-kelim (Cevâmiu&#039;l-kelimden elli hadisin şerhi) – Risâle baskısı&quot;,&quot;zh&quot;:&quot;《知识与智慧总汇：注释五十则精炼圣训》—— الرسالة版&quot;}" data-original="جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط الرسالة">جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط الرسالة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
         lang="ar"
         dir="rtl"
+        data-arabic-original
       >
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/1.html#p2">مقدمة التحقيق</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/033/3325/1.html#p6">الطبعات السابقة لهذا الشرح</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/033/3325/1.html#p7">وصف الأصول المعتمدة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/033/3325/1.html#p19">ترجمة المؤلف</a>
-                      </li>
-                  <li style="--depth: 2">
-                          <a href="../../../books/033/3325/1.html#p19">اسمه ونسبه وولادته</a>
-                      </li>
-                  <li style="--depth: 2">
-                          <a href="../../../books/033/3325/1.html#p20">بداية طلبه للعلم</a>
-                      </li>
-                  <li style="--depth: 2">
-                          <a href="../../../books/033/3325/1.html#p20">شيوخه في الإجازة</a>
-                      </li>
-                  <li style="--depth: 2">
-                          <a href="../../../books/033/3325/1.html#p27">تلاميذه</a>
-                      </li>
-                  <li style="--depth: 2">
-                          <a href="../../../books/033/3325/1.html#p30">ثناء أهل العلم عليه</a>
-                      </li>
-                  <li style="--depth: 2">
-                          <a href="../../../books/033/3325/1.html#p32">تصانيفه</a>
-                      </li>
-                  <li style="--depth: 3">
-                          <a href="../../../books/033/3325/1.html#p33">ففي علوم القرآن</a>
-                      </li>
-                  <li style="--depth: 3">
-                          <a href="../../../books/033/3325/34.html#p34">في الحديث</a>
-                      </li>
-                  <li style="--depth: 3">
-                          <a href="../../../books/033/3325/34.html#p42">في الفقه</a>
-                      </li>
-                  <li style="--depth: 3">
-                          <a href="../../../books/033/3325/34.html#p45">في التراجم</a>
-                      </li>
-                  <li style="--depth: 3">
-                          <a href="../../../books/033/3325/34.html#p45">تصانيفه في الوعظ والفضائل والرقائق</a>
-                      </li>
-                  <li style="--depth: 2">
-                          <a href="../../../books/033/3325/34.html#p46">وفاته</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/34.html#p47">مقدمة المؤلف</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/53.html#p53">الحديث الأول</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/033/3325/53.html#p79">فصل</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/87.html#p87">الحديث الثاني</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/033/3325/87.html#p110">فصل</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/033/3325/119.html#p119">فصل</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/119.html#p138">الحديث الثالث</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/147.html#p147">الحديث الرابع</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/147.html#p170">الحديث الخامس</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/187.html#p187">الحديث السادس</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/187.html#p209">الحديث السابع</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/220.html#p220">الحديث الثامن</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/220.html#p232">الحديث التاسع</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/252.html#p252">الحديث العاشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/252.html#p272">الحديث الحادي عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/281.html#p281">الحديث الثاني عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/281.html#p296">الحديث الثالث عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/305.html#p305">الحديث الرابع عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/326.html#p326">الحديث الخامس عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/355.html#p355">الحديث السادس عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/355.html#p373">الحديث السابع عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/389.html#p389">الحديث الثامن عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/453.html#p453">الحديث التاسع عشر</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/490.html#p490">الحديث العشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/490.html#p500">الحديث الحادي والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/490.html#p507">الحديث الثاني والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/522.html#p522">الحديث الثالث والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/549.html#p549">الحديث الرابع والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/549.html#p573">الحديث الخامس والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/588.html#p588">الحديث السادس والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/588.html#p610">الحديث السابع والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/626.html#p626">الحديث الثامن والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/651.html#p651">الحديث التاسع والعشرون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/651.html#p667">الحديث الثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/691.html#p691">الحديث الحادي والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/724.html#p724">الحديث الثاني والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/724.html#p743">الحديث الثالث والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/760.html#p760">الحديث الرابع والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/774.html#p774">الحديث الخامس والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/801.html#p801">الحديث السادس والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/828.html#p828">الحديث السابع والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/847.html#p847">الحديث الثامن والثلاثون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/847.html#p878">الحديث التاسع والثلاثون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/033/3325/847.html#p884">الفصل الأول في الخطأ والنسيان</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/033/3325/887.html#p887">الفصل الثاني في حكم المكره</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/887.html#p893">الحديث الأربعون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/887.html#p910">الحديث الحادي والأربعون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/917.html#p917">الحديث الثاني والأربعون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/917.html#p936">الحديث الثالث والأربعون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/955.html#p955">الحديث الرابع والأربعون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/955.html#p962">الحديث الخامس والأربعون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/955.html#p973">الحديث السادس والأربعون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/984.html#p984">الحديث السابع والأربعون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/984.html#p997">الحديث الثامن والأربعون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/1013.html#p1013">الحديث التاسع والأربعون</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/033/3325/1013.html#p1027">الحديث الخمسون</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/033/3325/1013.html#p1041">فصل في وظائف الذكر الموظفة في اليوم والليلة</a>
-                      </li>
-                  <li style="--depth: 1">
-                          <a href="../../../books/033/3325/1013.html#p1047">فصل</a>
-                      </li>
-              </ol>
-    </section>
-    </main>
+        جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط الرسالة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن البغدادي بن رجب الحنبلي
+    </span>
+  </a>
+                          <a
+  href="../../../catalogue/1464/146460.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/1464/146460.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Collection of Sciences and Wisdom in Explaining Fifty Hadiths from the Comprehensive Sayings - Translated by Abdul Moneim Ibrahim&quot;,&quot;es&quot;:&quot;Compendio de las ciencias y las sentencias, comentario de cincuenta hadices de las máximas concisas, ed. Abd al-Mun&#039;im Ibrahim&quot;,&quot;fr&quot;:&quot;Jami&#039; al-ulum wa-l-hikam fi sharh khamsin hadithan min jawami&#039; al-kalim (Synthèse des sciences et des sagesses, commentaire de cinquante paroles concises) — éd. Abd al-Mun&#039;im Ibrahim&quot;,&quot;id&quot;:&quot;Jami&#039; al-Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim [Kompilasi Ilmu dan Hikmah dalam Menjelaskan Lima Puluh Hadis Pilihan] — Tahkik Abdul Mun&#039;im Ibrahim&quot;,&quot;ja&quot;:&quot;『諸学と格言の集成―簡潔な言葉の総合的ハディース50篇の解説』―校訂：アブドゥルムニイム・イブラーヒーム&quot;,&quot;ru&quot;:&quot;Собрание наук и мудростей в комментарии к пятидесяти хадисам из кратких назидательных изречений — тахкик Абд аль-Мун&#039;има Ибрахима&quot;,&quot;sw&quot;:&quot;Jami al-Ulum wa-al-Hikam (Mkusanyiko wa elimu na hikima) katika ufafanuzi wa hadithi hamsini kati ya maneno yenye hikima - mhakiki: Abdulmunim Ibrahim&quot;,&quot;tr&quot;:&quot;Câmiu’l-Ulûm ve’l-Hikem fî Şerhi Ham­sîne Hadîsen min Cevâmi‘i’l-Kelim (Özlü Sözlerden Elli Hadisin Şerhinde İlimler ve Hikmetler Derlemesi) - Tahkik eden: Abdülmün‘im İbrahim&quot;,&quot;ur&quot;:&quot;جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم (علوم و حکمتوں کا جامع، جامع کلمات کی پچاس احادیث کی شرح)&quot;,&quot;zh&quot;:&quot;《知识与智慧汇编：阐释五十则精辟圣训》——阿卜杜·穆奈姆·易卜拉欣校勘&quot;}" data-original="جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ت. عبد المنعم إبراهيم">جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ت. عبد المنعم إبراهيم</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ت. عبد المنعم إبراهيم
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن البغدادي بن رجب الحنبلي
+    </span>
+  </a>
+                      </div>
+        
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Contents</div>
+          <div class="rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div
+  dir="rtl"
+  x-data="staticContents(JSON.parse('{\u0022src\u0022:\u0022contents.js\u0022,\u0022pageId\u0022:null}'))"
+  x-on:load-contents.window="load()"
+   x-init="load()" >
+  <div class="w-full relative block group/input mb-3" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd"/>
+</svg>
 
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="query" placeholder="Filter contents..." aria-label="Filter contents" data-test="contents-filter"
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="entries === null" data-flux-text >Loading…</p>
+  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mb-3" x-cloak="x-cloak" x-show="entries !== null && query.trim() !== '' && shown.length === 0" data-flux-text >No entries match.</p>
+  <div class="max-h-[32rem] overflow-y-auto">
+    <ul>
+      <template
+        x-for="(entry, index) in shown"
+        :key="index"
       >
-        <span data-t="Close">Close</span>
-      </button>
+        <li
+          class="relative py-0.5"
+          x-bind:style="`padding-inline-start: ${entry.d * 0.875}rem`"
+          x-bind:data-current="entry === entries[current] ? '' : null"
+        >
+          <template
+            x-for="level in entry.d"
+            :key="level"
+          >
+            <span
+              class="absolute inset-y-0 border-s border-zinc-300 dark:border-zinc-600"
+              x-bind:style="`inset-inline-start: ${(level - 1) * 0.875 + 0.25}rem`"
+              aria-hidden="true"
+            ></span>
+          </template>
+          <a
+            class="text-base text-zinc-700 underline decoration-zinc-800/20 underline-offset-[6px] hover:decoration-current dark:text-zinc-300 dark:decoration-white/20"
+            x-bind:class="
+              entry === entries[current] &&
+              'rounded bg-amber-100 px-1 font-semibold text-zinc-900 dark:bg-amber-900/40 dark:text-white'
+            "
+            x-bind:href="entry.h"
+            x-on:click="$flux.modal('book-contents').close()"
+            x-text="entry.t"
+            data-test="contents-entry"
+          ></a>
+        </li>
+      </template>
+    </ul>
+  </div>
+</div>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

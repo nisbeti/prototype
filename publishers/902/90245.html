@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>مدار الوطن للنشر</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,504 +70,1250 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Mudar Al-Watan Publishing&quot;,&quot;es&quot;:&quot;Madar al-Watan para la edición&quot;,&quot;fr&quot;:&quot;Madar al-Watan pour l&#039;édition&quot;,&quot;id&quot;:&quot;Penerbitan Madar Al-Wathan&quot;,&quot;ja&quot;:&quot;マダール・アル＝ワタン出版&quot;,&quot;ru&quot;:&quot;Мадар аль-Ватан для издательства&quot;,&quot;sw&quot;:&quot;Madar al-Watan lin-Nashr&quot;,&quot;tr&quot;:&quot;Medârü&#039;l-Vatan Yayınları&quot;,&quot;zh&quot;:&quot;祖国轨道出版公司&quot;}" data-original="مدار الوطن للنشر">مدار الوطن للنشر</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/537/53738.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/537/53738.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Ruling on Abandoning Prayer&quot;,&quot;es&quot;:&quot;La norma sobre quien abandona la oración&quot;,&quot;fr&quot;:&quot;Le statut de celui qui délaisse la prière&quot;,&quot;id&quot;:&quot;Hukum orang yang meninggalkan salat&quot;,&quot;ja&quot;:&quot;礼拝を放棄する者の法的規定&quot;,&quot;ru&quot;:&quot;Положение о том, кто оставил молитву&quot;,&quot;sw&quot;:&quot;Hukumu ya mwenye kuacha Swala&quot;,&quot;tr&quot;:&quot;Namazı terk edenin hükmü&quot;,&quot;ur&quot;:&quot;حكم تارك الصلاة (نماز چھوڑنے والے کا حکم)&quot;,&quot;zh&quot;:&quot;不礼拜者的教法判定&quot;}" data-original="حكم تارك الصلاة">حكم تارك الصلاة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Mudar Al-Watan Publishing&quot;,&quot;es&quot;:&quot;Madar al-Watan para la edición&quot;,&quot;fr&quot;:&quot;Madar al-Watan pour l&#039;édition&quot;,&quot;id&quot;:&quot;Penerbitan Madar Al-Wathan&quot;,&quot;ja&quot;:&quot;マダール・アル＝ワタン出版&quot;,&quot;ru&quot;:&quot;Мадар аль-Ватан для издательства&quot;,&quot;sw&quot;:&quot;Madar al-Watan lin-Nashr&quot;,&quot;tr&quot;:&quot;Medârü&#039;l-Vatan Yayınları&quot;,&quot;zh&quot;:&quot;祖国轨道出版公司&quot;}" data-original="مدار الوطن للنشر">مدار الوطن للنشر</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/537/53738.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Ruling on Abandoning Prayer&quot;,&quot;es&quot;:&quot;La norma sobre quien abandona la oración&quot;,&quot;fr&quot;:&quot;Le statut de celui qui délaisse la prière&quot;,&quot;id&quot;:&quot;Hukum orang yang meninggalkan salat&quot;,&quot;ja&quot;:&quot;礼拝を放棄する者の法的規定&quot;,&quot;ru&quot;:&quot;Положение о том, кто оставил молитву&quot;,&quot;sw&quot;:&quot;Hukumu ya mwenye kuacha Swala&quot;,&quot;tr&quot;:&quot;Namazı terk edenin hükmü&quot;,&quot;ur&quot;:&quot;حكم تارك الصلاة (نماز چھوڑنے والے کا حکم)&quot;,&quot;zh&quot;:&quot;不礼拜者的教法判定&quot;}" data-original="حكم تارك الصلاة">حكم تارك الصلاة</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1427هـ 2006 م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/563/56387.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentary on the Message of Raising the Pillars Regarding the Ruling on Contacting the Rulers by Al-Shawkani&quot;,&quot;es&quot;:&quot;Comentario a la epístola de al-Shawkani «Alzar los pilares sobre la norma de relacionarse con los gobernantes»&quot;,&quot;fr&quot;:&quot;Commentaire de l’épître de al-Shawkani, Raf al-asatin fi hukm al-ittisal bi-l-salatin (Élever les piliers : le statut des relations avec les souverains)&quot;,&quot;id&quot;:&quot;Ulasan atas Risalah Raf&#039;u al-Asatin tentang Hukum Berhubungan dengan Para Penguasa karya Asy-Syaukani&quot;,&quot;ja&quot;:&quot;アッ＝シューカーンīの『スルタンとの接触に関する規定―柱を掲げること』への注釈&quot;,&quot;ru&quot;:&quot;Комментарий к посланию аш-Шаукани «Возвышение столпов: о правовом положении общения с правителями»&quot;,&quot;sw&quot;:&quot;Maelezo juu ya Risala Raf al-Asatin fi Hukm al-Ittisal bi al-Salatin ya al-Shawkani (Kuinua Nguzo: Hukumu ya Kuwasiliana na Watawala)&quot;,&quot;tr&quot;:&quot;Şevkânî&#039;nin Sultanlarla İlişki Kurmanın Hükmüne Dair Ref&#039;u&#039;l-esâtîn Risalesi Üzerine Notlar&quot;,&quot;zh&quot;:&quot;《评绍卡尼〈关于与苏丹交往之教法律例的高柱之论〉》&quot;}" data-original="التعليق على رسالة رفع الأساطين في حكم الاتصال بالسلاطين للشوكاني">التعليق على رسالة رفع الأساطين في حكم الاتصال بالسلاطين للشوكاني</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1430هـ 2009 م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/565/56515.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentary on the Legal Policy of Sheikh al-Islam Ibn Taymiyyah&quot;,&quot;es&quot;:&quot;Comentario sobre Al-siyasa al-shar&#039;iyya (La política conforme a la sharía) del jeque del islam Ibn Taymiyya&quot;,&quot;fr&quot;:&quot;Commentaire de Al-siyasah al-shar&#039;iyyah (La politique juridique islamique) de Shaykh al-Islam ibn Taymiyya&quot;,&quot;id&quot;:&quot;Komentar atas As-Siyasah asy-Syar&#039;iyyah karya Syekhul Islam Ibnu Taimiyah&quot;,&quot;ja&quot;:&quot;イスラームの師イブン・タイミーヤ著『シャリーアに基づく統治』注解&quot;,&quot;ru&quot;:&quot;Комментарий к «Ас-Сияса аш-шар&#039;ийя» шейха ислама Ибн Таймийи&quot;,&quot;sw&quot;:&quot;Maelezo kuhusu Siasa za Kisharia za Sheikh wa Uislamu Ibn Taymiyya&quot;,&quot;tr&quot;:&quot;Şeyhülislam İbn Teymiyye’nin es-Siyâsetü’ş-Şer‘iyye’sine Şerh&quot;,&quot;ur&quot;:&quot;التعليق على السياسة الشرعية لشيخ الإسلام ابن تيمية (شیخ الاسلام ابن تیمیہ کی شرعی سیاست پر تعلیق)&quot;,&quot;zh&quot;:&quot;《伊本·泰米叶的伊斯兰政治法》评注&quot;}" data-original="التعليق على السياسة الشرعية لشيخ الإسلام ابن تيمية">التعليق على السياسة الشرعية لشيخ الإسلام ابن تيمية</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1427هـ 2006 م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/576/57680.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Fiqh of Worship&quot;,&quot;es&quot;:&quot;Derecho de los actos de adoración&quot;,&quot;fr&quot;:&quot;Fiqh al-Ibadat (Jurisprudence des actes d&#039;adoration)&quot;,&quot;id&quot;:&quot;Fikih Ibadah&quot;,&quot;ja&quot;:&quot;礼拝行為の法学&quot;,&quot;ru&quot;:&quot;Фикх поклонения&quot;,&quot;sw&quot;:&quot;Fiqhi ya ibada&quot;,&quot;tr&quot;:&quot;İbadet Fıkhı&quot;,&quot;ur&quot;:&quot;فقه العبادات (عبادات کا فقہ)&quot;,&quot;zh&quot;:&quot;《功修法学》&quot;}" data-original="فقه العبادات">فقه العبادات</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1425هـ 2004 م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/576/57692.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Pearl Necklace System in the Science of Inheritance - Mudar Al-Watan&quot;,&quot;es&quot;:&quot;Comentario del poema didáctico al-Qala&#039;id al-Burhaniyya sobre la ciencia de las sucesiones — Madar al-Watan&quot;,&quot;fr&quot;:&quot;Commentaire du poème al-Qala&#039;id al-Burhaniyya sur la science des successions — Madar al-Watan&quot;,&quot;id&quot;:&quot;Penjelasan Nazm al-Qala&#039;id al-Burhaniyyah (Syair Kalung Bukti) dalam Ilmu Faraid – Madar al-Wathan&quot;,&quot;ja&quot;:&quot;相続法の『真理を示す首飾り』韻文解説—マダール・アル＝ワタン&quot;,&quot;ru&quot;:&quot;Комментарий к поэме «аль-Каляид аль-бурханийя» по науке об обязательных долях наследства — Мадар аль-Ватан&quot;,&quot;sw&quot;:&quot;Sharh Manzumat al-Qala&#039;id al-Burhaniyya fi Ilm al-Fara&#039;id (Maelezo ya utenzi wa mikufu ya dalili katika elimu ya mirathi) — Madar al-Watan&quot;,&quot;tr&quot;:&quot;Ferâiz İlminde el-Kalâidü’l-Burhâniyye Manzumesi Şerhi – Madar al-Watan&quot;,&quot;ur&quot;:&quot;شرح منظومة القلائد البرهانية في علم الفرائض- مدار الوطن (علمِ وراثت میں القلائد البرهانية کی منظومہ کی شرح — مدار الوطن)&quot;,&quot;zh&quot;:&quot;《〈证明性项链〉继承法韵文注释》——马达尔·瓦坦版&quot;}" data-original="شرح منظومة القلائد البرهانية في علم الفرائض- مدار الوطن">شرح منظومة القلائد البرهانية في علم الفرائض- مدار الوطن</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1429هـ 2008 م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/592/59211.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Selected Gems from the Treasures of Benefits&quot;,&quot;es&quot;:&quot;Selección de joyas de beneficios&quot;,&quot;fr&quot;:&quot;Sélection de précieux enseignements&quot;,&quot;id&quot;:&quot;Pilihan dari Faḍāʾil al-Fawāʾid (Keutamaan-Keutamaan Faedah)&quot;,&quot;ja&quot;:&quot;選り抜きの貴重な有益事項&quot;,&quot;ru&quot;:&quot;Избранное из редкостных полезных сведений&quot;,&quot;sw&quot;:&quot;Teuzi kutoka katika faida adimu (al-Muntaqa min Fara&#039;id al-Fawa&#039;id)&quot;,&quot;tr&quot;:&quot;Fevâid-i ferâidden seçmeler&quot;,&quot;zh&quot;:&quot;《精选珍贵益处》&quot;}" data-original="المنتقى من فرائد الفوائد">المنتقى من فرائد الفوائد</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1424هـ 2003م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/614/61449.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Marriage and a Collection of Questions Regarding Its Rulings&quot;,&quot;es&quot;:&quot;El matrimonio y una serie de preguntas sobre sus normas&quot;,&quot;fr&quot;:&quot;Le mariage et un ensemble de questions sur ses règles&quot;,&quot;id&quot;:&quot;Pernikahan dan Kumpulan Pertanyaan tentang Hukum-Hukumnya&quot;,&quot;ja&quot;:&quot;婚姻とその規定に関する諸質問&quot;,&quot;ru&quot;:&quot;Брак и подборка вопросов о его постановлениях&quot;,&quot;sw&quot;:&quot;Ndoa na mkusanyiko wa maswali kuhusu hukumu zake&quot;,&quot;tr&quot;:&quot;Evlilik ve hükümlerine dair bir dizi soru&quot;,&quot;ur&quot;:&quot;الزواج ومجموعة أسئلة في أحكامه (نکاح اور اس کے احکام سے متعلق سوالات کا مجموعہ)&quot;,&quot;zh&quot;:&quot;《婚姻及其教法律例问答集》&quot;}" data-original="الزواج ومجموعة أسئلة في أحكامه">الزواج ومجموعة أسئلة في أحكامه</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1432هـ 2011م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/615/61560.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Marriage and a Collection of Questions Regarding Its Rulings&quot;,&quot;es&quot;:&quot;El matrimonio y una serie de preguntas sobre sus normas&quot;,&quot;fr&quot;:&quot;Le mariage et un ensemble de questions sur ses règles&quot;,&quot;id&quot;:&quot;Pernikahan dan Sekumpulan Pertanyaan tentang Hukum-Hukumnya&quot;,&quot;ja&quot;:&quot;結婚とその法的規定に関する一連の質問&quot;,&quot;ru&quot;:&quot;Брак и подборка вопросов о его установлениях&quot;,&quot;sw&quot;:&quot;Ndoa na mkusanyiko wa maswali kuhusu hukumu zake&quot;,&quot;tr&quot;:&quot;Evlilik ve Hükümlerine Dair Bir Dizi Soru&quot;,&quot;ur&quot;:&quot;الزواج ومجموعة أسئلة في أحكامه (نکاح اور اس کے احکام سے متعلق سوالات کا مجموعہ)&quot;,&quot;zh&quot;:&quot;《婚姻及其教法规条问答集》&quot;}" data-original="الزواج ومجموعة أسئلة في أحكامه">الزواج ومجموعة أسئلة في أحكامه</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1425هـ 2004م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/632/63285.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Rules of Fasting, Night Prayer, I&#039;tikaf, and Zakat al-Fitr&quot;,&quot;es&quot;:&quot;Normas del ayuno, la oración nocturna, el retiro espiritual y el azaque de ruptura del ayuno&quot;,&quot;fr&quot;:&quot;Les règles du jeûne, de la prière nocturne, de la retraite spirituelle et de la zakat al-fitr&quot;,&quot;id&quot;:&quot;Hukum-Hukum Puasa, Salat Malam, Iktikaf, dan Zakat Fitrah&quot;,&quot;ja&quot;:&quot;断食、夜間礼拝、隠遁礼拝および断食明けの喜捨の諸規定&quot;,&quot;ru&quot;:&quot;Положения поста, ночной молитвы, и‘тикафа и закята аль-фитр&quot;,&quot;sw&quot;:&quot;Hukumu za funga, swala za usiku, itikafu na zaka ya fitri&quot;,&quot;tr&quot;:&quot;Oruç, Teravih, İtikâf ve Fıtır Sadakası Hükümleri&quot;,&quot;zh&quot;:&quot;斋戒、夜间礼拜、静修及开斋天课的律例&quot;}" data-original="أحكام الصيام والقيام والاعتكاف وزكاة الفطر">أحكام الصيام والقيام والاعتكاف وزكاة الفطر</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم بن عبد الله الخضير</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1439هـ 2018م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/980/98065.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Virtues of Good Character&quot;,&quot;es&quot;:&quot;Las nobles virtudes&quot;,&quot;fr&quot;:&quot;Les nobles caractères&quot;,&quot;id&quot;:&quot;Kemuliaan Akhlak&quot;,&quot;ja&quot;:&quot;マカーリム・アル＝アフラーク&quot;,&quot;ru&quot;:&quot;Благородные нравы&quot;,&quot;sw&quot;:&quot;Makarim al-Akhlaq (Tabia Njema)&quot;,&quot;tr&quot;:&quot;Mekârimu&#039;l-ahlâk (Güzel Ahlak)&quot;,&quot;ur&quot;:&quot;مكارم الأخلاق (اخلاقِ حسنہ)&quot;,&quot;zh&quot;:&quot;《高尚的品德》&quot;}" data-original="مكارم الأخلاق">مكارم الأخلاق</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمن</td>
-        <td dir="auto">مدار الوطن</td>
-        <td dir="auto">1428</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1042/104205.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Safarini Creed, the Precious Pearl in the Beliefs of the Acceptable Sect&quot;,&quot;es&quot;:&quot;Comentario de la doctrina de al-Saffarini: al-Durra al-Mudiyya fi Aqd Ahl al-Firqa al-Mardiyya [La perla luminosa sobre la doctrina de los partidarios de la secta aceptada]&quot;,&quot;fr&quot;:&quot;Sharh al-Aqida al-Saffariniyya: al-Durra al-Mudiyya fi aqd ahl al-firqa al-mardiyya (Commentaire de la doctrine de Saffarini)&quot;,&quot;id&quot;:&quot;Syarah al-‘Aqidah as-Saffariniyyah: ad-Durrah al-Mudhiyyah fi ‘Aqd Ahl al-Firqah al-Mardhiyyah (Ulasan Akidah Saffariniyyah: Mutiara Bercahaya tentang Keyakinan Golongan yang Diridai)&quot;,&quot;ja&quot;:&quot;サファーリーニーの教義注解：救われる一派の信条に関する輝く真珠&quot;,&quot;ru&quot;:&quot;Комментарий к вероучению ас-Сафарини: «Сияющая жемчужина в убеждениях сторонников спасённой группы»&quot;,&quot;sw&quot;:&quot;Sharh al-Aqida al-Saffariniyya (Ufafanuzi wa Aqida ya al-Saffariniyya): Al-Durra al-Mudiyya fi Aqd Ahl al-Firqa al-Mardiyya (Lulu Inayong&#039;aa kuhusu Imani ya Watu wa Kundi Linalokubaliwa)&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-akîdeti&#039;s-Sefferîniyye: ed-Dürretü&#039;l-mudıyye fî akdi ehli&#039;l-firkati&#039;l-mardıyye (Sefferînî Akaidi Şerhi: Razı Olunan Fırka Ehlinin İnancına Dair Parlak İnci)&quot;,&quot;zh&quot;:&quot;《萨法里尼信仰论释：信奉蒙悦派别之信仰的璀璨明珠》&quot;}" data-original="شرح العقيدة السفارينية الدرة المضية في عقد أهل الفرقة المرضية">شرح العقيدة السفارينية الدرة المضية في عقد أهل الفرقة المرضية</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">2005م 1426هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1043/104304.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Memorandum on the Al-Wasitiyyah Creed - Dar Al-Watan&quot;,&quot;es&quot;:&quot;Apuntes sobre la Aqida Wasitiyya - ed. Madar al-Watan&quot;,&quot;fr&quot;:&quot;Notes sur la croyance d&#039;al-Wasitiyya — édition Madar al-Watan&quot;,&quot;id&quot;:&quot;Catatan tentang Akidah Wasithiyah – Cetakan Madar al-Wathan&quot;,&quot;ja&quot;:&quot;ワースィティーヤ信条に関する覚書―マダール・アル＝ワタン版&quot;,&quot;ru&quot;:&quot;Записки к «аль-акыда аль-Васитыйя» — издание Мадар аль-Ватан&quot;,&quot;sw&quot;:&quot;Mudhakkira ala al-Aqida al-Wasitiyya (Maelezo ya masomo kuhusu Aqida ya Wasitiyya) - toleo la Madar al-Watan&quot;,&quot;tr&quot;:&quot;el-Akîdetü’l-Vâsıtıyye Üzerine Notlar – Madârü’l-Vatan Baskısı&quot;,&quot;zh&quot;:&quot;《瓦西提信条札记》—祖国轨道出版社版&quot;}" data-original="مذكرة على العقيدة الواسطية- ط مدار الوطن">مذكرة على العقيدة الواسطية- ط مدار الوطن</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1426</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1096/109662.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Foundations of Faith - Al-Othaymeen&quot;,&quot;es&quot;:&quot;Comentario de los fundamentos de la fe - al-Uthaymin&quot;,&quot;fr&quot;:&quot;Commentaire des fondements de la foi – al-Uthaymin&quot;,&quot;id&quot;:&quot;Penjelasan Pokok-Pokok Iman—Al-Utsaimin&quot;,&quot;ja&quot;:&quot;信仰の根本の解説――アル＝ウサイミーン&quot;,&quot;ru&quot;:&quot;Комментарий к основам веры — аль-Усаймин&quot;,&quot;sw&quot;:&quot;Sharh Usul al-Iman (Ufafanuzi wa misingi ya imani) — al-Uthaymin&quot;,&quot;tr&quot;:&quot;İman esaslarının şerhi – el-Useymîn&quot;,&quot;ur&quot;:&quot;شرح أصول الإيمان- العثيمين (اصولِ ایمان کی شرح—عثیمین)&quot;,&quot;zh&quot;:&quot;《信仰根本》释义——欧赛敏&quot;}" data-original="شرح أصول الإيمان- العثيمين">شرح أصول الإيمان- العثيمين</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1432هـ 2011م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1103/110310.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Clarification of the Tadmuriyyah - Madar Al-Watan&quot;,&quot;es&quot;:&quot;Resumen de al-Tadmuriyya - Madar al-Watan&quot;,&quot;fr&quot;:&quot;Résumé de la Tadmuriyya – Madar al-Watan&quot;,&quot;id&quot;:&quot;Ringkasan Tadmuriyah – Madar al-Watan&quot;,&quot;ja&quot;:&quot;『タドムリーヤ』の要約—マダール・アル＝ワタン&quot;,&quot;ru&quot;:&quot;Краткое изложение «ат-Тадмурийи» — Мадар аль-Ватан&quot;,&quot;sw&quot;:&quot;Taqrib al-Tadmuriyya (Muhtasari wa Tadmuriyya) — Madar al-Watan&quot;,&quot;tr&quot;:&quot;et-Tedmüriyye’nin Sadeleştirilmesi - Medârü’l-Vatan&quot;,&quot;zh&quot;:&quot;《泰德穆里论著浅释》—祖国之光出版社&quot;}" data-original="تقريب التدمرية- مدار الوطن">تقريب التدمرية- مدار الوطن</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1433هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1105/110518.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Foundations of Faith&quot;,&quot;es&quot;:&quot;Comentario de los fundamentos de la fe&quot;,&quot;fr&quot;:&quot;Commentaire des Fondements de la foi&quot;,&quot;id&quot;:&quot;Penjelasan Pokok-pokok Iman&quot;,&quot;ja&quot;:&quot;信仰の根本原則の解説&quot;,&quot;ru&quot;:&quot;Комментарий к основам веры&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa Misingi ya Imani&quot;,&quot;tr&quot;:&quot;İman Esasları Şerhi&quot;,&quot;ur&quot;:&quot;شرح أصول الإيمان (اصولِ ایمان کی شرح)&quot;,&quot;zh&quot;:&quot;《信仰根本注释》&quot;}" data-original="شرح أصول الإيمان">شرح أصول الإيمان</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1410 هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1117/111799.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Trials: Their Signs, Causes, and Ways to Prevent Them&quot;,&quot;es&quot;:&quot;Las tribulaciones: sus señales, causas y formas de prevención&quot;,&quot;fr&quot;:&quot;Les troubles : signes, causes et moyens de s’en prémunir&quot;,&quot;id&quot;:&quot;Fitnah: Tanda-Tanda, Sebab, dan Cara Menghindarinya&quot;,&quot;ja&quot;:&quot;試練―その兆候、原因、予防方法&quot;,&quot;ru&quot;:&quot;Смуты: их признаки, причины и способы защиты от них&quot;,&quot;sw&quot;:&quot;Fitna: Alama Zake, Sababu Zake na Njia za Kujikinga Nazo&quot;,&quot;tr&quot;:&quot;Fitneler: Alametleri, Sebepleri ve Korunma Yolları&quot;,&quot;zh&quot;:&quot;《纷争：征兆、成因与防范之道》&quot;}" data-original="الفتن علاماتها أسبابها طرق الوقاية منها">الفتن علاماتها أسبابها طرق الوقاية منها</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">معالم السنن • مدار الوطن للنشر</td>
-        <td dir="auto">1438 هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1118/111825.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Optimal Principles in the Attributes of Allah and His Beautiful Names&quot;,&quot;es&quot;:&quot;Las reglas óptimas sobre los atributos de Allah y Sus nombres más bellos: el texto&quot;,&quot;fr&quot;:&quot;Les règles excellentes concernant les attributs d’Allah le Très-Haut et Ses plus beaux noms : le texte&quot;,&quot;id&quot;:&quot;Kaidah-kaidah Terbaik tentang Sifat-sifat Allah dan Nama-nama-Nya yang Indah: Teks&quot;,&quot;ja&quot;:&quot;神の諸属性と最も美しい御名に関する最良の規則（本文）&quot;,&quot;ru&quot;:&quot;Наилучшие правила об атрибутах Аллаха Всевышнего и Его прекрасных именах: основной текст&quot;,&quot;sw&quot;:&quot;Kanuni bora kuhusu sifa za Allah na majina Yake mazuri: Matini&quot;,&quot;tr&quot;:&quot;Allah&#039;ın Sıfatları ve En Güzel İsimleri Hakkında En Güzel Kaideler: Metin&quot;,&quot;ur&quot;:&quot;القواعد المثلى في صفات الله تعالى وأسمائه الحسنى المتن (اللہ تعالیٰ کی صفات اور اس کے بہترین ناموں کے باب میں مثالی قواعد: متن)&quot;,&quot;zh&quot;:&quot;《真主尊名与至美尊名属性的最佳准则：正文》&quot;}" data-original="القواعد المثلى في صفات الله تعالى وأسمائه الحسنى المتن">القواعد المثلى في صفات الله تعالى وأسمائه الحسنى المتن</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1429 هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1119/111980.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Ruling on Abandoning Prayer&quot;,&quot;es&quot;:&quot;La norma sobre quien abandona la oración&quot;,&quot;fr&quot;:&quot;Le statut de celui qui délaisse la prière&quot;,&quot;id&quot;:&quot;Hukum Orang yang Meninggalkan Salat&quot;,&quot;ja&quot;:&quot;礼拝を放棄する者の حكم&quot;,&quot;ru&quot;:&quot;Положение того, кто оставляет молитву&quot;,&quot;sw&quot;:&quot;Hukumu ya mwenye kuacha sala&quot;,&quot;tr&quot;:&quot;Namazı terk etmenin hükmü&quot;,&quot;ur&quot;:&quot;حكم تـارك الصلاة (نماز چھوڑنے والے کا حکم)&quot;,&quot;zh&quot;:&quot;《放弃礼拜者的教法规判》&quot;}" data-original="حكم تـارك الصلاة">حكم تـارك الصلاة</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر • مؤسسة الشيخ محمد بن صالح العثيمين الخيرية</td>
-        <td dir="auto">1432هـ 2011م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1129/112935.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Signs of Trials, Their Causes, and Ways to Prevent Them - Colored&quot;,&quot;es&quot;:&quot;Las tribulaciones: sus señales, causas y formas de prevenirlas (a color)&quot;,&quot;fr&quot;:&quot;Les troubles : leurs signes, leurs causes et les moyens de s&#039;en prémunir — en couleur&quot;,&quot;id&quot;:&quot;Fitnah: Tanda-Tandanya, Sebab-Sebabnya, dan Cara Mencegahnya—Berwarna&quot;,&quot;ja&quot;:&quot;内乱――その兆候、原因、予防法（カラー版）&quot;,&quot;ru&quot;:&quot;Смута: её признаки, причины и способы защиты от неё — цветное издание&quot;,&quot;sw&quot;:&quot;Fitna: alama zake, sababu zake na njia za kujikinga nazo – yenye rangi&quot;,&quot;tr&quot;:&quot;Fitneler: alametleri, sebepleri ve korunma yolları — renkli&quot;,&quot;ur&quot;:&quot;فتنے: ان کی علامات، اسباب اور ان سے بچاؤ کے طریقے — رنگین&quot;,&quot;zh&quot;:&quot;纷争：其征兆、原因与防范方法（彩色版）&quot;}" data-original="الفتن علاماتها، أسبابها، طرق الوقاية منها- ملون">الفتن علاماتها، أسبابها، طرق الوقاية منها- ملون</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">معالم السنن • مدار الوطن للنشر</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1145/114538.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Adhering to the Prophetic Sunnah and Its Effects&quot;,&quot;es&quot;:&quot;Aferrarse a la Sunna profética y sus efectos&quot;,&quot;fr&quot;:&quot;S&#039;attacher à la Sunna prophétique et ses effets&quot;,&quot;id&quot;:&quot;Berpegang Teguh pada Sunnah Nabi dan Dampaknya&quot;,&quot;ja&quot;:&quot;預言者のスンナへの固守とその影響&quot;,&quot;ru&quot;:&quot;Приверженность пророческой Сунне и ее плоды&quot;,&quot;sw&quot;:&quot;Al-Tamassuk bi al-Sunna al-Nabawiyya wa Atharuhu (Kushikamana na Sunna ya Mtume na athari zake)&quot;,&quot;tr&quot;:&quot;Nebevî Sünnete Sarılmak ve Bunun Etkileri&quot;,&quot;zh&quot;:&quot;《坚守先知圣行及其影响》&quot;}" data-original="التمسك بالسنة النبوية وآثاره">التمسك بالسنة النبوية وآثاره</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح بن عثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1424هـ 2003م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1311/131156.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Rulings from the Noble Quran - Dar Al-Watan&quot;,&quot;es&quot;:&quot;Disposiciones del Noble Corán: edición al-Watan&quot;,&quot;fr&quot;:&quot;Dispositions tirées du Noble Quran - édition al-Watan&quot;,&quot;id&quot;:&quot;Ahkam min Al-Qur&#039;an al-Karim (Hukum-Hukum dari Al-Qur&#039;an yang Mulia) – Cetakan al-Watan&quot;,&quot;ja&quot;:&quot;聖クルアーンからの法規定—アル＝ワタン版&quot;,&quot;ru&quot;:&quot;Правовые установления из Священного Корана — издание аль-Ватан&quot;,&quot;sw&quot;:&quot;Hukumu kutoka katika Quran Tukufu — Toleo la al-Watan&quot;,&quot;tr&quot;:&quot;Ahkâm min el-Kur&#039;âni&#039;l-Kerîm (Kur&#039;an-ı Kerim&#039;den Hükümler) - el-Vatan Baskısı&quot;,&quot;ur&quot;:&quot;أحكام من القرآن الكريم- ط الوطن (قرآنِ کریم سے احکام—الوطن ایڈیشن)&quot;,&quot;zh&quot;:&quot;《古兰经判例——祖国出版社版》&quot;}" data-original="أحكام من القرآن الكريم- ط الوطن">أحكام من القرآن الكريم- ط الوطن</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر • مؤسسة الشيخ محمد بن صالح العثيمين الخيرية</td>
-        <td dir="auto">2007م 1428هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1327/132748.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Rulings from the Noble Quran - 2nd Edition&quot;,&quot;es&quot;:&quot;Disposiciones del Noble Quran: 2.ª edición&quot;,&quot;fr&quot;:&quot;Dispositions juridiques tirées du Noble Quran - 2e édition&quot;,&quot;id&quot;:&quot;Sejumlah Hukum dari Al-Qur’an — Cetakan Kedua&quot;,&quot;ja&quot;:&quot;聖クルアーンからの法規――第2版&quot;,&quot;ru&quot;:&quot;Положения из Благородного Корана — 2-е издание&quot;,&quot;sw&quot;:&quot;Hukumu kutoka katika Quran Tukufu - toleo la pili&quot;,&quot;tr&quot;:&quot;Kur’an-ı Kerim’den Hükümler – 2. Baskı&quot;,&quot;zh&quot;:&quot;《古兰经教法判例——第二版》&quot;}" data-original="أحكام من القرآن الكريم- ط 2">أحكام من القرآن الكريم- ط 2</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">2013م 1434هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1382/138256.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;A Summary of the Comprehensive Sciences and Wisdom in Explaining Fifty Hadiths from the Compendium of Sayings - Al-Barghash&quot;,&quot;es&quot;:&quot;Resumen de Jami al-Ulum wa-l-Hikam (Compendio de las ciencias y las máximas) en la explicación de cincuenta hadices de las máximas concisas: edición de Al-Birghash&quot;,&quot;fr&quot;:&quot;Mukhtasar Jami&#039; al-ulum wa al-hikam (Abrégé de Jami&#039; al-ulum wa al-hikam, commentaire de cinquante hadiths parmi les paroles concises), Al Burghush&quot;,&quot;id&quot;:&quot;Ringkasan Jami&#039; Al-&#039;Ulum wa Al-Hikam (Himpunan Ilmu dan Hikmah) dalam Menjelaskan Lima Puluh Hadis Jawami&#039; Al-Kalim (Ungkapan Ringkas yang Sarat Makna) — Al-Bargasy&quot;,&quot;ja&quot;:&quot;ジャーミウ・アル＝ウルーム・ワル＝ヒカム（知識と英知の集成）の要約――簡潔な言葉の集成から五十のハディースを解説 アール・バルガシュ版&quot;,&quot;ru&quot;:&quot;Краткое изложение «Джами аль-улум ва-ль-хикам» — комментария к пятидесяти хадисам из числа кратких изречений — Аль Багрыш&quot;,&quot;sw&quot;:&quot;Muhtasari wa Jami&#039; al-Ulum wa al-Hikam (Mkusanyo wa elimu na hekima) katika kufafanua hadithi hamsini za maneno yenye hekima - Al Barghash&quot;,&quot;tr&quot;:&quot;Câmiʿu’l-ulûm ve’l-hikem’in Cevâmiʿu’l-kelim’den Elli Hadisin Şerhi Üzerine Muhtasarı – Âl Bergiş&quot;,&quot;ur&quot;:&quot;مختصر جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم - آل برغش (جوامع الکلم کی پچاس احادیث کی شرح جامع العلوم والحكم کا مختصر، آل برغش)&quot;,&quot;zh&quot;:&quot;《〈知识与智慧汇编〉节选：解释五十段精炼圣训》—阿勒·巴尔加什版&quot;}" data-original="مختصر جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم - آل برغش">مختصر جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم - آل برغش</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن البغدادي بن رجب الحنبلي</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1429هـ 2008م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1382/138257.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Summary of the Gardens of the Righteous - Al-Mazid&quot;,&quot;es&quot;:&quot;Resumen de Riyad al-Salihin (Los jardines de los virtuosos): edición de Al-Mazid&quot;,&quot;fr&quot;:&quot;Mukhtasar Riyad al-salihin (Abrégé du Jardin des vertueux), Al Mazid&quot;,&quot;id&quot;:&quot;Ringkasan Riyadh Ash-Shalihin (Taman Orang-Orang Saleh) — Al-Mazid&quot;,&quot;ja&quot;:&quot;リヤード・アッ＝サーリヒーン（善人たちの園）の要約――アル＝マズィード版&quot;,&quot;ru&quot;:&quot;Краткое изложение «Рияд ас-салихин» — аль-Мазид&quot;,&quot;sw&quot;:&quot;Muhtasari wa Riyad al-Salihin (Bustani za watu wema) - Al Mazid&quot;,&quot;tr&quot;:&quot;Riyâzü’s-sâlihîn Muhtasarı – el-Mezîd&quot;,&quot;ur&quot;:&quot;مختصر رياض الصالحين- المزيد (ریاض الصالحین کا مختصر، المزید)&quot;,&quot;zh&quot;:&quot;《清廉者的花园》节选—穆兹迪版&quot;}" data-original="مختصر رياض الصالحين- المزيد">مختصر رياض الصالحين- المزيد</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1427هـ 2006م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1382/138282.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Summary of the Book of the Righteous - Al-Mazid&quot;,&quot;es&quot;:&quot;Resumen del libro Riyad al-Salihin (Los jardines de los justos), de los dichos del Señor de los Mensajeros — al-Mazid&quot;,&quot;fr&quot;:&quot;Mukhtasar Kitab Riyad al-Salihin min Kalam Sayyid al-Mursalin (Abrégé du Livre des Jardins des vertueux, d&#039;après les paroles du Seigneur des envoyés) - al-Mazid&quot;,&quot;id&quot;:&quot;Ringkasan Kitab Riyadhus Shalihin dari Sabda Pemimpin Para Rasul — Al-Mazid&quot;,&quot;ja&quot;:&quot;使徒たちの長の言葉による「リアード・アッ＝サーリヒーン」抄録—マズィード&quot;,&quot;ru&quot;:&quot;Краткое изложение книги «Рияд ас-салихин» изречений Господина посланников — аль-Мазид&quot;,&quot;sw&quot;:&quot;Mukhtasar Kitab Riyadh al-Salihin min Kalam Sayyid al-Mursalin (Muhtasari wa Kitabu Riyadh al-Salihin kutoka Maneno ya Bwana wa Mitume) - Al-Mazid&quot;,&quot;tr&quot;:&quot;Muhtasar Kitâbü Riyâzü’s-sâlihîn min kelâmi seyyidi’l-mürselîn (Resullerin Efendisi’nin Sözlerinden Sâlihlerin Bahçeleri Kitabı’nın Özeti) - Mezîd&quot;,&quot;zh&quot;:&quot;《先知圣使言论中的义人花园节选》—马齐德&quot;}" data-original="مختصر كتاب رياض الصالحين من كلام سيد المرسلين - المزيد">مختصر كتاب رياض الصالحين من كلام سيد المرسلين - المزيد</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1431هـ 2010م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1393/139355.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Hidden Pearl in the Conditions of Chains and Texts - Colored&quot;,&quot;es&quot;:&quot;Comentario de La perla oculta sobre el estado de las cadenas de transmisión y los textos, edición a color&quot;,&quot;fr&quot;:&quot;Sharh al-lu&#039;lu&#039; al-maknun fi ahwal al-asanid wa-l-mutun (Commentaire de la perle cachée sur l’état des chaînes de transmission et des textes) — édition en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Permata Terpendam tentang Keadaan Sanad dan Matan (Berwarna)&quot;,&quot;ja&quot;:&quot;『秘められた真珠――伝承経路と本文の諸相』の解説（カラー版）&quot;,&quot;ru&quot;:&quot;Комментарий к «Сокровенной жемчужине» о состояниях цепочек передатчиков и текстов хадисов — цветное издание&quot;,&quot;sw&quot;:&quot;Sharh al-Lu&#039;lu&#039; al-Maknun kuhusu Hali za Minyororo ya Wasimulizi na Matini — Toleo la Rangi&quot;,&quot;tr&quot;:&quot;Gizli İnci&#039;nin Şerhi: İsnad ve Metinlerin Durumları - Renkli&quot;,&quot;zh&quot;:&quot;《〈珍藏的珍珠〉注释：传述链与文本的情况》（彩色版）&quot;}" data-original="شرح اللؤلؤ المكنون في أحوال الأسانيد والمتون- ملون">شرح اللؤلؤ المكنون في أحوال الأسانيد والمتون- ملون</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن • مدار الوطن للنشر</td>
-        <td dir="auto">1439هـ 2018م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1393/139357.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of Jabir&#039;s Hadith on the Description of the Prophet&#039;s ﷺ Pilgrimage (Colored)&quot;,&quot;es&quot;:&quot;Comentario del hadiz de Jabir sobre la descripción de la peregrinación del Profeta ﷺ, edición a color&quot;,&quot;fr&quot;:&quot;Sharh hadith Jabir fi sifat hijjat al-nabi ﷺ (Commentaire du hadith de Jabir sur la description du pèlerinage du Prophète ﷺ) — édition en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Hadis Jabir tentang Tata Cara Haji Nabi ﷺ (Berwarna)&quot;,&quot;ja&quot;:&quot;預言者 ﷺ の巡礼の様式に関するジャービルのハディースの解説（カラー版）&quot;,&quot;ru&quot;:&quot;Комментарий к хадису Джабира об описании хаджа Пророка ﷺ — цветное издание&quot;,&quot;sw&quot;:&quot;Sharh ya Hadithi ya Jabir kuhusu Sifa za Hija ya Mtume ﷺ — Toleo la Rangi&quot;,&quot;tr&quot;:&quot;Câbir Hadisinin Şerhi: Hz. Peygamber&#039;in Haccının Niteliği - Renkli&quot;,&quot;zh&quot;:&quot;《贾比尔关于先知朝觐仪式描述的圣训注释》（彩色版）&quot;}" data-original="شرح حديث جابر في صفة حجة النبي ﷺ ملون">شرح حديث جابر في صفة حجة النبي ﷺ ملون</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن • مدار الوطن للنشر</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1393/139358.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Book of Trials from Sahih al-Bukhari - Colored&quot;,&quot;es&quot;:&quot;Comentario del Libro de las tribulaciones de Sahih al-Bujari, edición a color&quot;,&quot;fr&quot;:&quot;Sharh Kitab al-Fitan min Sahih al-Bukhari (Commentaire du « Livre des troubles » extrait du Sahih d’al-Bukhari) — édition en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Kitab Fitnah dalam Shahih Al-Bukhari (Berwarna)&quot;,&quot;ja&quot;:&quot;サヒーフ・ブハーリー『フィタンの書』の解説（カラー版）&quot;,&quot;ru&quot;:&quot;Комментарий к книге «Смуты» из «Сахих аль-Бухари» — цветное издание&quot;,&quot;sw&quot;:&quot;Sharh ya Kitabu cha Fitna kutoka Sahih al-Bukhari — Toleo la Rangi&quot;,&quot;tr&quot;:&quot;Sahîh-i Buhârî&#039;deki Fiten Kitabı&#039;nın Şerhi - Renkli&quot;,&quot;zh&quot;:&quot;《布哈里圣训实录〈纷争篇〉注释》（彩色版）&quot;}" data-original="شرح كتاب الفتن من صحيح البخاري- ملون">شرح كتاب الفتن من صحيح البخاري- ملون</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن • مدار الوطن للنشر</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1399/139989.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentary on the Summary of the Sciences of Hadith&quot;,&quot;es&quot;:&quot;Glosa a Compendio de las ciencias del hadiz&quot;,&quot;fr&quot;:&quot;Commentaire marginal de l&#039;Abrégé des sciences du hadith&quot;,&quot;id&quot;:&quot;Hasyiyah atas Ikhtishar Ulum al-Hadits&quot;,&quot;ja&quot;:&quot;『ハディース学概論』への注釈&quot;,&quot;ru&quot;:&quot;Комментарий к «Краткому изложению наук о хадисе»&quot;,&quot;sw&quot;:&quot;Tanbihi Pembeni ya Mukhtasar Ulum al-Hadith&quot;,&quot;tr&quot;:&quot;Hadis ilimlerinin ihtisarı üzerine hâşiye&quot;,&quot;zh&quot;:&quot;《〈圣训学概要〉注释》&quot;}" data-original="حاشية على اختصار علوم الحديث">حاشية على اختصار علوم الحديث</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم بن عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن • مدار الوطن للنشر</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1451/145121.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;A Summary of the Comprehensive Sciences and Rulings in the Explanation of Fifty Hadiths from the Compendium of Sayings by Ibn Rajab&quot;,&quot;es&quot;:&quot;Compendio de Yami al-Ulum wa-l-Hikam (Compendio de ciencias y sentencias), comentario de cincuenta hadices de las palabras concisas, de Ibn Rajab&quot;,&quot;fr&quot;:&quot;Abrégé du Jami al-Ulum wa al-Hikam (La somme des sciences et des sagesses), commentaire de cinquante hadiths parmi les paroles concises, par Ibn Rajab&quot;,&quot;id&quot;:&quot;Ringkasan Jami&#039; al-Ulum wa al-Hikam [Himpunan Ilmu dan Hikmah] dalam Penjelasan Lima Puluh Hadis Jawami&#039; al-Kalim karya Ibnu Rajab&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ著『ジャーミウ・アル＝ウルーム・ワル＝ヒカム―五十の包括的な言葉に関するハディースの注釈』要約&quot;,&quot;ru&quot;:&quot;Краткое изложение «Джами аль-улюм ва-ль-хикам» — комментария к пятидесяти хадисам из кратких изречений Пророка, Ибн Раджаб&quot;,&quot;sw&quot;:&quot;Mukhtasar Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim ya Ibn Rajab&quot;,&quot;tr&quot;:&quot;İbn Receb’in Cevâmiu’l-kelim’den Elli Hadisin Şerhi olan Câmiu’l-ulûm ve’l-hikem’inin Muhtasarı&quot;,&quot;zh&quot;:&quot;伊本·拉哲卜《五十段精辟圣训注释：诸学科与格言汇总》节选&quot;}" data-original="مختصر جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم لابن رجب">مختصر جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم لابن رجب</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن البغدادي بن رجب الحنبلي</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1429هـ 2008م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1453/145328.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of Riyad as-Salihin - Mudar Al-Watan&quot;,&quot;es&quot;:&quot;Sharh Riyad al-Salihin [Comentario de los jardines de los justos] — Madar al-Watan&quot;,&quot;fr&quot;:&quot;Commentaire de Riyad al-Salihin [Les Jardins des vertueux] - Madar al-Watan&quot;,&quot;id&quot;:&quot;Syarh Riyadh ash-Shalihin (Penjelasan Taman Orang-Orang Saleh) — Madar al-Watan&quot;,&quot;ja&quot;:&quot;リヤード・アッ＝サーリヒーン注釈—マダール・アル＝ワタン版&quot;,&quot;ru&quot;:&quot;Комментарий к «Рияд ас-салихин» — Мадар аль-Ватан&quot;,&quot;sw&quot;:&quot;Sharh Riyad al-Salihin (Ufafanuzi wa Bustani za Watu Wema) - Madar al-Watan&quot;,&quot;tr&quot;:&quot;Şerhu Riyâzi’s-sâlihîn (Riyâzü’s-sâlihîn Şerhi) – Medârü’l-Vatan&quot;,&quot;ur&quot;:&quot;شرح رياض الصالحين- مدار الوطن (ریاض الصالحین کی شرح، مدار الوطن)&quot;,&quot;zh&quot;:&quot;《清廉者花园注释》—祖国轨道版&quot;}" data-original="شرح رياض الصالحين- مدار الوطن">شرح رياض الصالحين- مدار الوطن</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1935/193560.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;A Treatise on the Times of Prayer&quot;,&quot;es&quot;:&quot;Tratado sobre los horarios de la oración&quot;,&quot;fr&quot;:&quot;Épître sur les horaires de la prière&quot;,&quot;id&quot;:&quot;Risalah tentang Waktu-Waktu Salat&quot;,&quot;ja&quot;:&quot;礼拝時刻に関する小論&quot;,&quot;ru&quot;:&quot;Послание о времени молитв&quot;,&quot;sw&quot;:&quot;Risala kuhusu nyakati za Swala&quot;,&quot;tr&quot;:&quot;Namaz Vakitleri Hakkında Bir Risale&quot;,&quot;ur&quot;:&quot;نماز کے اوقات کے بارے میں رسالہ&quot;,&quot;zh&quot;:&quot;《关于礼拜时刻的论文》&quot;}" data-original="رسالة في مواقيت الصلاة">رسالة في مواقيت الصلاة</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1433هـ 2012م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1967/196758.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Book of Trials from Sahih al-Bukhari - Mudar Al-Watan&quot;,&quot;es&quot;:&quot;Explicación del Libro de las tribulaciones de Sahih al-Bukhari: Madar al-Watan&quot;,&quot;fr&quot;:&quot;Commentaire du Livre des épreuves du Sahih al-Bukhari — Madar al-Watan&quot;,&quot;id&quot;:&quot;Penjelasan Kitab Fitnah dalam Shahih Al-Bukhari — Madar Al-Watan&quot;,&quot;ja&quot;:&quot;ブハーリーの真正集成に収録された『騒乱の書』の注釈――マダール・アル＝ワタン版&quot;,&quot;ru&quot;:&quot;Разъяснение книги «Смуты» из «Сахиха» аль-Бухари — Мадар аль-Ватан&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa Kitabu cha Fitna kutoka Sahih al-Bukhari — Madar al-Watan&quot;,&quot;tr&quot;:&quot;Sahîh-i Buhârî’deki Fiten kitabının şerhi - Madar al-Watan&quot;,&quot;ur&quot;:&quot;شرح كتاب الفتن من صحيح البخاري- مدار الوطن (صحیح بخاری کی کتاب الفتن کی شرح—مدار الوطن)&quot;,&quot;zh&quot;:&quot;《布哈里圣训实录·纷争篇》注释——祖国之轨出版社版&quot;}" data-original="شرح كتاب الفتن من صحيح البخاري- مدار الوطن">شرح كتاب الفتن من صحيح البخاري- مدار الوطن</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2004/200469.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Pearl Necklace System in the Science of Inheritance&quot;,&quot;es&quot;:&quot;Comentario del poema Las perlas probatorias sobre la ciencia de las sucesiones&quot;,&quot;fr&quot;:&quot;Commentaire du poème al-Qala&#039;id al-Burhaniyya sur les règles successorales&quot;,&quot;id&quot;:&quot;Penjelasan Nazham Al-Qala&#039;id Al-Burhaniyyah tentang ilmu faraid&quot;,&quot;ja&quot;:&quot;相続法学の『アル＝カライド・アル＝ブルハーニーヤ』韻文詩の解説&quot;,&quot;ru&quot;:&quot;Комментарий к поэме «Блистающие ожерелья» о науке наследования&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa utenzi wa Al-Qala&#039;id al-Burhaniyya kuhusu elimu ya mirathi&quot;,&quot;tr&quot;:&quot;Ferâiz İlmine Dair el-Kalâidü’l-Burhâniyye Manzumesinin Şerhi&quot;,&quot;ur&quot;:&quot;شرح منظومة القلائد البرهانية في علم الفرائض (علمِ فرائض میں القلائد البرهانية منظومے کی شرح)&quot;,&quot;zh&quot;:&quot;《继承法学中的博鲁哈尼项链诗》讲解&quot;}" data-original="شرح منظومة القلائد البرهانية في علم الفرائض">شرح منظومة القلائد البرهانية في علم الفرائض</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن</td>
-        <td dir="auto">1429هـ 2008م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2067/206716.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Ruling on Celebrating the Birth of the Prophet ﷺ - Colored&quot;,&quot;es&quot;:&quot;Norma sobre celebrar el natalicio del Profeta ﷺ - A color&quot;,&quot;fr&quot;:&quot;Le jugement sur la célébration de la naissance du Prophète ﷺ - en couleur&quot;,&quot;id&quot;:&quot;Hukum Merayakan Maulid Nabi ﷺ - Berwarna&quot;,&quot;ja&quot;:&quot;預言者 ﷺ の生誕祭を祝うことの法的判断・カラー版&quot;,&quot;ru&quot;:&quot;Постановление о праздновании дня рождения Пророка ﷺ — цветное издание&quot;,&quot;sw&quot;:&quot;Hukumu ya kusherehekea maulidi ya Mtume ﷺ — yenye rangi&quot;,&quot;tr&quot;:&quot;Hz. Peygamber’in ﷺ Doğum Gününü Kutlamanın Hükmü - Renkli&quot;,&quot;ur&quot;:&quot;حكم الاحتفال بمولد النبي ﷺ (نبی ﷺ کی ولادت کا جشن منانے کا حکم) - رنگین&quot;,&quot;zh&quot;:&quot;《庆祝先知 ﷺ 诞辰的教法判定》—彩色版&quot;}" data-original="حكم الاحتفال بمولد النبي ﷺ- ملون">حكم الاحتفال بمولد النبي ﷺ- ملون</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2311/231193.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Description of Hajj - Madar Al-Watan&quot;,&quot;es&quot;:&quot;Descripción del Hayy - Madar al-Watan&quot;,&quot;fr&quot;:&quot;Description du pèlerinage - Madar al-Watan&quot;,&quot;id&quot;:&quot;Tata Cara Haji – Madar al-Watan&quot;,&quot;ja&quot;:&quot;ハッジの作法―マダール・アル＝ワタン&quot;,&quot;ru&quot;:&quot;Описание хаджа — Мадар аль-Ватан&quot;,&quot;sw&quot;:&quot;Sifa ya Hija - Madar al-Watan&quot;,&quot;tr&quot;:&quot;Hacın Nitelikleri - Madar al-Watan&quot;,&quot;ur&quot;:&quot;صفة الحج (حج کا طریقہ) - مدار الوطن&quot;,&quot;zh&quot;:&quot;《朝觐仪式》—祖国出版社&quot;}" data-original="صفة الحج- مدار الوطن">صفة الحج- مدار الوطن</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1424هـ 2003 م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2325/232586.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Chapters on Fasting, Tarawih, and Zakat&quot;,&quot;es&quot;:&quot;Secciones sobre el ayuno, las oraciones de tarawih y el azaque&quot;,&quot;fr&quot;:&quot;Chapitres sur le jeûne, les prières de tarawih et la zakat&quot;,&quot;id&quot;:&quot;Pembahasan tentang Puasa, Tarawih, dan Zakat&quot;,&quot;ja&quot;:&quot;断食、タラウィーフ、ザカートに関する諸章&quot;,&quot;ru&quot;:&quot;Разделы о посте, таравихе и закяте&quot;,&quot;sw&quot;:&quot;Mada kuhusu funga, swala za Tarawihi na zakat&quot;,&quot;tr&quot;:&quot;Oruç, teravih ve zekât konularında bölümler&quot;,&quot;zh&quot;:&quot;斋戒、塔拉威哈拜与天课专题&quot;}" data-original="فصول في الصيام والتراويح والزكاة">فصول في الصيام والتراويح والزكاة</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1422هـ 2001م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2374/237490.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Debt - The Circle of the Homeland&quot;,&quot;es&quot;:&quot;Las transacciones de deuda - Madar al-Watan&quot;,&quot;fr&quot;:&quot;Les transactions à crédit – Madar al-Watan&quot;,&quot;id&quot;:&quot;Utang Piutang – Madar Al-Watan&quot;,&quot;ja&quot;:&quot;債務取引―マダール・アル＝ワタン版&quot;,&quot;ru&quot;:&quot;Задолженность — «Мадар аль-Ватан»&quot;,&quot;sw&quot;:&quot;Muamala wa deni - Madar al-Watan&quot;,&quot;tr&quot;:&quot;Borçlanma – Medârü&#039;l-Vatan&quot;,&quot;ur&quot;:&quot;المداينة- مدار الوطن (ادھار کا معاملہ—مدار الوطن)&quot;,&quot;zh&quot;:&quot;《债务交易——祖国之路出版社》&quot;}" data-original="المداينة- مدار الوطن">المداينة- مدار الوطن</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1423هـ 2012م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2376/237676.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Cooperation of Preachers and Its Impact on Society&quot;,&quot;es&quot;:&quot;La cooperación entre predicadores y su efecto en la sociedad&quot;,&quot;fr&quot;:&quot;La coopération entre les prédicateurs et son influence sur la société&quot;,&quot;id&quot;:&quot;Kerja Sama Para Dai dan Dampaknya terhadap Masyarakat&quot;,&quot;ja&quot;:&quot;伝道者たちの協力と社会への影響&quot;,&quot;ru&quot;:&quot;Сотрудничество проповедников и его влияние на общество&quot;,&quot;sw&quot;:&quot;Ushirikiano wa walinganiaji na athari yake kwa jamii&quot;,&quot;tr&quot;:&quot;Davetçilerin iş birliği ve bunun toplum üzerindeki etkisi&quot;,&quot;ur&quot;:&quot;تعاون الدعاة وأثره على المجتمع (داعیوں کا باہمی تعاون اور معاشرے پر اس کے اثرات)&quot;,&quot;zh&quot;:&quot;宣教者合作及其对社会的影响&quot;}" data-original="تعاون الدعاة وأثره على المجتمع">تعاون الدعاة وأثره على المجتمع</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1424هـ 2003م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2397/239786.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Errors Committed by Some Pilgrims&quot;,&quot;es&quot;:&quot;Errores que cometen algunos peregrinos&quot;,&quot;fr&quot;:&quot;Erreurs commises par certains pèlerins&quot;,&quot;id&quot;:&quot;Kesalahan yang Dilakukan Sebagian Jemaah Haji&quot;,&quot;ja&quot;:&quot;一部の巡礼者が犯す誤り&quot;,&quot;ru&quot;:&quot;Ошибки, которые совершают некоторые паломники&quot;,&quot;sw&quot;:&quot;Makosa Yanayofanywa na Baadhi ya Mahujaji&quot;,&quot;tr&quot;:&quot;Bazı Hacıların Yaptığı Hatalar&quot;,&quot;ur&quot;:&quot;أخطاء يرتكبها بعض الحجاج (بعض حاجیوں سے سرزد ہونے والی غلطیاں)&quot;,&quot;zh&quot;:&quot;部分朝觐者常犯的错误&quot;}" data-original="أخطاء يرتكبها بعض الحجاج">أخطاء يرتكبها بعض الحجاج</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1442هـ 2021م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2495/249598.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Summary of the Book of the Righteous&quot;,&quot;es&quot;:&quot;Resumen del libro Riyad al-Salihin [Los jardines de los justos]&quot;,&quot;fr&quot;:&quot;Abrégé du livre Le Jardin des vertueux&quot;,&quot;id&quot;:&quot;Ringkasan Kitab Riyadhus Shalihin&quot;,&quot;ja&quot;:&quot;リヤード・アッ＝サーリヒーン（善人たちの園）の抄録&quot;,&quot;ru&quot;:&quot;Краткое изложение книги «Рияд ас-салихин»&quot;,&quot;sw&quot;:&quot;Mukhtasar Kitab Riyad al-Salihin (Muhtasari wa Kitabu Bustani za Waja Wema)&quot;,&quot;tr&quot;:&quot;Riyâzü’s-Sâlihîn Kitabının Muhtasarı&quot;,&quot;zh&quot;:&quot;《善人花园》节本&quot;}" data-original="مختصر كتاب رياض الصالحين">مختصر كتاب رياض الصالحين</span>
-          </a>
-        </td>
-        <td dir="auto">محيي الدين يحيى بن شرف النووي</td>
-        <td dir="auto">مدار الوطن للنشر</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        حكم تارك الصلاة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/563/56387.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/563/56387.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Commentary on the Message of Raising the Pillars Regarding the Ruling on Contacting the Rulers by Al-Shawkani&quot;,&quot;es&quot;:&quot;Comentario a la epístola de al-Shawkani «Alzar los pilares sobre la norma de relacionarse con los gobernantes»&quot;,&quot;fr&quot;:&quot;Commentaire de l’épître de al-Shawkani, Raf al-asatin fi hukm al-ittisal bi-l-salatin (Élever les piliers : le statut des relations avec les souverains)&quot;,&quot;id&quot;:&quot;Ulasan atas Risalah Raf&#039;u al-Asatin tentang Hukum Berhubungan dengan Para Penguasa karya Asy-Syaukani&quot;,&quot;ja&quot;:&quot;アッ＝シューカーンīの『スルタンとの接触に関する規定―柱を掲げること』への注釈&quot;,&quot;ru&quot;:&quot;Комментарий к посланию аш-Шаукани «Возвышение столпов: о правовом положении общения с правителями»&quot;,&quot;sw&quot;:&quot;Maelezo juu ya Risala Raf al-Asatin fi Hukm al-Ittisal bi al-Salatin ya al-Shawkani (Kuinua Nguzo: Hukumu ya Kuwasiliana na Watawala)&quot;,&quot;tr&quot;:&quot;Şevkânî&#039;nin Sultanlarla İlişki Kurmanın Hükmüne Dair Ref&#039;u&#039;l-esâtîn Risalesi Üzerine Notlar&quot;,&quot;zh&quot;:&quot;《评绍卡尼〈关于与苏丹交往之教法律例的高柱之论〉》&quot;}" data-original="التعليق على رسالة رفع الأساطين في حكم الاتصال بالسلاطين للشوكاني">التعليق على رسالة رفع الأساطين في حكم الاتصال بالسلاطين للشوكاني</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        التعليق على رسالة رفع الأساطين في حكم الاتصال بالسلاطين للشوكاني
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/565/56515.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/565/56515.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Commentary on the Legal Policy of Sheikh al-Islam Ibn Taymiyyah&quot;,&quot;es&quot;:&quot;Comentario sobre Al-siyasa al-shar&#039;iyya (La política conforme a la sharía) del jeque del islam Ibn Taymiyya&quot;,&quot;fr&quot;:&quot;Commentaire de Al-siyasah al-shar&#039;iyyah (La politique juridique islamique) de Shaykh al-Islam ibn Taymiyya&quot;,&quot;id&quot;:&quot;Komentar atas As-Siyasah asy-Syar&#039;iyyah karya Syekhul Islam Ibnu Taimiyah&quot;,&quot;ja&quot;:&quot;イスラームの師イブン・タイミーヤ著『シャリーアに基づく統治』注解&quot;,&quot;ru&quot;:&quot;Комментарий к «Ас-Сияса аш-шар&#039;ийя» шейха ислама Ибн Таймийи&quot;,&quot;sw&quot;:&quot;Maelezo kuhusu Siasa za Kisharia za Sheikh wa Uislamu Ibn Taymiyya&quot;,&quot;tr&quot;:&quot;Şeyhülislam İbn Teymiyye’nin es-Siyâsetü’ş-Şer‘iyye’sine Şerh&quot;,&quot;ur&quot;:&quot;التعليق على السياسة الشرعية لشيخ الإسلام ابن تيمية (شیخ الاسلام ابن تیمیہ کی شرعی سیاست پر تعلیق)&quot;,&quot;zh&quot;:&quot;《伊本·泰米叶的伊斯兰政治法》评注&quot;}" data-original="التعليق على السياسة الشرعية لشيخ الإسلام ابن تيمية">التعليق على السياسة الشرعية لشيخ الإسلام ابن تيمية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        التعليق على السياسة الشرعية لشيخ الإسلام ابن تيمية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/576/57680.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/576/57680.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Fiqh of Worship&quot;,&quot;es&quot;:&quot;Derecho de los actos de adoración&quot;,&quot;fr&quot;:&quot;Fiqh al-Ibadat (Jurisprudence des actes d&#039;adoration)&quot;,&quot;id&quot;:&quot;Fikih Ibadah&quot;,&quot;ja&quot;:&quot;礼拝行為の法学&quot;,&quot;ru&quot;:&quot;Фикх поклонения&quot;,&quot;sw&quot;:&quot;Fiqhi ya ibada&quot;,&quot;tr&quot;:&quot;İbadet Fıkhı&quot;,&quot;ur&quot;:&quot;فقه العبادات (عبادات کا فقہ)&quot;,&quot;zh&quot;:&quot;《功修法学》&quot;}" data-original="فقه العبادات">فقه العبادات</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        فقه العبادات
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/576/57692.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/576/57692.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Pearl Necklace System in the Science of Inheritance - Mudar Al-Watan&quot;,&quot;es&quot;:&quot;Comentario del poema didáctico al-Qala&#039;id al-Burhaniyya sobre la ciencia de las sucesiones — Madar al-Watan&quot;,&quot;fr&quot;:&quot;Commentaire du poème al-Qala&#039;id al-Burhaniyya sur la science des successions — Madar al-Watan&quot;,&quot;id&quot;:&quot;Penjelasan Nazm al-Qala&#039;id al-Burhaniyyah (Syair Kalung Bukti) dalam Ilmu Faraid – Madar al-Wathan&quot;,&quot;ja&quot;:&quot;相続法の『真理を示す首飾り』韻文解説—マダール・アル＝ワタン&quot;,&quot;ru&quot;:&quot;Комментарий к поэме «аль-Каляид аль-бурханийя» по науке об обязательных долях наследства — Мадар аль-Ватан&quot;,&quot;sw&quot;:&quot;Sharh Manzumat al-Qala&#039;id al-Burhaniyya fi Ilm al-Fara&#039;id (Maelezo ya utenzi wa mikufu ya dalili katika elimu ya mirathi) — Madar al-Watan&quot;,&quot;tr&quot;:&quot;Ferâiz İlminde el-Kalâidü’l-Burhâniyye Manzumesi Şerhi – Madar al-Watan&quot;,&quot;ur&quot;:&quot;شرح منظومة القلائد البرهانية في علم الفرائض- مدار الوطن (علمِ وراثت میں القلائد البرهانية کی منظومہ کی شرح — مدار الوطن)&quot;,&quot;zh&quot;:&quot;《〈证明性项链〉继承法韵文注释》——马达尔·瓦坦版&quot;}" data-original="شرح منظومة القلائد البرهانية في علم الفرائض- مدار الوطن">شرح منظومة القلائد البرهانية في علم الفرائض- مدار الوطن</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح منظومة القلائد البرهانية في علم الفرائض- مدار الوطن
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/592/59211.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/592/59211.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Selected Gems from the Treasures of Benefits&quot;,&quot;es&quot;:&quot;Selección de joyas de beneficios&quot;,&quot;fr&quot;:&quot;Sélection de précieux enseignements&quot;,&quot;id&quot;:&quot;Pilihan dari Faḍāʾil al-Fawāʾid (Keutamaan-Keutamaan Faedah)&quot;,&quot;ja&quot;:&quot;選り抜きの貴重な有益事項&quot;,&quot;ru&quot;:&quot;Избранное из редкостных полезных сведений&quot;,&quot;sw&quot;:&quot;Teuzi kutoka katika faida adimu (al-Muntaqa min Fara&#039;id al-Fawa&#039;id)&quot;,&quot;tr&quot;:&quot;Fevâid-i ferâidden seçmeler&quot;,&quot;zh&quot;:&quot;《精选珍贵益处》&quot;}" data-original="المنتقى من فرائد الفوائد">المنتقى من فرائد الفوائد</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        المنتقى من فرائد الفوائد
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/614/61449.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/614/61449.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Marriage and a Collection of Questions Regarding Its Rulings&quot;,&quot;es&quot;:&quot;El matrimonio y una serie de preguntas sobre sus normas&quot;,&quot;fr&quot;:&quot;Le mariage et un ensemble de questions sur ses règles&quot;,&quot;id&quot;:&quot;Pernikahan dan Kumpulan Pertanyaan tentang Hukum-Hukumnya&quot;,&quot;ja&quot;:&quot;婚姻とその規定に関する諸質問&quot;,&quot;ru&quot;:&quot;Брак и подборка вопросов о его постановлениях&quot;,&quot;sw&quot;:&quot;Ndoa na mkusanyiko wa maswali kuhusu hukumu zake&quot;,&quot;tr&quot;:&quot;Evlilik ve hükümlerine dair bir dizi soru&quot;,&quot;ur&quot;:&quot;الزواج ومجموعة أسئلة في أحكامه (نکاح اور اس کے احکام سے متعلق سوالات کا مجموعہ)&quot;,&quot;zh&quot;:&quot;《婚姻及其教法律例问答集》&quot;}" data-original="الزواج ومجموعة أسئلة في أحكامه">الزواج ومجموعة أسئلة في أحكامه</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الزواج ومجموعة أسئلة في أحكامه
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/615/61560.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/615/61560.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Marriage and a Collection of Questions Regarding Its Rulings&quot;,&quot;es&quot;:&quot;El matrimonio y una serie de preguntas sobre sus normas&quot;,&quot;fr&quot;:&quot;Le mariage et un ensemble de questions sur ses règles&quot;,&quot;id&quot;:&quot;Pernikahan dan Sekumpulan Pertanyaan tentang Hukum-Hukumnya&quot;,&quot;ja&quot;:&quot;結婚とその法的規定に関する一連の質問&quot;,&quot;ru&quot;:&quot;Брак и подборка вопросов о его установлениях&quot;,&quot;sw&quot;:&quot;Ndoa na mkusanyiko wa maswali kuhusu hukumu zake&quot;,&quot;tr&quot;:&quot;Evlilik ve Hükümlerine Dair Bir Dizi Soru&quot;,&quot;ur&quot;:&quot;الزواج ومجموعة أسئلة في أحكامه (نکاح اور اس کے احکام سے متعلق سوالات کا مجموعہ)&quot;,&quot;zh&quot;:&quot;《婚姻及其教法规条问答集》&quot;}" data-original="الزواج ومجموعة أسئلة في أحكامه">الزواج ومجموعة أسئلة في أحكامه</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الزواج ومجموعة أسئلة في أحكامه
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/632/63285.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/632/63285.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Rules of Fasting, Night Prayer, I&#039;tikaf, and Zakat al-Fitr&quot;,&quot;es&quot;:&quot;Normas del ayuno, la oración nocturna, el retiro espiritual y el azaque de ruptura del ayuno&quot;,&quot;fr&quot;:&quot;Les règles du jeûne, de la prière nocturne, de la retraite spirituelle et de la zakat al-fitr&quot;,&quot;id&quot;:&quot;Hukum-Hukum Puasa, Salat Malam, Iktikaf, dan Zakat Fitrah&quot;,&quot;ja&quot;:&quot;断食、夜間礼拝、隠遁礼拝および断食明けの喜捨の諸規定&quot;,&quot;ru&quot;:&quot;Положения поста, ночной молитвы, и‘тикафа и закята аль-фитр&quot;,&quot;sw&quot;:&quot;Hukumu za funga, swala za usiku, itikafu na zaka ya fitri&quot;,&quot;tr&quot;:&quot;Oruç, Teravih, İtikâf ve Fıtır Sadakası Hükümleri&quot;,&quot;zh&quot;:&quot;斋戒、夜间礼拜、静修及开斋天课的律例&quot;}" data-original="أحكام الصيام والقيام والاعتكاف وزكاة الفطر">أحكام الصيام والقيام والاعتكاف وزكاة الفطر</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        أحكام الصيام والقيام والاعتكاف وزكاة الفطر
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم بن عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/980/98065.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/980/98065.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Virtues of Good Character&quot;,&quot;es&quot;:&quot;Las nobles virtudes&quot;,&quot;fr&quot;:&quot;Les nobles caractères&quot;,&quot;id&quot;:&quot;Kemuliaan Akhlak&quot;,&quot;ja&quot;:&quot;マカーリム・アル＝アフラーク&quot;,&quot;ru&quot;:&quot;Благородные нравы&quot;,&quot;sw&quot;:&quot;Makarim al-Akhlaq (Tabia Njema)&quot;,&quot;tr&quot;:&quot;Mekârimu&#039;l-ahlâk (Güzel Ahlak)&quot;,&quot;ur&quot;:&quot;مكارم الأخلاق (اخلاقِ حسنہ)&quot;,&quot;zh&quot;:&quot;《高尚的品德》&quot;}" data-original="مكارم الأخلاق">مكارم الأخلاق</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        مكارم الأخلاق
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمن
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1042/104205.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1042/104205.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Safarini Creed, the Precious Pearl in the Beliefs of the Acceptable Sect&quot;,&quot;es&quot;:&quot;Comentario de la doctrina de al-Saffarini: al-Durra al-Mudiyya fi Aqd Ahl al-Firqa al-Mardiyya [La perla luminosa sobre la doctrina de los partidarios de la secta aceptada]&quot;,&quot;fr&quot;:&quot;Sharh al-Aqida al-Saffariniyya: al-Durra al-Mudiyya fi aqd ahl al-firqa al-mardiyya (Commentaire de la doctrine de Saffarini)&quot;,&quot;id&quot;:&quot;Syarah al-‘Aqidah as-Saffariniyyah: ad-Durrah al-Mudhiyyah fi ‘Aqd Ahl al-Firqah al-Mardhiyyah (Ulasan Akidah Saffariniyyah: Mutiara Bercahaya tentang Keyakinan Golongan yang Diridai)&quot;,&quot;ja&quot;:&quot;サファーリーニーの教義注解：救われる一派の信条に関する輝く真珠&quot;,&quot;ru&quot;:&quot;Комментарий к вероучению ас-Сафарини: «Сияющая жемчужина в убеждениях сторонников спасённой группы»&quot;,&quot;sw&quot;:&quot;Sharh al-Aqida al-Saffariniyya (Ufafanuzi wa Aqida ya al-Saffariniyya): Al-Durra al-Mudiyya fi Aqd Ahl al-Firqa al-Mardiyya (Lulu Inayong&#039;aa kuhusu Imani ya Watu wa Kundi Linalokubaliwa)&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-akîdeti&#039;s-Sefferîniyye: ed-Dürretü&#039;l-mudıyye fî akdi ehli&#039;l-firkati&#039;l-mardıyye (Sefferînî Akaidi Şerhi: Razı Olunan Fırka Ehlinin İnancına Dair Parlak İnci)&quot;,&quot;zh&quot;:&quot;《萨法里尼信仰论释：信奉蒙悦派别之信仰的璀璨明珠》&quot;}" data-original="شرح العقيدة السفارينية الدرة المضية في عقد أهل الفرقة المرضية">شرح العقيدة السفارينية الدرة المضية في عقد أهل الفرقة المرضية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح العقيدة السفارينية الدرة المضية في عقد أهل الفرقة المرضية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1043/104304.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1043/104304.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Memorandum on the Al-Wasitiyyah Creed - Dar Al-Watan&quot;,&quot;es&quot;:&quot;Apuntes sobre la Aqida Wasitiyya - ed. Madar al-Watan&quot;,&quot;fr&quot;:&quot;Notes sur la croyance d&#039;al-Wasitiyya — édition Madar al-Watan&quot;,&quot;id&quot;:&quot;Catatan tentang Akidah Wasithiyah – Cetakan Madar al-Wathan&quot;,&quot;ja&quot;:&quot;ワースィティーヤ信条に関する覚書―マダール・アル＝ワタン版&quot;,&quot;ru&quot;:&quot;Записки к «аль-акыда аль-Васитыйя» — издание Мадар аль-Ватан&quot;,&quot;sw&quot;:&quot;Mudhakkira ala al-Aqida al-Wasitiyya (Maelezo ya masomo kuhusu Aqida ya Wasitiyya) - toleo la Madar al-Watan&quot;,&quot;tr&quot;:&quot;el-Akîdetü’l-Vâsıtıyye Üzerine Notlar – Madârü’l-Vatan Baskısı&quot;,&quot;zh&quot;:&quot;《瓦西提信条札记》—祖国轨道出版社版&quot;}" data-original="مذكرة على العقيدة الواسطية- ط مدار الوطن">مذكرة على العقيدة الواسطية- ط مدار الوطن</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        مذكرة على العقيدة الواسطية- ط مدار الوطن
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1096/109662.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1096/109662.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Foundations of Faith - Al-Othaymeen&quot;,&quot;es&quot;:&quot;Comentario de los fundamentos de la fe - al-Uthaymin&quot;,&quot;fr&quot;:&quot;Commentaire des fondements de la foi – al-Uthaymin&quot;,&quot;id&quot;:&quot;Penjelasan Pokok-Pokok Iman—Al-Utsaimin&quot;,&quot;ja&quot;:&quot;信仰の根本の解説――アル＝ウサイミーン&quot;,&quot;ru&quot;:&quot;Комментарий к основам веры — аль-Усаймин&quot;,&quot;sw&quot;:&quot;Sharh Usul al-Iman (Ufafanuzi wa misingi ya imani) — al-Uthaymin&quot;,&quot;tr&quot;:&quot;İman esaslarının şerhi – el-Useymîn&quot;,&quot;ur&quot;:&quot;شرح أصول الإيمان- العثيمين (اصولِ ایمان کی شرح—عثیمین)&quot;,&quot;zh&quot;:&quot;《信仰根本》释义——欧赛敏&quot;}" data-original="شرح أصول الإيمان- العثيمين">شرح أصول الإيمان- العثيمين</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح أصول الإيمان- العثيمين
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1103/110310.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1103/110310.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Clarification of the Tadmuriyyah - Madar Al-Watan&quot;,&quot;es&quot;:&quot;Resumen de al-Tadmuriyya - Madar al-Watan&quot;,&quot;fr&quot;:&quot;Résumé de la Tadmuriyya – Madar al-Watan&quot;,&quot;id&quot;:&quot;Ringkasan Tadmuriyah – Madar al-Watan&quot;,&quot;ja&quot;:&quot;『タドムリーヤ』の要約—マダール・アル＝ワタン&quot;,&quot;ru&quot;:&quot;Краткое изложение «ат-Тадмурийи» — Мадар аль-Ватан&quot;,&quot;sw&quot;:&quot;Taqrib al-Tadmuriyya (Muhtasari wa Tadmuriyya) — Madar al-Watan&quot;,&quot;tr&quot;:&quot;et-Tedmüriyye’nin Sadeleştirilmesi - Medârü’l-Vatan&quot;,&quot;zh&quot;:&quot;《泰德穆里论著浅释》—祖国之光出版社&quot;}" data-original="تقريب التدمرية- مدار الوطن">تقريب التدمرية- مدار الوطن</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تقريب التدمرية- مدار الوطن
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1105/110518.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1105/110518.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Foundations of Faith&quot;,&quot;es&quot;:&quot;Comentario de los fundamentos de la fe&quot;,&quot;fr&quot;:&quot;Commentaire des Fondements de la foi&quot;,&quot;id&quot;:&quot;Penjelasan Pokok-pokok Iman&quot;,&quot;ja&quot;:&quot;信仰の根本原則の解説&quot;,&quot;ru&quot;:&quot;Комментарий к основам веры&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa Misingi ya Imani&quot;,&quot;tr&quot;:&quot;İman Esasları Şerhi&quot;,&quot;ur&quot;:&quot;شرح أصول الإيمان (اصولِ ایمان کی شرح)&quot;,&quot;zh&quot;:&quot;《信仰根本注释》&quot;}" data-original="شرح أصول الإيمان">شرح أصول الإيمان</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح أصول الإيمان
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1117/111799.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1117/111799.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Trials: Their Signs, Causes, and Ways to Prevent Them&quot;,&quot;es&quot;:&quot;Las tribulaciones: sus señales, causas y formas de prevención&quot;,&quot;fr&quot;:&quot;Les troubles : signes, causes et moyens de s’en prémunir&quot;,&quot;id&quot;:&quot;Fitnah: Tanda-Tanda, Sebab, dan Cara Menghindarinya&quot;,&quot;ja&quot;:&quot;試練―その兆候、原因、予防方法&quot;,&quot;ru&quot;:&quot;Смуты: их признаки, причины и способы защиты от них&quot;,&quot;sw&quot;:&quot;Fitna: Alama Zake, Sababu Zake na Njia za Kujikinga Nazo&quot;,&quot;tr&quot;:&quot;Fitneler: Alametleri, Sebepleri ve Korunma Yolları&quot;,&quot;zh&quot;:&quot;《纷争：征兆、成因与防范之道》&quot;}" data-original="الفتن علاماتها أسبابها طرق الوقاية منها">الفتن علاماتها أسبابها طرق الوقاية منها</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الفتن علاماتها أسبابها طرق الوقاية منها
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1118/111825.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1118/111825.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Optimal Principles in the Attributes of Allah and His Beautiful Names&quot;,&quot;es&quot;:&quot;Las reglas óptimas sobre los atributos de Allah y Sus nombres más bellos: el texto&quot;,&quot;fr&quot;:&quot;Les règles excellentes concernant les attributs d’Allah le Très-Haut et Ses plus beaux noms : le texte&quot;,&quot;id&quot;:&quot;Kaidah-kaidah Terbaik tentang Sifat-sifat Allah dan Nama-nama-Nya yang Indah: Teks&quot;,&quot;ja&quot;:&quot;神の諸属性と最も美しい御名に関する最良の規則（本文）&quot;,&quot;ru&quot;:&quot;Наилучшие правила об атрибутах Аллаха Всевышнего и Его прекрасных именах: основной текст&quot;,&quot;sw&quot;:&quot;Kanuni bora kuhusu sifa za Allah na majina Yake mazuri: Matini&quot;,&quot;tr&quot;:&quot;Allah&#039;ın Sıfatları ve En Güzel İsimleri Hakkında En Güzel Kaideler: Metin&quot;,&quot;ur&quot;:&quot;القواعد المثلى في صفات الله تعالى وأسمائه الحسنى المتن (اللہ تعالیٰ کی صفات اور اس کے بہترین ناموں کے باب میں مثالی قواعد: متن)&quot;,&quot;zh&quot;:&quot;《真主尊名与至美尊名属性的最佳准则：正文》&quot;}" data-original="القواعد المثلى في صفات الله تعالى وأسمائه الحسنى المتن">القواعد المثلى في صفات الله تعالى وأسمائه الحسنى المتن</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        القواعد المثلى في صفات الله تعالى وأسمائه الحسنى المتن
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1119/111980.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1119/111980.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Ruling on Abandoning Prayer&quot;,&quot;es&quot;:&quot;La norma sobre quien abandona la oración&quot;,&quot;fr&quot;:&quot;Le statut de celui qui délaisse la prière&quot;,&quot;id&quot;:&quot;Hukum Orang yang Meninggalkan Salat&quot;,&quot;ja&quot;:&quot;礼拝を放棄する者の حكم&quot;,&quot;ru&quot;:&quot;Положение того, кто оставляет молитву&quot;,&quot;sw&quot;:&quot;Hukumu ya mwenye kuacha sala&quot;,&quot;tr&quot;:&quot;Namazı terk etmenin hükmü&quot;,&quot;ur&quot;:&quot;حكم تـارك الصلاة (نماز چھوڑنے والے کا حکم)&quot;,&quot;zh&quot;:&quot;《放弃礼拜者的教法规判》&quot;}" data-original="حكم تـارك الصلاة">حكم تـارك الصلاة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        حكم تـارك الصلاة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1129/112935.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1129/112935.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Signs of Trials, Their Causes, and Ways to Prevent Them - Colored&quot;,&quot;es&quot;:&quot;Las tribulaciones: sus señales, causas y formas de prevenirlas (a color)&quot;,&quot;fr&quot;:&quot;Les troubles : leurs signes, leurs causes et les moyens de s&#039;en prémunir — en couleur&quot;,&quot;id&quot;:&quot;Fitnah: Tanda-Tandanya, Sebab-Sebabnya, dan Cara Mencegahnya—Berwarna&quot;,&quot;ja&quot;:&quot;内乱――その兆候、原因、予防法（カラー版）&quot;,&quot;ru&quot;:&quot;Смута: её признаки, причины и способы защиты от неё — цветное издание&quot;,&quot;sw&quot;:&quot;Fitna: alama zake, sababu zake na njia za kujikinga nazo – yenye rangi&quot;,&quot;tr&quot;:&quot;Fitneler: alametleri, sebepleri ve korunma yolları — renkli&quot;,&quot;ur&quot;:&quot;فتنے: ان کی علامات، اسباب اور ان سے بچاؤ کے طریقے — رنگین&quot;,&quot;zh&quot;:&quot;纷争：其征兆、原因与防范方法（彩色版）&quot;}" data-original="الفتن علاماتها، أسبابها، طرق الوقاية منها- ملون">الفتن علاماتها، أسبابها، طرق الوقاية منها- ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الفتن علاماتها، أسبابها، طرق الوقاية منها- ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1145/114538.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1145/114538.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Adhering to the Prophetic Sunnah and Its Effects&quot;,&quot;es&quot;:&quot;Aferrarse a la Sunna profética y sus efectos&quot;,&quot;fr&quot;:&quot;S&#039;attacher à la Sunna prophétique et ses effets&quot;,&quot;id&quot;:&quot;Berpegang Teguh pada Sunnah Nabi dan Dampaknya&quot;,&quot;ja&quot;:&quot;預言者のスンナへの固守とその影響&quot;,&quot;ru&quot;:&quot;Приверженность пророческой Сунне и ее плоды&quot;,&quot;sw&quot;:&quot;Al-Tamassuk bi al-Sunna al-Nabawiyya wa Atharuhu (Kushikamana na Sunna ya Mtume na athari zake)&quot;,&quot;tr&quot;:&quot;Nebevî Sünnete Sarılmak ve Bunun Etkileri&quot;,&quot;zh&quot;:&quot;《坚守先知圣行及其影响》&quot;}" data-original="التمسك بالسنة النبوية وآثاره">التمسك بالسنة النبوية وآثاره</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        التمسك بالسنة النبوية وآثاره
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح بن عثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1311/131156.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1311/131156.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Rulings from the Noble Quran - Dar Al-Watan&quot;,&quot;es&quot;:&quot;Disposiciones del Noble Corán: edición al-Watan&quot;,&quot;fr&quot;:&quot;Dispositions tirées du Noble Quran - édition al-Watan&quot;,&quot;id&quot;:&quot;Ahkam min Al-Qur&#039;an al-Karim (Hukum-Hukum dari Al-Qur&#039;an yang Mulia) – Cetakan al-Watan&quot;,&quot;ja&quot;:&quot;聖クルアーンからの法規定—アル＝ワタン版&quot;,&quot;ru&quot;:&quot;Правовые установления из Священного Корана — издание аль-Ватан&quot;,&quot;sw&quot;:&quot;Hukumu kutoka katika Quran Tukufu — Toleo la al-Watan&quot;,&quot;tr&quot;:&quot;Ahkâm min el-Kur&#039;âni&#039;l-Kerîm (Kur&#039;an-ı Kerim&#039;den Hükümler) - el-Vatan Baskısı&quot;,&quot;ur&quot;:&quot;أحكام من القرآن الكريم- ط الوطن (قرآنِ کریم سے احکام—الوطن ایڈیشن)&quot;,&quot;zh&quot;:&quot;《古兰经判例——祖国出版社版》&quot;}" data-original="أحكام من القرآن الكريم- ط الوطن">أحكام من القرآن الكريم- ط الوطن</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        أحكام من القرآن الكريم- ط الوطن
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1327/132748.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1327/132748.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Rulings from the Noble Quran - 2nd Edition&quot;,&quot;es&quot;:&quot;Disposiciones del Noble Quran: 2.ª edición&quot;,&quot;fr&quot;:&quot;Dispositions juridiques tirées du Noble Quran - 2e édition&quot;,&quot;id&quot;:&quot;Sejumlah Hukum dari Al-Qur’an — Cetakan Kedua&quot;,&quot;ja&quot;:&quot;聖クルアーンからの法規――第2版&quot;,&quot;ru&quot;:&quot;Положения из Благородного Корана — 2-е издание&quot;,&quot;sw&quot;:&quot;Hukumu kutoka katika Quran Tukufu - toleo la pili&quot;,&quot;tr&quot;:&quot;Kur’an-ı Kerim’den Hükümler – 2. Baskı&quot;,&quot;zh&quot;:&quot;《古兰经教法判例——第二版》&quot;}" data-original="أحكام من القرآن الكريم- ط 2">أحكام من القرآن الكريم- ط 2</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        أحكام من القرآن الكريم- ط 2
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1382/138256.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1382/138256.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;A Summary of the Comprehensive Sciences and Wisdom in Explaining Fifty Hadiths from the Compendium of Sayings - Al-Barghash&quot;,&quot;es&quot;:&quot;Resumen de Jami al-Ulum wa-l-Hikam (Compendio de las ciencias y las máximas) en la explicación de cincuenta hadices de las máximas concisas: edición de Al-Birghash&quot;,&quot;fr&quot;:&quot;Mukhtasar Jami&#039; al-ulum wa al-hikam (Abrégé de Jami&#039; al-ulum wa al-hikam, commentaire de cinquante hadiths parmi les paroles concises), Al Burghush&quot;,&quot;id&quot;:&quot;Ringkasan Jami&#039; Al-&#039;Ulum wa Al-Hikam (Himpunan Ilmu dan Hikmah) dalam Menjelaskan Lima Puluh Hadis Jawami&#039; Al-Kalim (Ungkapan Ringkas yang Sarat Makna) — Al-Bargasy&quot;,&quot;ja&quot;:&quot;ジャーミウ・アル＝ウルーム・ワル＝ヒカム（知識と英知の集成）の要約――簡潔な言葉の集成から五十のハディースを解説 アール・バルガシュ版&quot;,&quot;ru&quot;:&quot;Краткое изложение «Джами аль-улум ва-ль-хикам» — комментария к пятидесяти хадисам из числа кратких изречений — Аль Багрыш&quot;,&quot;sw&quot;:&quot;Muhtasari wa Jami&#039; al-Ulum wa al-Hikam (Mkusanyo wa elimu na hekima) katika kufafanua hadithi hamsini za maneno yenye hekima - Al Barghash&quot;,&quot;tr&quot;:&quot;Câmiʿu’l-ulûm ve’l-hikem’in Cevâmiʿu’l-kelim’den Elli Hadisin Şerhi Üzerine Muhtasarı – Âl Bergiş&quot;,&quot;ur&quot;:&quot;مختصر جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم - آل برغش (جوامع الکلم کی پچاس احادیث کی شرح جامع العلوم والحكم کا مختصر، آل برغش)&quot;,&quot;zh&quot;:&quot;《〈知识与智慧汇编〉节选：解释五十段精炼圣训》—阿勒·巴尔加什版&quot;}" data-original="مختصر جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم - آل برغش">مختصر جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم - آل برغش</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        مختصر جامع العلوم والحكم في شرح خمسين حديثا من جوامع الكلم - آل برغش
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن البغدادي بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1382/138257.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1382/138257.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Summary of the Gardens of the Righteous - Al-Mazid&quot;,&quot;es&quot;:&quot;Resumen de Riyad al-Salihin (Los jardines de los virtuosos): edición de Al-Mazid&quot;,&quot;fr&quot;:&quot;Mukhtasar Riyad al-salihin (Abrégé du Jardin des vertueux), Al Mazid&quot;,&quot;id&quot;:&quot;Ringkasan Riyadh Ash-Shalihin (Taman Orang-Orang Saleh) — Al-Mazid&quot;,&quot;ja&quot;:&quot;リヤード・アッ＝サーリヒーン（善人たちの園）の要約――アル＝マズィード版&quot;,&quot;ru&quot;:&quot;Краткое изложение «Рияд ас-салихин» — аль-Мазид&quot;,&quot;sw&quot;:&quot;Muhtasari wa Riyad al-Salihin (Bustani za watu wema) - Al Mazid&quot;,&quot;tr&quot;:&quot;Riyâzü’s-sâlihîn Muhtasarı – el-Mezîd&quot;,&quot;ur&quot;:&quot;مختصر رياض الصالحين- المزيد (ریاض الصالحین کا مختصر، المزید)&quot;,&quot;zh&quot;:&quot;《清廉者的花园》节选—穆兹迪版&quot;}" data-original="مختصر رياض الصالحين- المزيد">مختصر رياض الصالحين- المزيد</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        مختصر رياض الصالحين- المزيد
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1382/138282.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1382/138282.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Summary of the Book of the Righteous - Al-Mazid&quot;,&quot;es&quot;:&quot;Resumen del libro Riyad al-Salihin (Los jardines de los justos), de los dichos del Señor de los Mensajeros — al-Mazid&quot;,&quot;fr&quot;:&quot;Mukhtasar Kitab Riyad al-Salihin min Kalam Sayyid al-Mursalin (Abrégé du Livre des Jardins des vertueux, d&#039;après les paroles du Seigneur des envoyés) - al-Mazid&quot;,&quot;id&quot;:&quot;Ringkasan Kitab Riyadhus Shalihin dari Sabda Pemimpin Para Rasul — Al-Mazid&quot;,&quot;ja&quot;:&quot;使徒たちの長の言葉による「リアード・アッ＝サーリヒーン」抄録—マズィード&quot;,&quot;ru&quot;:&quot;Краткое изложение книги «Рияд ас-салихин» изречений Господина посланников — аль-Мазид&quot;,&quot;sw&quot;:&quot;Mukhtasar Kitab Riyadh al-Salihin min Kalam Sayyid al-Mursalin (Muhtasari wa Kitabu Riyadh al-Salihin kutoka Maneno ya Bwana wa Mitume) - Al-Mazid&quot;,&quot;tr&quot;:&quot;Muhtasar Kitâbü Riyâzü’s-sâlihîn min kelâmi seyyidi’l-mürselîn (Resullerin Efendisi’nin Sözlerinden Sâlihlerin Bahçeleri Kitabı’nın Özeti) - Mezîd&quot;,&quot;zh&quot;:&quot;《先知圣使言论中的义人花园节选》—马齐德&quot;}" data-original="مختصر كتاب رياض الصالحين من كلام سيد المرسلين - المزيد">مختصر كتاب رياض الصالحين من كلام سيد المرسلين - المزيد</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        مختصر كتاب رياض الصالحين من كلام سيد المرسلين - المزيد
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1393/139355.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1393/139355.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Hidden Pearl in the Conditions of Chains and Texts - Colored&quot;,&quot;es&quot;:&quot;Comentario de La perla oculta sobre el estado de las cadenas de transmisión y los textos, edición a color&quot;,&quot;fr&quot;:&quot;Sharh al-lu&#039;lu&#039; al-maknun fi ahwal al-asanid wa-l-mutun (Commentaire de la perle cachée sur l’état des chaînes de transmission et des textes) — édition en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Permata Terpendam tentang Keadaan Sanad dan Matan (Berwarna)&quot;,&quot;ja&quot;:&quot;『秘められた真珠――伝承経路と本文の諸相』の解説（カラー版）&quot;,&quot;ru&quot;:&quot;Комментарий к «Сокровенной жемчужине» о состояниях цепочек передатчиков и текстов хадисов — цветное издание&quot;,&quot;sw&quot;:&quot;Sharh al-Lu&#039;lu&#039; al-Maknun kuhusu Hali za Minyororo ya Wasimulizi na Matini — Toleo la Rangi&quot;,&quot;tr&quot;:&quot;Gizli İnci&#039;nin Şerhi: İsnad ve Metinlerin Durumları - Renkli&quot;,&quot;zh&quot;:&quot;《〈珍藏的珍珠〉注释：传述链与文本的情况》（彩色版）&quot;}" data-original="شرح اللؤلؤ المكنون في أحوال الأسانيد والمتون- ملون">شرح اللؤلؤ المكنون في أحوال الأسانيد والمتون- ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح اللؤلؤ المكنون في أحوال الأسانيد والمتون- ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1393/139357.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1393/139357.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of Jabir&#039;s Hadith on the Description of the Prophet&#039;s ﷺ Pilgrimage (Colored)&quot;,&quot;es&quot;:&quot;Comentario del hadiz de Jabir sobre la descripción de la peregrinación del Profeta ﷺ, edición a color&quot;,&quot;fr&quot;:&quot;Sharh hadith Jabir fi sifat hijjat al-nabi ﷺ (Commentaire du hadith de Jabir sur la description du pèlerinage du Prophète ﷺ) — édition en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Hadis Jabir tentang Tata Cara Haji Nabi ﷺ (Berwarna)&quot;,&quot;ja&quot;:&quot;預言者 ﷺ の巡礼の様式に関するジャービルのハディースの解説（カラー版）&quot;,&quot;ru&quot;:&quot;Комментарий к хадису Джабира об описании хаджа Пророка ﷺ — цветное издание&quot;,&quot;sw&quot;:&quot;Sharh ya Hadithi ya Jabir kuhusu Sifa za Hija ya Mtume ﷺ — Toleo la Rangi&quot;,&quot;tr&quot;:&quot;Câbir Hadisinin Şerhi: Hz. Peygamber&#039;in Haccının Niteliği - Renkli&quot;,&quot;zh&quot;:&quot;《贾比尔关于先知朝觐仪式描述的圣训注释》（彩色版）&quot;}" data-original="شرح حديث جابر في صفة حجة النبي ﷺ ملون">شرح حديث جابر في صفة حجة النبي ﷺ ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح حديث جابر في صفة حجة النبي ﷺ ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1393/139358.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1393/139358.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Book of Trials from Sahih al-Bukhari - Colored&quot;,&quot;es&quot;:&quot;Comentario del Libro de las tribulaciones de Sahih al-Bujari, edición a color&quot;,&quot;fr&quot;:&quot;Sharh Kitab al-Fitan min Sahih al-Bukhari (Commentaire du « Livre des troubles » extrait du Sahih d’al-Bukhari) — édition en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Kitab Fitnah dalam Shahih Al-Bukhari (Berwarna)&quot;,&quot;ja&quot;:&quot;サヒーフ・ブハーリー『フィタンの書』の解説（カラー版）&quot;,&quot;ru&quot;:&quot;Комментарий к книге «Смуты» из «Сахих аль-Бухари» — цветное издание&quot;,&quot;sw&quot;:&quot;Sharh ya Kitabu cha Fitna kutoka Sahih al-Bukhari — Toleo la Rangi&quot;,&quot;tr&quot;:&quot;Sahîh-i Buhârî&#039;deki Fiten Kitabı&#039;nın Şerhi - Renkli&quot;,&quot;zh&quot;:&quot;《布哈里圣训实录〈纷争篇〉注释》（彩色版）&quot;}" data-original="شرح كتاب الفتن من صحيح البخاري- ملون">شرح كتاب الفتن من صحيح البخاري- ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح كتاب الفتن من صحيح البخاري- ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1399/139989.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1399/139989.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Commentary on the Summary of the Sciences of Hadith&quot;,&quot;es&quot;:&quot;Glosa a Compendio de las ciencias del hadiz&quot;,&quot;fr&quot;:&quot;Commentaire marginal de l&#039;Abrégé des sciences du hadith&quot;,&quot;id&quot;:&quot;Hasyiyah atas Ikhtishar Ulum al-Hadits&quot;,&quot;ja&quot;:&quot;『ハディース学概論』への注釈&quot;,&quot;ru&quot;:&quot;Комментарий к «Краткому изложению наук о хадисе»&quot;,&quot;sw&quot;:&quot;Tanbihi Pembeni ya Mukhtasar Ulum al-Hadith&quot;,&quot;tr&quot;:&quot;Hadis ilimlerinin ihtisarı üzerine hâşiye&quot;,&quot;zh&quot;:&quot;《〈圣训学概要〉注释》&quot;}" data-original="حاشية على اختصار علوم الحديث">حاشية على اختصار علوم الحديث</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        حاشية على اختصار علوم الحديث
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم بن عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1451/145121.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1451/145121.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;A Summary of the Comprehensive Sciences and Rulings in the Explanation of Fifty Hadiths from the Compendium of Sayings by Ibn Rajab&quot;,&quot;es&quot;:&quot;Compendio de Yami al-Ulum wa-l-Hikam (Compendio de ciencias y sentencias), comentario de cincuenta hadices de las palabras concisas, de Ibn Rajab&quot;,&quot;fr&quot;:&quot;Abrégé du Jami al-Ulum wa al-Hikam (La somme des sciences et des sagesses), commentaire de cinquante hadiths parmi les paroles concises, par Ibn Rajab&quot;,&quot;id&quot;:&quot;Ringkasan Jami&#039; al-Ulum wa al-Hikam [Himpunan Ilmu dan Hikmah] dalam Penjelasan Lima Puluh Hadis Jawami&#039; al-Kalim karya Ibnu Rajab&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ著『ジャーミウ・アル＝ウルーム・ワル＝ヒカム―五十の包括的な言葉に関するハディースの注釈』要約&quot;,&quot;ru&quot;:&quot;Краткое изложение «Джами аль-улюм ва-ль-хикам» — комментария к пятидесяти хадисам из кратких изречений Пророка, Ибн Раджаб&quot;,&quot;sw&quot;:&quot;Mukhtasar Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim ya Ibn Rajab&quot;,&quot;tr&quot;:&quot;İbn Receb’in Cevâmiu’l-kelim’den Elli Hadisin Şerhi olan Câmiu’l-ulûm ve’l-hikem’inin Muhtasarı&quot;,&quot;zh&quot;:&quot;伊本·拉哲卜《五十段精辟圣训注释：诸学科与格言汇总》节选&quot;}" data-original="مختصر جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم لابن رجب">مختصر جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم لابن رجب</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        مختصر جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم لابن رجب
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن البغدادي بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1453/145328.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1453/145328.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of Riyad as-Salihin - Mudar Al-Watan&quot;,&quot;es&quot;:&quot;Sharh Riyad al-Salihin [Comentario de los jardines de los justos] — Madar al-Watan&quot;,&quot;fr&quot;:&quot;Commentaire de Riyad al-Salihin [Les Jardins des vertueux] - Madar al-Watan&quot;,&quot;id&quot;:&quot;Syarh Riyadh ash-Shalihin (Penjelasan Taman Orang-Orang Saleh) — Madar al-Watan&quot;,&quot;ja&quot;:&quot;リヤード・アッ＝サーリヒーン注釈—マダール・アル＝ワタン版&quot;,&quot;ru&quot;:&quot;Комментарий к «Рияд ас-салихин» — Мадар аль-Ватан&quot;,&quot;sw&quot;:&quot;Sharh Riyad al-Salihin (Ufafanuzi wa Bustani za Watu Wema) - Madar al-Watan&quot;,&quot;tr&quot;:&quot;Şerhu Riyâzi’s-sâlihîn (Riyâzü’s-sâlihîn Şerhi) – Medârü’l-Vatan&quot;,&quot;ur&quot;:&quot;شرح رياض الصالحين- مدار الوطن (ریاض الصالحین کی شرح، مدار الوطن)&quot;,&quot;zh&quot;:&quot;《清廉者花园注释》—祖国轨道版&quot;}" data-original="شرح رياض الصالحين- مدار الوطن">شرح رياض الصالحين- مدار الوطن</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح رياض الصالحين- مدار الوطن
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1935/193560.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1935/193560.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;A Treatise on the Times of Prayer&quot;,&quot;es&quot;:&quot;Tratado sobre los horarios de la oración&quot;,&quot;fr&quot;:&quot;Épître sur les horaires de la prière&quot;,&quot;id&quot;:&quot;Risalah tentang Waktu-Waktu Salat&quot;,&quot;ja&quot;:&quot;礼拝時刻に関する小論&quot;,&quot;ru&quot;:&quot;Послание о времени молитв&quot;,&quot;sw&quot;:&quot;Risala kuhusu nyakati za Swala&quot;,&quot;tr&quot;:&quot;Namaz Vakitleri Hakkında Bir Risale&quot;,&quot;ur&quot;:&quot;نماز کے اوقات کے بارے میں رسالہ&quot;,&quot;zh&quot;:&quot;《关于礼拜时刻的论文》&quot;}" data-original="رسالة في مواقيت الصلاة">رسالة في مواقيت الصلاة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        رسالة في مواقيت الصلاة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1967/196758.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1967/196758.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Book of Trials from Sahih al-Bukhari - Mudar Al-Watan&quot;,&quot;es&quot;:&quot;Explicación del Libro de las tribulaciones de Sahih al-Bukhari: Madar al-Watan&quot;,&quot;fr&quot;:&quot;Commentaire du Livre des épreuves du Sahih al-Bukhari — Madar al-Watan&quot;,&quot;id&quot;:&quot;Penjelasan Kitab Fitnah dalam Shahih Al-Bukhari — Madar Al-Watan&quot;,&quot;ja&quot;:&quot;ブハーリーの真正集成に収録された『騒乱の書』の注釈――マダール・アル＝ワタン版&quot;,&quot;ru&quot;:&quot;Разъяснение книги «Смуты» из «Сахиха» аль-Бухари — Мадар аль-Ватан&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa Kitabu cha Fitna kutoka Sahih al-Bukhari — Madar al-Watan&quot;,&quot;tr&quot;:&quot;Sahîh-i Buhârî’deki Fiten kitabının şerhi - Madar al-Watan&quot;,&quot;ur&quot;:&quot;شرح كتاب الفتن من صحيح البخاري- مدار الوطن (صحیح بخاری کی کتاب الفتن کی شرح—مدار الوطن)&quot;,&quot;zh&quot;:&quot;《布哈里圣训实录·纷争篇》注释——祖国之轨出版社版&quot;}" data-original="شرح كتاب الفتن من صحيح البخاري- مدار الوطن">شرح كتاب الفتن من صحيح البخاري- مدار الوطن</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح كتاب الفتن من صحيح البخاري- مدار الوطن
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2004/200469.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2004/200469.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Pearl Necklace System in the Science of Inheritance&quot;,&quot;es&quot;:&quot;Comentario del poema Las perlas probatorias sobre la ciencia de las sucesiones&quot;,&quot;fr&quot;:&quot;Commentaire du poème al-Qala&#039;id al-Burhaniyya sur les règles successorales&quot;,&quot;id&quot;:&quot;Penjelasan Nazham Al-Qala&#039;id Al-Burhaniyyah tentang ilmu faraid&quot;,&quot;ja&quot;:&quot;相続法学の『アル＝カライド・アル＝ブルハーニーヤ』韻文詩の解説&quot;,&quot;ru&quot;:&quot;Комментарий к поэме «Блистающие ожерелья» о науке наследования&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa utenzi wa Al-Qala&#039;id al-Burhaniyya kuhusu elimu ya mirathi&quot;,&quot;tr&quot;:&quot;Ferâiz İlmine Dair el-Kalâidü’l-Burhâniyye Manzumesinin Şerhi&quot;,&quot;ur&quot;:&quot;شرح منظومة القلائد البرهانية في علم الفرائض (علمِ فرائض میں القلائد البرهانية منظومے کی شرح)&quot;,&quot;zh&quot;:&quot;《继承法学中的博鲁哈尼项链诗》讲解&quot;}" data-original="شرح منظومة القلائد البرهانية في علم الفرائض">شرح منظومة القلائد البرهانية في علم الفرائض</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح منظومة القلائد البرهانية في علم الفرائض
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2067/206716.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2067/206716.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Ruling on Celebrating the Birth of the Prophet ﷺ - Colored&quot;,&quot;es&quot;:&quot;Norma sobre celebrar el natalicio del Profeta ﷺ - A color&quot;,&quot;fr&quot;:&quot;Le jugement sur la célébration de la naissance du Prophète ﷺ - en couleur&quot;,&quot;id&quot;:&quot;Hukum Merayakan Maulid Nabi ﷺ - Berwarna&quot;,&quot;ja&quot;:&quot;預言者 ﷺ の生誕祭を祝うことの法的判断・カラー版&quot;,&quot;ru&quot;:&quot;Постановление о праздновании дня рождения Пророка ﷺ — цветное издание&quot;,&quot;sw&quot;:&quot;Hukumu ya kusherehekea maulidi ya Mtume ﷺ — yenye rangi&quot;,&quot;tr&quot;:&quot;Hz. Peygamber’in ﷺ Doğum Gününü Kutlamanın Hükmü - Renkli&quot;,&quot;ur&quot;:&quot;حكم الاحتفال بمولد النبي ﷺ (نبی ﷺ کی ولادت کا جشن منانے کا حکم) - رنگین&quot;,&quot;zh&quot;:&quot;《庆祝先知 ﷺ 诞辰的教法判定》—彩色版&quot;}" data-original="حكم الاحتفال بمولد النبي ﷺ- ملون">حكم الاحتفال بمولد النبي ﷺ- ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        حكم الاحتفال بمولد النبي ﷺ- ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2311/231193.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2311/231193.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Description of Hajj - Madar Al-Watan&quot;,&quot;es&quot;:&quot;Descripción del Hayy - Madar al-Watan&quot;,&quot;fr&quot;:&quot;Description du pèlerinage - Madar al-Watan&quot;,&quot;id&quot;:&quot;Tata Cara Haji – Madar al-Watan&quot;,&quot;ja&quot;:&quot;ハッジの作法―マダール・アル＝ワタン&quot;,&quot;ru&quot;:&quot;Описание хаджа — Мадар аль-Ватан&quot;,&quot;sw&quot;:&quot;Sifa ya Hija - Madar al-Watan&quot;,&quot;tr&quot;:&quot;Hacın Nitelikleri - Madar al-Watan&quot;,&quot;ur&quot;:&quot;صفة الحج (حج کا طریقہ) - مدار الوطن&quot;,&quot;zh&quot;:&quot;《朝觐仪式》—祖国出版社&quot;}" data-original="صفة الحج- مدار الوطن">صفة الحج- مدار الوطن</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        صفة الحج- مدار الوطن
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2325/232586.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2325/232586.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Chapters on Fasting, Tarawih, and Zakat&quot;,&quot;es&quot;:&quot;Secciones sobre el ayuno, las oraciones de tarawih y el azaque&quot;,&quot;fr&quot;:&quot;Chapitres sur le jeûne, les prières de tarawih et la zakat&quot;,&quot;id&quot;:&quot;Pembahasan tentang Puasa, Tarawih, dan Zakat&quot;,&quot;ja&quot;:&quot;断食、タラウィーフ、ザカートに関する諸章&quot;,&quot;ru&quot;:&quot;Разделы о посте, таравихе и закяте&quot;,&quot;sw&quot;:&quot;Mada kuhusu funga, swala za Tarawihi na zakat&quot;,&quot;tr&quot;:&quot;Oruç, teravih ve zekât konularında bölümler&quot;,&quot;zh&quot;:&quot;斋戒、塔拉威哈拜与天课专题&quot;}" data-original="فصول في الصيام والتراويح والزكاة">فصول في الصيام والتراويح والزكاة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        فصول في الصيام والتراويح والزكاة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2374/237490.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2374/237490.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Debt - The Circle of the Homeland&quot;,&quot;es&quot;:&quot;Las transacciones de deuda - Madar al-Watan&quot;,&quot;fr&quot;:&quot;Les transactions à crédit – Madar al-Watan&quot;,&quot;id&quot;:&quot;Utang Piutang – Madar Al-Watan&quot;,&quot;ja&quot;:&quot;債務取引―マダール・アル＝ワタン版&quot;,&quot;ru&quot;:&quot;Задолженность — «Мадар аль-Ватан»&quot;,&quot;sw&quot;:&quot;Muamala wa deni - Madar al-Watan&quot;,&quot;tr&quot;:&quot;Borçlanma – Medârü&#039;l-Vatan&quot;,&quot;ur&quot;:&quot;المداينة- مدار الوطن (ادھار کا معاملہ—مدار الوطن)&quot;,&quot;zh&quot;:&quot;《债务交易——祖国之路出版社》&quot;}" data-original="المداينة- مدار الوطن">المداينة- مدار الوطن</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        المداينة- مدار الوطن
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2376/237676.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2376/237676.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Cooperation of Preachers and Its Impact on Society&quot;,&quot;es&quot;:&quot;La cooperación entre predicadores y su efecto en la sociedad&quot;,&quot;fr&quot;:&quot;La coopération entre les prédicateurs et son influence sur la société&quot;,&quot;id&quot;:&quot;Kerja Sama Para Dai dan Dampaknya terhadap Masyarakat&quot;,&quot;ja&quot;:&quot;伝道者たちの協力と社会への影響&quot;,&quot;ru&quot;:&quot;Сотрудничество проповедников и его влияние на общество&quot;,&quot;sw&quot;:&quot;Ushirikiano wa walinganiaji na athari yake kwa jamii&quot;,&quot;tr&quot;:&quot;Davetçilerin iş birliği ve bunun toplum üzerindeki etkisi&quot;,&quot;ur&quot;:&quot;تعاون الدعاة وأثره على المجتمع (داعیوں کا باہمی تعاون اور معاشرے پر اس کے اثرات)&quot;,&quot;zh&quot;:&quot;宣教者合作及其对社会的影响&quot;}" data-original="تعاون الدعاة وأثره على المجتمع">تعاون الدعاة وأثره على المجتمع</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تعاون الدعاة وأثره على المجتمع
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2397/239786.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2397/239786.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Errors Committed by Some Pilgrims&quot;,&quot;es&quot;:&quot;Errores que cometen algunos peregrinos&quot;,&quot;fr&quot;:&quot;Erreurs commises par certains pèlerins&quot;,&quot;id&quot;:&quot;Kesalahan yang Dilakukan Sebagian Jemaah Haji&quot;,&quot;ja&quot;:&quot;一部の巡礼者が犯す誤り&quot;,&quot;ru&quot;:&quot;Ошибки, которые совершают некоторые паломники&quot;,&quot;sw&quot;:&quot;Makosa Yanayofanywa na Baadhi ya Mahujaji&quot;,&quot;tr&quot;:&quot;Bazı Hacıların Yaptığı Hatalar&quot;,&quot;ur&quot;:&quot;أخطاء يرتكبها بعض الحجاج (بعض حاجیوں سے سرزد ہونے والی غلطیاں)&quot;,&quot;zh&quot;:&quot;部分朝觐者常犯的错误&quot;}" data-original="أخطاء يرتكبها بعض الحجاج">أخطاء يرتكبها بعض الحجاج</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        أخطاء يرتكبها بعض الحجاج
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2495/249598.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2495/249598.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Summary of the Book of the Righteous&quot;,&quot;es&quot;:&quot;Resumen del libro Riyad al-Salihin [Los jardines de los justos]&quot;,&quot;fr&quot;:&quot;Abrégé du livre Le Jardin des vertueux&quot;,&quot;id&quot;:&quot;Ringkasan Kitab Riyadhus Shalihin&quot;,&quot;ja&quot;:&quot;リヤード・アッ＝サーリヒーン（善人たちの園）の抄録&quot;,&quot;ru&quot;:&quot;Краткое изложение книги «Рияд ас-салихин»&quot;,&quot;sw&quot;:&quot;Mukhtasar Kitab Riyad al-Salihin (Muhtasari wa Kitabu Bustani za Waja Wema)&quot;,&quot;tr&quot;:&quot;Riyâzü’s-Sâlihîn Kitabının Muhtasarı&quot;,&quot;zh&quot;:&quot;《善人花园》节本&quot;}" data-original="مختصر كتاب رياض الصالحين">مختصر كتاب رياض الصالحين</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        مختصر كتاب رياض الصالحين
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محيي الدين يحيى بن شرف النووي
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="items"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>تهذيب التهذيب- ط الكتاب الإسلامي</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,119 +70,111 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
-    </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <div class="book-head">
-          <img
-        class="cover"
-        src="../../catalogue/654/65469.jpg"
-        alt=""
-      />
-    
-    <div class="book-head-text">
-      <h1 class="page-title">
-        <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Refinement of Refinement - The Islamic Book&quot;,&quot;es&quot;:&quot;Tahdhib al-Tahdhib [Depuración de la depuración] — edición de al-Kitab al-Islami&quot;,&quot;fr&quot;:&quot;Tahdhib al-tahdhib (Épuration de l&#039;Épuration) – édition du Livre islamique&quot;,&quot;id&quot;:&quot;Tahdzib at-Tahdzib [Penyempurnaan Tahdzib] — edisi Dar al-Kitab al-Islami&quot;,&quot;ja&quot;:&quot;タフズィーブ・アッ＝タフズィーブ――ダール・アル＝キターブ・アル＝イスラーミー版&quot;,&quot;ru&quot;:&quot;Тахзиб ат-Тахзиб — издание Дар аль-Китаб аль-Ислами&quot;,&quot;sw&quot;:&quot;Tahdhib al-Tahdhib (Usanifu wa Tahdhib) — toleo la Dar al-Kitab al-Islami&quot;,&quot;tr&quot;:&quot;Tehzîbü’t-Tehzîb – İslâm Kitabı Baskısı&quot;,&quot;ur&quot;:&quot;تهذيب التهذيب- ط الكتاب الإسلامي (تہذیب التہذیب، اسلامی کتاب طبع)&quot;,&quot;zh&quot;:&quot;《传记修订》—伊斯兰图书版&quot;}" data-original="تهذيب التهذيب- ط الكتاب الإسلامي">تهذيب التهذيب- ط الكتاب الإسلامي</span>
-      </h1>
-
-                        <p class="credits">
-            <span data-t="Authors">Authors</span>:
-                                        <a href="../../authors/009/921.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ahmad ibn Ali ibn Hajar Al-Asqalani&quot;,&quot;es&quot;:&quot;Ahmad ibn Ali ibn Hajar al-Asqalani&quot;,&quot;fr&quot;:&quot;Ahmad ibn Ali ibn Hajar al-Asqalani&quot;,&quot;id&quot;:&quot;Ahmad bin Ali bin Hajar Al-Asqalani&quot;,&quot;ja&quot;:&quot;アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー&quot;,&quot;ru&quot;:&quot;Ахмад ибн Али ибн Хаджар аль-Аскаляни&quot;,&quot;sw&quot;:&quot;Ahmad bin Ali bin Hajar Al-Asqalani&quot;,&quot;tr&quot;:&quot;Ahmed b. Ali b. Hacer el-Askalânî&quot;,&quot;zh&quot;:&quot;艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼&quot;}" data-original="أحمد بن علي بن حجر العسقلاني">أحمد بن علي بن حجر العسقلاني</span>
-              </a>
-                                    </p>
-                                              <p class="credits">
-            <span data-t="Publishers">Publishers</span>:
-                                        <a href="../../publishers/915/91535.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar al-Kitab al-Islami&quot;,&quot;es&quot;:&quot;Dar al-Kitab al-Islami&quot;,&quot;fr&quot;:&quot;Dar al-Kitab al-Islami&quot;,&quot;id&quot;:&quot;Dar Al-Kitab Al-Islami&quot;,&quot;ja&quot;:&quot;ダール・アル＝キターブ・アル＝イスラーミー&quot;,&quot;ru&quot;:&quot;Дар аль-Китаб аль-Ислами&quot;,&quot;sw&quot;:&quot;Dar al-Kitab al-Islami&quot;,&quot;tr&quot;:&quot;Dârü&#039;l-Kitâbi&#039;l-İslâmî&quot;,&quot;zh&quot;:&quot;达尔·伊斯兰图书出版社&quot;}" data-original="دار الكتاب الإسلامي">دار الكتاب الإسلامي</span>
-              </a>
-                                    </p>
-              
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/trajm/65469_trajm00138_%D8%AA%D9%87%D8%B0%D9%8A%D8%A8_%D8%A7%D9%84%D8%AA%D9%87%D8%B0%D9%8A%D8%A8_%D8%A7%D8%A8%D9%86_%D8%AD%D8%AC%D8%B1_%D8%A7%D9%84%D8%B9%D8%B3%D9%82%D9%84%D8%A7%D9%86%D9%8A_%D8%AF%D8%A7%D8%B1_%D8%A7%D9%84%D9%83%D8%AA%D8%A7%D8%A8_%D8%A7%D9%84%D8%A7%D8%B3%D9%84%D8%A7%D9%85%D9%8A__%D8%AA%D8%B1%D8%A7%D8%AC%D9%85.zip?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T102510Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=742c00644c7ed27eea1952b2db9b700e1968d85aee7a34f3ad77bda14177947b"
-            rel="noopener"
-            target="_blank"
-          >
-            <span data-t="Download">Download</span>
-          </a>
-          <span class="muted"><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></span>
-                      </p>
-    </div>
-  </div>
-
-      <section class="panel">
-      <dl class="book-card">
-                  <div>
-            <dt><span data-t="Country">Country</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Cairo, Egypt&quot;,&quot;es&quot;:&quot;El Cairo, Egipto&quot;,&quot;fr&quot;:&quot;Le Caire, Égypte&quot;,&quot;id&quot;:&quot;Kairo, Mesir&quot;,&quot;ja&quot;:&quot;エジプト、カイロ&quot;,&quot;ru&quot;:&quot;Каир, Египет&quot;,&quot;sw&quot;:&quot;Kairo, Misri&quot;,&quot;tr&quot;:&quot;Kahire, Mısır&quot;,&quot;ur&quot;:&quot;قاہرہ، مصر&quot;,&quot;zh&quot;:&quot;埃及，开罗&quot;}" data-original="القاهرة، مصر">القاهرة، مصر</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Edition">Edition</span></dt>
-            <dd><span dir="auto">1</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Volumes">Volumes</span></dt>
-            <dd><span dir="auto">15</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Pages">Pages</span></dt>
-            <dd><span dir="auto">4641</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Type">Type</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Category">Category</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Biographies and Figures&quot;,&quot;es&quot;:&quot;Biografías y personajes destacados&quot;,&quot;fr&quot;:&quot;Biographies et personnalités&quot;,&quot;id&quot;:&quot;Biografi dan Tokoh&quot;,&quot;ja&quot;:&quot;人物伝・著名人&quot;,&quot;ru&quot;:&quot;Биографии и выдающиеся личности&quot;,&quot;sw&quot;:&quot;Wasifu na watu mashuhuri&quot;,&quot;tr&quot;:&quot;Biyografiler ve Önemli Şahsiyetler&quot;,&quot;ur&quot;:&quot;سوانح و شخصیات&quot;,&quot;zh&quot;:&quot;传记与人物&quot;}" data-original="التراجم والأعلام">التراجم والأعلام</span></dd>
-          </div>
-              </dl>
-    </section>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
-      <section class="panel">
-      <h2><span data-t="Description">Description</span></h2>
-      <p class="caption" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title:  The Refinement of Refinement - The Islamic Book\n\n▪️ Author: Ahmad ibn Muhammad ibn Ali ibn Hajar al-Asqalani\n▫️ Publisher: Islamic Book House\n▪️ Publish Country: Cairo, Egypt\n▫️ Edition: 1\n▪️ Number of Volumes: 15\n▫️ Pages: 4641\n▪️ Type of Material: Book\n▫️ Main Category: Biographies and Figures&quot;,&quot;es&quot;:&quot;▫️ Título: \nTahdhib al-Tahdhib [Depuración de la depuración] — edición de al-Kitab al-Islami\n\n▪️ Autor: Ahmad ibn Muhammad ibn Ali ibn Hajar al-Asqalani\n▫️ Editorial: Dar al-Kitab al-Islami\n▪️ Lugar de publicación: El Cairo, Egipto\n▫️ Edición: 1\n▪️ Número de volúmenes: 15\n▫️ Páginas: 4641\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Biografías y personalidades&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nTahdhib al-tahdhib (Épuration de l&#039;Épuration) – édition du Livre islamique\n\n▪️ Auteur : Ahmad ibn Muhammad ibn Ali ibn Hajar al-Asqalani\n▫️ Éditeur : Dar al-Kitab al-Islami\n▪️ Lieu de publication : Le Caire, Égypte\n▫️ Édition : 1\n▪️ Nombre de volumes : 15\n▫️ Pages : 4641\n▪️ Type de document : Livre\n▫️ Catégorie principale : Biographies et notices biographiques&quot;,&quot;id&quot;:&quot;▫️ Judul: \nTahdzib at-Tahdzib [Penyempurnaan Tahdzib] — edisi Dar al-Kitab al-Islami\n\n▪️ Penulis: Ahmad bin Muhammad bin Ali bin Hajar Al-Asqalani\n▫️ Penerbit: Dar al-Kitab al-Islami\n▪️ Tempat terbit: Kairo, Mesir\n▫️ Cetakan: 1\n▪️ Jumlah jilid: 15\n▫️ Halaman: 4641\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Biografi dan tokoh&quot;,&quot;ja&quot;:&quot;▫️ 書名：\nタフズィーブ・アッ＝タフズィーブ――ダール・アル＝キターブ・アル＝イスラーミー版\n\n▪️ 著者：アフマド・イブン・ムハンマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー\n▫️ 出版社：ダール・アル＝キターブ・アル＝イスラーミー\n▪️ 出版地：カイロ、エジプト\n▫️ 版：1\n▪️ 巻数：15\n▫️ ページ数：4641\n▪️ 資料の種類：書籍\n▫️ 主分類：人名・人物&quot;,&quot;ru&quot;:&quot;▫️ Название: \nТахзиб ат-Тахзиб — издание Дар аль-Китаб аль-Ислами\n\n▪️ Автор: Ахмад ибн Мухаммад ибн Али ибн Хаджар аль-Аскаляни\n▫️ Издательство: Дар аль-Китаб аль-Ислами\n▪️ Место издания: Каир, Египет\n▫️ Издание: 1\n▪️ Количество томов: 15\n▫️ Страницы: 4641\n▪️ Тип материала: книга\n▫️ Основная категория: биографии и жизнеописания&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nTahdhib al-Tahdhib (Usanifu wa Tahdhib) — toleo la Dar al-Kitab al-Islami\n\n▪️ Mwandishi: Ahmad bin Muhammad bin Ali bin Hajar al-Asqalani\n▫️ Mchapishaji: Dar al-Kitab al-Islami\n▪️ Mahali pa kuchapishwa: Kairo, Misri\n▫️ Toleo: 1\n▪️ Idadi ya juzuu: 15\n▫️ Kurasa: 4641\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Wasifu na watu mashuhuri&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nTehzîbü’t-Tehzîb – İslâm Kitabı Baskısı\n\n▪️ Yazar: Ahmed b. Muhammed b. Ali b. Hacer el-Askalânî\n▫️ Yayınevi: Dar al-Kitab al-Islami\n▪️ Yayın yeri: Kahire, Mısır\n▫️ Baskı: 1\n▪️ Cilt sayısı: 15\n▫️ Sayfa: 4641\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Biyografi ve şahsiyetler&quot;,&quot;ur&quot;:&quot;▫️ عنوان:\nتهذيب التهذيب- ط الكتاب الإسلامي (تہذیب التہذیب، اسلامی کتاب طبع)\n\n▪️ مصنف: أحمد بن محمد بن علي بن حجر العسقلاني\n▫️ ناشر: دار الكتاب الإسلامي\n▪️ مقامِ اشاعت: قاہرہ، مصر\n▫️ طبع: 1\n▪️ جلدیں: 15\n▫️ صفحات: 4641\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: سوانح و شخصیات&quot;,&quot;zh&quot;:&quot;▫️ 书名：\n《传记修订》—伊斯兰图书版\n\n▪️ 作者：艾哈迈德·本·穆罕默德·本·阿里·本·哈杰尔·阿斯卡拉尼\n▫️ 出版社：伊斯兰图书出版社\n▪️ 出版地：开罗，埃及\n▫️ 版次：1\n▪️ 册数：15\n▫️ 页数：4641\n▪️ 资料类型：图书\n▫️ 主分类：传记与人物&quot;}" data-original="**▫️ العنوان: 
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../catalogue.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Resources</span>
+    </a>
+
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <img
+            src="../../catalogue/654/65469.jpg"
+            alt=""
+            class="aspect-[3/4] w-full rounded-xl border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+          />
+        
+        <div class="mt-4 flex flex-col gap-2">
+                                <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/trajm/65469_trajm00138_%D8%AA%D9%87%D8%B0%D9%8A%D8%A8_%D8%A7%D9%84%D8%AA%D9%87%D8%B0%D9%8A%D8%A8_%D8%A7%D8%A8%D9%86_%D8%AD%D8%AC%D8%B1_%D8%A7%D9%84%D8%B9%D8%B3%D9%82%D9%84%D8%A7%D9%86%D9%8A_%D8%AF%D8%A7%D8%B1_%D8%A7%D9%84%D9%83%D8%AA%D8%A7%D8%A8_%D8%A7%D9%84%D8%A7%D8%B3%D9%84%D8%A7%D9%85%D9%8A__%D8%AA%D8%B1%D8%A7%D8%AC%D9%85.zip?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T175931Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=2788b15322ca2e36b7b72dc0348ed76446d81a005e1a18004301d5ed952a8a7e" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" rel="noopener">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z"/>
+  <path d="M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Download</span>
+    </a>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></p>                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;The Refinement of Refinement - The Islamic Book&quot;,&quot;es&quot;:&quot;Tahdhib al-Tahdhib [Depuración de la depuración] — edición de al-Kitab al-Islami&quot;,&quot;fr&quot;:&quot;Tahdhib al-tahdhib (Épuration de l&#039;Épuration) – édition du Livre islamique&quot;,&quot;id&quot;:&quot;Tahdzib at-Tahdzib [Penyempurnaan Tahdzib] — edisi Dar al-Kitab al-Islami&quot;,&quot;ja&quot;:&quot;タフズィーブ・アッ＝タフズィーブ――ダール・アル＝キターブ・アル＝イスラーミー版&quot;,&quot;ru&quot;:&quot;Тахзиб ат-Тахзиб — издание Дар аль-Китаб аль-Ислами&quot;,&quot;sw&quot;:&quot;Tahdhib al-Tahdhib (Usanifu wa Tahdhib) — toleo la Dar al-Kitab al-Islami&quot;,&quot;tr&quot;:&quot;Tehzîbü’t-Tehzîb – İslâm Kitabı Baskısı&quot;,&quot;ur&quot;:&quot;تهذيب التهذيب- ط الكتاب الإسلامي (تہذیب التہذیب، اسلامی کتاب طبع)&quot;,&quot;zh&quot;:&quot;《传记修订》—伊斯兰图书版&quot;}" data-original="تهذيب التهذيب- ط الكتاب الإسلامي">تهذيب التهذيب- ط الكتاب الإسلامي</span></h1>
+
+                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1" lang="ar" dir="rtl" data-arabic-original="data-arabic-original" data-flux-text >تهذيب التهذيب- ط الكتاب الإسلامي</p>        
+                              <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Authors">Authors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/009/921.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ahmad ibn Ali ibn Hajar Al-Asqalani&quot;,&quot;es&quot;:&quot;Ahmad ibn Ali ibn Hajar al-Asqalani&quot;,&quot;fr&quot;:&quot;Ahmad ibn Ali ibn Hajar al-Asqalani&quot;,&quot;id&quot;:&quot;Ahmad bin Ali bin Hajar Al-Asqalani&quot;,&quot;ja&quot;:&quot;アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー&quot;,&quot;ru&quot;:&quot;Ахмад ибн Али ибн Хаджар аль-Аскаляни&quot;,&quot;sw&quot;:&quot;Ahmad bin Ali bin Hajar Al-Asqalani&quot;,&quot;tr&quot;:&quot;Ahmed b. Ali b. Hacer el-Askalânî&quot;,&quot;zh&quot;:&quot;艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼&quot;}" data-original="أحمد بن علي بن حجر العسقلاني">أحمد بن علي بن حجر العسقلاني</span></a></p>                                                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Publishers">Publishers</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../publishers/915/91535.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar al-Kitab al-Islami&quot;,&quot;es&quot;:&quot;Dar al-Kitab al-Islami&quot;,&quot;fr&quot;:&quot;Dar al-Kitab al-Islami&quot;,&quot;id&quot;:&quot;Dar Al-Kitab Al-Islami&quot;,&quot;ja&quot;:&quot;ダール・アル＝キターブ・アル＝イスラーミー&quot;,&quot;ru&quot;:&quot;Дар аль-Китаб аль-Ислами&quot;,&quot;sw&quot;:&quot;Dar al-Kitab al-Islami&quot;,&quot;tr&quot;:&quot;Dârü&#039;l-Kitâbi&#039;l-İslâmî&quot;,&quot;zh&quot;:&quot;达尔·伊斯兰图书出版社&quot;}" data-original="دار الكتاب الإسلامي">دار الكتاب الإسلامي</span></a></p>                  
+                  <div class="mt-6 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+            <dl class="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[fit-content(12rem)_1fr]">
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Country">Country</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Cairo, Egypt&quot;,&quot;es&quot;:&quot;El Cairo, Egipto&quot;,&quot;fr&quot;:&quot;Le Caire, Égypte&quot;,&quot;id&quot;:&quot;Kairo, Mesir&quot;,&quot;ja&quot;:&quot;エジプト、カイロ&quot;,&quot;ru&quot;:&quot;Каир, Египет&quot;,&quot;sw&quot;:&quot;Kairo, Misri&quot;,&quot;tr&quot;:&quot;Kahire, Mısır&quot;,&quot;ur&quot;:&quot;قاہرہ، مصر&quot;,&quot;zh&quot;:&quot;埃及，开罗&quot;}" data-original="القاهرة، مصر">القاهرة، مصر</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Edition">Edition</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">1</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Volumes">Volumes</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">15</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Pages">Pages</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">4641</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Type">Type</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Category">Category</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Biographies and Figures&quot;,&quot;es&quot;:&quot;Biografías y personajes destacados&quot;,&quot;fr&quot;:&quot;Biographies et personnalités&quot;,&quot;id&quot;:&quot;Biografi dan Tokoh&quot;,&quot;ja&quot;:&quot;人物伝・著名人&quot;,&quot;ru&quot;:&quot;Биографии и выдающиеся личности&quot;,&quot;sw&quot;:&quot;Wasifu na watu mashuhuri&quot;,&quot;tr&quot;:&quot;Biyografiler ve Önemli Şahsiyetler&quot;,&quot;ur&quot;:&quot;سوانح و شخصیات&quot;,&quot;zh&quot;:&quot;传记与人物&quot;}" data-original="التراجم والأعلام">التراجم والأعلام</span>
+                </dd>
+                          </dl>
+          </div>
+        
+                  <div class="mt-4 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Description</div>
+            <p class="text-sm leading-relaxed whitespace-pre-line text-zinc-800 dark:text-zinc-100" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title:  The Refinement of Refinement - The Islamic Book\n\n▪️ Author: Ahmad ibn Muhammad ibn Ali ibn Hajar al-Asqalani\n▫️ Publisher: Islamic Book House\n▪️ Publish Country: Cairo, Egypt\n▫️ Edition: 1\n▪️ Number of Volumes: 15\n▫️ Pages: 4641\n▪️ Type of Material: Book\n▫️ Main Category: Biographies and Figures&quot;,&quot;es&quot;:&quot;▫️ Título: \nTahdhib al-Tahdhib [Depuración de la depuración] — edición de al-Kitab al-Islami\n\n▪️ Autor: Ahmad ibn Muhammad ibn Ali ibn Hajar al-Asqalani\n▫️ Editorial: Dar al-Kitab al-Islami\n▪️ Lugar de publicación: El Cairo, Egipto\n▫️ Edición: 1\n▪️ Número de volúmenes: 15\n▫️ Páginas: 4641\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Biografías y personalidades&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nTahdhib al-tahdhib (Épuration de l&#039;Épuration) – édition du Livre islamique\n\n▪️ Auteur : Ahmad ibn Muhammad ibn Ali ibn Hajar al-Asqalani\n▫️ Éditeur : Dar al-Kitab al-Islami\n▪️ Lieu de publication : Le Caire, Égypte\n▫️ Édition : 1\n▪️ Nombre de volumes : 15\n▫️ Pages : 4641\n▪️ Type de document : Livre\n▫️ Catégorie principale : Biographies et notices biographiques&quot;,&quot;id&quot;:&quot;▫️ Judul: \nTahdzib at-Tahdzib [Penyempurnaan Tahdzib] — edisi Dar al-Kitab al-Islami\n\n▪️ Penulis: Ahmad bin Muhammad bin Ali bin Hajar Al-Asqalani\n▫️ Penerbit: Dar al-Kitab al-Islami\n▪️ Tempat terbit: Kairo, Mesir\n▫️ Cetakan: 1\n▪️ Jumlah jilid: 15\n▫️ Halaman: 4641\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Biografi dan tokoh&quot;,&quot;ja&quot;:&quot;▫️ 書名：\nタフズィーブ・アッ＝タフズィーブ――ダール・アル＝キターブ・アル＝イスラーミー版\n\n▪️ 著者：アフマド・イブン・ムハンマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー\n▫️ 出版社：ダール・アル＝キターブ・アル＝イスラーミー\n▪️ 出版地：カイロ、エジプト\n▫️ 版：1\n▪️ 巻数：15\n▫️ ページ数：4641\n▪️ 資料の種類：書籍\n▫️ 主分類：人名・人物&quot;,&quot;ru&quot;:&quot;▫️ Название: \nТахзиб ат-Тахзиб — издание Дар аль-Китаб аль-Ислами\n\n▪️ Автор: Ахмад ибн Мухаммад ибн Али ибн Хаджар аль-Аскаляни\n▫️ Издательство: Дар аль-Китаб аль-Ислами\n▪️ Место издания: Каир, Египет\n▫️ Издание: 1\n▪️ Количество томов: 15\n▫️ Страницы: 4641\n▪️ Тип материала: книга\n▫️ Основная категория: биографии и жизнеописания&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nTahdhib al-Tahdhib (Usanifu wa Tahdhib) — toleo la Dar al-Kitab al-Islami\n\n▪️ Mwandishi: Ahmad bin Muhammad bin Ali bin Hajar al-Asqalani\n▫️ Mchapishaji: Dar al-Kitab al-Islami\n▪️ Mahali pa kuchapishwa: Kairo, Misri\n▫️ Toleo: 1\n▪️ Idadi ya juzuu: 15\n▫️ Kurasa: 4641\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Wasifu na watu mashuhuri&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nTehzîbü’t-Tehzîb – İslâm Kitabı Baskısı\n\n▪️ Yazar: Ahmed b. Muhammed b. Ali b. Hacer el-Askalânî\n▫️ Yayınevi: Dar al-Kitab al-Islami\n▪️ Yayın yeri: Kahire, Mısır\n▫️ Baskı: 1\n▪️ Cilt sayısı: 15\n▫️ Sayfa: 4641\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Biyografi ve şahsiyetler&quot;,&quot;ur&quot;:&quot;▫️ عنوان:\nتهذيب التهذيب- ط الكتاب الإسلامي (تہذیب التہذیب، اسلامی کتاب طبع)\n\n▪️ مصنف: أحمد بن محمد بن علي بن حجر العسقلاني\n▫️ ناشر: دار الكتاب الإسلامي\n▪️ مقامِ اشاعت: قاہرہ، مصر\n▫️ طبع: 1\n▪️ جلدیں: 15\n▫️ صفحات: 4641\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: سوانح و شخصیات&quot;,&quot;zh&quot;:&quot;▫️ 书名：\n《传记修订》—伊斯兰图书版\n\n▪️ 作者：艾哈迈德·本·穆罕默德·本·阿里·本·哈杰尔·阿斯卡拉尼\n▫️ 出版社：伊斯兰图书出版社\n▪️ 出版地：开罗，埃及\n▫️ 版次：1\n▪️ 册数：15\n▫️ 页数：4641\n▪️ 资料类型：图书\n▫️ 主分类：传记与人物&quot;}" data-original="**▫️ العنوان: 
 تهذيب التهذيب- ط الكتاب الإسلامي**
 
 ▪️ المؤلف: #أحمد_بن_محمد_بن_علي_بن_حجر_العسقلاني
@@ -170,28 +199,10 @@
 ▫️ التصنيف الرئيسي: #التراجم_والأعلام
 
 ۪</p>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
-      >
-        <span data-t="Close">Close</span>
-      </button>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

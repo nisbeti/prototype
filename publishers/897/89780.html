@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>المكتبة العصرية</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,134 +70,177 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Maktabah Al-Asriyah&quot;,&quot;es&quot;:&quot;Al-Maktabah al-Asriyyah&quot;,&quot;fr&quot;:&quot;al-Maktaba al-Asriyya&quot;,&quot;id&quot;:&quot;Al-Maktabah Al-Ashriyyah&quot;,&quot;ja&quot;:&quot;アル＝マクタバト・アル＝アスリーヤ&quot;,&quot;ru&quot;:&quot;Аль-мактаба аль-асрия&quot;,&quot;sw&quot;:&quot;Al-Maktaba al-Asriyya&quot;,&quot;tr&quot;:&quot;el-Mektebetü&#039;l-asriyye&quot;,&quot;zh&quot;:&quot;现代图书馆&quot;}" data-original="المكتبة العصرية">المكتبة العصرية</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/662/66205.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/662/66205.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Distinction of the Companions (Al-Isabah)&quot;,&quot;es&quot;:&quot;al-Isaba fi tamyiz al-Sahaba (La identificación de los Compañeros), ed. al-Asriyya&quot;,&quot;fr&quot;:&quot;al-Isaba fi tamyiz al-sahaba (L&#039;identification des Compagnons), édition al-Asriyya&quot;,&quot;id&quot;:&quot;Al-Ishabah fi Tamyiz ash-Shahabah (Menetapkan Identitas Para Sahabat), edisi al-Asriyyah&quot;,&quot;ja&quot;:&quot;アル＝イサーバ・フィー・タミーズ・アッ＝サハーバ（教友の識別）――アスリーヤ版&quot;,&quot;ru&quot;:&quot;Аль-Исаба фи тамйиз ас-сахаба (Определение сподвижников) — издание «аль-Асрийя»&quot;,&quot;sw&quot;:&quot;Al-Isaba fi Tamyiz al-Sahaba (Kutambua Maswahaba): Toleo la al-Asriyya&quot;,&quot;tr&quot;:&quot;el-İsâbe fî temyîzi’s-sahâbe [Sahâbîleri ayırt etme] – el-Asriyye baskısı&quot;,&quot;ur&quot;:&quot;الإصابة في تمييز الصحابة ط. العصرية (الإصابة في تمييز الصحابة (صحابہ کی شناخت میں امتیاز) — عصریہ ایڈیشن)&quot;,&quot;zh&quot;:&quot;《辨识圣门弟子的〈彻底考证〉》（现代版）&quot;}" data-original="الإصابة في تمييز الصحابة ط. العصرية">الإصابة في تمييز الصحابة ط. العصرية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Maktabah Al-Asriyah&quot;,&quot;es&quot;:&quot;Al-Maktabah al-Asriyyah&quot;,&quot;fr&quot;:&quot;al-Maktaba al-Asriyya&quot;,&quot;id&quot;:&quot;Al-Maktabah Al-Ashriyyah&quot;,&quot;ja&quot;:&quot;アル＝マクタバト・アル＝アスリーヤ&quot;,&quot;ru&quot;:&quot;Аль-мактаба аль-асрия&quot;,&quot;sw&quot;:&quot;Al-Maktaba al-Asriyya&quot;,&quot;tr&quot;:&quot;el-Mektebetü&#039;l-asriyye&quot;,&quot;zh&quot;:&quot;现代图书馆&quot;}" data-original="المكتبة العصرية">المكتبة العصرية</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/662/66205.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Distinction of the Companions (Al-Isabah)&quot;,&quot;es&quot;:&quot;al-Isaba fi tamyiz al-Sahaba (La identificación de los Compañeros), ed. al-Asriyya&quot;,&quot;fr&quot;:&quot;al-Isaba fi tamyiz al-sahaba (L&#039;identification des Compagnons), édition al-Asriyya&quot;,&quot;id&quot;:&quot;Al-Ishabah fi Tamyiz ash-Shahabah (Menetapkan Identitas Para Sahabat), edisi al-Asriyyah&quot;,&quot;ja&quot;:&quot;アル＝イサーバ・フィー・タミーズ・アッ＝サハーバ（教友の識別）――アスリーヤ版&quot;,&quot;ru&quot;:&quot;Аль-Исаба фи тамйиз ас-сахаба (Определение сподвижников) — издание «аль-Асрийя»&quot;,&quot;sw&quot;:&quot;Al-Isaba fi Tamyiz al-Sahaba (Kutambua Maswahaba): Toleo la al-Asriyya&quot;,&quot;tr&quot;:&quot;el-İsâbe fî temyîzi’s-sahâbe [Sahâbîleri ayırt etme] – el-Asriyye baskısı&quot;,&quot;ur&quot;:&quot;الإصابة في تمييز الصحابة ط. العصرية (الإصابة في تمييز الصحابة (صحابہ کی شناخت میں امتیاز) — عصریہ ایڈیشن)&quot;,&quot;zh&quot;:&quot;《辨识圣门弟子的〈彻底考证〉》（现代版）&quot;}" data-original="الإصابة في تمييز الصحابة ط. العصرية">الإصابة في تمييز الصحابة ط. العصرية</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">المكتبة العصرية</td>
-        <td dir="auto">1433هـ 2012م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1377/137777.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - T. Al-Ansari&quot;,&quot;es&quot;:&quot;Comentario de los cuarenta hadices de al-Nawawi - edición crítica de al-Ansari&quot;,&quot;fr&quot;:&quot;Commentaire des quarante hadiths de Nawawi - éd. al-Ansari&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah - Tahkik Al-Ansari&quot;,&quot;ja&quot;:&quot;『アン＝ナワウィーの四十ハディース』解説—アル＝アンサーリー校訂&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» — тахкик аль-Ансари&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arubaini za Nawawi) – iliyohakikiwa na Al-Ansari&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-Erbaʿîn en-Neveviyye (Nevevî&#039;nin Kırk Hadis şerhi) - Ensârî tahkiki&quot;,&quot;zh&quot;:&quot;《努瓦维四十段圣训注释》—安萨里校勘&quot;}" data-original="شرح الأربعين النووية- ت. الأنصاري">شرح الأربعين النووية- ت. الأنصاري</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">المكتبة العصرية</td>
-        <td dir="auto">1402هـ 1982م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1381/138185.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Goals from the Evidence of the Rules - by Al-Fadhli&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (El logro de la meta a partir de las pruebas de las normas jurídicas) - edición crítica de al-Fadli&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Le but recherché à partir des preuves des règles juridiques) - éd. al-Fadli&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (tahkik Al-Fadhili)&quot;,&quot;ja&quot;:&quot;法規定の根拠に基づく『ブルーグ・アル＝マラーム』―アル＝ファーディリー校訂&quot;,&quot;ru&quot;:&quot;«Булуг аль-марам» из доказательств правовых постановлений — тахкик аль-Фадили&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia lengo kutokana na dalili za hukumu) — tahkiki ya al-Fadli&quot;,&quot;tr&quot;:&quot;Bulûğu’l-merâm min edilleti’l-ahkâm (Ahkâm Delillerinden Bulûğu’l-merâm) – tahkik eden: el-Fâdılî&quot;,&quot;zh&quot;:&quot;《律例证据纲要》——法迪里校勘版&quot;}" data-original="بلوغ المرام من أدلة الاحكام - ت. الفاضلي">بلوغ المرام من أدلة الاحكام - ت. الفاضلي</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">المكتبة العصرية</td>
-        <td dir="auto">1423هـ 2003م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1386/138626.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Opening of Al-Bari: Explanation of Sahih Al-Bukhari - Al-Asriya&quot;,&quot;es&quot;:&quot;Fath al-Bari: comentario de Sahih al-Bujari — al-Asriyya&quot;,&quot;fr&quot;:&quot;Fath al-Bari (Commentaire du Sahih al-Bukhari) - al-Asriyya&quot;,&quot;id&quot;:&quot;Fath al-Bari: Syarah Shahih Al-Bukhari – Al-Asriyyah&quot;,&quot;ja&quot;:&quot;ファトフ・アル＝バーリー（サヒーフ・アル＝ブハーリー注解）―アスリーヤ版&quot;,&quot;ru&quot;:&quot;Фатх аль-Бари: комментарий к «Сахиху» аль-Бухари — аль-Асрийя&quot;,&quot;sw&quot;:&quot;Fath al-Bari Sharh Sahih al-Bukhari (Ufunguzi wa Muumba, maelezo ya Sahih al-Bukhari) - Al-Asriyya&quot;,&quot;tr&quot;:&quot;Fethu’l-Bârî şerhu Sahîhi’l-Buhârî (Buhârî’nin Sahîh’inin şerhi) - el-Asriyye&quot;,&quot;zh&quot;:&quot;《巴里之启示：〈布哈里圣训实录〉注释》—现代版&quot;}" data-original="فتح الباري شرح صحيح البخاري- العصرية">فتح الباري شرح صحيح البخاري- العصرية</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">المكتبة العصرية</td>
-        <td dir="auto">1423هـ 2002م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        الإصابة في تمييز الصحابة ط. العصرية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1377/137777.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1377/137777.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - T. Al-Ansari&quot;,&quot;es&quot;:&quot;Comentario de los cuarenta hadices de al-Nawawi - edición crítica de al-Ansari&quot;,&quot;fr&quot;:&quot;Commentaire des quarante hadiths de Nawawi - éd. al-Ansari&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah - Tahkik Al-Ansari&quot;,&quot;ja&quot;:&quot;『アン＝ナワウィーの四十ハディース』解説—アル＝アンサーリー校訂&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» — тахкик аль-Ансари&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arubaini za Nawawi) – iliyohakikiwa na Al-Ansari&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-Erbaʿîn en-Neveviyye (Nevevî&#039;nin Kırk Hadis şerhi) - Ensârî tahkiki&quot;,&quot;zh&quot;:&quot;《努瓦维四十段圣训注释》—安萨里校勘&quot;}" data-original="شرح الأربعين النووية- ت. الأنصاري">شرح الأربعين النووية- ت. الأنصاري</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        شرح الأربعين النووية- ت. الأنصاري
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1381/138185.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1381/138185.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Attainment of the Goals from the Evidence of the Rules - by Al-Fadhli&quot;,&quot;es&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (El logro de la meta a partir de las pruebas de las normas jurídicas) - edición crítica de al-Fadli&quot;,&quot;fr&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Le but recherché à partir des preuves des règles juridiques) - éd. al-Fadli&quot;,&quot;id&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (tahkik Al-Fadhili)&quot;,&quot;ja&quot;:&quot;法規定の根拠に基づく『ブルーグ・アル＝マラーム』―アル＝ファーディリー校訂&quot;,&quot;ru&quot;:&quot;«Булуг аль-марам» из доказательств правовых постановлений — тахкик аль-Фадили&quot;,&quot;sw&quot;:&quot;Bulugh al-Maram min Adillat al-Ahkam (Kufikia lengo kutokana na dalili za hukumu) — tahkiki ya al-Fadli&quot;,&quot;tr&quot;:&quot;Bulûğu’l-merâm min edilleti’l-ahkâm (Ahkâm Delillerinden Bulûğu’l-merâm) – tahkik eden: el-Fâdılî&quot;,&quot;zh&quot;:&quot;《律例证据纲要》——法迪里校勘版&quot;}" data-original="بلوغ المرام من أدلة الاحكام - ت. الفاضلي">بلوغ المرام من أدلة الاحكام - ت. الفاضلي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        بلوغ المرام من أدلة الاحكام - ت. الفاضلي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1386/138626.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1386/138626.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Opening of Al-Bari: Explanation of Sahih Al-Bukhari - Al-Asriya&quot;,&quot;es&quot;:&quot;Fath al-Bari: comentario de Sahih al-Bujari — al-Asriyya&quot;,&quot;fr&quot;:&quot;Fath al-Bari (Commentaire du Sahih al-Bukhari) - al-Asriyya&quot;,&quot;id&quot;:&quot;Fath al-Bari: Syarah Shahih Al-Bukhari – Al-Asriyyah&quot;,&quot;ja&quot;:&quot;ファトフ・アル＝バーリー（サヒーフ・アル＝ブハーリー注解）―アスリーヤ版&quot;,&quot;ru&quot;:&quot;Фатх аль-Бари: комментарий к «Сахиху» аль-Бухари — аль-Асрийя&quot;,&quot;sw&quot;:&quot;Fath al-Bari Sharh Sahih al-Bukhari (Ufunguzi wa Muumba, maelezo ya Sahih al-Bukhari) - Al-Asriyya&quot;,&quot;tr&quot;:&quot;Fethu’l-Bârî şerhu Sahîhi’l-Buhârî (Buhârî’nin Sahîh’inin şerhi) - el-Asriyye&quot;,&quot;zh&quot;:&quot;《巴里之启示：〈布哈里圣训实录〉注释》—现代版&quot;}" data-original="فتح الباري شرح صحيح البخاري- العصرية">فتح الباري شرح صحيح البخاري- العصرية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        فتح الباري شرح صحيح البخاري- العصرية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

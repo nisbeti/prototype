@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="items"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>ثلاث رسائل للحافظ ابن رجب الحنبلي</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,133 +70,120 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
-    </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <div class="book-head">
-          <img
-        class="cover"
-        src="../../catalogue/1820/182048.jpg"
-        alt=""
-      />
-    
-    <div class="book-head-text">
-      <h1 class="page-title">
-        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Three Letters by Al-Hafiz Ibn Rajab Al-Hanbali&quot;,&quot;es&quot;:&quot;Tres tratados del hafiz Ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Trois épîtres du hafiz Ibn Rajab al-Hanbali&quot;,&quot;id&quot;:&quot;Tiga Risalah karya Al-Hafizh Ibnu Rajab Al-Hanbali&quot;,&quot;ja&quot;:&quot;ハーフィズ・イブン・ラジャブ・アル＝ハンバリーの三つの書簡&quot;,&quot;ru&quot;:&quot;Три послания хафиза Ибн Раджаба аль-Ханбали&quot;,&quot;sw&quot;:&quot;Risala tatu za al-Hafiz Ibn Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;Hâfız İbn Receb el-Hanbelî&#039;nin Üç Risalesi&quot;,&quot;ur&quot;:&quot;ثلاث رسائل للحافظ ابن رجب الحنبلي (حافظ ابن رجب حنبلی کے تین رسالے)&quot;,&quot;zh&quot;:&quot;《哈菲兹·伊本·拉杰卜·罕百里三篇短论》&quot;}" data-original="ثلاث رسائل للحافظ ابن رجب الحنبلي">ثلاث رسائل للحافظ ابن رجب الحنبلي</span>
-      </h1>
-
-                        <p class="credits">
-            <span data-t="Authors">Authors</span>:
-                                        <a href="../../authors/216/21663.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Rajab Al-Hanbali&quot;,&quot;es&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;id&quot;:&quot;Ibnu Rajab Al-Hanbali&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ・アル＝ハンバリー&quot;,&quot;ru&quot;:&quot;Ибн Раджаб аль-Ханбали&quot;,&quot;sw&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;İbn Receb el-Hanbelî&quot;,&quot;zh&quot;:&quot;伊本·拉哲卜·罕百里&quot;}" data-original="ابن رجب الحنبلي">ابن رجب الحنبلي</span>
-              </a>
-                                    </p>
-                                <p class="credits">
-            <span data-t="Editors">Editors</span>:
-                                        <a href="../../authors/125/12501.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Muhammad bin Nasser Al-Ajmi&quot;,&quot;es&quot;:&quot;Muhammad ibn Nasser al-Ajmi&quot;,&quot;fr&quot;:&quot;Muhammad ibn Nasser al-Ajmi&quot;,&quot;id&quot;:&quot;Muhammad bin Nashir Al-Ajmi&quot;,&quot;ja&quot;:&quot;ムハンマド・イブン・ナーセル・アル＝アジュミー&quot;,&quot;ru&quot;:&quot;Мухаммад ибн Насир аль-Аджми&quot;,&quot;sw&quot;:&quot;Muhammad bin Nasser al-Ajmi&quot;,&quot;tr&quot;:&quot;Muhammed b. Nâsır el-Acemî&quot;,&quot;zh&quot;:&quot;穆罕默德·本·纳赛尔·阿吉米&quot;}" data-original="محمد بن ناصر العجمي">محمد بن ناصر العجمي</span>
-              </a>
-                                    </p>
-                                <p class="credits">
-            <span data-t="Publishers">Publishers</span>:
-                                        <a href="../../publishers/32145/3214598.html">
-                <span dir="auto">الدار السلفية بالكويت</span>
-              </a>
-                                    </p>
-              
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/Quraan/182048_Quraan15375_%D8%AB%D9%84%D8%A7%D8%AB_%D8%B1%D8%B3%D8%A7%D8%A6%D9%84_%D9%84%D9%84%D8%AD%D8%A7%D9%81%D8%B8_%D8%A8%D9%86_%D8%B1%D8%AC%D8%A8_%D8%A7%D9%84%D8%AD%D9%86%D8%A8%D9%84%D9%8A_%D8%A7%D8%A8%D9%86_%D8%B1%D8%AC%D8%A8_%D8%A7%D9%84%D8%AD%D9%86%D8%A8%D9%84%D9%8A_pdf.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T102658Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=6ba4de68ccdee632bf6621ea4fbc2389eb980285d6666e53034492d84bc8556c"
-            rel="noopener"
-            target="_blank"
-          >
-            <span data-t="Download">Download</span>
-          </a>
-          <span class="muted"><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></span>
-                      </p>
-    </div>
-  </div>
-
-      <section class="panel">
-      <dl class="book-card">
-                  <div>
-            <dt><span data-t="Published">Published</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;1986 CE \/ 1407 AH&quot;,&quot;es&quot;:&quot;1986 1407 H&quot;,&quot;fr&quot;:&quot;1986 1407 H&quot;,&quot;id&quot;:&quot;1986 M 1407 H&quot;,&quot;ja&quot;:&quot;西暦1986年 ヒジュラ暦1407年&quot;,&quot;ru&quot;:&quot;1986 г. \/ 1407 г. х.&quot;,&quot;sw&quot;:&quot;1986 BK 1407 H&quot;,&quot;tr&quot;:&quot;1986 1407 H&quot;,&quot;ur&quot;:&quot;1986ء 1407ھ&quot;,&quot;zh&quot;:&quot;公元1986年 伊历1407年&quot;}" data-original="1986م 1407هـ">1986م 1407هـ</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Country">Country</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Hawalli, Kuwait&quot;,&quot;es&quot;:&quot;Hawalli, Kuwait&quot;,&quot;fr&quot;:&quot;Hawalli, Koweït&quot;,&quot;id&quot;:&quot;Hawalli, Kuwait&quot;,&quot;ja&quot;:&quot;ハワッリー、クウェート&quot;,&quot;ru&quot;:&quot;Хавалли, Кувейт&quot;,&quot;sw&quot;:&quot;Hawalli, Kuwait&quot;,&quot;tr&quot;:&quot;Havalli, Kuveyt&quot;,&quot;ur&quot;:&quot;حولی، کویت&quot;,&quot;zh&quot;:&quot;哈瓦利，科威特&quot;}" data-original="حولي، الكويت">حولي، الكويت</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Edition">Edition</span></dt>
-            <dd><span dir="auto">1</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Volumes">Volumes</span></dt>
-            <dd><span dir="auto">1</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Pages">Pages</span></dt>
-            <dd><span dir="auto">176</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Type">Type</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Category">Category</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Tafsir and Quranic Sciences&quot;,&quot;es&quot;:&quot;Exégesis y ciencias del Quran&quot;,&quot;fr&quot;:&quot;Exégèse et sciences coraniques&quot;,&quot;id&quot;:&quot;Tafsir dan Ilmu-Ilmu Al-Qur’an&quot;,&quot;ja&quot;:&quot;クルアーン注釈・クルアーン学&quot;,&quot;ru&quot;:&quot;Тафсир и коранические науки&quot;,&quot;sw&quot;:&quot;Tafsiri na elimu za Quran&quot;,&quot;tr&quot;:&quot;Tefsir ve Kur’an İlimleri&quot;,&quot;ur&quot;:&quot;تفسیر اور علومِ قرآن&quot;,&quot;zh&quot;:&quot;古兰经注释与古兰经学&quot;}" data-original="التفسير وعلوم القرآن">التفسير وعلوم القرآن</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Subcategory">Subcategory</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Classical Tafsir&quot;,&quot;es&quot;:&quot;Exégesis coránicas clásicas&quot;,&quot;fr&quot;:&quot;Tafsir ancien&quot;,&quot;id&quot;:&quot;Kitab-kitab tafsir klasik&quot;,&quot;ja&quot;:&quot;古典クルアーン注釈書&quot;,&quot;ru&quot;:&quot;Классические тафсиры&quot;,&quot;sw&quot;:&quot;Tafsiri za kale&quot;,&quot;tr&quot;:&quot;Klasik tefsirler&quot;,&quot;ur&quot;:&quot;قدیم تفاسیر&quot;,&quot;zh&quot;:&quot;古典古兰经注释&quot;}" data-original="التفاسير القديمة">التفاسير القديمة</span></dd>
-          </div>
-              </dl>
-    </section>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
-      <section class="panel">
-      <h2><span data-t="Description">Description</span></h2>
-      <p class="caption" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: Three Letters by Al-Hafiz Ibn Rajab Al-Hanbali\n▪️ Author: Abdul Rahman bin Ahmad bin Rajab Al-Hanbali\n▫️ Editor: Muhammad bin Nasir Al-Ajmi\n▪️ Publisher: Al-Dar Al-Salafiyya\n▫️ Publish Date: 1986 CE \/ 1407 AH\n▪️ Publish Country: Hawalli, Kuwait\n▫️ Edition: 1\n▪️ Number of Volumes: 1\n▫️ Pages: 176\n▪️ Type of Material: Book\n▫️ Main Category: Tafsir and Quranic Sciences\n▪️ Sub Category: Classical Tafsirs&quot;,&quot;es&quot;:&quot;▫️ Título: \nTres tratados del hafiz Ibn Rajab al-Hanbali\n\n▪️ Autor: Abd al-Rahman ibn Ahmad ibn Rajab al-Hanbali\n▫️ Edición crítica: Muhammad ibn Nasir al-Ajmi\n▪️ Editorial: al-Dar al-Salafiyya\n▫️ Fecha de publicación: 1986 1407 H\n▪️ Lugar de publicación: Hawalli, Kuwait\n▫️ Edición: 1\n▪️ Número de volúmenes: 1\n▫️ Páginas: 176\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Exégesis y ciencias del Quran\n▪️ Subcategoría: Tafsires clásicos&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nTrois épîtres du hafiz Ibn Rajab al-Hanbali\n\n▪️ Auteur : Abd al-Rahman ibn Ahmad ibn Rajab al-Hanbali\n▫️ Édition critique : Muhammad ibn Nasir al-Ajmi\n▪️ Éditeur : Dar al-Salafiyya\n▫️ Date de publication : 1986 1407 H\n▪️ Lieu de publication : Hawalli, Koweït\n▫️ Édition : 1\n▪️ Nombre de volumes : 1\n▫️ Pages : 176\n▪️ Type de document : Livre\n▫️ Catégorie principale : Exégèse et sciences coraniques\n▪️ Sous-catégorie : Tafsirs classiques&quot;,&quot;id&quot;:&quot;▫️ Judul: \nTiga Risalah karya Al-Hafizh Ibnu Rajab Al-Hanbali\n\n▪️ Penulis: Abdurrahman bin Ahmad bin Rajab Al-Hanbali\n▫️ Pentahkik: Muhammad bin Nashir Al-Ajmi\n▪️ Penerbit: Ad-Dar as-Salafiyya\n▫️ Tahun terbit: 1986 M 1407 H\n▪️ Tempat terbit: Hawalli, Kuwait\n▫️ Cetakan: 1\n▪️ Jumlah jilid: 1\n▫️ Halaman: 176\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Tafsir dan ilmu-ilmu Al-Quran\n▪️ Subkategori: Tafsir klasik&quot;,&quot;ja&quot;:&quot;▫️ 書名：\nハーフィズ・イブン・ラジャブ・アル＝ハンバリーの三つの書簡\n\n▪️ 著者：アブドゥッラフマーン・イブン・アフマド・イブン・ラジャブ・アル＝ハンバリー\n▫️ 校訂者：ムハンマド・イブン・ナースィル・アル＝アジュミー\n▪️ 出版社：アッ＝ダール・アッ＝サラフィーヤ\n▫️ 出版年：西暦1986年 ヒジュラ暦1407年\n▪️ 出版地：ハワッリー、クウェート\n▫️ 版：1\n▪️ 巻数：1\n▫️ ページ数：176\n▪️ 資料の種類：書籍\n▫️ 主分類：クルアーン解釈とその諸学\n▪️ 下位分類：古典タフスィール&quot;,&quot;ru&quot;:&quot;▫️ Название: \nТри послания хафиза Ибн Раджаба аль-Ханбали\n\n▪️ Автор: Абд ар-Рахман ибн Ахмад ибн Раджаб аль-Ханбали\n▫️ Тахкик: Мухаммад ибн Насир аль-Аджми\n▪️ Издательство: ад-Дар ас-Саляфия\n▫️ Дата издания: 1986 г. \/ 1407 г. х.\n▪️ Место издания: Хавалли, Кувейт\n▫️ Издание: 1\n▪️ Количество томов: 1\n▫️ Страницы: 176\n▪️ Тип материала: книга\n▫️ Основная категория: тафсир и коранические науки\n▪️ Подкатегория: классические тафсиры&quot;,&quot;sw&quot;:&quot;▫️ Kichwa:\nRisala tatu za al-Hafiz Ibn Rajab al-Hanbali\n\n▪️ Mwandishi: Abd al-Rahman bin Ahmad bin Rajab al-Hanbali\n▫️ Mhakiki: Muhammad bin Nasir al-Ajmi\n▪️ Mchapishaji: Dar al-Salafiyya\n▫️ Tarehe ya kuchapishwa: 1986 BK 1407 H\n▪️ Mahali pa kuchapishwa: Hawalli, Kuwait\n▫️ Toleo: 1\n▪️ Idadi ya juzuu: 1\n▫️ Kurasa: 176\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Tafsiri na elimu za Quran\n▪️ Kundi dogo: Tafsiri za kale&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nHâfız İbn Receb el-Hanbelî&#039;nin Üç Risalesi\n\n▪️ Yazar: Abdurrahman b. Ahmed b. Receb el-Hanbelî\n▫️ Tahkik eden: Muhammed b. Nâsır el-Acemî\n▪️ Yayınevi: Dar al-Salafiyya\n▫️ Yayın tarihi: 1986 1407 H\n▪️ Yayın yeri: Havalli, Kuveyt\n▫️ Baskı: 1\n▪️ Cilt sayısı: 1\n▫️ Sayfa: 176\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Tefsir ve Kur&#039;an ilimleri\n▪️ Alt kategori: Klasik tefsirler&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nثلاث رسائل للحافظ ابن رجب الحنبلي (حافظ ابن رجب حنبلی کے تین رسالے)\n\n▪️ مصنف: عبد الرحمن بن أحمد بن رجب الحنبلي\n▫️ محقق: محمد بن ناصر العجمي\n▪️ ناشر: الدار السلفية\n▫️ تاریخِ اشاعت: 1986ء 1407ھ\n▪️ مقامِ اشاعت: حولی، کویت\n▫️ طبع: 1\n▪️ جلدیں: 1\n▫️ صفحات: 176\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: تفسیر اور علومِ قرآن\n▪️ ذیلی زمرہ: قدیم تفاسیر&quot;,&quot;zh&quot;:&quot;▫️ 书名：\n《哈菲兹·伊本·拉杰卜·罕百里三篇短论》\n\n▪️ 作者：阿卜杜·拉赫曼·本·艾哈迈德·本·拉杰卜·罕百里\n▫️ 校勘者：穆罕默德·本·纳赛尔·阿杰米\n▪️ 出版社：萨拉菲出版社\n▫️ 出版日期：公元1986年 伊历1407年\n▪️ 出版地：哈瓦利，科威特\n▫️ 版次：1\n▪️ 册数：1\n▫️ 页数：176\n▪️ 资料类型：图书\n▫️ 主分类：古兰经注释与古兰经学\n▪️ 子分类：古典经注&quot;}" data-original="**▫️ العنوان: 
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../catalogue.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Resources</span>
+    </a>
+
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <img
+            src="../../catalogue/1820/182048.jpg"
+            alt=""
+            class="aspect-[3/4] w-full rounded-xl border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+          />
+        
+        <div class="mt-4 flex flex-col gap-2">
+                                <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/Quraan/182048_Quraan15375_%D8%AB%D9%84%D8%A7%D8%AB_%D8%B1%D8%B3%D8%A7%D8%A6%D9%84_%D9%84%D9%84%D8%AD%D8%A7%D9%81%D8%B8_%D8%A8%D9%86_%D8%B1%D8%AC%D8%A8_%D8%A7%D9%84%D8%AD%D9%86%D8%A8%D9%84%D9%8A_%D8%A7%D8%A8%D9%86_%D8%B1%D8%AC%D8%A8_%D8%A7%D9%84%D8%AD%D9%86%D8%A8%D9%84%D9%8A_pdf.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T180141Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=47cc35bf4e109b253bc45d9b716db65f346694fcb2df96fe14e6328fd7ade33f" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" rel="noopener">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z"/>
+  <path d="M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Download</span>
+    </a>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></p>                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Three Letters by Al-Hafiz Ibn Rajab Al-Hanbali&quot;,&quot;es&quot;:&quot;Tres tratados del hafiz Ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Trois épîtres du hafiz Ibn Rajab al-Hanbali&quot;,&quot;id&quot;:&quot;Tiga Risalah karya Al-Hafizh Ibnu Rajab Al-Hanbali&quot;,&quot;ja&quot;:&quot;ハーフィズ・イブン・ラジャブ・アル＝ハンバリーの三つの書簡&quot;,&quot;ru&quot;:&quot;Три послания хафиза Ибн Раджаба аль-Ханбали&quot;,&quot;sw&quot;:&quot;Risala tatu za al-Hafiz Ibn Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;Hâfız İbn Receb el-Hanbelî&#039;nin Üç Risalesi&quot;,&quot;ur&quot;:&quot;ثلاث رسائل للحافظ ابن رجب الحنبلي (حافظ ابن رجب حنبلی کے تین رسالے)&quot;,&quot;zh&quot;:&quot;《哈菲兹·伊本·拉杰卜·罕百里三篇短论》&quot;}" data-original="ثلاث رسائل للحافظ ابن رجب الحنبلي">ثلاث رسائل للحافظ ابن رجب الحنبلي</span></h1>
+
+                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1" lang="ar" dir="rtl" data-arabic-original="data-arabic-original" data-flux-text >ثلاث رسائل للحافظ ابن رجب الحنبلي</p>        
+                              <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Authors">Authors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/216/21663.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Rajab Al-Hanbali&quot;,&quot;es&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;id&quot;:&quot;Ibnu Rajab Al-Hanbali&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ・アル＝ハンバリー&quot;,&quot;ru&quot;:&quot;Ибн Раджаб аль-Ханбали&quot;,&quot;sw&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;İbn Receb el-Hanbelî&quot;,&quot;zh&quot;:&quot;伊本·拉哲卜·罕百里&quot;}" data-original="ابن رجب الحنبلي">ابن رجب الحنبلي</span></a></p>                                        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Editors">Editors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/125/12501.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Muhammad bin Nasser Al-Ajmi&quot;,&quot;es&quot;:&quot;Muhammad ibn Nasser al-Ajmi&quot;,&quot;fr&quot;:&quot;Muhammad ibn Nasser al-Ajmi&quot;,&quot;id&quot;:&quot;Muhammad bin Nashir Al-Ajmi&quot;,&quot;ja&quot;:&quot;ムハンマド・イブン・ナーセル・アル＝アジュミー&quot;,&quot;ru&quot;:&quot;Мухаммад ибн Насир аль-Аджми&quot;,&quot;sw&quot;:&quot;Muhammad bin Nasser al-Ajmi&quot;,&quot;tr&quot;:&quot;Muhammed b. Nâsır el-Acemî&quot;,&quot;zh&quot;:&quot;穆罕默德·本·纳赛尔·阿吉米&quot;}" data-original="محمد بن ناصر العجمي">محمد بن ناصر العجمي</span></a></p>                                        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Publishers">Publishers</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../publishers/32145/3214598.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;al-Dar al-Salafiyya, Kuwait&quot;,&quot;es&quot;:&quot;al-Dar al-Salafiyya, Kuwait&quot;,&quot;fr&quot;:&quot;al-Dar al-Salafiyya, Koweït&quot;,&quot;id&quot;:&quot;ad-Dar as-Salafiyyah, Kuwait&quot;,&quot;ja&quot;:&quot;ダール・アル＝サラフィーヤ（クウェート）&quot;,&quot;ru&quot;:&quot;ад-Дар ас-Салафийя, Кувейт&quot;,&quot;sw&quot;:&quot;al-Dar al-Salafiyya, Kuwait&quot;,&quot;tr&quot;:&quot;ed-Dârü&#039;s-Selefiyye, Kuveyt&quot;,&quot;zh&quot;:&quot;科威特萨拉菲出版社&quot;}" data-original="الدار السلفية بالكويت">الدار السلفية بالكويت</span></a></p>                  
+                  <div class="mt-6 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+            <dl class="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[fit-content(12rem)_1fr]">
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Published">Published</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;1986 CE \/ 1407 AH&quot;,&quot;es&quot;:&quot;1986 1407 H&quot;,&quot;fr&quot;:&quot;1986 1407 H&quot;,&quot;id&quot;:&quot;1986 M 1407 H&quot;,&quot;ja&quot;:&quot;西暦1986年 ヒジュラ暦1407年&quot;,&quot;ru&quot;:&quot;1986 г. \/ 1407 г. х.&quot;,&quot;sw&quot;:&quot;1986 BK 1407 H&quot;,&quot;tr&quot;:&quot;1986 1407 H&quot;,&quot;ur&quot;:&quot;1986ء 1407ھ&quot;,&quot;zh&quot;:&quot;公元1986年 伊历1407年&quot;}" data-original="1986م 1407هـ">1986م 1407هـ</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Country">Country</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Hawalli, Kuwait&quot;,&quot;es&quot;:&quot;Hawalli, Kuwait&quot;,&quot;fr&quot;:&quot;Hawalli, Koweït&quot;,&quot;id&quot;:&quot;Hawalli, Kuwait&quot;,&quot;ja&quot;:&quot;ハワッリー、クウェート&quot;,&quot;ru&quot;:&quot;Хавалли, Кувейт&quot;,&quot;sw&quot;:&quot;Hawalli, Kuwait&quot;,&quot;tr&quot;:&quot;Havalli, Kuveyt&quot;,&quot;ur&quot;:&quot;حولی، کویت&quot;,&quot;zh&quot;:&quot;哈瓦利，科威特&quot;}" data-original="حولي، الكويت">حولي، الكويت</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Edition">Edition</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">1</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Volumes">Volumes</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">1</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Pages">Pages</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">176</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Type">Type</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Category">Category</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Tafsir and Quranic Sciences&quot;,&quot;es&quot;:&quot;Exégesis y ciencias del Quran&quot;,&quot;fr&quot;:&quot;Exégèse et sciences coraniques&quot;,&quot;id&quot;:&quot;Tafsir dan Ilmu-Ilmu Al-Qur’an&quot;,&quot;ja&quot;:&quot;クルアーン注釈・クルアーン学&quot;,&quot;ru&quot;:&quot;Тафсир и коранические науки&quot;,&quot;sw&quot;:&quot;Tafsiri na elimu za Quran&quot;,&quot;tr&quot;:&quot;Tefsir ve Kur’an İlimleri&quot;,&quot;ur&quot;:&quot;تفسیر اور علومِ قرآن&quot;,&quot;zh&quot;:&quot;古兰经注释与古兰经学&quot;}" data-original="التفسير وعلوم القرآن">التفسير وعلوم القرآن</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Subcategory">Subcategory</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Classical Tafsir&quot;,&quot;es&quot;:&quot;Exégesis coránicas clásicas&quot;,&quot;fr&quot;:&quot;Tafsir ancien&quot;,&quot;id&quot;:&quot;Kitab-kitab tafsir klasik&quot;,&quot;ja&quot;:&quot;古典クルアーン注釈書&quot;,&quot;ru&quot;:&quot;Классические тафсиры&quot;,&quot;sw&quot;:&quot;Tafsiri za kale&quot;,&quot;tr&quot;:&quot;Klasik tefsirler&quot;,&quot;ur&quot;:&quot;قدیم تفاسیر&quot;,&quot;zh&quot;:&quot;古典古兰经注释&quot;}" data-original="التفاسير القديمة">التفاسير القديمة</span>
+                </dd>
+                          </dl>
+          </div>
+        
+                  <div class="mt-4 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Description</div>
+            <p class="text-sm leading-relaxed whitespace-pre-line text-zinc-800 dark:text-zinc-100" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: Three Letters by Al-Hafiz Ibn Rajab Al-Hanbali\n▪️ Author: Abdul Rahman bin Ahmad bin Rajab Al-Hanbali\n▫️ Editor: Muhammad bin Nasir Al-Ajmi\n▪️ Publisher: Al-Dar Al-Salafiyya\n▫️ Publish Date: 1986 CE \/ 1407 AH\n▪️ Publish Country: Hawalli, Kuwait\n▫️ Edition: 1\n▪️ Number of Volumes: 1\n▫️ Pages: 176\n▪️ Type of Material: Book\n▫️ Main Category: Tafsir and Quranic Sciences\n▪️ Sub Category: Classical Tafsirs&quot;,&quot;es&quot;:&quot;▫️ Título: \nTres tratados del hafiz Ibn Rajab al-Hanbali\n\n▪️ Autor: Abd al-Rahman ibn Ahmad ibn Rajab al-Hanbali\n▫️ Edición crítica: Muhammad ibn Nasir al-Ajmi\n▪️ Editorial: al-Dar al-Salafiyya\n▫️ Fecha de publicación: 1986 1407 H\n▪️ Lugar de publicación: Hawalli, Kuwait\n▫️ Edición: 1\n▪️ Número de volúmenes: 1\n▫️ Páginas: 176\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Exégesis y ciencias del Quran\n▪️ Subcategoría: Tafsires clásicos&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nTrois épîtres du hafiz Ibn Rajab al-Hanbali\n\n▪️ Auteur : Abd al-Rahman ibn Ahmad ibn Rajab al-Hanbali\n▫️ Édition critique : Muhammad ibn Nasir al-Ajmi\n▪️ Éditeur : Dar al-Salafiyya\n▫️ Date de publication : 1986 1407 H\n▪️ Lieu de publication : Hawalli, Koweït\n▫️ Édition : 1\n▪️ Nombre de volumes : 1\n▫️ Pages : 176\n▪️ Type de document : Livre\n▫️ Catégorie principale : Exégèse et sciences coraniques\n▪️ Sous-catégorie : Tafsirs classiques&quot;,&quot;id&quot;:&quot;▫️ Judul: \nTiga Risalah karya Al-Hafizh Ibnu Rajab Al-Hanbali\n\n▪️ Penulis: Abdurrahman bin Ahmad bin Rajab Al-Hanbali\n▫️ Pentahkik: Muhammad bin Nashir Al-Ajmi\n▪️ Penerbit: Ad-Dar as-Salafiyya\n▫️ Tahun terbit: 1986 M 1407 H\n▪️ Tempat terbit: Hawalli, Kuwait\n▫️ Cetakan: 1\n▪️ Jumlah jilid: 1\n▫️ Halaman: 176\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Tafsir dan ilmu-ilmu Al-Quran\n▪️ Subkategori: Tafsir klasik&quot;,&quot;ja&quot;:&quot;▫️ 書名：\nハーフィズ・イブン・ラジャブ・アル＝ハンバリーの三つの書簡\n\n▪️ 著者：アブドゥッラフマーン・イブン・アフマド・イブン・ラジャブ・アル＝ハンバリー\n▫️ 校訂者：ムハンマド・イブン・ナースィル・アル＝アジュミー\n▪️ 出版社：アッ＝ダール・アッ＝サラフィーヤ\n▫️ 出版年：西暦1986年 ヒジュラ暦1407年\n▪️ 出版地：ハワッリー、クウェート\n▫️ 版：1\n▪️ 巻数：1\n▫️ ページ数：176\n▪️ 資料の種類：書籍\n▫️ 主分類：クルアーン解釈とその諸学\n▪️ 下位分類：古典タフスィール&quot;,&quot;ru&quot;:&quot;▫️ Название: \nТри послания хафиза Ибн Раджаба аль-Ханбали\n\n▪️ Автор: Абд ар-Рахман ибн Ахмад ибн Раджаб аль-Ханбали\n▫️ Тахкик: Мухаммад ибн Насир аль-Аджми\n▪️ Издательство: ад-Дар ас-Саляфия\n▫️ Дата издания: 1986 г. \/ 1407 г. х.\n▪️ Место издания: Хавалли, Кувейт\n▫️ Издание: 1\n▪️ Количество томов: 1\n▫️ Страницы: 176\n▪️ Тип материала: книга\n▫️ Основная категория: тафсир и коранические науки\n▪️ Подкатегория: классические тафсиры&quot;,&quot;sw&quot;:&quot;▫️ Kichwa:\nRisala tatu za al-Hafiz Ibn Rajab al-Hanbali\n\n▪️ Mwandishi: Abd al-Rahman bin Ahmad bin Rajab al-Hanbali\n▫️ Mhakiki: Muhammad bin Nasir al-Ajmi\n▪️ Mchapishaji: Dar al-Salafiyya\n▫️ Tarehe ya kuchapishwa: 1986 BK 1407 H\n▪️ Mahali pa kuchapishwa: Hawalli, Kuwait\n▫️ Toleo: 1\n▪️ Idadi ya juzuu: 1\n▫️ Kurasa: 176\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Tafsiri na elimu za Quran\n▪️ Kundi dogo: Tafsiri za kale&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nHâfız İbn Receb el-Hanbelî&#039;nin Üç Risalesi\n\n▪️ Yazar: Abdurrahman b. Ahmed b. Receb el-Hanbelî\n▫️ Tahkik eden: Muhammed b. Nâsır el-Acemî\n▪️ Yayınevi: Dar al-Salafiyya\n▫️ Yayın tarihi: 1986 1407 H\n▪️ Yayın yeri: Havalli, Kuveyt\n▫️ Baskı: 1\n▪️ Cilt sayısı: 1\n▫️ Sayfa: 176\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Tefsir ve Kur&#039;an ilimleri\n▪️ Alt kategori: Klasik tefsirler&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nثلاث رسائل للحافظ ابن رجب الحنبلي (حافظ ابن رجب حنبلی کے تین رسالے)\n\n▪️ مصنف: عبد الرحمن بن أحمد بن رجب الحنبلي\n▫️ محقق: محمد بن ناصر العجمي\n▪️ ناشر: الدار السلفية\n▫️ تاریخِ اشاعت: 1986ء 1407ھ\n▪️ مقامِ اشاعت: حولی، کویت\n▫️ طبع: 1\n▪️ جلدیں: 1\n▫️ صفحات: 176\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: تفسیر اور علومِ قرآن\n▪️ ذیلی زمرہ: قدیم تفاسیر&quot;,&quot;zh&quot;:&quot;▫️ 书名：\n《哈菲兹·伊本·拉杰卜·罕百里三篇短论》\n\n▪️ 作者：阿卜杜·拉赫曼·本·艾哈迈德·本·拉杰卜·罕百里\n▫️ 校勘者：穆罕默德·本·纳赛尔·阿杰米\n▪️ 出版社：萨拉菲出版社\n▫️ 出版日期：公元1986年 伊历1407年\n▪️ 出版地：哈瓦利，科威特\n▫️ 版次：1\n▪️ 册数：1\n▫️ 页数：176\n▪️ 资料类型：图书\n▫️ 主分类：古兰经注释与古兰经学\n▪️ 子分类：古典经注&quot;}" data-original="**▫️ العنوان: 
 ثلاث رسائل للحافظ ابن رجب الحنبلي**
 
 ▪️ المؤلف: #عبد_الرحمن_بن_أحمد_بن_رجب_الحنبلي
@@ -190,28 +214,10 @@
 ▪️ التصنيف الفرعي: #التفاسير_القديمة
 
 ۪</p>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
-      >
-        <span data-t="Close">Close</span>
-      </button>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

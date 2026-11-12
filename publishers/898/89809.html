@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>المكتبة المكية</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,314 +70,699 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Makkah Library&quot;,&quot;es&quot;:&quot;Maktabat Makkah&quot;,&quot;fr&quot;:&quot;Maktabat Makka&quot;,&quot;id&quot;:&quot;Al-Maktabah Al-Makkiyyah&quot;,&quot;ja&quot;:&quot;マッカ図書館&quot;,&quot;ru&quot;:&quot;Мактабат Макка&quot;,&quot;sw&quot;:&quot;Al-Maktaba al-Makkiyya&quot;,&quot;tr&quot;:&quot;el-Mektebetü&#039;l-Mekkiyye&quot;,&quot;zh&quot;:&quot;麦加图书馆&quot;}" data-original="المكتبة المكية">المكتبة المكية</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/456/45600.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/456/45600.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Guidance for the Needy Traveler on the Actions of the Pilgrim and the Umrah Performer&quot;,&quot;es&quot;:&quot;Guía para el peregrino necesitado sobre los actos de quien realiza la umra y el hajj&quot;,&quot;fr&quot;:&quot;Guide du pèlerin en quête d’explications sur les rites de la omra et du hajj&quot;,&quot;id&quot;:&quot;Panduan bagi Pejalan yang Membutuhkan Penjelasan tentang Amalan Orang yang Umrah dan Haji&quot;,&quot;ja&quot;:&quot;ウムラ巡礼者と巡礼者の行為を解説する、必要とする者への手引き&quot;,&quot;ru&quot;:&quot;Наставление нуждающемуся путнику: описание обрядов умры и хаджа&quot;,&quot;sw&quot;:&quot;Mwongozo kwa Msafiri Mwenye Haja wa Kuelewa Matendo ya Mtu wa Umra na Hija&quot;,&quot;tr&quot;:&quot;Umre ve Hac İbadetlerinin Açıklanmasında Muhtaç Sâlike Rehber&quot;,&quot;ur&quot;:&quot;إرشاد السالك المحتاج إلى بيان أفعال المعتمر والحاج (عمرہ اور حج کرنے والے کے اعمال کی وضاحت کے لیے محتاج راہرو کی رہنمائی)&quot;,&quot;zh&quot;:&quot;《指引有需要的行者认识副朝者与朝觐者的礼仪》&quot;}" data-original="إرشاد السالك المحتاج إلى بيان أفعال المعتمر والحاج">إرشاد السالك المحتاج إلى بيان أفعال المعتمر والحاج</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Makkah Library&quot;,&quot;es&quot;:&quot;Maktabat Makkah&quot;,&quot;fr&quot;:&quot;Maktabat Makka&quot;,&quot;id&quot;:&quot;Al-Maktabah Al-Makkiyyah&quot;,&quot;ja&quot;:&quot;マッカ図書館&quot;,&quot;ru&quot;:&quot;Мактабат Макка&quot;,&quot;sw&quot;:&quot;Al-Maktaba al-Makkiyya&quot;,&quot;tr&quot;:&quot;el-Mektebetü&#039;l-Mekkiyye&quot;,&quot;zh&quot;:&quot;麦加图书馆&quot;}" data-original="المكتبة المكية">المكتبة المكية</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/456/45600.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Guidance for the Needy Traveler on the Actions of the Pilgrim and the Umrah Performer&quot;,&quot;es&quot;:&quot;Guía para el peregrino necesitado sobre los actos de quien realiza la umra y el hajj&quot;,&quot;fr&quot;:&quot;Guide du pèlerin en quête d’explications sur les rites de la omra et du hajj&quot;,&quot;id&quot;:&quot;Panduan bagi Pejalan yang Membutuhkan Penjelasan tentang Amalan Orang yang Umrah dan Haji&quot;,&quot;ja&quot;:&quot;ウムラ巡礼者と巡礼者の行為を解説する、必要とする者への手引き&quot;,&quot;ru&quot;:&quot;Наставление нуждающемуся путнику: описание обрядов умры и хаджа&quot;,&quot;sw&quot;:&quot;Mwongozo kwa Msafiri Mwenye Haja wa Kuelewa Matendo ya Mtu wa Umra na Hija&quot;,&quot;tr&quot;:&quot;Umre ve Hac İbadetlerinin Açıklanmasında Muhtaç Sâlike Rehber&quot;,&quot;ur&quot;:&quot;إرشاد السالك المحتاج إلى بيان أفعال المعتمر والحاج (عمرہ اور حج کرنے والے کے اعمال کی وضاحت کے لیے محتاج راہرو کی رہنمائی)&quot;,&quot;zh&quot;:&quot;《指引有需要的行者认识副朝者与朝觐者的礼仪》&quot;}" data-original="إرشاد السالك المحتاج إلى بيان أفعال المعتمر والحاج">إرشاد السالك المحتاج إلى بيان أفعال المعتمر والحاج</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن محمد بن محمد الحطاب الرعيني المالكي</td>
-        <td dir="auto">مؤسسة الريان • المكتبة المكية</td>
-        <td dir="auto">1431هـ 2010 م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/516/51612.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Garden of the Observer and the Paradise of the Spectator in the Principles of Jurisprudence According to the Method of Imam Ahmad ibn Hanbal - The Makkah Library&quot;,&quot;es&quot;:&quot;Rawdat al-Nazir wa Jannat al-Munazir fi Usul al-Fiqh ala Madhhab al-Imam Ahmad ibn Hanbal (El jardín del observador y el paraíso de quien contempla los fundamentos del derecho islámico según la escuela del imán Ahmad ibn Hanbal) - al-Maktaba al-Makkiyya&quot;,&quot;fr&quot;:&quot;Rawdat al-Nazir wa Jannat al-Manazir fi Usul al-Fiqh ala Madhhab al-Imam Ahmad ibn Hanbal (Le jardin du regardant et le paradis des perspectives sur les fondements du droit selon l&#039;école d&#039;Ahmad ibn Hanbal), al-Maktaba al-Makkiyya&quot;,&quot;id&quot;:&quot;Raudhat an-Nazhir wa Jannat al-Manazhir fi Ushul al-Fiqh ala Madzhab al-Imam Ahmad bin Hanbal — al-Maktabah al-Makkiyyah&quot;,&quot;ja&quot;:&quot;法学原理におけるナーズィルの園、マンザーの楽園—アフマド・イブン・ハンバル学派に基づく—アル＝マクタバ・アル＝マッキーヤ版&quot;,&quot;ru&quot;:&quot;Раудат ан-назир ва-джаннат аль-маназир фи усуль аль-фикх &#039;аля мазхаб аль-имам Ахмад ибн Ханбал (Сад созерцающего и рай наблюдателя: основы фикха согласно мазхабу имама Ахмада ибн Ханбала) — аль-Мактаба аль-Маккийя&quot;,&quot;sw&quot;:&quot;Rawdat al-Nazir wa Jannat al-Manazir fi Usul al-Fiqh ala Madhhab al-Imam Ahmad bin Hanbal (Bustani ya mchunguzi na pepo la mitazamo katika misingi ya fiqhi kwa madhehebu ya Imam Ahmad bin Hanbal) - al-Maktaba al-Makkiyya&quot;,&quot;tr&quot;:&quot;Ravzatü’n-nâzır ve cennetü’l-menâzır fî usûli’l-fıkh alâ mezhebi’l-İmâm Ahmed b. Hanbel [Ahmed b. Hanbel mezhebine göre fıkıh usulü] - el-Mektebetü’l-Mekkiyye&quot;,&quot;ur&quot;:&quot;روضة الناظر وجنة المناظر في أصول الفقه على مذهب الإمام أحمد بن حنبل- المكتبة المكية (اصولِ فقہ میں امام احمد بن حنبل کے مذہب کے مطابق روضة الناظر وجنة المناظر)&quot;,&quot;zh&quot;:&quot;《观者之园与景物之乐：艾哈迈德·本·罕百勒学派的教法原理——麦加书店版》&quot;}" data-original="روضة الناظر وجنة المناظر في أصول الفقه على مذهب الإمام أحمد بن حنبل- المكتبة المكية">روضة الناظر وجنة المناظر في أصول الفقه على مذهب الإمام أحمد بن حنبل- المكتبة المكية</span>
-          </a>
-        </td>
-        <td dir="auto">موفق الدين عبد الله بن أحمد بن قدامة</td>
-        <td dir="auto">المكتبة المكية • المكتبة التدمرية • مؤسسة الريان</td>
-        <td dir="auto">1419هـــ 1998م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/533/53380.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Book of Walls: A Jurisprudential Study of the Rules of Construction and Rights of Use, followed by the Book of Endowments&quot;,&quot;es&quot;:&quot;Kitab al-Hitan: estudio jurídico de las normas de construcción y servidumbres, seguido de Kitab al-Waqf (Libro de las donaciones pías)&quot;,&quot;fr&quot;:&quot;Kitab al-hitan (Livre des murs) : étude juridique des règles de construction et de servitude, suivi du Kitab al-waqf (Livre des biens de mainmorte)&quot;,&quot;id&quot;:&quot;Kitab al-Hitan: Kajian Fikih tentang Hukum Bangunan dan Hak Pemanfaatan, Disusul Kitab Wakaf&quot;,&quot;ja&quot;:&quot;キターブ・アル＝ヒータン（壁の書）―建築と通行権の法規定に関する法学的研究、付録：ワクフの書&quot;,&quot;ru&quot;:&quot;Китаб аль-хитат (Книга о стенах): фикховое исследование норм строительства и права пользования; далее — Китаб аль-вакф (Книга о вакфе)&quot;,&quot;sw&quot;:&quot;Kitab al-Hitan [Kitabu cha kuta]: Utafiti wa fiqhi kuhusu hukumu za ujenzi na haki za matumizi, kikifuatiwa na Kitab al-Waqf [Kitabu cha wakfu]&quot;,&quot;tr&quot;:&quot;Kitâbü&#039;l-hîtân (Duvarlar Kitabı): Yapı ve İrtifak Hükümlerine Dair Fıkhî Bir İnceleme; Ardından Kitâbü&#039;l-vakf (Vakıf Kitabı)&quot;,&quot;ur&quot;:&quot;كتاب الحيطان دراسة فقهية لأحكام البناء والارتفاق ويليه كتاب الوقف (دیواروں کی کتاب: تعمیر اور حقوقِ انتفاع کے احکام کا فقہی مطالعہ، اس کے بعد کتاب الوقف)&quot;,&quot;zh&quot;:&quot;《墙界之书：建筑与相邻权规定的法学研究》，并附《瓦克夫书》&quot;}" data-original="كتاب الحيطان دراسة فقهية لأحكام البناء والارتفاق ويليه كتاب الوقف">كتاب الحيطان دراسة فقهية لأحكام البناء والارتفاق ويليه كتاب الوقف</span>
-          </a>
-        </td>
-        <td dir="auto">حسام الدين عمر بن عبد العزيز بن مازه البخاري المعروف بالصدر الشهيد</td>
-        <td dir="auto">المكتبة المكية • مؤسسة الريان</td>
-        <td dir="auto">1435هـ 2014 م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/535/53568.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Arrangement of the Categories in the Rules of Pausing&quot;,&quot;es&quot;:&quot;Ordenación de las categorías sobre las normas de las fundaciones pías&quot;,&quot;fr&quot;:&quot;Organisation des catégories dans les règles des fondations pieuses&quot;,&quot;id&quot;:&quot;Penyusunan Bab-Bab tentang Hukum Wakaf&quot;,&quot;ja&quot;:&quot;ワクフ規定に関する諸類型の配列&quot;,&quot;ru&quot;:&quot;Систематизация разделов по нормам вакфов&quot;,&quot;sw&quot;:&quot;Tartib al-Sunuf fi Ahkam al-Wuquf (Kupanga aina mbalimbali za hukumu za wakfu)&quot;,&quot;tr&quot;:&quot;Vakıfların Hükümlerine Dair Sınıfların Tasnifi&quot;,&quot;ur&quot;:&quot;ترتيب الصنوف في أحكام الوقوف (اوقاف کے احکام میں اقسام کی ترتیب)&quot;,&quot;zh&quot;:&quot;《按类别编排瓦克夫条例》&quot;}" data-original="ترتيب الصنوف في أحكام الوقوف">ترتيب الصنوف في أحكام الوقوف</span>
-          </a>
-        </td>
-        <td dir="auto">علي حيدر أفندي</td>
-        <td dir="auto">مؤسسة الريان • المكتبة المكية</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/566/56622.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;From the Texts of Maliki Jurisprudence in Bou Tlihiyah: The Established System&quot;,&quot;es&quot;:&quot;De los textos del fiqh malikí: Butlayhiyya, poema de al-Mu&#039;tamad&quot;,&quot;fr&quot;:&quot;Textes du droit malikite de Butlayhiya : le poème al-Mu&#039;tamad&quot;,&quot;id&quot;:&quot;Di antara Teks-Teks Fikih Maliki: Butlayhiyah, Nazham Al-Mu&#039;tamad&quot;,&quot;ja&quot;:&quot;マーリク派法学文献より――ブー・トゥライヒーヤの『アル＝ムウタマド』韻文&quot;,&quot;ru&quot;:&quot;Из текстов маликитского фикха: «Бу Тлайхия — поэма „Аль-Му‘тамад“»&quot;,&quot;sw&quot;:&quot;Kutoka katika matini za fiqhi ya Maliki: Butilihiyya, shairi la Al-Mu&#039;tamad (Yanayotegemewa)&quot;,&quot;tr&quot;:&quot;Mâlikî Fıkhı Metinlerinden: Bûtlehyye&#039;nin Mu‘temed Nazmı&quot;,&quot;ur&quot;:&quot;من نصوص الفقه الملكي بوطليحيه نظم المعتمد (مالکی فقہ کے متون میں سے: بوطليحيه، نظم المعتمد)&quot;,&quot;zh&quot;:&quot;《马格里布教法文本选编：布特利希耶〈可靠意见诗编〉》&quot;}" data-original="من نصوص الفقه الملكي بوطليحيه نظم المعتمد">من نصوص الفقه الملكي بوطليحيه نظم المعتمد</span>
-          </a>
-        </td>
-        <td dir="auto">محمد النابغة بن عمر الغلاوي</td>
-        <td dir="auto">مؤسسة الريان • المكتبة المكية</td>
-        <td dir="auto">1425هـ 2004 م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/593/59328.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Bu Talihiya from the Texts of Maliki Jurisprudence&quot;,&quot;es&quot;:&quot;Bu Tulayhiya, de los textos del derecho malikí&quot;,&quot;fr&quot;:&quot;Bu Tulayhiya, extraits de textes du fiqh malikite&quot;,&quot;id&quot;:&quot;Bu Tulaihiyah, dari Teks-Teks Fikih Maliki&quot;,&quot;ja&quot;:&quot;マーリク派法学文献の一篇『ブー・タライヒーヤ』&quot;,&quot;ru&quot;:&quot;Абу Тулайхийя из текстов маликитского фикха&quot;,&quot;sw&quot;:&quot;Bu Tulayhiya: mojawapo ya matini za fiqhi ya Maliki&quot;,&quot;tr&quot;:&quot;Bû Tıleyhiyye: Mâlikî Fıkhı Metinlerinden&quot;,&quot;ur&quot;:&quot;بو طليحية: مالکی فقہ کے متون میں سے&quot;,&quot;zh&quot;:&quot;《布·图莱希耶》：马立克派教法文献选编&quot;}" data-original="بو طليحية من نصوص الفقه المالكي">بو طليحية من نصوص الفقه المالكي</span>
-          </a>
-        </td>
-        <td dir="auto">محمد النابغة بن عمر الغلاوي</td>
-        <td dir="auto">المكتبة المكية • مؤسسة الريان</td>
-        <td dir="auto">1425هـ 2004م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/625/62548.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Minutes of the Curriculum&quot;,&quot;es&quot;:&quot;Las sutilezas de al-Minhaj&quot;,&quot;fr&quot;:&quot;Daqa&#039;iq al-Minhaj (Les subtilités d’al-Minhaj)&quot;,&quot;id&quot;:&quot;Rincian-Rincian Al-Minhaj&quot;,&quot;ja&quot;:&quot;『アル＝ミンハージュ』の精髄&quot;,&quot;ru&quot;:&quot;Тонкости «Минхаджа»&quot;,&quot;sw&quot;:&quot;Daqaiq al-Minhaj (Mambo madogo ya Minhaj)&quot;,&quot;tr&quot;:&quot;Dekāiku&#039;l-Minhâc (Minhâc&#039;ın İncelikleri)&quot;,&quot;zh&quot;:&quot;《教法纲要精要》&quot;}" data-original="دقائق المنهاج">دقائق المنهاج</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">المكتبة المكية • دار ابن حزم</td>
-        <td dir="auto">1416هـ 1996م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/661/66141.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Stories of the Prophets and the Virtues of the Tribes from the Explanation of the Comprehensive Authentic&quot;,&quot;es&quot;:&quot;Relatos de los profetas y virtudes de las tribus, de al-Tawdih li-sharh al-Jami al-Sahih (La explicación del comentario de la recopilación auténtica)&quot;,&quot;fr&quot;:&quot;Récits des prophètes et mérites des tribus, extraits d&#039;al-Tawdih li-Sharh al-Jami al-Sahih (L&#039;explication du commentaire du Recueil authentique)&quot;,&quot;id&quot;:&quot;Kisah Para Nabi dan Keutamaan Kabilah dari at-Taudhih li Syarh al-Jami&#039; ash-Shahih (Penjelasan atas Syarah Kitab al-Jami&#039; ash-Shahih)&quot;,&quot;ja&quot;:&quot;預言者たちの物語と部族の美徳：『アル＝ジャーミウ・アッ＝サヒーフ』注釈書『アッ＝タウディーフ』より&quot;,&quot;ru&quot;:&quot;Истории пророков и достоинства племен из «ат-Таудых» к комментарию «аль-Джами ас-Сахих»&quot;,&quot;sw&quot;:&quot;Qisas al-Anbiya&#039; wa Manaqib al-Qaba&#039;il min al-Tawdih li-Sharh al-Jami&#039; al-Sahih (Visa vya Manabii na fadhila za makabila kutoka al-Tawdih, ufafanuzi wa al-Jami&#039; al-Sahih)&quot;,&quot;tr&quot;:&quot;Peygamberlerin Kıssaları ve Kabilelerin Menkıbeleri: et-Tavzîh’ten, el-Câmiu’s-Sahîh Şerhi’nden&quot;,&quot;ur&quot;:&quot;قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح (انبیاء کے قصے اور قبائل کے فضائل، التوضيح لشرح الجامع الصحيح سے)&quot;,&quot;zh&quot;:&quot;《先知故事与部族美德——选自〈阐明〈正确汇编注释〉〉》&quot;}" data-original="قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح">قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح</span>
-          </a>
-        </td>
-        <td dir="auto">عمر بن علي بن أحمد الأنصاري الشافعي الملقبب ابن الملقن</td>
-        <td dir="auto">المكتبة المكية • مؤسسة الريان</td>
-        <td dir="auto">1418هـ 1998م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/977/97716.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Ultimate Goal and the Greatest Favor in What Allah Forgives Sins and Grants Paradise&quot;,&quot;es&quot;:&quot;El objetivo más anhelado y la mayor gracia: aquello por lo que Allah perdona los pecados y concede el Paraíso&quot;,&quot;fr&quot;:&quot;Le but recherché et le plus grand bienfait : ce par quoi Allah pardonne les péchés et accorde le Paradis&quot;,&quot;id&quot;:&quot;Puncak yang Dicari dan Nikmat Terbesar tentang Hal-Hal yang Membuat Allah Mengampuni Dosa dan Mewajibkan Surga&quot;,&quot;ja&quot;:&quot;求めるものの究極と最大の恩恵――アッラーが罪を赦し、楽園を約束する事柄について&quot;,&quot;ru&quot;:&quot;Край желаемого и величайшая милость в том, посредством чего Аллах прощает грехи и дарует Рай&quot;,&quot;sw&quot;:&quot;Lengo kuu na neema kubwa zaidi katika mambo ambayo Allah husamehe dhambi na kuyafanya yaingize Peponi&quot;,&quot;tr&quot;:&quot;El-Ğāyetü’l-matlûb ve a‘zamü’l-minne fîmâ yağfiru’llâhu bihi’z-zünûbe ve yûcibü’l-cenne (Allah’ın Günahları Bağışlayıp Cenneti Vacip Kıldığı Şeyler)&quot;,&quot;ur&quot;:&quot;غاية المطلوب وأعظم المنة فيما يغفر الله به الذنوب ويوجب الجنة (مطلوب کی غایت اور عظیم احسان: وہ اعمال جن سے الله گناہ معاف فرماتا اور جنت واجب کرتا ہے)&quot;,&quot;zh&quot;:&quot;《终极所求与至大恩典：真主借以赦罪并使人进入乐园之事》&quot;}" data-original="غاية المطلوب وأعظم المنة فيما يغفر الله به الذنوب ويوجب الجنة">غاية المطلوب وأعظم المنة فيما يغفر الله به الذنوب ويوجب الجنة</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن علي بن محمد الشيباني ابن ربيع الشيباني</td>
-        <td dir="auto">مؤسسة الريان • المكتبة المكية</td>
-        <td dir="auto">1419 - 1998</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1250/125047.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Sessions on the Interpretation of Allah&#039;s Saying {Indeed, Allah has bestowed a favor upon the believers when He sent among them a Messenger from themselves} - Al-Rayan&quot;,&quot;es&quot;:&quot;Sesiones sobre la interpretación de las palabras de Allah, el Altísimo: «Allah favoreció a los creyentes cuando envió entre ellos a un mensajero de entre ellos mismos» - al-Rayyan&quot;,&quot;fr&quot;:&quot;Séances d’exégèse de la parole d’Allah le Très-Haut : « Allah a certes accordé une faveur aux croyants en envoyant parmi eux un messager issu d’eux-mêmes » — al-Rayyan&quot;,&quot;id&quot;:&quot;Majelis-Majelis tentang Tafsir Firman Allah Taala, “Sungguh, Allah telah memberi karunia kepada orang-orang mukmin ketika Dia mengutus kepada mereka seorang rasul dari kalangan mereka sendiri” — ar-Rayyan&quot;,&quot;ja&quot;:&quot;アッラーの御言葉「アッラーは信者たちに恩恵を与え、彼らの中から使徒を遣わされた」を解釈する講義—アッ＝ライヤーン&quot;,&quot;ru&quot;:&quot;Занятия по толкованию слов Всевышнего Аллаха: «Аллах оказал милость верующим, отправив к ним посланника из их среды» — ар-Райян&quot;,&quot;sw&quot;:&quot;Mikutano kuhusu tafsiri ya kauli ya Allah Aliyetukuka: {Hakika Allah aliwafadhili Waumini alipowatuma miongoni mwao Mtume kutoka miongoni mwao} - al-Rayyan&quot;,&quot;tr&quot;:&quot;Allah Teâlâ’nın “Allah, içlerinden kendilerine bir peygamber göndererek müminlere lütufta bulundu” buyruğunun tefsirine dair dersler - er-Reyyân&quot;,&quot;ur&quot;:&quot;مجالس في تفسير قول الله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِنْ أَنْفُسِهِمْ} - الريان (اللہ تعالیٰ کے فرمان کی تفسیر پر مجالس: یقیناً اللہ نے مومنوں پر احسان فرمایا جب ان میں انہی میں سے ایک رسول بھیجا — الریان)&quot;,&quot;zh&quot;:&quot;阐释真主所言“真主确已施恩于信士，在他们中派遣了一位来自他们自身的使者”的讲座——莱扬出版社&quot;}" data-original="مجالس في تفسير قول الله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِنْ أَنْفُسِهِمْ} - الريان">مجالس في تفسير قول الله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِنْ أَنْفُسِهِمْ} - الريان</span>
-          </a>
-        </td>
-        <td dir="auto">الحافظ ابن ناصر الدين الدمشقي</td>
-        <td dir="auto">مؤسسة الريان • دار القبلة • المكتبة المكية</td>
-        <td dir="auto">2000م 1421هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1323/132311.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Appointment in Explaining the Forty&quot;,&quot;es&quot;:&quot;Al-Tayin fi sharh al-arba&#039;in [La determinación en el comentario de los cuarenta hadices]&quot;,&quot;fr&quot;:&quot;Al-Ta&#039;yin fi sharh al-Arba&#039;in (Explication des Quarante hadiths)&quot;,&quot;id&quot;:&quot;At-Ta&#039;yin fi Syarh Al-Arba&#039;in (Penjelasan atas Empat Puluh Hadis)&quot;,&quot;ja&quot;:&quot;『四十ハディース』注釈書『アッ＝タアイユン』&quot;,&quot;ru&quot;:&quot;Назначение в комментарии к сорока хадисам&quot;,&quot;sw&quot;:&quot;Al-Tayin fi Sharh al-Arbain (Ufafanuzi wa Hadithi Arobaini)&quot;,&quot;tr&quot;:&quot;el-Erbaîn şerhinde açıklama&quot;,&quot;zh&quot;:&quot;《四十段圣训注释》&quot;}" data-original="التعيين في شرح الأربعين">التعيين في شرح الأربعين</span>
-          </a>
-        </td>
-        <td dir="auto">نجم الدين سليمان بن عبد القوي بن عبد الكريم الطوفي الحنبلي</td>
-        <td dir="auto">مؤسسة الريان • المكتبة المكية</td>
-        <td dir="auto">1998م 1419هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1362/136287.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Discussions on the Interpretation of the Verse {Indeed, Allah has bestowed favor upon the believers when He sent among them a Messenger from themselves}&quot;,&quot;es&quot;:&quot;Sesiones sobre la exégesis de las palabras del Altísimo: «Allah favoreció a los creyentes cuando envió entre ellos a un mensajero de entre ellos mismos»&quot;,&quot;fr&quot;:&quot;Séances d&#039;exégèse de la parole du Très-Haut : « Allah a certes accordé une faveur aux croyants en envoyant parmi eux un messager issu d&#039;eux-mêmes »&quot;,&quot;id&quot;:&quot;Majelis-Majelis tentang Tafsir Firman Allah Taala: “Sungguh, Allah telah memberi karunia kepada orang-orang mukmin ketika Dia mengutus kepada mereka seorang rasul dari kalangan mereka sendiri”&quot;,&quot;ja&quot;:&quot;至高なるアッラーの御言葉「アッラーは信仰者たちに恵みを与え、彼ら自身の中から使徒を遣わされた」に関する解釈講話&quot;,&quot;ru&quot;:&quot;Маджлисы с толкованием слов Всевышнего: «Аллах оказал милость верующим, послав к ним посланника из их среды»&quot;,&quot;sw&quot;:&quot;Vikao kuhusu tafsiri ya kauli ya Allah, “Hakika Allah amewafadhilisha Waumini alipowatuma miongoni mwao Mtume kutoka kwao wenyewe”&quot;,&quot;tr&quot;:&quot;“Allah, müminlere kendi içlerinden bir peygamber göndererek lütufta bulundu...” Ayetinin Tefsirine Dair Dersler&quot;,&quot;ur&quot;:&quot;مجالس في تفسير قوله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِّنْ أَنفُسِهِمْ} (اللہ تعالیٰ کے فرمان کی تفسیر کے مجالس: یقیناً اللہ نے مومنوں پر احسان فرمایا جب ان میں انہی میں سے ایک رسول بھیجا)&quot;,&quot;zh&quot;:&quot;讲解真主所言“真主确已施恩于信士们，从他们中派遣了一位使者”&quot;}" data-original="مجالس في تفسير قوله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِّنْ أَنفُسِهِمْ}">مجالس في تفسير قوله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِّنْ أَنفُسِهِمْ}</span>
-          </a>
-        </td>
-        <td dir="auto">ابن ناصر الدين الدمشقي</td>
-        <td dir="auto">مؤسسة الريان • دار القبلة • المكتبة المكية</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1374/137469.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Gathering and the Jewels of Knowledge - Translated by Al-Qaisi&quot;,&quot;es&quot;:&quot;Las tertulias y las joyas del saber — edición crítica de al-Qaysi&quot;,&quot;fr&quot;:&quot;Al-Mujalasa wa-Jawahir al-Ilm - édition al-Qaysi&quot;,&quot;id&quot;:&quot;Al-Mujalasah wa Jawahir al-Ilm (Majelis dan Permata Ilmu) - tahkik al-Qaisi&quot;,&quot;ja&quot;:&quot;集いと知識の宝石―アル＝カイシー校訂&quot;,&quot;ru&quot;:&quot;Аль-Муджаляса ва-джавахир аль-&#039;ильм (Собеседование и драгоценности знания) — тахкик аль-Кайси&quot;,&quot;sw&quot;:&quot;Al-Mujalasa wa Jawahir al-Ilm (Mijadala na Vito vya Elimu) - Toleo la al-Qaysi&quot;,&quot;tr&quot;:&quot;el-Mücâlese ve Cevâhirü&#039;l-ilm – Kaysî tahkiki&quot;,&quot;zh&quot;:&quot;《集会与知识瑰宝》——盖西校勘本&quot;}" data-original="المجالسة وجواهر العلم- ت القيسي">المجالسة وجواهر العلم- ت القيسي</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن مروان بن محمد الدينوري</td>
-        <td dir="auto">المكتبة المكية • مؤسسة الريان</td>
-        <td dir="auto">1418هـ 1997م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1378/137829.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Ultimate Goal and the Greatest Blessing in What God Forgives of Sins and Grants Paradise&quot;,&quot;es&quot;:&quot;El objetivo más deseado y la mayor gracia: aquello por lo que Allah perdona los pecados y concede el Paraíso&quot;,&quot;fr&quot;:&quot;Ghayat al-Matlub wa Azam al-Minna fima Yaghfir Allah bihi al-Dhunub wa Yujib al-Janna (L&#039;objet ultime et le plus grand bienfait : ce par quoi Allah pardonne les péchés et accorde le Paradis)&quot;,&quot;id&quot;:&quot;Ghayat al-Mathlub wa A‘zham al-Minnah fima Yaghfirullah bihi adz-Dzunub wa Yujib al-Jannah (Tujuan yang diharapkan dan anugerah terbesar tentang hal-hal yang dengannya Allah mengampuni dosa dan mewajibkan surga)&quot;,&quot;ja&quot;:&quot;ガーヤト・アル＝マトルーブ・ワ・アアザム・アル＝ミンナ・フィーマー・ヤグフィルッラーフ・ビヒ・アッ＝ズヌーブ・ワ・ユージブ・アル＝ジャンナ&quot;,&quot;ru&quot;:&quot;Гаят аль-матлуб ва а‘зам аль-минна фима ягфиру Аллаху бихи аз-зунуб ва юджиб аль-джанна&quot;,&quot;sw&quot;:&quot;Ghayat al-Matlub wa A&#039;zam al-Minna fima Yaghfir Allah bihi al-Dhunub wa Yujib al-Janna (Lengo kuu na neema kubwa: yanayofuta madhambi na kupelekea Pepo)&quot;,&quot;tr&quot;:&quot;Gâyetü’l-matlûb ve a‘zamü’l-minne fîmâ yağfirullâhu bihi’z-zünûbe ve yûcibü’l-cenne (Allah’ın günahları bağışlamasına ve cenneti gerekli kılmasına vesile olan ameller)&quot;,&quot;zh&quot;:&quot;所求之极与至大恩典：真主借以赦罪并使人得入乐园之事&quot;}" data-original="غاية المطلوب وأعظم المنة فيما يغفر الله به الذنوب ويوجب الجنة">غاية المطلوب وأعظم المنة فيما يغفر الله به الذنوب ويوجب الجنة</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن علي ابن الدبيع الشيباني</td>
-        <td dir="auto">المكتبة المكية • مؤسسة الريان</td>
-        <td dir="auto">1419هـ 1998هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1412/141208.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Stories of the Prophets and the Virtues of the Tribes from the Explanation of the Comprehensive Authentic&quot;,&quot;es&quot;:&quot;Relatos de los profetas y méritos de las tribus, tomado de al-Tawdih li-Sharh al-Jami al-Sahih (La aclaración del comentario de la compilación auténtica)&quot;,&quot;fr&quot;:&quot;Les récits des prophètes et les mérites des tribus, extraits d&#039;al-Tawdih (Commentaire du Sahih)&quot;,&quot;id&quot;:&quot;Kisah Para Nabi dan Keutamaan Kabilah-Kabilah dari At-Taudhih fi Syarh al-Jami&#039; as-Sahih (Penjelasan atas Syarah Al-Jami&#039; Ash-Shahih)&quot;,&quot;ja&quot;:&quot;『アル＝ジャーミウ・アッ＝サヒーフ』注釈書『アット＝タウディーフ』からの預言者物語と部族の美徳&quot;,&quot;ru&quot;:&quot;Рассказы о пророках и достоинства племен из книги «Ат-Таудих» — комментария к «Сахиху»&quot;,&quot;sw&quot;:&quot;Hadithi za manabii na fadhila za makabila kutoka katika Al-Tawdih, sharh ya Al-Jami al-Sahih&quot;,&quot;tr&quot;:&quot;Peygamber Kıssaları ve Kabilelerin Menkıbeleri: et-Tavdîh li-Şerhi’l-Câmi‘i’s-Sahîh’ten&quot;,&quot;zh&quot;:&quot;《〈正确汇编注释〉中的先知故事与部族美德》&quot;}" data-original="قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح">قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح</span>
-          </a>
-        </td>
-        <td dir="auto">عمر بن علي أحمد الأنصاري ابن الملقن</td>
-        <td dir="auto">مؤسسة الريان • المكتبة المكية</td>
-        <td dir="auto">1418هـ 1998م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1445/144521.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Book of Design in Explaining the Forty&quot;,&quot;es&quot;:&quot;Kitab al-Tay&#039;in fi sharh al-Arba&#039;in (Libro de la designación: comentario de los Cuarenta)&quot;,&quot;fr&quot;:&quot;Kitab al-Ta&#039;yin fi sharh al-Arba&#039;in (Commentaire des Quarante hadiths)&quot;,&quot;id&quot;:&quot;Kitab At-Ta&#039;yin fi Syarh Al-Arba&#039;in (Penjelasan atas Empat Puluh Hadis)&quot;,&quot;ja&quot;:&quot;『アル＝アルバイーン』注釈書『キターブ・アッ＝タアイーン』&quot;,&quot;ru&quot;:&quot;Китаб ат-Тайин фи шарх аль-Арбаин (Книга разъяснения сорока хадисов)&quot;,&quot;sw&quot;:&quot;Kitab al-Ta&#039;yin fi Sharh al-Arba&#039;in (Kitabu cha kubainisha katika ufafanuzi wa Hadith Arobaini)&quot;,&quot;tr&quot;:&quot;Kitâbü’t-Ta‘yîn fî şerhi’l-Erbaîn (Kırk Hadisin Şerhi)&quot;,&quot;zh&quot;:&quot;《四十段圣训注释选》&quot;}" data-original="كتاب التعيين في شرح الأربعين">كتاب التعيين في شرح الأربعين</span>
-          </a>
-        </td>
-        <td dir="auto">سليمان بن عبد القوي الطوفي</td>
-        <td dir="auto">مؤسسة الريان • المكتبة المكية</td>
-        <td dir="auto">1419هـ 1998م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1446/144606.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Erection of the Flag for the Hadiths of Guidance with its Commentary, The Aspiration of the Scholar in the Verification of Zaili&#039;s Work&quot;,&quot;es&quot;:&quot;Nasb al-Raya li-Ahadith al-Hidaya ma&#039;a Hashiyatihi Bughyat al-Alma&#039;i fi Takhrij al-Zayla&#039;i [La insignia de los hadices de al-Hidaya, con la glosa Bughyat al-Alma&#039;i sobre la localización de fuentes de al-Zayla&#039;i]&quot;,&quot;fr&quot;:&quot;Nasb al-raya li-ahadith al-hidaya, avec son annotation Bughyat al-alma&#039;i fi takhrij al-Zayla&#039;i (Référencement des hadiths d&#039;al-Hidaya, accompagné de l&#039;annotation...)&quot;,&quot;id&quot;:&quot;Nashb ar-Rayah li Ahadits al-Hidayah ma&#039;a Hasyiyatihi Bughyat al-Alma&#039;i fi Takhrij az-Zaila&#039;i [Penghimpunan Riwayat Hadis dalam Al-Hidayah beserta Catatan Pinggirnya: Hasrat Sang Cendekia untuk Menelusuri Sumber Hadis Az-Zaila&#039;i]&quot;,&quot;ja&quot;:&quot;『導きのハディースへの旗印』と、その注釈『ザイラウイーの伝承出典を明らかにするアル＝アルマイーの願い』&quot;,&quot;ru&quot;:&quot;Насб ар-райя по хадисам «аль-Хидая» с примечаниями «Бугьят аль-алмаи фи тахридж аз-Зайляи»&quot;,&quot;sw&quot;:&quot;Nasb al-Raya li-Ahadith al-Hidaya pamoja na tanbihi yake Bughyat al-Alma’i fi Takhrij al-Zayla’i (Kuinua Bendera kwa Hadithi za Uongofu; Shauku ya Mjuzi katika Uainishaji wa Hadithi za al-Zayla’i)&quot;,&quot;tr&quot;:&quot;Nasbü&#039;r-râye li-ehâdîsi&#039;l-Hidâye (Hidâye hadisleri için sancak dikmek), Zeylaî&#039;nin hadis tahricine dair Buğyetü&#039;l-elmaî hâşiyesiyle birlikte&quot;,&quot;ur&quot;:&quot;نصب الراية لأحاديث الهداية مع حاشيته بغية الألمعي في تخريج الزيلعي (ہدایہ کی احادیث کے لیے نصب الرایہ، زیلعی کی تخریج پر حاشیہ بغية الألمعي کے ساتھ)&quot;,&quot;zh&quot;:&quot;《为〈指引圣训〉树立标帜：附载《泽伊莱仪圣训考证中的明眼人所求》》&quot;}" data-original="نصب الراية لأحاديث الهداية مع حاشيته بغية الألمعي في تخريج الزيلعي">نصب الراية لأحاديث الهداية مع حاشيته بغية الألمعي في تخريج الزيلعي</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الله بن يوسف بن محمد الزيلعي</td>
-        <td dir="auto">دار القبلة للثقافة الإسلامية • مؤسسة الريان • المكتبة المكية</td>
-        <td dir="auto">1418هـ 1990م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1461/146113.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Book of Sunnah, Sunan Abu Dawood - By Awama&quot;,&quot;es&quot;:&quot;Libro de las tradiciones, Sunan de Abu Dawud — edición de Awwama&quot;,&quot;fr&quot;:&quot;Kitab al-Sunan, Sunan Abu Dawud (éd. Awwama)&quot;,&quot;id&quot;:&quot;Kitab as-Sunan, Sunan Abu Dawud — tahkik Awwamah&quot;,&quot;ja&quot;:&quot;スナンの書、アブー・ダーウードのスナン――アウワーマ校訂版&quot;,&quot;ru&quot;:&quot;Книга Сунан: Сунан Абу Дауда — тахкик Аувамы&quot;,&quot;sw&quot;:&quot;Kitab al-Sunan, Sunan Abu Dawud — tahkiki ya Awwama&quot;,&quot;tr&quot;:&quot;Kitâbü&#039;s-Sünen, Ebû Dâvûd&#039;un Sünen&#039;i – tahkik eden: Avvâme&quot;,&quot;zh&quot;:&quot;《圣训集：艾布·达伍德圣训集》——阿瓦迈校勘&quot;}" data-original="كتاب السنن، سنن أبي داود- ت عوامة">كتاب السنن، سنن أبي داود- ت عوامة</span>
-          </a>
-        </td>
-        <td dir="auto">سليمان بن الأشعث السجستاني</td>
-        <td dir="auto">دار القبلة • مؤسسة الريان • المكتبة المكية</td>
-        <td dir="auto">1419هـ 1998م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1501/150118.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Mothers in Grammatical Chapters: An Inductive and Explanatory Study of the Aspects of the Tool in the Context of Its Chapter&quot;,&quot;es&quot;:&quot;Los elementos fundamentales en los capítulos de gramática: estudio inductivo y explicativo de las funciones de las partículas según sus capítulos&quot;,&quot;fr&quot;:&quot;Les fondements des chapitres grammaticaux : étude inductive et explicative des fonctions grammaticales dans leurs domaines respectifs&quot;,&quot;id&quot;:&quot;Pokok-Pokok dalam Bab-Bab Nahwu: Kajian Induktif dan Analitis tentang Segi-Segi Partikel berdasarkan Babnya&quot;,&quot;ja&quot;:&quot;文法範疇における母体的要素――各範疇の基礎となる語法の諸相に関する帰納的・論証的研究&quot;,&quot;ru&quot;:&quot;Основы в разделах грамматики: индуктивное и объяснительное исследование функций служебных слов, определяющих содержание раздела&quot;,&quot;sw&quot;:&quot;Misingi katika milango ya nahau: uchunguzi wa kiindukta na wa kihoja kuhusu dhima za zana za kisarufi katika milango yake&quot;,&quot;tr&quot;:&quot;Nahiv Bölümlerinin Temel Unsurları: Edatların Bölümlerindeki İşlevlerine Dair Tümevarımsal ve Gerekçeli Bir İnceleme&quot;,&quot;zh&quot;:&quot;《语法章节中的根本原则：工具词各用法的归纳与释因研究》&quot;}" data-original="الأمهات في الأبواب النحوية دراسة استقرائية تعليلية لأوجه الأداة بأمية بابها">الأمهات في الأبواب النحوية دراسة استقرائية تعليلية لأوجه الأداة بأمية بابها</span>
-          </a>
-        </td>
-        <td dir="auto">حسين أحمد عثمان</td>
-        <td dir="auto">المكتبة المكية • مؤسسة الريان</td>
-        <td dir="auto">1425هـ 2004م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1593/159386.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Summary of the Introduction to the Science of Morphology by Ibn Malik&quot;,&quot;es&quot;:&quot;Concisión en la exposición de la ciencia de la morfología, de Ibn Malik&quot;,&quot;fr&quot;:&quot;La présentation concise de la morphologie, par Ibn Malik&quot;,&quot;id&quot;:&quot;Ijaz at-Ta&#039;rif fi Ilm at-Tashrif karya Ibnu Malik [Uraian Ringkas tentang Ilmu Sharaf]&quot;,&quot;ja&quot;:&quot;イブン・マーリク著『形態論の学における定義の簡潔化』&quot;,&quot;ru&quot;:&quot;Краткое изложение морфологии Ибн Малика&quot;,&quot;sw&quot;:&quot;Ijaz al-Ta&#039;rif fi Ilm al-Tasrif li-Ibn Malik (Utambulisho mfupi wa elimu ya mnyambuliko wa Ibn Malik)&quot;,&quot;tr&quot;:&quot;İbn Mâlik’in Tasrif İlmine Girişin Özeti&quot;,&quot;zh&quot;:&quot;《伊本·马立克〈形态变化学导论简编〉》&quot;}" data-original="إيجاز التعريف في علم التصريف لابن مالك">إيجاز التعريف في علم التصريف لابن مالك</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن مالك الطائي النحوي</td>
-        <td dir="auto">المكتبة المكية • مؤسسة الريان</td>
-        <td dir="auto">1425هـ 2004م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1827/182766.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ammar ibn Yasir: The Man of Trial, the Measure of Sedition, and the Believer Whom Paradise Longed For&quot;,&quot;es&quot;:&quot;Ammar ibn Yasir: el hombre de la prueba, el criterio en tiempos de discordia y el creyente a quien anhelaba el Paraíso&quot;,&quot;fr&quot;:&quot;Ammar ibn Yasir, homme d&#039;épreuve, repère en temps de trouble et croyant que le Paradis désirait accueillir&quot;,&quot;id&quot;:&quot;Ammar bin Yasir: Sosok yang Diuji, Tolok Ukur di Masa Fitnah, dan Mukmin yang Dirindukan Surga&quot;,&quot;ja&quot;:&quot;アンマール・イブン・ヤースィル：試練に立ち向かった人物、内乱の基準、そして天国が待ち望んだ信徒&quot;,&quot;ru&quot;:&quot;Аммар ибн Ясир: человек испытания, мерило смуты и верующий, которого возжелал рай&quot;,&quot;sw&quot;:&quot;Ammar bin Yasir: mtu wa mitihani, kipimo cha fitina, na muumini ambaye Pepo ilimtamani&quot;,&quot;tr&quot;:&quot;Ammâr b. Yâsir: Mihnetin Adamı, Fitnenin Ölçüsü ve Cennetin Özlediği Mümin&quot;,&quot;zh&quot;:&quot;阿马尔·本·亚西尔：苦难中的勇士、纷争的标尺、天堂所渴盼的信士&quot;}" data-original="عمار بن ياسر رجل المحنة وميزان الفتنة والمؤمن الذي اشتاقت إليه الجنة">عمار بن ياسر رجل المحنة وميزان الفتنة والمؤمن الذي اشتاقت إليه الجنة</span>
-          </a>
-        </td>
-        <td dir="auto">أسامة بن أحمد سلطان</td>
-        <td dir="auto">المكتبة المكية • مؤسسة الريان</td>
-        <td dir="auto">1420هـ 1999م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1967/196789.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The High Demands of the Additions to the Eight Musnads, the Authenticated Version&quot;,&quot;es&quot;:&quot;Los objetivos elevados mediante los añadidos a los ocho Musnads: versión con cadenas de transmisión&quot;,&quot;fr&quot;:&quot;Les demandes élevées concernant les ajouts aux huit Musnad : version avec chaînes de transmission&quot;,&quot;id&quot;:&quot;Al-Matalib al-Aliyah bi Zawa&#039;id al-Masanid ats-Tsamaniyah (Tambahan-Tambahan dalam Delapan Musnad), Edisi Bersanad&quot;,&quot;ja&quot;:&quot;八つのムスナド集の増補伝承を集めた『アル＝マターリブ・アル＝アーリヤ』――伝承経路付き版&quot;,&quot;ru&quot;:&quot;«Аль-Маталиб аль-алия би-заваид аль-масанид ас-самания» — версия с иснадами&quot;,&quot;sw&quot;:&quot;Al-Matalib al-Aliya bi-Zawa&#039;id al-Masanid al-Thamaniya (Mahitaji ya juu kuhusu nyongeza za misnad nane): toleo lenye misnad&quot;,&quot;tr&quot;:&quot;Sekiz Müsned&#039;in Zevâidini İçeren el-Metâlibü&#039;l-Âliye: Müsned Nüsha&quot;,&quot;zh&quot;:&quot;《八部圣训汇编增补之高阶诉求》：传述链版本&quot;}" data-original="المطالب العالية بزوائد المسانيد الثمانية النسخة المسندة">المطالب العالية بزوائد المسانيد الثمانية النسخة المسندة</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">مؤسسة قرطبة • المكتبة المكية</td>
-        <td dir="auto">1418هـ 1997م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        إرشاد السالك المحتاج إلى بيان أفعال المعتمر والحاج
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن محمد بن محمد الحطاب الرعيني المالكي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/516/51612.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/516/51612.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Garden of the Observer and the Paradise of the Spectator in the Principles of Jurisprudence According to the Method of Imam Ahmad ibn Hanbal - The Makkah Library&quot;,&quot;es&quot;:&quot;Rawdat al-Nazir wa Jannat al-Munazir fi Usul al-Fiqh ala Madhhab al-Imam Ahmad ibn Hanbal (El jardín del observador y el paraíso de quien contempla los fundamentos del derecho islámico según la escuela del imán Ahmad ibn Hanbal) - al-Maktaba al-Makkiyya&quot;,&quot;fr&quot;:&quot;Rawdat al-Nazir wa Jannat al-Manazir fi Usul al-Fiqh ala Madhhab al-Imam Ahmad ibn Hanbal (Le jardin du regardant et le paradis des perspectives sur les fondements du droit selon l&#039;école d&#039;Ahmad ibn Hanbal), al-Maktaba al-Makkiyya&quot;,&quot;id&quot;:&quot;Raudhat an-Nazhir wa Jannat al-Manazhir fi Ushul al-Fiqh ala Madzhab al-Imam Ahmad bin Hanbal — al-Maktabah al-Makkiyyah&quot;,&quot;ja&quot;:&quot;法学原理におけるナーズィルの園、マンザーの楽園—アフマド・イブン・ハンバル学派に基づく—アル＝マクタバ・アル＝マッキーヤ版&quot;,&quot;ru&quot;:&quot;Раудат ан-назир ва-джаннат аль-маназир фи усуль аль-фикх &#039;аля мазхаб аль-имам Ахмад ибн Ханбал (Сад созерцающего и рай наблюдателя: основы фикха согласно мазхабу имама Ахмада ибн Ханбала) — аль-Мактаба аль-Маккийя&quot;,&quot;sw&quot;:&quot;Rawdat al-Nazir wa Jannat al-Manazir fi Usul al-Fiqh ala Madhhab al-Imam Ahmad bin Hanbal (Bustani ya mchunguzi na pepo la mitazamo katika misingi ya fiqhi kwa madhehebu ya Imam Ahmad bin Hanbal) - al-Maktaba al-Makkiyya&quot;,&quot;tr&quot;:&quot;Ravzatü’n-nâzır ve cennetü’l-menâzır fî usûli’l-fıkh alâ mezhebi’l-İmâm Ahmed b. Hanbel [Ahmed b. Hanbel mezhebine göre fıkıh usulü] - el-Mektebetü’l-Mekkiyye&quot;,&quot;ur&quot;:&quot;روضة الناظر وجنة المناظر في أصول الفقه على مذهب الإمام أحمد بن حنبل- المكتبة المكية (اصولِ فقہ میں امام احمد بن حنبل کے مذہب کے مطابق روضة الناظر وجنة المناظر)&quot;,&quot;zh&quot;:&quot;《观者之园与景物之乐：艾哈迈德·本·罕百勒学派的教法原理——麦加书店版》&quot;}" data-original="روضة الناظر وجنة المناظر في أصول الفقه على مذهب الإمام أحمد بن حنبل- المكتبة المكية">روضة الناظر وجنة المناظر في أصول الفقه على مذهب الإمام أحمد بن حنبل- المكتبة المكية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        روضة الناظر وجنة المناظر في أصول الفقه على مذهب الإمام أحمد بن حنبل- المكتبة المكية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      موفق الدين عبد الله بن أحمد بن قدامة
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/533/53380.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/533/53380.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Book of Walls: A Jurisprudential Study of the Rules of Construction and Rights of Use, followed by the Book of Endowments&quot;,&quot;es&quot;:&quot;Kitab al-Hitan: estudio jurídico de las normas de construcción y servidumbres, seguido de Kitab al-Waqf (Libro de las donaciones pías)&quot;,&quot;fr&quot;:&quot;Kitab al-hitan (Livre des murs) : étude juridique des règles de construction et de servitude, suivi du Kitab al-waqf (Livre des biens de mainmorte)&quot;,&quot;id&quot;:&quot;Kitab al-Hitan: Kajian Fikih tentang Hukum Bangunan dan Hak Pemanfaatan, Disusul Kitab Wakaf&quot;,&quot;ja&quot;:&quot;キターブ・アル＝ヒータン（壁の書）―建築と通行権の法規定に関する法学的研究、付録：ワクフの書&quot;,&quot;ru&quot;:&quot;Китаб аль-хитат (Книга о стенах): фикховое исследование норм строительства и права пользования; далее — Китаб аль-вакф (Книга о вакфе)&quot;,&quot;sw&quot;:&quot;Kitab al-Hitan [Kitabu cha kuta]: Utafiti wa fiqhi kuhusu hukumu za ujenzi na haki za matumizi, kikifuatiwa na Kitab al-Waqf [Kitabu cha wakfu]&quot;,&quot;tr&quot;:&quot;Kitâbü&#039;l-hîtân (Duvarlar Kitabı): Yapı ve İrtifak Hükümlerine Dair Fıkhî Bir İnceleme; Ardından Kitâbü&#039;l-vakf (Vakıf Kitabı)&quot;,&quot;ur&quot;:&quot;كتاب الحيطان دراسة فقهية لأحكام البناء والارتفاق ويليه كتاب الوقف (دیواروں کی کتاب: تعمیر اور حقوقِ انتفاع کے احکام کا فقہی مطالعہ، اس کے بعد کتاب الوقف)&quot;,&quot;zh&quot;:&quot;《墙界之书：建筑与相邻权规定的法学研究》，并附《瓦克夫书》&quot;}" data-original="كتاب الحيطان دراسة فقهية لأحكام البناء والارتفاق ويليه كتاب الوقف">كتاب الحيطان دراسة فقهية لأحكام البناء والارتفاق ويليه كتاب الوقف</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        كتاب الحيطان دراسة فقهية لأحكام البناء والارتفاق ويليه كتاب الوقف
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      حسام الدين عمر بن عبد العزيز بن مازه البخاري المعروف بالصدر الشهيد
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/535/53568.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/535/53568.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Arrangement of the Categories in the Rules of Pausing&quot;,&quot;es&quot;:&quot;Ordenación de las categorías sobre las normas de las fundaciones pías&quot;,&quot;fr&quot;:&quot;Organisation des catégories dans les règles des fondations pieuses&quot;,&quot;id&quot;:&quot;Penyusunan Bab-Bab tentang Hukum Wakaf&quot;,&quot;ja&quot;:&quot;ワクフ規定に関する諸類型の配列&quot;,&quot;ru&quot;:&quot;Систематизация разделов по нормам вакфов&quot;,&quot;sw&quot;:&quot;Tartib al-Sunuf fi Ahkam al-Wuquf (Kupanga aina mbalimbali za hukumu za wakfu)&quot;,&quot;tr&quot;:&quot;Vakıfların Hükümlerine Dair Sınıfların Tasnifi&quot;,&quot;ur&quot;:&quot;ترتيب الصنوف في أحكام الوقوف (اوقاف کے احکام میں اقسام کی ترتیب)&quot;,&quot;zh&quot;:&quot;《按类别编排瓦克夫条例》&quot;}" data-original="ترتيب الصنوف في أحكام الوقوف">ترتيب الصنوف في أحكام الوقوف</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        ترتيب الصنوف في أحكام الوقوف
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      علي حيدر أفندي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/566/56622.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/566/56622.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;From the Texts of Maliki Jurisprudence in Bou Tlihiyah: The Established System&quot;,&quot;es&quot;:&quot;De los textos del fiqh malikí: Butlayhiyya, poema de al-Mu&#039;tamad&quot;,&quot;fr&quot;:&quot;Textes du droit malikite de Butlayhiya : le poème al-Mu&#039;tamad&quot;,&quot;id&quot;:&quot;Di antara Teks-Teks Fikih Maliki: Butlayhiyah, Nazham Al-Mu&#039;tamad&quot;,&quot;ja&quot;:&quot;マーリク派法学文献より――ブー・トゥライヒーヤの『アル＝ムウタマド』韻文&quot;,&quot;ru&quot;:&quot;Из текстов маликитского фикха: «Бу Тлайхия — поэма „Аль-Му‘тамад“»&quot;,&quot;sw&quot;:&quot;Kutoka katika matini za fiqhi ya Maliki: Butilihiyya, shairi la Al-Mu&#039;tamad (Yanayotegemewa)&quot;,&quot;tr&quot;:&quot;Mâlikî Fıkhı Metinlerinden: Bûtlehyye&#039;nin Mu‘temed Nazmı&quot;,&quot;ur&quot;:&quot;من نصوص الفقه الملكي بوطليحيه نظم المعتمد (مالکی فقہ کے متون میں سے: بوطليحيه، نظم المعتمد)&quot;,&quot;zh&quot;:&quot;《马格里布教法文本选编：布特利希耶〈可靠意见诗编〉》&quot;}" data-original="من نصوص الفقه الملكي بوطليحيه نظم المعتمد">من نصوص الفقه الملكي بوطليحيه نظم المعتمد</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        من نصوص الفقه الملكي بوطليحيه نظم المعتمد
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد النابغة بن عمر الغلاوي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/593/59328.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/593/59328.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Bu Talihiya from the Texts of Maliki Jurisprudence&quot;,&quot;es&quot;:&quot;Bu Tulayhiya, de los textos del derecho malikí&quot;,&quot;fr&quot;:&quot;Bu Tulayhiya, extraits de textes du fiqh malikite&quot;,&quot;id&quot;:&quot;Bu Tulaihiyah, dari Teks-Teks Fikih Maliki&quot;,&quot;ja&quot;:&quot;マーリク派法学文献の一篇『ブー・タライヒーヤ』&quot;,&quot;ru&quot;:&quot;Абу Тулайхийя из текстов маликитского фикха&quot;,&quot;sw&quot;:&quot;Bu Tulayhiya: mojawapo ya matini za fiqhi ya Maliki&quot;,&quot;tr&quot;:&quot;Bû Tıleyhiyye: Mâlikî Fıkhı Metinlerinden&quot;,&quot;ur&quot;:&quot;بو طليحية: مالکی فقہ کے متون میں سے&quot;,&quot;zh&quot;:&quot;《布·图莱希耶》：马立克派教法文献选编&quot;}" data-original="بو طليحية من نصوص الفقه المالكي">بو طليحية من نصوص الفقه المالكي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        بو طليحية من نصوص الفقه المالكي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد النابغة بن عمر الغلاوي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/625/62548.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/625/62548.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Minutes of the Curriculum&quot;,&quot;es&quot;:&quot;Las sutilezas de al-Minhaj&quot;,&quot;fr&quot;:&quot;Daqa&#039;iq al-Minhaj (Les subtilités d’al-Minhaj)&quot;,&quot;id&quot;:&quot;Rincian-Rincian Al-Minhaj&quot;,&quot;ja&quot;:&quot;『アル＝ミンハージュ』の精髄&quot;,&quot;ru&quot;:&quot;Тонкости «Минхаджа»&quot;,&quot;sw&quot;:&quot;Daqaiq al-Minhaj (Mambo madogo ya Minhaj)&quot;,&quot;tr&quot;:&quot;Dekāiku&#039;l-Minhâc (Minhâc&#039;ın İncelikleri)&quot;,&quot;zh&quot;:&quot;《教法纲要精要》&quot;}" data-original="دقائق المنهاج">دقائق المنهاج</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        دقائق المنهاج
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/661/66141.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/661/66141.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Stories of the Prophets and the Virtues of the Tribes from the Explanation of the Comprehensive Authentic&quot;,&quot;es&quot;:&quot;Relatos de los profetas y virtudes de las tribus, de al-Tawdih li-sharh al-Jami al-Sahih (La explicación del comentario de la recopilación auténtica)&quot;,&quot;fr&quot;:&quot;Récits des prophètes et mérites des tribus, extraits d&#039;al-Tawdih li-Sharh al-Jami al-Sahih (L&#039;explication du commentaire du Recueil authentique)&quot;,&quot;id&quot;:&quot;Kisah Para Nabi dan Keutamaan Kabilah dari at-Taudhih li Syarh al-Jami&#039; ash-Shahih (Penjelasan atas Syarah Kitab al-Jami&#039; ash-Shahih)&quot;,&quot;ja&quot;:&quot;預言者たちの物語と部族の美徳：『アル＝ジャーミウ・アッ＝サヒーフ』注釈書『アッ＝タウディーフ』より&quot;,&quot;ru&quot;:&quot;Истории пророков и достоинства племен из «ат-Таудых» к комментарию «аль-Джами ас-Сахих»&quot;,&quot;sw&quot;:&quot;Qisas al-Anbiya&#039; wa Manaqib al-Qaba&#039;il min al-Tawdih li-Sharh al-Jami&#039; al-Sahih (Visa vya Manabii na fadhila za makabila kutoka al-Tawdih, ufafanuzi wa al-Jami&#039; al-Sahih)&quot;,&quot;tr&quot;:&quot;Peygamberlerin Kıssaları ve Kabilelerin Menkıbeleri: et-Tavzîh’ten, el-Câmiu’s-Sahîh Şerhi’nden&quot;,&quot;ur&quot;:&quot;قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح (انبیاء کے قصے اور قبائل کے فضائل، التوضيح لشرح الجامع الصحيح سے)&quot;,&quot;zh&quot;:&quot;《先知故事与部族美德——选自〈阐明〈正确汇编注释〉〉》&quot;}" data-original="قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح">قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عمر بن علي بن أحمد الأنصاري الشافعي الملقبب ابن الملقن
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/977/97716.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/977/97716.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Ultimate Goal and the Greatest Favor in What Allah Forgives Sins and Grants Paradise&quot;,&quot;es&quot;:&quot;El objetivo más anhelado y la mayor gracia: aquello por lo que Allah perdona los pecados y concede el Paraíso&quot;,&quot;fr&quot;:&quot;Le but recherché et le plus grand bienfait : ce par quoi Allah pardonne les péchés et accorde le Paradis&quot;,&quot;id&quot;:&quot;Puncak yang Dicari dan Nikmat Terbesar tentang Hal-Hal yang Membuat Allah Mengampuni Dosa dan Mewajibkan Surga&quot;,&quot;ja&quot;:&quot;求めるものの究極と最大の恩恵――アッラーが罪を赦し、楽園を約束する事柄について&quot;,&quot;ru&quot;:&quot;Край желаемого и величайшая милость в том, посредством чего Аллах прощает грехи и дарует Рай&quot;,&quot;sw&quot;:&quot;Lengo kuu na neema kubwa zaidi katika mambo ambayo Allah husamehe dhambi na kuyafanya yaingize Peponi&quot;,&quot;tr&quot;:&quot;El-Ğāyetü’l-matlûb ve a‘zamü’l-minne fîmâ yağfiru’llâhu bihi’z-zünûbe ve yûcibü’l-cenne (Allah’ın Günahları Bağışlayıp Cenneti Vacip Kıldığı Şeyler)&quot;,&quot;ur&quot;:&quot;غاية المطلوب وأعظم المنة فيما يغفر الله به الذنوب ويوجب الجنة (مطلوب کی غایت اور عظیم احسان: وہ اعمال جن سے الله گناہ معاف فرماتا اور جنت واجب کرتا ہے)&quot;,&quot;zh&quot;:&quot;《终极所求与至大恩典：真主借以赦罪并使人进入乐园之事》&quot;}" data-original="غاية المطلوب وأعظم المنة فيما يغفر الله به الذنوب ويوجب الجنة">غاية المطلوب وأعظم المنة فيما يغفر الله به الذنوب ويوجب الجنة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        غاية المطلوب وأعظم المنة فيما يغفر الله به الذنوب ويوجب الجنة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن علي بن محمد الشيباني ابن ربيع الشيباني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1250/125047.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1250/125047.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Sessions on the Interpretation of Allah&#039;s Saying {Indeed, Allah has bestowed a favor upon the believers when He sent among them a Messenger from themselves} - Al-Rayan&quot;,&quot;es&quot;:&quot;Sesiones sobre la interpretación de las palabras de Allah, el Altísimo: «Allah favoreció a los creyentes cuando envió entre ellos a un mensajero de entre ellos mismos» - al-Rayyan&quot;,&quot;fr&quot;:&quot;Séances d’exégèse de la parole d’Allah le Très-Haut : « Allah a certes accordé une faveur aux croyants en envoyant parmi eux un messager issu d’eux-mêmes » — al-Rayyan&quot;,&quot;id&quot;:&quot;Majelis-Majelis tentang Tafsir Firman Allah Taala, “Sungguh, Allah telah memberi karunia kepada orang-orang mukmin ketika Dia mengutus kepada mereka seorang rasul dari kalangan mereka sendiri” — ar-Rayyan&quot;,&quot;ja&quot;:&quot;アッラーの御言葉「アッラーは信者たちに恩恵を与え、彼らの中から使徒を遣わされた」を解釈する講義—アッ＝ライヤーン&quot;,&quot;ru&quot;:&quot;Занятия по толкованию слов Всевышнего Аллаха: «Аллах оказал милость верующим, отправив к ним посланника из их среды» — ар-Райян&quot;,&quot;sw&quot;:&quot;Mikutano kuhusu tafsiri ya kauli ya Allah Aliyetukuka: {Hakika Allah aliwafadhili Waumini alipowatuma miongoni mwao Mtume kutoka miongoni mwao} - al-Rayyan&quot;,&quot;tr&quot;:&quot;Allah Teâlâ’nın “Allah, içlerinden kendilerine bir peygamber göndererek müminlere lütufta bulundu” buyruğunun tefsirine dair dersler - er-Reyyân&quot;,&quot;ur&quot;:&quot;مجالس في تفسير قول الله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِنْ أَنْفُسِهِمْ} - الريان (اللہ تعالیٰ کے فرمان کی تفسیر پر مجالس: یقیناً اللہ نے مومنوں پر احسان فرمایا جب ان میں انہی میں سے ایک رسول بھیجا — الریان)&quot;,&quot;zh&quot;:&quot;阐释真主所言“真主确已施恩于信士，在他们中派遣了一位来自他们自身的使者”的讲座——莱扬出版社&quot;}" data-original="مجالس في تفسير قول الله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِنْ أَنْفُسِهِمْ} - الريان">مجالس في تفسير قول الله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِنْ أَنْفُسِهِمْ} - الريان</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        مجالس في تفسير قول الله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِنْ أَنْفُسِهِمْ} - الريان
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      الحافظ ابن ناصر الدين الدمشقي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1323/132311.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1323/132311.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Appointment in Explaining the Forty&quot;,&quot;es&quot;:&quot;Al-Tayin fi sharh al-arba&#039;in [La determinación en el comentario de los cuarenta hadices]&quot;,&quot;fr&quot;:&quot;Al-Ta&#039;yin fi sharh al-Arba&#039;in (Explication des Quarante hadiths)&quot;,&quot;id&quot;:&quot;At-Ta&#039;yin fi Syarh Al-Arba&#039;in (Penjelasan atas Empat Puluh Hadis)&quot;,&quot;ja&quot;:&quot;『四十ハディース』注釈書『アッ＝タアイユン』&quot;,&quot;ru&quot;:&quot;Назначение в комментарии к сорока хадисам&quot;,&quot;sw&quot;:&quot;Al-Tayin fi Sharh al-Arbain (Ufafanuzi wa Hadithi Arobaini)&quot;,&quot;tr&quot;:&quot;el-Erbaîn şerhinde açıklama&quot;,&quot;zh&quot;:&quot;《四十段圣训注释》&quot;}" data-original="التعيين في شرح الأربعين">التعيين في شرح الأربعين</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        التعيين في شرح الأربعين
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      نجم الدين سليمان بن عبد القوي بن عبد الكريم الطوفي الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1362/136287.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1362/136287.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Discussions on the Interpretation of the Verse {Indeed, Allah has bestowed favor upon the believers when He sent among them a Messenger from themselves}&quot;,&quot;es&quot;:&quot;Sesiones sobre la exégesis de las palabras del Altísimo: «Allah favoreció a los creyentes cuando envió entre ellos a un mensajero de entre ellos mismos»&quot;,&quot;fr&quot;:&quot;Séances d&#039;exégèse de la parole du Très-Haut : « Allah a certes accordé une faveur aux croyants en envoyant parmi eux un messager issu d&#039;eux-mêmes »&quot;,&quot;id&quot;:&quot;Majelis-Majelis tentang Tafsir Firman Allah Taala: “Sungguh, Allah telah memberi karunia kepada orang-orang mukmin ketika Dia mengutus kepada mereka seorang rasul dari kalangan mereka sendiri”&quot;,&quot;ja&quot;:&quot;至高なるアッラーの御言葉「アッラーは信仰者たちに恵みを与え、彼ら自身の中から使徒を遣わされた」に関する解釈講話&quot;,&quot;ru&quot;:&quot;Маджлисы с толкованием слов Всевышнего: «Аллах оказал милость верующим, послав к ним посланника из их среды»&quot;,&quot;sw&quot;:&quot;Vikao kuhusu tafsiri ya kauli ya Allah, “Hakika Allah amewafadhilisha Waumini alipowatuma miongoni mwao Mtume kutoka kwao wenyewe”&quot;,&quot;tr&quot;:&quot;“Allah, müminlere kendi içlerinden bir peygamber göndererek lütufta bulundu...” Ayetinin Tefsirine Dair Dersler&quot;,&quot;ur&quot;:&quot;مجالس في تفسير قوله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِّنْ أَنفُسِهِمْ} (اللہ تعالیٰ کے فرمان کی تفسیر کے مجالس: یقیناً اللہ نے مومنوں پر احسان فرمایا جب ان میں انہی میں سے ایک رسول بھیجا)&quot;,&quot;zh&quot;:&quot;讲解真主所言“真主确已施恩于信士们，从他们中派遣了一位使者”&quot;}" data-original="مجالس في تفسير قوله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِّنْ أَنفُسِهِمْ}">مجالس في تفسير قوله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِّنْ أَنفُسِهِمْ}</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        مجالس في تفسير قوله تعالى {لَقَدْ مَنَّ اللَّهُ عَلَى الْمُؤْمِنِينَ إِذْ بَعَثَ فِيهِمْ رَسُولًا مِّنْ أَنفُسِهِمْ}
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      ابن ناصر الدين الدمشقي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1374/137469.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1374/137469.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Gathering and the Jewels of Knowledge - Translated by Al-Qaisi&quot;,&quot;es&quot;:&quot;Las tertulias y las joyas del saber — edición crítica de al-Qaysi&quot;,&quot;fr&quot;:&quot;Al-Mujalasa wa-Jawahir al-Ilm - édition al-Qaysi&quot;,&quot;id&quot;:&quot;Al-Mujalasah wa Jawahir al-Ilm (Majelis dan Permata Ilmu) - tahkik al-Qaisi&quot;,&quot;ja&quot;:&quot;集いと知識の宝石―アル＝カイシー校訂&quot;,&quot;ru&quot;:&quot;Аль-Муджаляса ва-джавахир аль-&#039;ильм (Собеседование и драгоценности знания) — тахкик аль-Кайси&quot;,&quot;sw&quot;:&quot;Al-Mujalasa wa Jawahir al-Ilm (Mijadala na Vito vya Elimu) - Toleo la al-Qaysi&quot;,&quot;tr&quot;:&quot;el-Mücâlese ve Cevâhirü&#039;l-ilm – Kaysî tahkiki&quot;,&quot;zh&quot;:&quot;《集会与知识瑰宝》——盖西校勘本&quot;}" data-original="المجالسة وجواهر العلم- ت القيسي">المجالسة وجواهر العلم- ت القيسي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        المجالسة وجواهر العلم- ت القيسي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن مروان بن محمد الدينوري
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1378/137829.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1378/137829.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Ultimate Goal and the Greatest Blessing in What God Forgives of Sins and Grants Paradise&quot;,&quot;es&quot;:&quot;El objetivo más deseado y la mayor gracia: aquello por lo que Allah perdona los pecados y concede el Paraíso&quot;,&quot;fr&quot;:&quot;Ghayat al-Matlub wa Azam al-Minna fima Yaghfir Allah bihi al-Dhunub wa Yujib al-Janna (L&#039;objet ultime et le plus grand bienfait : ce par quoi Allah pardonne les péchés et accorde le Paradis)&quot;,&quot;id&quot;:&quot;Ghayat al-Mathlub wa A‘zham al-Minnah fima Yaghfirullah bihi adz-Dzunub wa Yujib al-Jannah (Tujuan yang diharapkan dan anugerah terbesar tentang hal-hal yang dengannya Allah mengampuni dosa dan mewajibkan surga)&quot;,&quot;ja&quot;:&quot;ガーヤト・アル＝マトルーブ・ワ・アアザム・アル＝ミンナ・フィーマー・ヤグフィルッラーフ・ビヒ・アッ＝ズヌーブ・ワ・ユージブ・アル＝ジャンナ&quot;,&quot;ru&quot;:&quot;Гаят аль-матлуб ва а‘зам аль-минна фима ягфиру Аллаху бихи аз-зунуб ва юджиб аль-джанна&quot;,&quot;sw&quot;:&quot;Ghayat al-Matlub wa A&#039;zam al-Minna fima Yaghfir Allah bihi al-Dhunub wa Yujib al-Janna (Lengo kuu na neema kubwa: yanayofuta madhambi na kupelekea Pepo)&quot;,&quot;tr&quot;:&quot;Gâyetü’l-matlûb ve a‘zamü’l-minne fîmâ yağfirullâhu bihi’z-zünûbe ve yûcibü’l-cenne (Allah’ın günahları bağışlamasına ve cenneti gerekli kılmasına vesile olan ameller)&quot;,&quot;zh&quot;:&quot;所求之极与至大恩典：真主借以赦罪并使人得入乐园之事&quot;}" data-original="غاية المطلوب وأعظم المنة فيما يغفر الله به الذنوب ويوجب الجنة">غاية المطلوب وأعظم المنة فيما يغفر الله به الذنوب ويوجب الجنة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        غاية المطلوب وأعظم المنة فيما يغفر الله به الذنوب ويوجب الجنة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن علي ابن الدبيع الشيباني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1412/141208.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1412/141208.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Stories of the Prophets and the Virtues of the Tribes from the Explanation of the Comprehensive Authentic&quot;,&quot;es&quot;:&quot;Relatos de los profetas y méritos de las tribus, tomado de al-Tawdih li-Sharh al-Jami al-Sahih (La aclaración del comentario de la compilación auténtica)&quot;,&quot;fr&quot;:&quot;Les récits des prophètes et les mérites des tribus, extraits d&#039;al-Tawdih (Commentaire du Sahih)&quot;,&quot;id&quot;:&quot;Kisah Para Nabi dan Keutamaan Kabilah-Kabilah dari At-Taudhih fi Syarh al-Jami&#039; as-Sahih (Penjelasan atas Syarah Al-Jami&#039; Ash-Shahih)&quot;,&quot;ja&quot;:&quot;『アル＝ジャーミウ・アッ＝サヒーフ』注釈書『アット＝タウディーフ』からの預言者物語と部族の美徳&quot;,&quot;ru&quot;:&quot;Рассказы о пророках и достоинства племен из книги «Ат-Таудих» — комментария к «Сахиху»&quot;,&quot;sw&quot;:&quot;Hadithi za manabii na fadhila za makabila kutoka katika Al-Tawdih, sharh ya Al-Jami al-Sahih&quot;,&quot;tr&quot;:&quot;Peygamber Kıssaları ve Kabilelerin Menkıbeleri: et-Tavdîh li-Şerhi’l-Câmi‘i’s-Sahîh’ten&quot;,&quot;zh&quot;:&quot;《〈正确汇编注释〉中的先知故事与部族美德》&quot;}" data-original="قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح">قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عمر بن علي أحمد الأنصاري ابن الملقن
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1445/144521.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1445/144521.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Book of Design in Explaining the Forty&quot;,&quot;es&quot;:&quot;Kitab al-Tay&#039;in fi sharh al-Arba&#039;in (Libro de la designación: comentario de los Cuarenta)&quot;,&quot;fr&quot;:&quot;Kitab al-Ta&#039;yin fi sharh al-Arba&#039;in (Commentaire des Quarante hadiths)&quot;,&quot;id&quot;:&quot;Kitab At-Ta&#039;yin fi Syarh Al-Arba&#039;in (Penjelasan atas Empat Puluh Hadis)&quot;,&quot;ja&quot;:&quot;『アル＝アルバイーン』注釈書『キターブ・アッ＝タアイーン』&quot;,&quot;ru&quot;:&quot;Китаб ат-Тайин фи шарх аль-Арбаин (Книга разъяснения сорока хадисов)&quot;,&quot;sw&quot;:&quot;Kitab al-Ta&#039;yin fi Sharh al-Arba&#039;in (Kitabu cha kubainisha katika ufafanuzi wa Hadith Arobaini)&quot;,&quot;tr&quot;:&quot;Kitâbü’t-Ta‘yîn fî şerhi’l-Erbaîn (Kırk Hadisin Şerhi)&quot;,&quot;zh&quot;:&quot;《四十段圣训注释选》&quot;}" data-original="كتاب التعيين في شرح الأربعين">كتاب التعيين في شرح الأربعين</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        كتاب التعيين في شرح الأربعين
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      سليمان بن عبد القوي الطوفي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1446/144606.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1446/144606.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Erection of the Flag for the Hadiths of Guidance with its Commentary, The Aspiration of the Scholar in the Verification of Zaili&#039;s Work&quot;,&quot;es&quot;:&quot;Nasb al-Raya li-Ahadith al-Hidaya ma&#039;a Hashiyatihi Bughyat al-Alma&#039;i fi Takhrij al-Zayla&#039;i [La insignia de los hadices de al-Hidaya, con la glosa Bughyat al-Alma&#039;i sobre la localización de fuentes de al-Zayla&#039;i]&quot;,&quot;fr&quot;:&quot;Nasb al-raya li-ahadith al-hidaya, avec son annotation Bughyat al-alma&#039;i fi takhrij al-Zayla&#039;i (Référencement des hadiths d&#039;al-Hidaya, accompagné de l&#039;annotation...)&quot;,&quot;id&quot;:&quot;Nashb ar-Rayah li Ahadits al-Hidayah ma&#039;a Hasyiyatihi Bughyat al-Alma&#039;i fi Takhrij az-Zaila&#039;i [Penghimpunan Riwayat Hadis dalam Al-Hidayah beserta Catatan Pinggirnya: Hasrat Sang Cendekia untuk Menelusuri Sumber Hadis Az-Zaila&#039;i]&quot;,&quot;ja&quot;:&quot;『導きのハディースへの旗印』と、その注釈『ザイラウイーの伝承出典を明らかにするアル＝アルマイーの願い』&quot;,&quot;ru&quot;:&quot;Насб ар-райя по хадисам «аль-Хидая» с примечаниями «Бугьят аль-алмаи фи тахридж аз-Зайляи»&quot;,&quot;sw&quot;:&quot;Nasb al-Raya li-Ahadith al-Hidaya pamoja na tanbihi yake Bughyat al-Alma’i fi Takhrij al-Zayla’i (Kuinua Bendera kwa Hadithi za Uongofu; Shauku ya Mjuzi katika Uainishaji wa Hadithi za al-Zayla’i)&quot;,&quot;tr&quot;:&quot;Nasbü&#039;r-râye li-ehâdîsi&#039;l-Hidâye (Hidâye hadisleri için sancak dikmek), Zeylaî&#039;nin hadis tahricine dair Buğyetü&#039;l-elmaî hâşiyesiyle birlikte&quot;,&quot;ur&quot;:&quot;نصب الراية لأحاديث الهداية مع حاشيته بغية الألمعي في تخريج الزيلعي (ہدایہ کی احادیث کے لیے نصب الرایہ، زیلعی کی تخریج پر حاشیہ بغية الألمعي کے ساتھ)&quot;,&quot;zh&quot;:&quot;《为〈指引圣训〉树立标帜：附载《泽伊莱仪圣训考证中的明眼人所求》》&quot;}" data-original="نصب الراية لأحاديث الهداية مع حاشيته بغية الألمعي في تخريج الزيلعي">نصب الراية لأحاديث الهداية مع حاشيته بغية الألمعي في تخريج الزيلعي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        نصب الراية لأحاديث الهداية مع حاشيته بغية الألمعي في تخريج الزيلعي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الله بن يوسف بن محمد الزيلعي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1461/146113.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1461/146113.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Book of Sunnah, Sunan Abu Dawood - By Awama&quot;,&quot;es&quot;:&quot;Libro de las tradiciones, Sunan de Abu Dawud — edición de Awwama&quot;,&quot;fr&quot;:&quot;Kitab al-Sunan, Sunan Abu Dawud (éd. Awwama)&quot;,&quot;id&quot;:&quot;Kitab as-Sunan, Sunan Abu Dawud — tahkik Awwamah&quot;,&quot;ja&quot;:&quot;スナンの書、アブー・ダーウードのスナン――アウワーマ校訂版&quot;,&quot;ru&quot;:&quot;Книга Сунан: Сунан Абу Дауда — тахкик Аувамы&quot;,&quot;sw&quot;:&quot;Kitab al-Sunan, Sunan Abu Dawud — tahkiki ya Awwama&quot;,&quot;tr&quot;:&quot;Kitâbü&#039;s-Sünen, Ebû Dâvûd&#039;un Sünen&#039;i – tahkik eden: Avvâme&quot;,&quot;zh&quot;:&quot;《圣训集：艾布·达伍德圣训集》——阿瓦迈校勘&quot;}" data-original="كتاب السنن، سنن أبي داود- ت عوامة">كتاب السنن، سنن أبي داود- ت عوامة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        كتاب السنن، سنن أبي داود- ت عوامة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      سليمان بن الأشعث السجستاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1501/150118.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1501/150118.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Mothers in Grammatical Chapters: An Inductive and Explanatory Study of the Aspects of the Tool in the Context of Its Chapter&quot;,&quot;es&quot;:&quot;Los elementos fundamentales en los capítulos de gramática: estudio inductivo y explicativo de las funciones de las partículas según sus capítulos&quot;,&quot;fr&quot;:&quot;Les fondements des chapitres grammaticaux : étude inductive et explicative des fonctions grammaticales dans leurs domaines respectifs&quot;,&quot;id&quot;:&quot;Pokok-Pokok dalam Bab-Bab Nahwu: Kajian Induktif dan Analitis tentang Segi-Segi Partikel berdasarkan Babnya&quot;,&quot;ja&quot;:&quot;文法範疇における母体的要素――各範疇の基礎となる語法の諸相に関する帰納的・論証的研究&quot;,&quot;ru&quot;:&quot;Основы в разделах грамматики: индуктивное и объяснительное исследование функций служебных слов, определяющих содержание раздела&quot;,&quot;sw&quot;:&quot;Misingi katika milango ya nahau: uchunguzi wa kiindukta na wa kihoja kuhusu dhima za zana za kisarufi katika milango yake&quot;,&quot;tr&quot;:&quot;Nahiv Bölümlerinin Temel Unsurları: Edatların Bölümlerindeki İşlevlerine Dair Tümevarımsal ve Gerekçeli Bir İnceleme&quot;,&quot;zh&quot;:&quot;《语法章节中的根本原则：工具词各用法的归纳与释因研究》&quot;}" data-original="الأمهات في الأبواب النحوية دراسة استقرائية تعليلية لأوجه الأداة بأمية بابها">الأمهات في الأبواب النحوية دراسة استقرائية تعليلية لأوجه الأداة بأمية بابها</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الأمهات في الأبواب النحوية دراسة استقرائية تعليلية لأوجه الأداة بأمية بابها
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      حسين أحمد عثمان
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1593/159386.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1593/159386.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Summary of the Introduction to the Science of Morphology by Ibn Malik&quot;,&quot;es&quot;:&quot;Concisión en la exposición de la ciencia de la morfología, de Ibn Malik&quot;,&quot;fr&quot;:&quot;La présentation concise de la morphologie, par Ibn Malik&quot;,&quot;id&quot;:&quot;Ijaz at-Ta&#039;rif fi Ilm at-Tashrif karya Ibnu Malik [Uraian Ringkas tentang Ilmu Sharaf]&quot;,&quot;ja&quot;:&quot;イブン・マーリク著『形態論の学における定義の簡潔化』&quot;,&quot;ru&quot;:&quot;Краткое изложение морфологии Ибн Малика&quot;,&quot;sw&quot;:&quot;Ijaz al-Ta&#039;rif fi Ilm al-Tasrif li-Ibn Malik (Utambulisho mfupi wa elimu ya mnyambuliko wa Ibn Malik)&quot;,&quot;tr&quot;:&quot;İbn Mâlik’in Tasrif İlmine Girişin Özeti&quot;,&quot;zh&quot;:&quot;《伊本·马立克〈形态变化学导论简编〉》&quot;}" data-original="إيجاز التعريف في علم التصريف لابن مالك">إيجاز التعريف في علم التصريف لابن مالك</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        إيجاز التعريف في علم التصريف لابن مالك
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن مالك الطائي النحوي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1827/182766.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1827/182766.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Ammar ibn Yasir: The Man of Trial, the Measure of Sedition, and the Believer Whom Paradise Longed For&quot;,&quot;es&quot;:&quot;Ammar ibn Yasir: el hombre de la prueba, el criterio en tiempos de discordia y el creyente a quien anhelaba el Paraíso&quot;,&quot;fr&quot;:&quot;Ammar ibn Yasir, homme d&#039;épreuve, repère en temps de trouble et croyant que le Paradis désirait accueillir&quot;,&quot;id&quot;:&quot;Ammar bin Yasir: Sosok yang Diuji, Tolok Ukur di Masa Fitnah, dan Mukmin yang Dirindukan Surga&quot;,&quot;ja&quot;:&quot;アンマール・イブン・ヤースィル：試練に立ち向かった人物、内乱の基準、そして天国が待ち望んだ信徒&quot;,&quot;ru&quot;:&quot;Аммар ибн Ясир: человек испытания, мерило смуты и верующий, которого возжелал рай&quot;,&quot;sw&quot;:&quot;Ammar bin Yasir: mtu wa mitihani, kipimo cha fitina, na muumini ambaye Pepo ilimtamani&quot;,&quot;tr&quot;:&quot;Ammâr b. Yâsir: Mihnetin Adamı, Fitnenin Ölçüsü ve Cennetin Özlediği Mümin&quot;,&quot;zh&quot;:&quot;阿马尔·本·亚西尔：苦难中的勇士、纷争的标尺、天堂所渴盼的信士&quot;}" data-original="عمار بن ياسر رجل المحنة وميزان الفتنة والمؤمن الذي اشتاقت إليه الجنة">عمار بن ياسر رجل المحنة وميزان الفتنة والمؤمن الذي اشتاقت إليه الجنة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        عمار بن ياسر رجل المحنة وميزان الفتنة والمؤمن الذي اشتاقت إليه الجنة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أسامة بن أحمد سلطان
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1967/196789.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1967/196789.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The High Demands of the Additions to the Eight Musnads, the Authenticated Version&quot;,&quot;es&quot;:&quot;Los objetivos elevados mediante los añadidos a los ocho Musnads: versión con cadenas de transmisión&quot;,&quot;fr&quot;:&quot;Les demandes élevées concernant les ajouts aux huit Musnad : version avec chaînes de transmission&quot;,&quot;id&quot;:&quot;Al-Matalib al-Aliyah bi Zawa&#039;id al-Masanid ats-Tsamaniyah (Tambahan-Tambahan dalam Delapan Musnad), Edisi Bersanad&quot;,&quot;ja&quot;:&quot;八つのムスナド集の増補伝承を集めた『アル＝マターリブ・アル＝アーリヤ』――伝承経路付き版&quot;,&quot;ru&quot;:&quot;«Аль-Маталиб аль-алия би-заваид аль-масанид ас-самания» — версия с иснадами&quot;,&quot;sw&quot;:&quot;Al-Matalib al-Aliya bi-Zawa&#039;id al-Masanid al-Thamaniya (Mahitaji ya juu kuhusu nyongeza za misnad nane): toleo lenye misnad&quot;,&quot;tr&quot;:&quot;Sekiz Müsned&#039;in Zevâidini İçeren el-Metâlibü&#039;l-Âliye: Müsned Nüsha&quot;,&quot;zh&quot;:&quot;《八部圣训汇编增补之高阶诉求》：传述链版本&quot;}" data-original="المطالب العالية بزوائد المسانيد الثمانية النسخة المسندة">المطالب العالية بزوائد المسانيد الثمانية النسخة المسندة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        المطالب العالية بزوائد المسانيد الثمانية النسخة المسندة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

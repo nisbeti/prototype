@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="authors"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>مصطفى بن العدوي</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,124 +70,148 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../authors.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Authors</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Mustafa bin Al-Adawi&quot;,&quot;es&quot;:&quot;Mustafa ibn al-Adawi&quot;,&quot;fr&quot;:&quot;Mustafa ibn al-Adawi&quot;,&quot;id&quot;:&quot;Mustafa bin Al-Adawi&quot;,&quot;ja&quot;:&quot;ムスタファー・イブン・アル＝アダウィー&quot;,&quot;ru&quot;:&quot;Мустафа ибн аль-Адави&quot;,&quot;sw&quot;:&quot;Mustafa bin al-Adawi&quot;,&quot;tr&quot;:&quot;Mustafa b. Adevî&quot;,&quot;zh&quot;:&quot;穆斯塔法·本·阿达维&quot;}" data-original="مصطفى بن العدوي">مصطفى بن العدوي</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Author
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/972/97284.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/972/97284.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Humiliation and Submission to the Mighty and Powerful or Humility in Prayer&quot;,&quot;es&quot;:&quot;Humillación y sumisión ante el Poderoso y Dominador, o la humildad en la oración&quot;,&quot;fr&quot;:&quot;L’humilité et l’abaissement devant le Tout-Puissant, ou le recueillement dans la prière&quot;,&quot;id&quot;:&quot;Kerendahan Diri dan Ketundukan kepada Allah Yang Mahaperkasa lagi Maha Mengalahkan, atau Kekhusyukan dalam Salat&quot;,&quot;ja&quot;:&quot;全能なる御方の前での卑下と謙虚、または礼拝における恭敬&quot;,&quot;ru&quot;:&quot;Уничижение и смирение перед Всемогущим и Подчиняющим, или смирение в молитве&quot;,&quot;sw&quot;:&quot;Unyenyekevu na kujinyenyekeza mbele ya Mwenye nguvu, Mshindi, au khushuu katika swala&quot;,&quot;tr&quot;:&quot;Azîz ve Cebbâr Olan Allah’ın Huzurunda Boyun Eğiş ve Tevazu yahut Namazda Huşû&quot;,&quot;zh&quot;:&quot;在至强主宰面前的谦卑与屈服，或礼拜中的虔敬&quot;}" data-original="الذل والأنكسار للعزيز الجبار أو الخشوع في الصلاة">الذل والأنكسار للعزيز الجبار أو الخشوع في الصلاة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Mustafa bin Al-Adawi&quot;,&quot;es&quot;:&quot;Mustafa ibn al-Adawi&quot;,&quot;fr&quot;:&quot;Mustafa ibn al-Adawi&quot;,&quot;id&quot;:&quot;Mustafa bin Al-Adawi&quot;,&quot;ja&quot;:&quot;ムスタファー・イブン・アル＝アダウィー&quot;,&quot;ru&quot;:&quot;Мустафа ибн аль-Адави&quot;,&quot;sw&quot;:&quot;Mustafa bin al-Adawi&quot;,&quot;tr&quot;:&quot;Mustafa b. Adevî&quot;,&quot;zh&quot;:&quot;穆斯塔法·本·阿达维&quot;}" data-original="مصطفى بن العدوي">مصطفى بن العدوي</span></h1>
-  <p class="muted">
-    <span data-t="Author">Author</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/972/97284.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Humiliation and Submission to the Mighty and Powerful or Humility in Prayer&quot;,&quot;es&quot;:&quot;Humillación y sumisión ante el Poderoso y Dominador, o la humildad en la oración&quot;,&quot;fr&quot;:&quot;L’humilité et l’abaissement devant le Tout-Puissant, ou le recueillement dans la prière&quot;,&quot;id&quot;:&quot;Kerendahan Diri dan Ketundukan kepada Allah Yang Mahaperkasa lagi Maha Mengalahkan, atau Kekhusyukan dalam Salat&quot;,&quot;ja&quot;:&quot;全能なる御方の前での卑下と謙虚、または礼拝における恭敬&quot;,&quot;ru&quot;:&quot;Уничижение и смирение перед Всемогущим и Подчиняющим, или смирение в молитве&quot;,&quot;sw&quot;:&quot;Unyenyekevu na kujinyenyekeza mbele ya Mwenye nguvu, Mshindi, au khushuu katika swala&quot;,&quot;tr&quot;:&quot;Azîz ve Cebbâr Olan Allah’ın Huzurunda Boyun Eğiş ve Tevazu yahut Namazda Huşû&quot;,&quot;zh&quot;:&quot;在至强主宰面前的谦卑与屈服，或礼拜中的虔敬&quot;}" data-original="الذل والأنكسار للعزيز الجبار أو الخشوع في الصلاة">الذل والأنكسار للعزيز الجبار أو الخشوع في الصلاة</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن أحمد بن رجب الحنبلي</td>
-        <td dir="auto">دار الرسالة</td>
-        <td dir="auto">1430 -2009</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/977/97777.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Revelation of Distress in Describing the People of Alienation&quot;,&quot;es&quot;:&quot;Kashf al-Kurba fi Wasf Ahl al-Ghurba (Alivio de la aflicción: descripción de los forasteros)&quot;,&quot;fr&quot;:&quot;Kashf al-Kurba fi Wasf Ahl al-Ghurba (Dissiper l&#039;affliction : description des étrangers)&quot;,&quot;id&quot;:&quot;Kasyf al-Kurbah fi Washf Ahl al-Ghurbah (Menghilangkan Kesedihan dengan Menggambarkan Orang-Orang yang Terasing)&quot;,&quot;ja&quot;:&quot;異郷の人々のありさまを描いた苦境の解消&quot;,&quot;ru&quot;:&quot;Устранение скорби: описание людей на чужбине&quot;,&quot;sw&quot;:&quot;Kashf al-Kurba fi Wasf Ahl al-Ghurba (Kuondoa Dhiki kwa Kueleza Hali ya Wageni)&quot;,&quot;tr&quot;:&quot;Keşfü’l-Kürbe fî Vasfi Ehli’l-Gurbe (Gurbet Ehlinin Tasviri)&quot;,&quot;ur&quot;:&quot;كشف الكربة في وصف أهل الغربة (اجنبیت گزیدہ لوگوں کی کیفیت بیان کرنے سے غم کا ازالہ)&quot;,&quot;zh&quot;:&quot;《描述异乡人之苦的消解》&quot;}" data-original="كشف الكربة في وصف أهل الغربة">كشف الكربة في وصف أهل الغربة</span>
-          </a>
-        </td>
-        <td dir="auto">بن رجب الحنبلي</td>
-        <td dir="auto">دار ابن رجب</td>
-        <td dir="auto">1423 - 2002</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1382/138273.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Best Choice in Explaining the Hadith of the Dispute of the Supreme Assembly - Fuwailah&quot;,&quot;es&quot;:&quot;La elección preferible en el comentario del hadiz sobre la disputa de la asamblea suprema: edición de Fuwayla&quot;,&quot;fr&quot;:&quot;Ikhtiyar al-awla fi sharh hadith ikhtisam al-mala al-a&#039;la (Le meilleur choix dans le commentaire du hadith sur la dispute de l&#039;assemblée céleste) - édition critique de Fuwaila&quot;,&quot;id&quot;:&quot;Memilih yang Terbaik dalam Menjelaskan Hadis Perselisihan Al-Mala&#039; Al-A&#039;la — edisi tahkik Fuwaylah&quot;,&quot;ja&quot;:&quot;最善の選択――至高の天使たちの論争に関するハディースの解説――フワイラ校訂版&quot;,&quot;ru&quot;:&quot;Предпочтение лучшего: комментарий к хадису о споре Высшего сонма — тахкик Фувейлы&quot;,&quot;sw&quot;:&quot;Kuchagua yaliyo bora katika kufafanua hadithi ya mabishano ya wakazi wa mbingu za juu - Tahqiq ya Fawila&quot;,&quot;tr&quot;:&quot;En Uygun Seçim: Mele-i A‘lâ’nın Tartışması Hadisinin Şerhi – Tahkik: Füveyile&quot;,&quot;ur&quot;:&quot;اختيار الأولى في شرح حديث اختصام الملأ الأعلى- ت فويلة (ملأ اعلیٰ کے جھگڑے کی حدیث کی شرح میں بہترین قول کا انتخاب — تحقیق: فویلہ)&quot;,&quot;zh&quot;:&quot;《阐释至高天使争论圣训的最佳选篇——富韦莱校勘本》&quot;}" data-original="اختيار الأولى في شرح حديث اختصام الملأ الأعلى- ت فويلة">اختيار الأولى في شرح حديث اختصام الملأ الأعلى- ت فويلة</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن البغدادي بن رجب الحنبلي</td>
-        <td dir="auto">دار ابن رجب</td>
-        <td dir="auto">1432هـ 2003م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        الذل والأنكسار للعزيز الجبار أو الخشوع في الصلاة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن أحمد بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/977/97777.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/977/97777.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Revelation of Distress in Describing the People of Alienation&quot;,&quot;es&quot;:&quot;Kashf al-Kurba fi Wasf Ahl al-Ghurba (Alivio de la aflicción: descripción de los forasteros)&quot;,&quot;fr&quot;:&quot;Kashf al-Kurba fi Wasf Ahl al-Ghurba (Dissiper l&#039;affliction : description des étrangers)&quot;,&quot;id&quot;:&quot;Kasyf al-Kurbah fi Washf Ahl al-Ghurbah (Menghilangkan Kesedihan dengan Menggambarkan Orang-Orang yang Terasing)&quot;,&quot;ja&quot;:&quot;異郷の人々のありさまを描いた苦境の解消&quot;,&quot;ru&quot;:&quot;Устранение скорби: описание людей на чужбине&quot;,&quot;sw&quot;:&quot;Kashf al-Kurba fi Wasf Ahl al-Ghurba (Kuondoa Dhiki kwa Kueleza Hali ya Wageni)&quot;,&quot;tr&quot;:&quot;Keşfü’l-Kürbe fî Vasfi Ehli’l-Gurbe (Gurbet Ehlinin Tasviri)&quot;,&quot;ur&quot;:&quot;كشف الكربة في وصف أهل الغربة (اجنبیت گزیدہ لوگوں کی کیفیت بیان کرنے سے غم کا ازالہ)&quot;,&quot;zh&quot;:&quot;《描述异乡人之苦的消解》&quot;}" data-original="كشف الكربة في وصف أهل الغربة">كشف الكربة في وصف أهل الغربة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        كشف الكربة في وصف أهل الغربة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1382/138273.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1382/138273.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Best Choice in Explaining the Hadith of the Dispute of the Supreme Assembly - Fuwailah&quot;,&quot;es&quot;:&quot;La elección preferible en el comentario del hadiz sobre la disputa de la asamblea suprema: edición de Fuwayla&quot;,&quot;fr&quot;:&quot;Ikhtiyar al-awla fi sharh hadith ikhtisam al-mala al-a&#039;la (Le meilleur choix dans le commentaire du hadith sur la dispute de l&#039;assemblée céleste) - édition critique de Fuwaila&quot;,&quot;id&quot;:&quot;Memilih yang Terbaik dalam Menjelaskan Hadis Perselisihan Al-Mala&#039; Al-A&#039;la — edisi tahkik Fuwaylah&quot;,&quot;ja&quot;:&quot;最善の選択――至高の天使たちの論争に関するハディースの解説――フワイラ校訂版&quot;,&quot;ru&quot;:&quot;Предпочтение лучшего: комментарий к хадису о споре Высшего сонма — тахкик Фувейлы&quot;,&quot;sw&quot;:&quot;Kuchagua yaliyo bora katika kufafanua hadithi ya mabishano ya wakazi wa mbingu za juu - Tahqiq ya Fawila&quot;,&quot;tr&quot;:&quot;En Uygun Seçim: Mele-i A‘lâ’nın Tartışması Hadisinin Şerhi – Tahkik: Füveyile&quot;,&quot;ur&quot;:&quot;اختيار الأولى في شرح حديث اختصام الملأ الأعلى- ت فويلة (ملأ اعلیٰ کے جھگڑے کی حدیث کی شرح میں بہترین قول کا انتخاب — تحقیق: فویلہ)&quot;,&quot;zh&quot;:&quot;《阐释至高天使争论圣训的最佳选篇——富韦莱校勘本》&quot;}" data-original="اختيار الأولى في شرح حديث اختصام الملأ الأعلى- ت فويلة">اختيار الأولى في شرح حديث اختصام الملأ الأعلى- ت فويلة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        اختيار الأولى في شرح حديث اختصام الملأ الأعلى- ت فويلة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن البغدادي بن رجب الحنبلي
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

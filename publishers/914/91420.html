@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>مكتبة المؤيد</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,124 +70,148 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Mu&#039;ayyid Library&quot;,&quot;es&quot;:&quot;Biblioteca al-Mu&#039;ayyid&quot;,&quot;fr&quot;:&quot;Bibliothèque al-Mu&#039;ayyid&quot;,&quot;id&quot;:&quot;Perpustakaan Al-Mu&#039;ayyid&quot;,&quot;ja&quot;:&quot;アル＝ムアイイド図書館&quot;,&quot;ru&quot;:&quot;Библиотека аль-Му&#039;аййид&quot;,&quot;sw&quot;:&quot;Maktaba ya al-Mu&#039;ayyid&quot;,&quot;tr&quot;:&quot;el-Müeyyed Kütüphanesi&quot;,&quot;zh&quot;:&quot;穆艾耶德图书馆&quot;}" data-original="مكتبة المؤيد">مكتبة المؤيد</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/1145/114503.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1145/114503.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Warning of the Fire and the Description of the State of the Abode of Perdition - T. Oyun&quot;,&quot;es&quot;:&quot;Al-Takhwif min al-Nar wa al-Tarif bi Hal Dar al-Bawar (Amedrentar con el fuego y describir la morada de la perdición) - ed. Uyun&quot;,&quot;fr&quot;:&quot;La mise en garde contre le Feu et la description de la demeure de perdition - éd. Uyun&quot;,&quot;id&quot;:&quot;At-Takhwif min an-Nar wa at-Ta&#039;rif bi Hali Dar al-Bawar (Peringatan tentang Neraka dan Gambaran Keadaan Negeri Kebinasaan) — edisi Uyun&quot;,&quot;ja&quot;:&quot;火獄への恐れと滅びの家のありさまについて ― ウユーン校訂版&quot;,&quot;ru&quot;:&quot;Предостережение от Огня и описание обители погибели — тахкик «Уюн»&quot;,&quot;sw&quot;:&quot;Kutisha kwa Moto na Kueleza Hali ya Nyumba ya Hasara - toleo la Uyun&quot;,&quot;tr&quot;:&quot;et-Tahvîf mine’n-nâr ve’t-ta‘rîf bi-hâli dâri’l-bevâr (Cehennem Korkusu ve Helâk Yurdu’nun Durumu) - Uyûn tahkiki&quot;,&quot;ur&quot;:&quot;التخويف من النار والتعريف بحال دار البوار- ت. عيون (آگ سے ڈرانا اور ہلاکت کے گھر کے حالات سے آگاہ کرنا — تحقیق: عیون)&quot;,&quot;zh&quot;:&quot;《警示火狱并介绍毁灭之家的状况》——阿尤恩校勘本&quot;}" data-original="التخويف من النار والتعريف بحال دار البوار- ت. عيون">التخويف من النار والتعريف بحال دار البوار- ت. عيون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Mu&#039;ayyid Library&quot;,&quot;es&quot;:&quot;Biblioteca al-Mu&#039;ayyid&quot;,&quot;fr&quot;:&quot;Bibliothèque al-Mu&#039;ayyid&quot;,&quot;id&quot;:&quot;Perpustakaan Al-Mu&#039;ayyid&quot;,&quot;ja&quot;:&quot;アル＝ムアイイド図書館&quot;,&quot;ru&quot;:&quot;Библиотека аль-Му&#039;аййид&quot;,&quot;sw&quot;:&quot;Maktaba ya al-Mu&#039;ayyid&quot;,&quot;tr&quot;:&quot;el-Müeyyed Kütüphanesi&quot;,&quot;zh&quot;:&quot;穆艾耶德图书馆&quot;}" data-original="مكتبة المؤيد">مكتبة المؤيد</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/1145/114503.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Warning of the Fire and the Description of the State of the Abode of Perdition - T. Oyun&quot;,&quot;es&quot;:&quot;Al-Takhwif min al-Nar wa al-Tarif bi Hal Dar al-Bawar (Amedrentar con el fuego y describir la morada de la perdición) - ed. Uyun&quot;,&quot;fr&quot;:&quot;La mise en garde contre le Feu et la description de la demeure de perdition - éd. Uyun&quot;,&quot;id&quot;:&quot;At-Takhwif min an-Nar wa at-Ta&#039;rif bi Hali Dar al-Bawar (Peringatan tentang Neraka dan Gambaran Keadaan Negeri Kebinasaan) — edisi Uyun&quot;,&quot;ja&quot;:&quot;火獄への恐れと滅びの家のありさまについて ― ウユーン校訂版&quot;,&quot;ru&quot;:&quot;Предостережение от Огня и описание обители погибели — тахкик «Уюн»&quot;,&quot;sw&quot;:&quot;Kutisha kwa Moto na Kueleza Hali ya Nyumba ya Hasara - toleo la Uyun&quot;,&quot;tr&quot;:&quot;et-Tahvîf mine’n-nâr ve’t-ta‘rîf bi-hâli dâri’l-bevâr (Cehennem Korkusu ve Helâk Yurdu’nun Durumu) - Uyûn tahkiki&quot;,&quot;ur&quot;:&quot;التخويف من النار والتعريف بحال دار البوار- ت. عيون (آگ سے ڈرانا اور ہلاکت کے گھر کے حالات سے آگاہ کرنا — تحقیق: عیون)&quot;,&quot;zh&quot;:&quot;《警示火狱并介绍毁灭之家的状况》——阿尤恩校勘本&quot;}" data-original="التخويف من النار والتعريف بحال دار البوار- ت. عيون">التخويف من النار والتعريف بحال دار البوار- ت. عيون</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن أحمد بن رجب الحنبلي</td>
-        <td dir="auto">مكتبة المؤيد • مكتبة دار البيان</td>
-        <td dir="auto">1409هـ 1988م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1145/114504.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Warning of the Fire and the Description of the State of the Abode of Perdition - 3rd Edition&quot;,&quot;es&quot;:&quot;Al-Takhwif min al-Nar wa al-Tarif bi Hal Dar al-Bawar (Amedrentar con el fuego y describir la morada de la perdición) - 3.ª ed.&quot;,&quot;fr&quot;:&quot;La mise en garde contre le Feu et la description de la demeure de perdition - 3e édition&quot;,&quot;id&quot;:&quot;At-Takhwif min an-Nar wa at-Ta&#039;rif bi Hali Dar al-Bawar (Peringatan tentang Neraka dan Gambaran Keadaan Negeri Kebinasaan) — cetakan 3&quot;,&quot;ja&quot;:&quot;火獄への恐れと滅びの家のありさまについて ― 第3版&quot;,&quot;ru&quot;:&quot;Предостережение от Огня и описание обители погибели — 3-е издание&quot;,&quot;sw&quot;:&quot;Kutisha kwa Moto na Kueleza Hali ya Nyumba ya Hasara - toleo la 3&quot;,&quot;tr&quot;:&quot;et-Tahvîf mine’n-nâr ve’t-ta‘rîf bi-hâli dâri’l-bevâr (Cehennem Korkusu ve Helâk Yurdu’nun Durumu) - 3. baskı&quot;,&quot;ur&quot;:&quot;التخويف من النار والتعريف بحال دار البوار- ط 3 (آگ سے ڈرانا اور ہلاکت کے گھر کے حالات سے آگاہ کرنا — طبع سوم)&quot;,&quot;zh&quot;:&quot;《警示火狱并介绍毁灭之家的状况》——第3版&quot;}" data-original="التخويف من النار والتعريف بحال دار البوار- ط 3">التخويف من النار والتعريف بحال دار البوار- ط 3</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن أحمد بن رجب الحنبلي</td>
-        <td dir="auto">مكتبة المؤيد • مكتبة دار البيان</td>
-        <td dir="auto">1413هـ 1992م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1214/121448.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Clarification on the Etiquette of the Carriers of the Quran - Translated by Bashir Ayoun&quot;,&quot;es&quot;:&quot;Al-Tibyan fi Adab Hamalat al-Quran (La exposición sobre la conducta de quienes estudian el Corán), edición de Bashir Uyun&quot;,&quot;fr&quot;:&quot;Al-Tibyan fi Adab Hamalat al-Quran (Éthique des porteurs du Quran) — éd. Bashir Uyun&quot;,&quot;id&quot;:&quot;Al-Tibyan fi Adab Hamalat al-Qur’an [Penjelasan tentang Adab para Pengemban Al-Qur’an] — Tahkik Bashir Uyun&quot;,&quot;ja&quot;:&quot;クルアーンを学ぶ者の作法についての『ティブヤーン』—校訂：バシール・ムハンマド・ウユーン&quot;,&quot;ru&quot;:&quot;Ат-Тибьян о нормах поведения тех, кто изучает Коран — тахкик Башира Уюна&quot;,&quot;sw&quot;:&quot;Al-Tibyan kuhusu adabu za wabebaji wa Quran (Ufafanuzi kuhusu adabu za wabebaji wa Quran) — tahakiki ya Bashir Uyun&quot;,&quot;tr&quot;:&quot;et-Tibyân fî Âdâbi Hameleti’l-Kur’ân (Kur’an’ı Taşıyanların Edebi) — Tahkik: Beşîr Uyûn&quot;,&quot;ur&quot;:&quot;التبيان في آداب حملة القرآن (قرآن کے حاملین کے آداب) - تحقیق بشير عيون&quot;,&quot;zh&quot;:&quot;《古兰经诵读者礼仪阐释》—巴希尔·欧云校勘本&quot;}" data-original="التبيان في آداب حملة القرآن- ت بشير عيون">التبيان في آداب حملة القرآن- ت بشير عيون</span>
-          </a>
-        </td>
-        <td dir="auto">يحيى بن شرف النووي</td>
-        <td dir="auto">مكتبة المؤيد • مكتبة دار البيان</td>
-        <td dir="auto">1991م 1412هـ</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        التخويف من النار والتعريف بحال دار البوار- ت. عيون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن أحمد بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1145/114504.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1145/114504.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Warning of the Fire and the Description of the State of the Abode of Perdition - 3rd Edition&quot;,&quot;es&quot;:&quot;Al-Takhwif min al-Nar wa al-Tarif bi Hal Dar al-Bawar (Amedrentar con el fuego y describir la morada de la perdición) - 3.ª ed.&quot;,&quot;fr&quot;:&quot;La mise en garde contre le Feu et la description de la demeure de perdition - 3e édition&quot;,&quot;id&quot;:&quot;At-Takhwif min an-Nar wa at-Ta&#039;rif bi Hali Dar al-Bawar (Peringatan tentang Neraka dan Gambaran Keadaan Negeri Kebinasaan) — cetakan 3&quot;,&quot;ja&quot;:&quot;火獄への恐れと滅びの家のありさまについて ― 第3版&quot;,&quot;ru&quot;:&quot;Предостережение от Огня и описание обители погибели — 3-е издание&quot;,&quot;sw&quot;:&quot;Kutisha kwa Moto na Kueleza Hali ya Nyumba ya Hasara - toleo la 3&quot;,&quot;tr&quot;:&quot;et-Tahvîf mine’n-nâr ve’t-ta‘rîf bi-hâli dâri’l-bevâr (Cehennem Korkusu ve Helâk Yurdu’nun Durumu) - 3. baskı&quot;,&quot;ur&quot;:&quot;التخويف من النار والتعريف بحال دار البوار- ط 3 (آگ سے ڈرانا اور ہلاکت کے گھر کے حالات سے آگاہ کرنا — طبع سوم)&quot;,&quot;zh&quot;:&quot;《警示火狱并介绍毁灭之家的状况》——第3版&quot;}" data-original="التخويف من النار والتعريف بحال دار البوار- ط 3">التخويف من النار والتعريف بحال دار البوار- ط 3</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        التخويف من النار والتعريف بحال دار البوار- ط 3
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن أحمد بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1214/121448.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1214/121448.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Clarification on the Etiquette of the Carriers of the Quran - Translated by Bashir Ayoun&quot;,&quot;es&quot;:&quot;Al-Tibyan fi Adab Hamalat al-Quran (La exposición sobre la conducta de quienes estudian el Corán), edición de Bashir Uyun&quot;,&quot;fr&quot;:&quot;Al-Tibyan fi Adab Hamalat al-Quran (Éthique des porteurs du Quran) — éd. Bashir Uyun&quot;,&quot;id&quot;:&quot;Al-Tibyan fi Adab Hamalat al-Qur’an [Penjelasan tentang Adab para Pengemban Al-Qur’an] — Tahkik Bashir Uyun&quot;,&quot;ja&quot;:&quot;クルアーンを学ぶ者の作法についての『ティブヤーン』—校訂：バシール・ムハンマド・ウユーン&quot;,&quot;ru&quot;:&quot;Ат-Тибьян о нормах поведения тех, кто изучает Коран — тахкик Башира Уюна&quot;,&quot;sw&quot;:&quot;Al-Tibyan kuhusu adabu za wabebaji wa Quran (Ufafanuzi kuhusu adabu za wabebaji wa Quran) — tahakiki ya Bashir Uyun&quot;,&quot;tr&quot;:&quot;et-Tibyân fî Âdâbi Hameleti’l-Kur’ân (Kur’an’ı Taşıyanların Edebi) — Tahkik: Beşîr Uyûn&quot;,&quot;ur&quot;:&quot;التبيان في آداب حملة القرآن (قرآن کے حاملین کے آداب) - تحقیق بشير عيون&quot;,&quot;zh&quot;:&quot;《古兰经诵读者礼仪阐释》—巴希尔·欧云校勘本&quot;}" data-original="التبيان في آداب حملة القرآن- ت بشير عيون">التبيان في آداب حملة القرآن- ت بشير عيون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        التبيان في آداب حملة القرآن- ت بشير عيون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

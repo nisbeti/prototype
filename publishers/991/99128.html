@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>مكتبة الطبري للنشر والتوزيع</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,174 +70,295 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Tabari Library for Publishing and Distribution&quot;,&quot;es&quot;:&quot;Al-Tabari Library for Publishing and Distribution&quot;,&quot;fr&quot;:&quot;Bibliothèque Al-Tabari&quot;,&quot;id&quot;:&quot;Maktabah Ath-Thabari li an-Nasyr wa at-Tauzi‘&quot;,&quot;ja&quot;:&quot;アル＝タバリー出版・配給図書館&quot;,&quot;ru&quot;:&quot;Библиотека ат-Табари&quot;,&quot;sw&quot;:&quot;Maktaba ya Al-Tabari ya Uchapishaji na Usambazaji&quot;,&quot;tr&quot;:&quot;Mektebetü&#039;t-Taberî li&#039;n-Neşr ve&#039;t-Tevzî‘&quot;,&quot;zh&quot;:&quot;塔巴里出版发行图书馆&quot;}" data-original="مكتبة الطبري للنشر والتوزيع">مكتبة الطبري للنشر والتوزيع</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/1154/115432.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1154/115432.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Poem of Al-Nuniya by Ibn Al-Qayyim - Al-Tabari Edition&quot;,&quot;es&quot;:&quot;Comentario de la oda nuniyya de Ibn al-Qayyim — ed. al-Tabari&quot;,&quot;fr&quot;:&quot;Commentaire de la qasida nuniyya d&#039;Ibn al-Qayyim — éd. al-Tabari&quot;,&quot;id&quot;:&quot;Syarah Qasidah Nuniyah Ibnu al-Qayyim – cetakan Ath-Thabari&quot;,&quot;ja&quot;:&quot;イブン・アル＝カイイムの詩『ヌーニーヤ』注釈―タバリー版&quot;,&quot;ru&quot;:&quot;Комментарий к «Нуннийе» Ибн аль-Каййима — издательство «ат-Табари»&quot;,&quot;sw&quot;:&quot;Sharh ya Qasida Nuniyya ya Ibn al-Qayyim — chapa ya al-Tabari&quot;,&quot;tr&quot;:&quot;İbn Kayyim&#039;in Nûniyye Kasidesinin Şerhi (et-Taberî baskısı)&quot;,&quot;ur&quot;:&quot;شرح القصيدة النونية لابن القيم (ابن القیم کے قصیدہ نونیہ کی شرح) - طبع الطبري&quot;,&quot;zh&quot;:&quot;伊本·盖伊姆《努尼叶颂诗》注释——塔巴里书店版&quot;}" data-original="شرح القصيدة النونية لابن القيم- ط الطبري">شرح القصيدة النونية لابن القيم- ط الطبري</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Tabari Library for Publishing and Distribution&quot;,&quot;es&quot;:&quot;Al-Tabari Library for Publishing and Distribution&quot;,&quot;fr&quot;:&quot;Bibliothèque Al-Tabari&quot;,&quot;id&quot;:&quot;Maktabah Ath-Thabari li an-Nasyr wa at-Tauzi‘&quot;,&quot;ja&quot;:&quot;アル＝タバリー出版・配給図書館&quot;,&quot;ru&quot;:&quot;Библиотека ат-Табари&quot;,&quot;sw&quot;:&quot;Maktaba ya Al-Tabari ya Uchapishaji na Usambazaji&quot;,&quot;tr&quot;:&quot;Mektebetü&#039;t-Taberî li&#039;n-Neşr ve&#039;t-Tevzî‘&quot;,&quot;zh&quot;:&quot;塔巴里出版发行图书馆&quot;}" data-original="مكتبة الطبري للنشر والتوزيع">مكتبة الطبري للنشر والتوزيع</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/1154/115432.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Poem of Al-Nuniya by Ibn Al-Qayyim - Al-Tabari Edition&quot;,&quot;es&quot;:&quot;Comentario de la oda nuniyya de Ibn al-Qayyim — ed. al-Tabari&quot;,&quot;fr&quot;:&quot;Commentaire de la qasida nuniyya d&#039;Ibn al-Qayyim — éd. al-Tabari&quot;,&quot;id&quot;:&quot;Syarah Qasidah Nuniyah Ibnu al-Qayyim – cetakan Ath-Thabari&quot;,&quot;ja&quot;:&quot;イブン・アル＝カイイムの詩『ヌーニーヤ』注釈―タバリー版&quot;,&quot;ru&quot;:&quot;Комментарий к «Нуннийе» Ибн аль-Каййима — издательство «ат-Табари»&quot;,&quot;sw&quot;:&quot;Sharh ya Qasida Nuniyya ya Ibn al-Qayyim — chapa ya al-Tabari&quot;,&quot;tr&quot;:&quot;İbn Kayyim&#039;in Nûniyye Kasidesinin Şerhi (et-Taberî baskısı)&quot;,&quot;ur&quot;:&quot;شرح القصيدة النونية لابن القيم (ابن القیم کے قصیدہ نونیہ کی شرح) - طبع الطبري&quot;,&quot;zh&quot;:&quot;伊本·盖伊姆《努尼叶颂诗》注释——塔巴里书店版&quot;}" data-original="شرح القصيدة النونية لابن القيم- ط الطبري">شرح القصيدة النونية لابن القيم- ط الطبري</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين • عبد الرحمن بن ناصر السعدي • محمد خليل هراس</td>
-        <td dir="auto">مكتبة الطبري</td>
-        <td dir="auto">1429هـ 2008م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1385/138589.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of Sahih al-Bukhari with Comments by Ibn Baz and Hadith Benefits by Al-Albani&quot;,&quot;es&quot;:&quot;Comentario de Sahih al-Bujari (La recopilación auténtica de al-Bujari), con notas de Ibn Baz y apuntes sobre hadiz de al-Albani&quot;,&quot;fr&quot;:&quot;Commentaire du Sahih al-Bukhari avec les annotations d&#039;Ibn Baz et des enseignements sur le hadith d&#039;al-Albani&quot;,&quot;id&quot;:&quot;Syarah Shahih Al-Bukhari dengan catatan Ibnu Baz dan faedah hadis dari Al-Albani&quot;,&quot;ja&quot;:&quot;イブン・ウサイミーンによるサヒーフ・アル＝ブハーリー注釈（イブン・バーズの注記、アル＝アルバーニーのハディース学上の知見付き）&quot;,&quot;ru&quot;:&quot;Комментарий к «Сахиху» аль-Бухари с примечаниями Ибн База и хадисоведческими замечаниями аль-Альбани&quot;,&quot;sw&quot;:&quot;Maelezo ya Sahih al-Bukhari yenye tanbihi za Ibn Baz na faida za hadithi za al-Albani&quot;,&quot;tr&quot;:&quot;İbn Bâz&#039;ın Notları ve Elbânî&#039;nin Hadis Faydalarıyla Sahîh-i Buhârî Şerhi&quot;,&quot;ur&quot;:&quot;شرح صحيح البخاري بتعليقات ابن باز وفوائد حديثية للألباني (ابن باز کے تعلیقات اور البانی کے حدیثی فوائد کے ساتھ صحیح بخاری کی شرح)&quot;,&quot;zh&quot;:&quot;《布哈里圣训实录注释》，附伊本·巴兹评注及艾尔巴尼圣训学益处&quot;}" data-original="شرح صحيح البخاري بتعليقات ابن باز وفوائد حديثية للألباني">شرح صحيح البخاري بتعليقات ابن باز وفوائد حديثية للألباني</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مكتبة الطبري للنشر والتوزيع</td>
-        <td dir="auto">1429هـ 2008م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1386/138604.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Authentic Collection of Imam Muslim: The Shortened Authentic Hadith from the Traditions Transmitted by Trustworthy Narrators from the Messenger of Allah ﷺ&quot;,&quot;es&quot;:&quot;Sahih del imam Muslim, la recopilación auténtica y abreviada de las tradiciones, transmitida por narradores fidedignos de otros narradores fidedignos hasta el Mensajero de Allah ﷺ&quot;,&quot;fr&quot;:&quot;Sahih de l&#039;imam Muslim, recueil abrégé de traditions authentiques transmises par des transmetteurs fiables de transmetteurs fiables, d&#039;après le Messager d&#039;Allah ﷺ&quot;,&quot;id&quot;:&quot;Shahih Imam Muslim: Musnad Shahih Ringkas dari Kitab-Kitab Sunan, dengan Riwayat Perawi Tepercaya dari Perawi Tepercaya hingga Rasulullah ﷺ&quot;,&quot;ja&quot;:&quot;イマーム・ムスリムのサヒーフ――公正な伝承者から公正な伝承者へと伝えられた、使徒 ﷺ に由来する簡略なスンナ集&quot;,&quot;ru&quot;:&quot;«Сахих» имама Муслима — краткий достоверный сборник преданий, переданных надёжными передатчиками от надёжных передатчиков от Посланника Аллаха ﷺ&quot;,&quot;sw&quot;:&quot;Sahih ya Imam Muslim: Mkusanyo sahihi uliofupishwa kutoka Sunan, kwa upokezi wa mtu mwadilifu kutoka kwa mtu mwadilifu kutoka kwa Mtume ﷺ&quot;,&quot;tr&quot;:&quot;İmam Müslim&#039;in Sahîh&#039;i: Adil ravinin adil raviden Resûlullah&#039;tan ﷺ naklettiği kısa, sahih hadisler&quot;,&quot;ur&quot;:&quot;صحيح الإمام مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ (امام مسلم کی صحیح، مسند اور مختصر کتابِ سنن، رسول الله ﷺ سے عادل راوی کے واسطے سے عادل راوی کی روایت)&quot;,&quot;zh&quot;:&quot;伊玛目穆斯林《精简圣训实录》——通过公正传述者逐级传自真主使者 ﷺ&quot;}" data-original="صحيح الإمام مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ">صحيح الإمام مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ</span>
-          </a>
-        </td>
-        <td dir="auto">مسلم بن الحجاج بن مسلم القشيري النيسابوري</td>
-        <td dir="auto">مكتبة الطبري للنشر والتوزيع</td>
-        <td dir="auto">1433هـ 2012م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1821/182110.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Precious Interpretation by Sheikh Al-Othaymeen&quot;,&quot;es&quot;:&quot;La valiosa exégesis del eminente al-Uthaymin&quot;,&quot;fr&quot;:&quot;L&#039;exégèse précieuse du cheikh al-Uthaymin&quot;,&quot;id&quot;:&quot;At-Tafsir ats-Tsamin karya al-Allamah al-Utsaimin&quot;,&quot;ja&quot;:&quot;ウサイミーン師の貴重な注釈&quot;,&quot;ru&quot;:&quot;Драгоценный тафсир выдающегося учёного аль-Усаймина&quot;,&quot;sw&quot;:&quot;Tafsiri adhimu ya Sheikh al-Uthaymin&quot;,&quot;tr&quot;:&quot;Allâme İbn Useymîn’in Kıymetli Tefsiri&quot;,&quot;ur&quot;:&quot;التفسير الثمين للعلامة العثيمين (علامہ عثیمین کی گراں قدر تفسیر)&quot;,&quot;zh&quot;:&quot;《奥赛敏学者的珍贵注释》&quot;}" data-original="التفسير الثمين للعلامة العثيمين">التفسير الثمين للعلامة العثيمين</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مكتبة الطبري للنشر والتوزيع</td>
-        <td dir="auto">2009م 1430هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2158/215862.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Beautiful Pearls in Explaining the Prohibited Matters from the Texts of the Quran and the Prophetic Sunnah, Organized by Jurisprudential Chapters&quot;,&quot;es&quot;:&quot;Las perlas resplandecientes sobre las prohibiciones religiosas, a partir de los textos del Libro y la Sunna profética, ordenadas por capítulos de jurisprudencia&quot;,&quot;fr&quot;:&quot;Les perles éclatantes exposant les interdictions légales à partir des textes du Livre et de la Sunna prophétique, classées par chapitres de droit musulman&quot;,&quot;id&quot;:&quot;Mutiara-Mutiara Cemerlang tentang Larangan Syariat Berdasarkan Teks Al-Qur&#039;an dan Sunah Nabi, Disusun Menurut Bab-Bab Fikih&quot;,&quot;ja&quot;:&quot;クルアーンと預言者のスンナの典拠に基づく、法学の章別に配列したシャリーア上の禁止事項の解説『アッ＝ドゥラル・アル＝バヒーヤ』&quot;,&quot;ru&quot;:&quot;Сияющие жемчужины в разъяснении запретов шариата на основе текстов Книги и Сунны Пророка, расположенные по разделам фикха&quot;,&quot;sw&quot;:&quot;Al-Durar al-Bahiyya fi Bayan al-Manahi al-Shariyya min Nusus al-Kitab wa al-Sunna al-Nabawiyya Murattaba ala al-Abwab al-Fiqhiyya (Lulu zenye kung&#039;aa: maelezo ya makatazo ya kisheria kutoka katika matini za Quran na Sunna ya Mtume, yaliyopangwa kwa milango ya fiqhi)&quot;,&quot;tr&quot;:&quot;Kitap ve Nebevî Sünnet Metinlerinden Fıkıh Bölümlerine Göre Düzenlenmiş Şer&#039;î Yasakları Açıklayan Parlak İnciler&quot;,&quot;ur&quot;:&quot;الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية (کتاب و سنتِ نبوی کے نصوص سے شرعی ممانعتوں کا بیان، فقہی ابواب کی ترتیب سے)&quot;,&quot;zh&quot;:&quot;《珠光宝卷：依据经典与先知圣训文本、按法学章节编排的禁令阐释》&quot;}" data-original="الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية">الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مكتبة الطبري للنشر والتوزيع</td>
-        <td dir="auto">1428هـ 2007م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2158/215865.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Beautiful Pearls in Explaining the Prohibited Matters from the Texts of the Quran and the Prophetic Sunnah, Organized by Jurisprudential Chapters - Miniature Edition&quot;,&quot;es&quot;:&quot;Las perlas resplandecientes sobre las prohibiciones religiosas, a partir de los textos del Libro y la Sunna profética, ordenadas por capítulos de jurisprudencia: edición de bolsillo&quot;,&quot;fr&quot;:&quot;Les perles éclatantes exposant les interdictions légales à partir des textes du Livre et de la Sunna prophétique, classées par chapitres de droit musulman — édition miniature&quot;,&quot;id&quot;:&quot;Mutiara-Mutiara Cemerlang tentang Larangan Syariat Berdasarkan Teks Al-Qur&#039;an dan Sunah Nabi, Disusun Menurut Bab-Bab Fikih — Edisi Ringkas&quot;,&quot;ja&quot;:&quot;クルアーンと預言者のスンナの典拠に基づく、法学の章別に配列したシャリーア上の禁止事項の解説『アッ＝ドゥラル・アル＝バヒーヤ』―縮刷版&quot;,&quot;ru&quot;:&quot;Сияющие жемчужины в разъяснении запретов шариата на основе текстов Книги и Сунны Пророка, расположенные по разделам фикха — уменьшенный экземпляр&quot;,&quot;sw&quot;:&quot;Al-Durar al-Bahiyya fi Bayan al-Manahi al-Shariyya min Nusus al-Kitab wa al-Sunna al-Nabawiyya Murattaba ala al-Abwab al-Fiqhiyya - Nuskha Musaghghara (Lulu zenye kung&#039;aa: maelezo ya makatazo ya kisheria kutoka katika matini za Quran na Sunna ya Mtume, yaliyopangwa kwa milango ya fiqhi - toleo dogo)&quot;,&quot;tr&quot;:&quot;Kitap ve Nebevî Sünnet Metinlerinden Fıkıh Bölümlerine Göre Düzenlenmiş Şer&#039;î Yasakları Açıklayan Parlak İnciler – Küçük Boy Baskı&quot;,&quot;ur&quot;:&quot;الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية- نسخة مصغرة (کتاب و سنتِ نبوی کے نصوص سے شرعی ممانعتوں کا بیان، فقہی ابواب کی ترتیب سے — مختصر نسخہ)&quot;,&quot;zh&quot;:&quot;《珠光宝卷：依据经典与先知圣训文本、按法学章节编排的禁令阐释——缩印本》&quot;}" data-original="الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية- نسخة مصغرة">الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية- نسخة مصغرة</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مكتبة الطبري للنشر والتوزيع</td>
-        <td dir="auto">1428هـ 2007م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2196/219659.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Beautiful Pearls in Explaining the Prohibited Matters from the Texts of the Quran and the Prophetic Sunnah, Organized by Jurisprudential Chapters&quot;,&quot;es&quot;:&quot;Las perlas luminosas sobre las prohibiciones jurídicas, según los textos del Libro y la Sunna profética, ordenadas por capítulos de derecho islámico&quot;,&quot;fr&quot;:&quot;Les perles éclatantes exposant les interdits religieux à partir des textes du Livre et de la Sunna prophétique, classées selon les chapitres du droit musulman&quot;,&quot;id&quot;:&quot;Ad-Durar Al-Bahiyyah fi Bayan Al-Manahi Asy-Syar‘iyyah min Nushush Al-Kitab wa As-Sunnah An-Nabawiyyah Murattabah ‘ala Al-Abwab Al-Fiqhiyyah (Permata Gemilang tentang Larangan-Larangan Syariat dalam Teks Al-Quran dan Sunah Nabi, Disusun Menurut Bab-Bab Fikih)&quot;,&quot;ja&quot;:&quot;クルアーンと預言者のスンナの諸テキストに基づく、法学各章別に整理されたシャリーア上の禁止事項を明らかにする輝かしい真珠&quot;,&quot;ru&quot;:&quot;«Сверкающие жемчужины» об изложении шариатских запретов на основе текстов Корана и пророческой Сунны, расположенных по разделам фикха&quot;,&quot;sw&quot;:&quot;Al-Durar al-Bahiyya fi Bayan al-Manahi al-Shariyya min Nusus al-Kitab wa al-Sunna al-Nabawiyya Murattaba ala al-Abwab al-Fiqhiyya (Lulu zenye kung&#039;aa kuhusu makatazo ya kisharia katika matini za Kitabu na Sunna ya Mtume, zilizopangwa kwa milango ya fiqhi)&quot;,&quot;tr&quot;:&quot;ed-Dürerü’l-behiyye fî beyâni’l-menâhî eş-şer‘iyye min nusûsi’l-kitâb ve’s-sünneti’n-nebeviyye, fıkıh bölümlerine göre tertip edilmiş (Kitap ve Nebevî Sünnet Metinlerinden Şer‘î Yasakların Açıklanmasında Parlak İnciler)&quot;,&quot;zh&quot;:&quot;《光辉珍珠：依据古兰经与先知圣行文本，按教法章节编排，阐明教法禁令》&quot;}" data-original="الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية">الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مكتبة الطبري</td>
-        <td dir="auto">1428هـ 2007م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2207/220721.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Beautiful Pearls in Explaining the Prohibited Matters from the Texts of the Quran and the Prophetic Sunnah Arranged by Jurisprudential Chapters - Another Edition&quot;,&quot;es&quot;:&quot;Perlas luminosas que exponen las prohibiciones de la sharía a partir de los textos del Libro y la Sunna profética, ordenadas por capítulos de jurisprudencia islámica: otra edición&quot;,&quot;fr&quot;:&quot;Al-Durar al-bahiyya fi bayan al-manahi al-shar&#039;iyya min nusus al-kitab wa al-sunna al-nabawiyya murattaba ala al-abwab al-fiqhiyya – autre édition (Les perles éclatantes exposant les interdits religieux à partir des textes du Livre et de la Sunna prophétique, classés par chapitres de jurisprudence)&quot;,&quot;id&quot;:&quot;Permata-Permata Cemerlang dalam Menjelaskan Larangan-Larangan Syariat dari Nas-Nas Al-Quran dan Sunah Nabi, Disusun Berdasarkan Bab-Bab Fikih — Edisi Lain&quot;,&quot;ja&quot;:&quot;『アッ＝ドゥラル・アル＝バヒーヤ』――クルアーンと預言者のスンナの文言に基づく宗教法上の禁止事項の解説、法学の章別に配列――別版&quot;,&quot;ru&quot;:&quot;Сияющие жемчужины в разъяснении запретов шариата по текстам Корана и пророческой Сунны, расположенным по главам фикха — другое издание&quot;,&quot;sw&quot;:&quot;Lulu zenye kung&#039;aa katika kufafanua makatazo ya Sharia kutoka katika matini za Kitabu na Sunnah ya Mtume, zikiwa zimepangwa kwa milango ya fiqhi — toleo jingine&quot;,&quot;tr&quot;:&quot;Ed-Dürerü&#039;l-behiyye fî beyâni&#039;l-menâhî eş-şer&#039;iyye min nusûsi&#039;l-kitâb ve&#039;s-sünneti&#039;n-nebeviyye mürettebeten ale&#039;l-ebvâbi&#039;l-fıkhiyye (Kur&#039;an ve Nebevî Sünnet metinlerinden şer&#039;î yasakların açıklanması; fıkıh konularına göre tertip edilmiştir) – başka baskı&quot;,&quot;zh&quot;:&quot;《璀璨珍珠：依据古兰经与圣行文本阐释教法规诫，并按教法章节编排》—另一版&quot;}" data-original="الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية- ط أخرى">الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية- ط أخرى</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مكتبة الطبري</td>
-        <td dir="auto">1428هـ 2007م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        شرح القصيدة النونية لابن القيم- ط الطبري
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين • عبد الرحمن بن ناصر السعدي • محمد خليل هراس
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1385/138589.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1385/138589.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of Sahih al-Bukhari with Comments by Ibn Baz and Hadith Benefits by Al-Albani&quot;,&quot;es&quot;:&quot;Comentario de Sahih al-Bujari (La recopilación auténtica de al-Bujari), con notas de Ibn Baz y apuntes sobre hadiz de al-Albani&quot;,&quot;fr&quot;:&quot;Commentaire du Sahih al-Bukhari avec les annotations d&#039;Ibn Baz et des enseignements sur le hadith d&#039;al-Albani&quot;,&quot;id&quot;:&quot;Syarah Shahih Al-Bukhari dengan catatan Ibnu Baz dan faedah hadis dari Al-Albani&quot;,&quot;ja&quot;:&quot;イブン・ウサイミーンによるサヒーフ・アル＝ブハーリー注釈（イブン・バーズの注記、アル＝アルバーニーのハディース学上の知見付き）&quot;,&quot;ru&quot;:&quot;Комментарий к «Сахиху» аль-Бухари с примечаниями Ибн База и хадисоведческими замечаниями аль-Альбани&quot;,&quot;sw&quot;:&quot;Maelezo ya Sahih al-Bukhari yenye tanbihi za Ibn Baz na faida za hadithi za al-Albani&quot;,&quot;tr&quot;:&quot;İbn Bâz&#039;ın Notları ve Elbânî&#039;nin Hadis Faydalarıyla Sahîh-i Buhârî Şerhi&quot;,&quot;ur&quot;:&quot;شرح صحيح البخاري بتعليقات ابن باز وفوائد حديثية للألباني (ابن باز کے تعلیقات اور البانی کے حدیثی فوائد کے ساتھ صحیح بخاری کی شرح)&quot;,&quot;zh&quot;:&quot;《布哈里圣训实录注释》，附伊本·巴兹评注及艾尔巴尼圣训学益处&quot;}" data-original="شرح صحيح البخاري بتعليقات ابن باز وفوائد حديثية للألباني">شرح صحيح البخاري بتعليقات ابن باز وفوائد حديثية للألباني</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        شرح صحيح البخاري بتعليقات ابن باز وفوائد حديثية للألباني
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1386/138604.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1386/138604.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Authentic Collection of Imam Muslim: The Shortened Authentic Hadith from the Traditions Transmitted by Trustworthy Narrators from the Messenger of Allah ﷺ&quot;,&quot;es&quot;:&quot;Sahih del imam Muslim, la recopilación auténtica y abreviada de las tradiciones, transmitida por narradores fidedignos de otros narradores fidedignos hasta el Mensajero de Allah ﷺ&quot;,&quot;fr&quot;:&quot;Sahih de l&#039;imam Muslim, recueil abrégé de traditions authentiques transmises par des transmetteurs fiables de transmetteurs fiables, d&#039;après le Messager d&#039;Allah ﷺ&quot;,&quot;id&quot;:&quot;Shahih Imam Muslim: Musnad Shahih Ringkas dari Kitab-Kitab Sunan, dengan Riwayat Perawi Tepercaya dari Perawi Tepercaya hingga Rasulullah ﷺ&quot;,&quot;ja&quot;:&quot;イマーム・ムスリムのサヒーフ――公正な伝承者から公正な伝承者へと伝えられた、使徒 ﷺ に由来する簡略なスンナ集&quot;,&quot;ru&quot;:&quot;«Сахих» имама Муслима — краткий достоверный сборник преданий, переданных надёжными передатчиками от надёжных передатчиков от Посланника Аллаха ﷺ&quot;,&quot;sw&quot;:&quot;Sahih ya Imam Muslim: Mkusanyo sahihi uliofupishwa kutoka Sunan, kwa upokezi wa mtu mwadilifu kutoka kwa mtu mwadilifu kutoka kwa Mtume ﷺ&quot;,&quot;tr&quot;:&quot;İmam Müslim&#039;in Sahîh&#039;i: Adil ravinin adil raviden Resûlullah&#039;tan ﷺ naklettiği kısa, sahih hadisler&quot;,&quot;ur&quot;:&quot;صحيح الإمام مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ (امام مسلم کی صحیح، مسند اور مختصر کتابِ سنن، رسول الله ﷺ سے عادل راوی کے واسطے سے عادل راوی کی روایت)&quot;,&quot;zh&quot;:&quot;伊玛目穆斯林《精简圣训实录》——通过公正传述者逐级传自真主使者 ﷺ&quot;}" data-original="صحيح الإمام مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ">صحيح الإمام مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        صحيح الإمام مسلم المسند الصحيح المختصر من السنن بنقل العدل عن العدل عن رسول الله ﷺ
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      مسلم بن الحجاج بن مسلم القشيري النيسابوري
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1821/182110.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1821/182110.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Precious Interpretation by Sheikh Al-Othaymeen&quot;,&quot;es&quot;:&quot;La valiosa exégesis del eminente al-Uthaymin&quot;,&quot;fr&quot;:&quot;L&#039;exégèse précieuse du cheikh al-Uthaymin&quot;,&quot;id&quot;:&quot;At-Tafsir ats-Tsamin karya al-Allamah al-Utsaimin&quot;,&quot;ja&quot;:&quot;ウサイミーン師の貴重な注釈&quot;,&quot;ru&quot;:&quot;Драгоценный тафсир выдающегося учёного аль-Усаймина&quot;,&quot;sw&quot;:&quot;Tafsiri adhimu ya Sheikh al-Uthaymin&quot;,&quot;tr&quot;:&quot;Allâme İbn Useymîn’in Kıymetli Tefsiri&quot;,&quot;ur&quot;:&quot;التفسير الثمين للعلامة العثيمين (علامہ عثیمین کی گراں قدر تفسیر)&quot;,&quot;zh&quot;:&quot;《奥赛敏学者的珍贵注释》&quot;}" data-original="التفسير الثمين للعلامة العثيمين">التفسير الثمين للعلامة العثيمين</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        التفسير الثمين للعلامة العثيمين
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2158/215862.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <div
+      class="flex aspect-[3/4] w-full flex-col items-center justify-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-6 size-8" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+            </div>
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Beautiful Pearls in Explaining the Prohibited Matters from the Texts of the Quran and the Prophetic Sunnah, Organized by Jurisprudential Chapters&quot;,&quot;es&quot;:&quot;Las perlas resplandecientes sobre las prohibiciones religiosas, a partir de los textos del Libro y la Sunna profética, ordenadas por capítulos de jurisprudencia&quot;,&quot;fr&quot;:&quot;Les perles éclatantes exposant les interdictions légales à partir des textes du Livre et de la Sunna prophétique, classées par chapitres de droit musulman&quot;,&quot;id&quot;:&quot;Mutiara-Mutiara Cemerlang tentang Larangan Syariat Berdasarkan Teks Al-Qur&#039;an dan Sunah Nabi, Disusun Menurut Bab-Bab Fikih&quot;,&quot;ja&quot;:&quot;クルアーンと預言者のスンナの典拠に基づく、法学の章別に配列したシャリーア上の禁止事項の解説『アッ＝ドゥラル・アル＝バヒーヤ』&quot;,&quot;ru&quot;:&quot;Сияющие жемчужины в разъяснении запретов шариата на основе текстов Книги и Сунны Пророка, расположенные по разделам фикха&quot;,&quot;sw&quot;:&quot;Al-Durar al-Bahiyya fi Bayan al-Manahi al-Shariyya min Nusus al-Kitab wa al-Sunna al-Nabawiyya Murattaba ala al-Abwab al-Fiqhiyya (Lulu zenye kung&#039;aa: maelezo ya makatazo ya kisheria kutoka katika matini za Quran na Sunna ya Mtume, yaliyopangwa kwa milango ya fiqhi)&quot;,&quot;tr&quot;:&quot;Kitap ve Nebevî Sünnet Metinlerinden Fıkıh Bölümlerine Göre Düzenlenmiş Şer&#039;î Yasakları Açıklayan Parlak İnciler&quot;,&quot;ur&quot;:&quot;الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية (کتاب و سنتِ نبوی کے نصوص سے شرعی ممانعتوں کا بیان، فقہی ابواب کی ترتیب سے)&quot;,&quot;zh&quot;:&quot;《珠光宝卷：依据经典与先知圣训文本、按法学章节编排的禁令阐释》&quot;}" data-original="الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية">الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2158/215865.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2158/215865.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Beautiful Pearls in Explaining the Prohibited Matters from the Texts of the Quran and the Prophetic Sunnah, Organized by Jurisprudential Chapters - Miniature Edition&quot;,&quot;es&quot;:&quot;Las perlas resplandecientes sobre las prohibiciones religiosas, a partir de los textos del Libro y la Sunna profética, ordenadas por capítulos de jurisprudencia: edición de bolsillo&quot;,&quot;fr&quot;:&quot;Les perles éclatantes exposant les interdictions légales à partir des textes du Livre et de la Sunna prophétique, classées par chapitres de droit musulman — édition miniature&quot;,&quot;id&quot;:&quot;Mutiara-Mutiara Cemerlang tentang Larangan Syariat Berdasarkan Teks Al-Qur&#039;an dan Sunah Nabi, Disusun Menurut Bab-Bab Fikih — Edisi Ringkas&quot;,&quot;ja&quot;:&quot;クルアーンと預言者のスンナの典拠に基づく、法学の章別に配列したシャリーア上の禁止事項の解説『アッ＝ドゥラル・アル＝バヒーヤ』―縮刷版&quot;,&quot;ru&quot;:&quot;Сияющие жемчужины в разъяснении запретов шариата на основе текстов Книги и Сунны Пророка, расположенные по разделам фикха — уменьшенный экземпляр&quot;,&quot;sw&quot;:&quot;Al-Durar al-Bahiyya fi Bayan al-Manahi al-Shariyya min Nusus al-Kitab wa al-Sunna al-Nabawiyya Murattaba ala al-Abwab al-Fiqhiyya - Nuskha Musaghghara (Lulu zenye kung&#039;aa: maelezo ya makatazo ya kisheria kutoka katika matini za Quran na Sunna ya Mtume, yaliyopangwa kwa milango ya fiqhi - toleo dogo)&quot;,&quot;tr&quot;:&quot;Kitap ve Nebevî Sünnet Metinlerinden Fıkıh Bölümlerine Göre Düzenlenmiş Şer&#039;î Yasakları Açıklayan Parlak İnciler – Küçük Boy Baskı&quot;,&quot;ur&quot;:&quot;الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية- نسخة مصغرة (کتاب و سنتِ نبوی کے نصوص سے شرعی ممانعتوں کا بیان، فقہی ابواب کی ترتیب سے — مختصر نسخہ)&quot;,&quot;zh&quot;:&quot;《珠光宝卷：依据经典与先知圣训文本、按法学章节编排的禁令阐释——缩印本》&quot;}" data-original="الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية- نسخة مصغرة">الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية- نسخة مصغرة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية- نسخة مصغرة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2196/219659.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2196/219659.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Beautiful Pearls in Explaining the Prohibited Matters from the Texts of the Quran and the Prophetic Sunnah, Organized by Jurisprudential Chapters&quot;,&quot;es&quot;:&quot;Las perlas luminosas sobre las prohibiciones jurídicas, según los textos del Libro y la Sunna profética, ordenadas por capítulos de derecho islámico&quot;,&quot;fr&quot;:&quot;Les perles éclatantes exposant les interdits religieux à partir des textes du Livre et de la Sunna prophétique, classées selon les chapitres du droit musulman&quot;,&quot;id&quot;:&quot;Ad-Durar Al-Bahiyyah fi Bayan Al-Manahi Asy-Syar‘iyyah min Nushush Al-Kitab wa As-Sunnah An-Nabawiyyah Murattabah ‘ala Al-Abwab Al-Fiqhiyyah (Permata Gemilang tentang Larangan-Larangan Syariat dalam Teks Al-Quran dan Sunah Nabi, Disusun Menurut Bab-Bab Fikih)&quot;,&quot;ja&quot;:&quot;クルアーンと預言者のスンナの諸テキストに基づく、法学各章別に整理されたシャリーア上の禁止事項を明らかにする輝かしい真珠&quot;,&quot;ru&quot;:&quot;«Сверкающие жемчужины» об изложении шариатских запретов на основе текстов Корана и пророческой Сунны, расположенных по разделам фикха&quot;,&quot;sw&quot;:&quot;Al-Durar al-Bahiyya fi Bayan al-Manahi al-Shariyya min Nusus al-Kitab wa al-Sunna al-Nabawiyya Murattaba ala al-Abwab al-Fiqhiyya (Lulu zenye kung&#039;aa kuhusu makatazo ya kisharia katika matini za Kitabu na Sunna ya Mtume, zilizopangwa kwa milango ya fiqhi)&quot;,&quot;tr&quot;:&quot;ed-Dürerü’l-behiyye fî beyâni’l-menâhî eş-şer‘iyye min nusûsi’l-kitâb ve’s-sünneti’n-nebeviyye, fıkıh bölümlerine göre tertip edilmiş (Kitap ve Nebevî Sünnet Metinlerinden Şer‘î Yasakların Açıklanmasında Parlak İnciler)&quot;,&quot;zh&quot;:&quot;《光辉珍珠：依据古兰经与先知圣行文本，按教法章节编排，阐明教法禁令》&quot;}" data-original="الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية">الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2207/220721.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2207/220721.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Beautiful Pearls in Explaining the Prohibited Matters from the Texts of the Quran and the Prophetic Sunnah Arranged by Jurisprudential Chapters - Another Edition&quot;,&quot;es&quot;:&quot;Perlas luminosas que exponen las prohibiciones de la sharía a partir de los textos del Libro y la Sunna profética, ordenadas por capítulos de jurisprudencia islámica: otra edición&quot;,&quot;fr&quot;:&quot;Al-Durar al-bahiyya fi bayan al-manahi al-shar&#039;iyya min nusus al-kitab wa al-sunna al-nabawiyya murattaba ala al-abwab al-fiqhiyya – autre édition (Les perles éclatantes exposant les interdits religieux à partir des textes du Livre et de la Sunna prophétique, classés par chapitres de jurisprudence)&quot;,&quot;id&quot;:&quot;Permata-Permata Cemerlang dalam Menjelaskan Larangan-Larangan Syariat dari Nas-Nas Al-Quran dan Sunah Nabi, Disusun Berdasarkan Bab-Bab Fikih — Edisi Lain&quot;,&quot;ja&quot;:&quot;『アッ＝ドゥラル・アル＝バヒーヤ』――クルアーンと預言者のスンナの文言に基づく宗教法上の禁止事項の解説、法学の章別に配列――別版&quot;,&quot;ru&quot;:&quot;Сияющие жемчужины в разъяснении запретов шариата по текстам Корана и пророческой Сунны, расположенным по главам фикха — другое издание&quot;,&quot;sw&quot;:&quot;Lulu zenye kung&#039;aa katika kufafanua makatazo ya Sharia kutoka katika matini za Kitabu na Sunnah ya Mtume, zikiwa zimepangwa kwa milango ya fiqhi — toleo jingine&quot;,&quot;tr&quot;:&quot;Ed-Dürerü&#039;l-behiyye fî beyâni&#039;l-menâhî eş-şer&#039;iyye min nusûsi&#039;l-kitâb ve&#039;s-sünneti&#039;n-nebeviyye mürettebeten ale&#039;l-ebvâbi&#039;l-fıkhiyye (Kur&#039;an ve Nebevî Sünnet metinlerinden şer&#039;î yasakların açıklanması; fıkıh konularına göre tertip edilmiştir) – başka baskı&quot;,&quot;zh&quot;:&quot;《璀璨珍珠：依据古兰经与圣行文本阐释教法规诫，并按教法章节编排》—另一版&quot;}" data-original="الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية- ط أخرى">الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية- ط أخرى</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الدرر البهية في بيان المناهي الشرعية من نصوص الكتاب والسنة النبوية مرتبة على الأبواب الفقهية- ط أخرى
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

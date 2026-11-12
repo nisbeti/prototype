@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="items"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>فتح الباري شرح صحيح البخاري -ط الغرباء- أجزاء</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,139 +70,130 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
-    </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <div class="book-head">
-          <img
-        class="cover"
-        src="../../catalogue/1386/138625.jpg"
-        alt=""
-      />
-    
-    <div class="book-head-text">
-      <h1 class="page-title">
-        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Fath al-Bari: Explanation of Sahih al-Bukhari - Al-Ghurabaa - Parts&quot;,&quot;es&quot;:&quot;Fath al-Bari: comentario de Sahih al-Bujari — edición Dar al-Ghuraba, varios volúmenes&quot;,&quot;fr&quot;:&quot;Fath al-Bari (Commentaire du Sahih al-Bukhari) - édition al-Ghuraba - plusieurs volumes&quot;,&quot;id&quot;:&quot;Fath al-Bari: Syarah Shahih Al-Bukhari – edisi Al-Ghuraba&#039;, beberapa jilid&quot;,&quot;ja&quot;:&quot;ファトフ・アル＝バーリー（サヒーフ・アル＝ブハーリー注解）―ガラバー版・分冊&quot;,&quot;ru&quot;:&quot;Фатх аль-Бари: комментарий к «Сахиху» аль-Бухари — издание Дар аль-Гураба, тома&quot;,&quot;sw&quot;:&quot;Fath al-Bari Sharh Sahih al-Bukhari (Ufunguzi wa Muumba, maelezo ya Sahih al-Bukhari) - Toleo la al-Ghuraba, juzuu&quot;,&quot;tr&quot;:&quot;Fethu’l-Bârî şerhu Sahîhi’l-Buhârî (Buhârî’nin Sahîh’inin şerhi) - Garîbâ baskısı, ciltler&quot;,&quot;zh&quot;:&quot;《巴里之启示：〈布哈里圣训实录〉注释》—古拉巴版，分册&quot;}" data-original="فتح الباري شرح صحيح البخاري -ط الغرباء- أجزاء">فتح الباري شرح صحيح البخاري -ط الغرباء- أجزاء</span>
-      </h1>
-
-                        <p class="credits">
-            <span data-t="Authors">Authors</span>:
-                                        <a href="../../authors/216/21663.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Rajab Al-Hanbali&quot;,&quot;es&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;id&quot;:&quot;Ibnu Rajab Al-Hanbali&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ・アル＝ハンバリー&quot;,&quot;ru&quot;:&quot;Ибн Раджаб аль-Ханбали&quot;,&quot;sw&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;İbn Receb el-Hanbelî&quot;,&quot;zh&quot;:&quot;伊本·拉哲卜·罕百里&quot;}" data-original="ابن رجب الحنبلي">ابن رجب الحنبلي</span>
-              </a>
-                                    </p>
-                                <p class="credits">
-            <span data-t="Editors">Editors</span>:
-                                        <a href="../../authors/32032/3203217.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Office of Verification, Dar al-Haramain&quot;,&quot;es&quot;:&quot;Oficina de verificación de Dar al-Haramain&quot;,&quot;fr&quot;:&quot;Maktab Tahqiq Dar al-Haramain&quot;,&quot;id&quot;:&quot;Kantor Tahkik Dar Al-Haramain&quot;,&quot;ja&quot;:&quot;ダール・アル＝ハラマイン校訂事務所&quot;,&quot;ru&quot;:&quot;Отдел проверки Дар аль-Харамайн&quot;,&quot;sw&quot;:&quot;Ofisi ya Tahkiki, Dar al-Haramain&quot;,&quot;tr&quot;:&quot;Dârü’l-Haremeyn Tahkik Bürosu&quot;,&quot;zh&quot;:&quot;达尔·哈拉迈因校勘办公室&quot;}" data-original="مكتب تحقيق دار الحرمين">مكتب تحقيق دار الحرمين</span>
-              </a>
-                                    </p>
-                                <p class="credits">
-            <span data-t="Publishers">Publishers</span>:
-                                        <a href="../../publishers/935/93561.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Ghurabaa Al-Athariyyah&quot;,&quot;es&quot;:&quot;Dar al-Ghurabaa al-Athariyyah&quot;,&quot;fr&quot;:&quot;Dar al-Ghuraba&#039; al-Athariyya&quot;,&quot;id&quot;:&quot;Dar Al-Ghurabaa Al-Atsariyyah&quot;,&quot;ja&quot;:&quot;ダール・アル＝グラバー・アル＝アサリーヤ&quot;,&quot;ru&quot;:&quot;Издательство «Дар аль-Гураба аль-Асария»&quot;,&quot;sw&quot;:&quot;Dar al-Ghuraba al-Athariyya&quot;,&quot;tr&quot;:&quot;Dârü&#039;l-Gurebâü&#039;l-Âsâriyye&quot;,&quot;zh&quot;:&quot;古拉巴遗产出版社&quot;}" data-original="دار الغرباء الأثرية">دار الغرباء الأثرية</span>
-              </a>
-                                    </p>
-              
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/hadeeth/138625_hadeeth9607_%D9%81%D8%AA%D8%AD_%D8%A7%D9%84%D8%A8%D8%A7%D8%B1%D9%8A_%D8%A8%D8%B4%D8%B1%D8%AD_%D8%B5%D8%AD%D9%8A%D8%AD_%D8%A7%D9%84%D8%A8%D8%AE%D8%A7%D8%B1%D9%8A_%D8%A7%D8%A8%D9%86_%D8%B1%D8%AC%D8%A8_%D8%B7_%D8%A7%D9%84%D8%BA%D8%B1%D8%A8%D8%A7%D8%A1_%D8%AA_%D9%85%D8%AC%D9%85%D9%88%D8%B9%D8%A9.zip?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T102606Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=8129294886fa1d3aa66fb5a74b8dc0bbdbdff7b4e13c387a8addbfc392b347e9"
-            rel="noopener"
-            target="_blank"
-          >
-            <span data-t="Download">Download</span>
-          </a>
-          <span class="muted"><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></span>
-                          <a
-            class="button"
-            href="../../books/033/3315/index.html"
-          >
-            <span data-t="Read in the library">Read in the library</span>
-          </a>
-              </p>
-    </div>
-  </div>
-
-      <section class="panel">
-      <dl class="book-card">
-                  <div>
-            <dt><span data-t="Published">Published</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;1416 AH \/ 1996 CE&quot;,&quot;es&quot;:&quot;1416 H 1996&quot;,&quot;fr&quot;:&quot;1416 H 1996&quot;,&quot;id&quot;:&quot;1416 H 1996&quot;,&quot;ja&quot;:&quot;ヒジュラ暦1416年／西暦1996年&quot;,&quot;ru&quot;:&quot;1416 г. х. \/ 1996 г.&quot;,&quot;sw&quot;:&quot;1416 H 1996&quot;,&quot;tr&quot;:&quot;1416 H 1996&quot;,&quot;ur&quot;:&quot;1416ھ 1996ء&quot;,&quot;zh&quot;:&quot;伊历1416年／公元1996年&quot;}" data-original="1416هـ 1996م">1416هـ 1996م</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Country">Country</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Medina, Saudi Arabia&quot;,&quot;es&quot;:&quot;Medina, Arabia Saudí&quot;,&quot;fr&quot;:&quot;Médine, Arabie saoudite&quot;,&quot;id&quot;:&quot;Madinah, Arab Saudi&quot;,&quot;ja&quot;:&quot;マディーナ、サウジアラビア&quot;,&quot;ru&quot;:&quot;Медина, Саудовская Аравия&quot;,&quot;sw&quot;:&quot;Madina, Saudi Arabia&quot;,&quot;tr&quot;:&quot;Medine, Suudi Arabistan&quot;,&quot;ur&quot;:&quot;مدینہ منورہ، سعودی عرب&quot;,&quot;zh&quot;:&quot;麦地那，沙特阿拉伯&quot;}" data-original="المدينة المنورة، السعودية">المدينة المنورة، السعودية</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Edition">Edition</span></dt>
-            <dd><span dir="auto">1</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Volumes">Volumes</span></dt>
-            <dd><span dir="auto">10</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Pages">Pages</span></dt>
-            <dd><span dir="auto">4584</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Type">Type</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Category">Category</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Hadith and Its Sciences&quot;,&quot;es&quot;:&quot;Hadiz y sus ciencias&quot;,&quot;fr&quot;:&quot;Hadith et sciences du hadith&quot;,&quot;id&quot;:&quot;Hadis dan Ilmu-Ilmunya&quot;,&quot;ja&quot;:&quot;ハディース・ハディース学&quot;,&quot;ru&quot;:&quot;Хадис и хадисоведческие науки&quot;,&quot;sw&quot;:&quot;Hadithi na elimu zake&quot;,&quot;tr&quot;:&quot;Hadis ve Hadis İlimleri&quot;,&quot;ur&quot;:&quot;حدیث اور علومِ حدیث&quot;,&quot;zh&quot;:&quot;圣训与圣训学&quot;}" data-original="الحديث وعلومه">الحديث وعلومه</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Subcategory">Subcategory</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;The Six Books&quot;,&quot;es&quot;:&quot;Los seis libros&quot;,&quot;fr&quot;:&quot;Les six recueils canoniques&quot;,&quot;id&quot;:&quot;Enam Kitab Hadis&quot;,&quot;ja&quot;:&quot;六大ハディース集&quot;,&quot;ru&quot;:&quot;Шесть книг хадисов&quot;,&quot;sw&quot;:&quot;Vitabu sita vya hadithi&quot;,&quot;tr&quot;:&quot;Kütüb-i Sitte&quot;,&quot;ur&quot;:&quot;کتبِ ستہ&quot;,&quot;zh&quot;:&quot;六大圣训集&quot;}" data-original="الكتب الستة">الكتب الستة</span></dd>
-          </div>
-              </dl>
-    </section>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
-      <section class="panel">
-      <h2><span data-t="Description">Description</span></h2>
-      <p class="caption" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title:  Fath al-Bari: Explanation of Sahih al-Bukhari - Al-Ghurabaa - Parts\n\n▪️ Author: Abdul Rahman al-Baghdadi bin Rajab al-Hanbali\n▫️ Editor: Office of Verification, Dar al-Haramain\n▪️ Publisher: Dar al-Ghurabaa al-Athariyyah\n▫️ Publish Date: 1416 AH \/ 1996 CE\n▪️ Publish Country: Medina, Saudi Arabia\n▫️ Edition: 1\n▪️ Number of Parts: 10\n▫️ Pages: 4584\n▪️ Type of Material: Book\n▫️ Main Category: Hadith and Its Sciences\n▪️ Sub Category: The Six Books&quot;,&quot;es&quot;:&quot;▫️ Título: \nFath al-Bari: comentario de Sahih al-Bujari — edición Dar al-Ghuraba, varios volúmenes\n\n▪️ Autor: Abd al-Rahman al-Baghdadi ibn Rajab al-Hanbali\n▫️ Edición crítica: Oficina de edición crítica de Dar al-Haramayn\n▪️ Editorial: Dar al-Ghuraba al-Athariyya\n▫️ Fecha de publicación: 1416 H 1996\n▪️ Lugar de publicación: Medina, Arabia Saudita\n▫️ Edición: 1\n▪️ Número de volúmenes: 10\n▫️ Páginas: 4584\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Hadiz y sus ciencias\n▪️ Subcategoría: Los seis libros&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nFath al-Bari (Commentaire du Sahih al-Bukhari) - édition al-Ghuraba - plusieurs volumes\n\n▪️ Auteur : Abd al-Rahman al-Baghdadi ibn Rajab al-Hanbali\n▫️ Édition critique : Bureau d&#039;édition critique de Dar al-Haramayn\n▪️ Éditeur : Dar al-Ghuraba al-Athariyya\n▫️ Date de publication : 1416 H 1996\n▪️ Lieu de publication : Médine, Arabie saoudite\n▫️ Édition : 1\n▪️ Nombre de volumes : 10\n▫️ Pages : 4584\n▪️ Type de document : Livre\n▫️ Catégorie principale : Hadith et ses sciences\n▪️ Sous-catégorie : Les six recueils canoniques&quot;,&quot;id&quot;:&quot;▫️ Judul: \nFath al-Bari: Syarah Shahih Al-Bukhari – edisi Al-Ghuraba&#039;, beberapa jilid\n\n▪️ Penulis: Abdurrahman Al-Baghdadi bin Rajab Al-Hanbali\n▫️ Pentahkik: Kantor Tahkik Dar al-Haramain\n▪️ Penerbit: Dar al-Ghuraba&#039; al-Atsariyyah\n▫️ Tahun terbit: 1416 H 1996\n▪️ Tempat terbit: Madinah, Arab Saudi\n▫️ Cetakan: 1\n▪️ Jumlah jilid: 10\n▫️ Halaman: 4584\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Hadis dan ilmu-ilmunya\n▪️ Subkategori: Enam Kitab Hadis&quot;,&quot;ja&quot;:&quot;▫️ 書名: \nファトフ・アル＝バーリー（サヒーフ・アル＝ブハーリー注解）―ガラバー版・分冊\n\n▪️ 著者: アブドゥッラフマーン・アル＝バグダーディー・イブン・ラジャブ・アル＝ハンバリー\n▫️ 校訂者: ダール・アル＝ハラマイン校訂局\n▪️ 出版社: ダール・アル＝ガラバー・アル＝アサリーヤ\n▫️ 出版年: ヒジュラ暦1416年／西暦1996年\n▪️ 出版地: マディーナ、サウジアラビア\n▫️ 版: 1\n▪️ 巻数: 10\n▫️ ページ数: 4584\n▪️ 資料の種類: 書籍\n▫️ 主分類: ハディース学\n▪️ 下位分類: 六大ハディース集&quot;,&quot;ru&quot;:&quot;▫️ Название: \nФатх аль-Бари: комментарий к «Сахиху» аль-Бухари — издание Дар аль-Гураба, тома\n\n▪️ Автор: Абд ар-Рахман аль-Багдади ибн Раджаб аль-Ханбали\n▫️ Тахкик: Редакция по проверке текстов Дар аль-Харамайн\n▪️ Издательство: Дар аль-Гураба аль-Асарийя\n▫️ Дата издания: 1416 г. х. \/ 1996 г.\n▪️ Место издания: Медина, Саудовская Аравия\n▫️ Издание: 1\n▪️ Количество томов: 10\n▫️ Страницы: 4584\n▪️ Тип материала: Книга\n▫️ Основная категория: Хадисы и хадисоведение\n▪️ Подкатегория: Шесть канонических сборников&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nFath al-Bari Sharh Sahih al-Bukhari (Ufunguzi wa Muumba, maelezo ya Sahih al-Bukhari) - Toleo la al-Ghuraba, juzuu\n\n▪️ Mwandishi: Abdulrahman al-Baghdadi bin Rajab al-Hanbali\n▫️ Mhakiki: Ofisi ya Uhakiki ya Dar al-Haramayn\n▪️ Mchapishaji: Dar al-Ghuraba al-Athariyya\n▫️ Tarehe ya kuchapishwa: 1416 H 1996\n▪️ Mahali pa kuchapishwa: Madina, Saudi Arabia\n▫️ Toleo: 1\n▪️ Idadi ya juzuu: 10\n▫️ Kurasa: 4584\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Hadithi na elimu zake\n▪️ Kundi dogo: Vitabu sita vya Hadithi&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nFethu’l-Bârî şerhu Sahîhi’l-Buhârî (Buhârî’nin Sahîh’inin şerhi) - Garîbâ baskısı, ciltler\n\n▪️ Yazar: Abdurrahman el-Bağdâdî b. Receb el-Hanbelî\n▫️ Tahkik eden: Dârü’l-Haremeyn Tahkik Bürosu\n▪️ Yayınevi: Dârü’l-Gurabâ el-Âsâriyye\n▫️ Yayın tarihi: 1416 H 1996\n▪️ Yayın yeri: Medine, Suudi Arabistan\n▫️ Baskı: 1\n▪️ Cilt sayısı: 10\n▫️ Sayfa: 4584\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Hadis ve ilimleri\n▪️ Alt kategori: Kütüb-i Sitte&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nفتح الباري شرح صحيح البخاري -ط الغرباء- أجزاء\n\n▪️ مصنف: عبد الرحمن البغدادي بن رجب الحنبلي\n▫️ محقق: مكتب تحقيق دار الحرمين\n▪️ ناشر: دار الغرباء الأثرية\n▫️ تاریخِ اشاعت: 1416ھ 1996ء\n▪️ مقامِ اشاعت: مدینہ منورہ، سعودی عرب\n▫️ طبع: 1\n▪️ جلدیں: 10\n▫️ صفحات: 4584\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: حدیث و علومِ حدیث\n▪️ ذیلی زمرہ: کتبِ ستہ&quot;,&quot;zh&quot;:&quot;▫️ 书名：\n《巴里之启示：〈布哈里圣训实录〉注释》—古拉巴版，分册\n\n▪️ 作者：阿卜杜·拉赫曼·巴格达迪·本·拉杰卜·罕百里\n▫️ 校勘者：哈拉迈因出版社校勘部\n▪️ 出版社：古拉巴遗产出版社\n▫️ 出版日期：伊历1416年／公元1996年\n▪️ 出版地：麦地那，沙特阿拉伯\n▫️ 版次：1\n▪️ 册数：10\n▫️ 页数：4584\n▪️ 资料类型：书籍\n▫️ 主分类：圣训学\n▪️ 子分类：六大圣训集&quot;}" data-original="**▫️ العنوان: 
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../catalogue.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Resources</span>
+    </a>
+
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <img
+            src="../../catalogue/1386/138625.jpg"
+            alt=""
+            class="aspect-[3/4] w-full rounded-xl border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+          />
+        
+        <div class="mt-4 flex flex-col gap-2">
+                      <a href="../../books/033/3315/index.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-[var(--color-accent)] hover:bg-[color-mix(in_oklab,_var(--color-accent),_transparent_10%)] text-[var(--color-accent-foreground)] border border-black/10 dark:border-0 shadow-[inset_0px_1px_--theme(--color-white/.2)] [[data-flux-button-group]_&amp;]:border-e-0 [:is([data-flux-button-group]&gt;&amp;:last-child,_[data-flux-button-group]_:last-child&gt;&amp;)]:border-e-[1px] dark:[:is([data-flux-button-group]&gt;&amp;:last-child,_[data-flux-button-group]_:last-child&gt;&amp;)]:border-e-0 [:is([data-flux-button-group]&gt;&amp;:not(:first-child),_[data-flux-button-group]_:not(:first-child)&gt;&amp;)]:border-s-[1px]! [:is([data-flux-button-group]&gt;&amp;:not(:first-child),_[data-flux-button-group]_:not(:first-child)&gt;&amp;)]:border-s-[color-mix(in_srgb,var(--color-accent-foreground),transparent_85%)]" data-flux-group-target="data-flux-group-target">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M7.25 3.688a8.035 8.035 0 0 0-4.872-.523A.48.48 0 0 0 2 3.64v7.994c0 .345.342.588.679.512a6.02 6.02 0 0 1 4.571.81V3.688ZM8.75 12.956a6.02 6.02 0 0 1 4.571-.81c.337.075.679-.167.679-.512V3.64a.48.48 0 0 0-.378-.475 8.034 8.034 0 0 0-4.872.523v9.268Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Read</span>
+    </a>
+                                <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/hadeeth/138625_hadeeth9607_%D9%81%D8%AA%D8%AD_%D8%A7%D9%84%D8%A8%D8%A7%D8%B1%D9%8A_%D8%A8%D8%B4%D8%B1%D8%AD_%D8%B5%D8%AD%D9%8A%D8%AD_%D8%A7%D9%84%D8%A8%D8%AE%D8%A7%D8%B1%D9%8A_%D8%A7%D8%A8%D9%86_%D8%B1%D8%AC%D8%A8_%D8%B7_%D8%A7%D9%84%D8%BA%D8%B1%D8%A8%D8%A7%D8%A1_%D8%AA_%D9%85%D8%AC%D9%85%D9%88%D8%B9%D8%A9.zip?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T180040Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=83f0959726bd6b744f29af1602bf4b84237f95ba9462dc5d1e1d6c78407d7870" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" rel="noopener">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z"/>
+  <path d="M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Download</span>
+    </a>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></p>                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Fath al-Bari: Explanation of Sahih al-Bukhari - Al-Ghurabaa - Parts&quot;,&quot;es&quot;:&quot;Fath al-Bari: comentario de Sahih al-Bujari — edición Dar al-Ghuraba, varios volúmenes&quot;,&quot;fr&quot;:&quot;Fath al-Bari (Commentaire du Sahih al-Bukhari) - édition al-Ghuraba - plusieurs volumes&quot;,&quot;id&quot;:&quot;Fath al-Bari: Syarah Shahih Al-Bukhari – edisi Al-Ghuraba&#039;, beberapa jilid&quot;,&quot;ja&quot;:&quot;ファトフ・アル＝バーリー（サヒーフ・アル＝ブハーリー注解）―ガラバー版・分冊&quot;,&quot;ru&quot;:&quot;Фатх аль-Бари: комментарий к «Сахиху» аль-Бухари — издание Дар аль-Гураба, тома&quot;,&quot;sw&quot;:&quot;Fath al-Bari Sharh Sahih al-Bukhari (Ufunguzi wa Muumba, maelezo ya Sahih al-Bukhari) - Toleo la al-Ghuraba, juzuu&quot;,&quot;tr&quot;:&quot;Fethu’l-Bârî şerhu Sahîhi’l-Buhârî (Buhârî’nin Sahîh’inin şerhi) - Garîbâ baskısı, ciltler&quot;,&quot;zh&quot;:&quot;《巴里之启示：〈布哈里圣训实录〉注释》—古拉巴版，分册&quot;}" data-original="فتح الباري شرح صحيح البخاري -ط الغرباء- أجزاء">فتح الباري شرح صحيح البخاري -ط الغرباء- أجزاء</span></h1>
+
+                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1" lang="ar" dir="rtl" data-arabic-original="data-arabic-original" data-flux-text >فتح الباري شرح صحيح البخاري -ط الغرباء- أجزاء</p>        
+                              <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Authors">Authors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/216/21663.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ibn Rajab Al-Hanbali&quot;,&quot;es&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;fr&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;id&quot;:&quot;Ibnu Rajab Al-Hanbali&quot;,&quot;ja&quot;:&quot;イブン・ラジャブ・アル＝ハンバリー&quot;,&quot;ru&quot;:&quot;Ибн Раджаб аль-Ханбали&quot;,&quot;sw&quot;:&quot;Ibn Rajab al-Hanbali&quot;,&quot;tr&quot;:&quot;İbn Receb el-Hanbelî&quot;,&quot;zh&quot;:&quot;伊本·拉哲卜·罕百里&quot;}" data-original="ابن رجب الحنبلي">ابن رجب الحنبلي</span></a></p>                                        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Editors">Editors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/32032/3203217.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Office of Verification, Dar al-Haramain&quot;,&quot;es&quot;:&quot;Oficina de verificación de Dar al-Haramain&quot;,&quot;fr&quot;:&quot;Maktab Tahqiq Dar al-Haramain&quot;,&quot;id&quot;:&quot;Kantor Tahkik Dar Al-Haramain&quot;,&quot;ja&quot;:&quot;ダール・アル＝ハラマイン校訂事務所&quot;,&quot;ru&quot;:&quot;Отдел проверки Дар аль-Харамайн&quot;,&quot;sw&quot;:&quot;Ofisi ya Tahkiki, Dar al-Haramain&quot;,&quot;tr&quot;:&quot;Dârü’l-Haremeyn Tahkik Bürosu&quot;,&quot;zh&quot;:&quot;达尔·哈拉迈因校勘办公室&quot;}" data-original="مكتب تحقيق دار الحرمين">مكتب تحقيق دار الحرمين</span></a></p>                                        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Publishers">Publishers</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../publishers/935/93561.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Ghurabaa Al-Athariyyah&quot;,&quot;es&quot;:&quot;Dar al-Ghurabaa al-Athariyyah&quot;,&quot;fr&quot;:&quot;Dar al-Ghuraba&#039; al-Athariyya&quot;,&quot;id&quot;:&quot;Dar Al-Ghurabaa Al-Atsariyyah&quot;,&quot;ja&quot;:&quot;ダール・アル＝グラバー・アル＝アサリーヤ&quot;,&quot;ru&quot;:&quot;Издательство «Дар аль-Гураба аль-Асария»&quot;,&quot;sw&quot;:&quot;Dar al-Ghuraba al-Athariyya&quot;,&quot;tr&quot;:&quot;Dârü&#039;l-Gurebâü&#039;l-Âsâriyye&quot;,&quot;zh&quot;:&quot;古拉巴遗产出版社&quot;}" data-original="دار الغرباء الأثرية">دار الغرباء الأثرية</span></a></p>                  
+                  <div class="mt-6 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+            <dl class="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[fit-content(12rem)_1fr]">
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Published">Published</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;1416 AH \/ 1996 CE&quot;,&quot;es&quot;:&quot;1416 H 1996&quot;,&quot;fr&quot;:&quot;1416 H 1996&quot;,&quot;id&quot;:&quot;1416 H 1996&quot;,&quot;ja&quot;:&quot;ヒジュラ暦1416年／西暦1996年&quot;,&quot;ru&quot;:&quot;1416 г. х. \/ 1996 г.&quot;,&quot;sw&quot;:&quot;1416 H 1996&quot;,&quot;tr&quot;:&quot;1416 H 1996&quot;,&quot;ur&quot;:&quot;1416ھ 1996ء&quot;,&quot;zh&quot;:&quot;伊历1416年／公元1996年&quot;}" data-original="1416هـ 1996م">1416هـ 1996م</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Country">Country</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Medina, Saudi Arabia&quot;,&quot;es&quot;:&quot;Medina, Arabia Saudí&quot;,&quot;fr&quot;:&quot;Médine, Arabie saoudite&quot;,&quot;id&quot;:&quot;Madinah, Arab Saudi&quot;,&quot;ja&quot;:&quot;マディーナ、サウジアラビア&quot;,&quot;ru&quot;:&quot;Медина, Саудовская Аравия&quot;,&quot;sw&quot;:&quot;Madina, Saudi Arabia&quot;,&quot;tr&quot;:&quot;Medine, Suudi Arabistan&quot;,&quot;ur&quot;:&quot;مدینہ منورہ، سعودی عرب&quot;,&quot;zh&quot;:&quot;麦地那，沙特阿拉伯&quot;}" data-original="المدينة المنورة، السعودية">المدينة المنورة، السعودية</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Edition">Edition</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">1</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Volumes">Volumes</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">10</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Pages">Pages</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">4584</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Type">Type</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Category">Category</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Hadith and Its Sciences&quot;,&quot;es&quot;:&quot;Hadiz y sus ciencias&quot;,&quot;fr&quot;:&quot;Hadith et sciences du hadith&quot;,&quot;id&quot;:&quot;Hadis dan Ilmu-Ilmunya&quot;,&quot;ja&quot;:&quot;ハディース・ハディース学&quot;,&quot;ru&quot;:&quot;Хадис и хадисоведческие науки&quot;,&quot;sw&quot;:&quot;Hadithi na elimu zake&quot;,&quot;tr&quot;:&quot;Hadis ve Hadis İlimleri&quot;,&quot;ur&quot;:&quot;حدیث اور علومِ حدیث&quot;,&quot;zh&quot;:&quot;圣训与圣训学&quot;}" data-original="الحديث وعلومه">الحديث وعلومه</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Subcategory">Subcategory</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Six Books&quot;,&quot;es&quot;:&quot;Los seis libros&quot;,&quot;fr&quot;:&quot;Les six recueils canoniques&quot;,&quot;id&quot;:&quot;Enam Kitab Hadis&quot;,&quot;ja&quot;:&quot;六大ハディース集&quot;,&quot;ru&quot;:&quot;Шесть книг хадисов&quot;,&quot;sw&quot;:&quot;Vitabu sita vya hadithi&quot;,&quot;tr&quot;:&quot;Kütüb-i Sitte&quot;,&quot;ur&quot;:&quot;کتبِ ستہ&quot;,&quot;zh&quot;:&quot;六大圣训集&quot;}" data-original="الكتب الستة">الكتب الستة</span>
+                </dd>
+                          </dl>
+          </div>
+        
+                  <div class="mt-4 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Description</div>
+            <p class="text-sm leading-relaxed whitespace-pre-line text-zinc-800 dark:text-zinc-100" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title:  Fath al-Bari: Explanation of Sahih al-Bukhari - Al-Ghurabaa - Parts\n\n▪️ Author: Abdul Rahman al-Baghdadi bin Rajab al-Hanbali\n▫️ Editor: Office of Verification, Dar al-Haramain\n▪️ Publisher: Dar al-Ghurabaa al-Athariyyah\n▫️ Publish Date: 1416 AH \/ 1996 CE\n▪️ Publish Country: Medina, Saudi Arabia\n▫️ Edition: 1\n▪️ Number of Parts: 10\n▫️ Pages: 4584\n▪️ Type of Material: Book\n▫️ Main Category: Hadith and Its Sciences\n▪️ Sub Category: The Six Books&quot;,&quot;es&quot;:&quot;▫️ Título: \nFath al-Bari: comentario de Sahih al-Bujari — edición Dar al-Ghuraba, varios volúmenes\n\n▪️ Autor: Abd al-Rahman al-Baghdadi ibn Rajab al-Hanbali\n▫️ Edición crítica: Oficina de edición crítica de Dar al-Haramayn\n▪️ Editorial: Dar al-Ghuraba al-Athariyya\n▫️ Fecha de publicación: 1416 H 1996\n▪️ Lugar de publicación: Medina, Arabia Saudita\n▫️ Edición: 1\n▪️ Número de volúmenes: 10\n▫️ Páginas: 4584\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Hadiz y sus ciencias\n▪️ Subcategoría: Los seis libros&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nFath al-Bari (Commentaire du Sahih al-Bukhari) - édition al-Ghuraba - plusieurs volumes\n\n▪️ Auteur : Abd al-Rahman al-Baghdadi ibn Rajab al-Hanbali\n▫️ Édition critique : Bureau d&#039;édition critique de Dar al-Haramayn\n▪️ Éditeur : Dar al-Ghuraba al-Athariyya\n▫️ Date de publication : 1416 H 1996\n▪️ Lieu de publication : Médine, Arabie saoudite\n▫️ Édition : 1\n▪️ Nombre de volumes : 10\n▫️ Pages : 4584\n▪️ Type de document : Livre\n▫️ Catégorie principale : Hadith et ses sciences\n▪️ Sous-catégorie : Les six recueils canoniques&quot;,&quot;id&quot;:&quot;▫️ Judul: \nFath al-Bari: Syarah Shahih Al-Bukhari – edisi Al-Ghuraba&#039;, beberapa jilid\n\n▪️ Penulis: Abdurrahman Al-Baghdadi bin Rajab Al-Hanbali\n▫️ Pentahkik: Kantor Tahkik Dar al-Haramain\n▪️ Penerbit: Dar al-Ghuraba&#039; al-Atsariyyah\n▫️ Tahun terbit: 1416 H 1996\n▪️ Tempat terbit: Madinah, Arab Saudi\n▫️ Cetakan: 1\n▪️ Jumlah jilid: 10\n▫️ Halaman: 4584\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Hadis dan ilmu-ilmunya\n▪️ Subkategori: Enam Kitab Hadis&quot;,&quot;ja&quot;:&quot;▫️ 書名: \nファトフ・アル＝バーリー（サヒーフ・アル＝ブハーリー注解）―ガラバー版・分冊\n\n▪️ 著者: アブドゥッラフマーン・アル＝バグダーディー・イブン・ラジャブ・アル＝ハンバリー\n▫️ 校訂者: ダール・アル＝ハラマイン校訂局\n▪️ 出版社: ダール・アル＝ガラバー・アル＝アサリーヤ\n▫️ 出版年: ヒジュラ暦1416年／西暦1996年\n▪️ 出版地: マディーナ、サウジアラビア\n▫️ 版: 1\n▪️ 巻数: 10\n▫️ ページ数: 4584\n▪️ 資料の種類: 書籍\n▫️ 主分類: ハディース学\n▪️ 下位分類: 六大ハディース集&quot;,&quot;ru&quot;:&quot;▫️ Название: \nФатх аль-Бари: комментарий к «Сахиху» аль-Бухари — издание Дар аль-Гураба, тома\n\n▪️ Автор: Абд ар-Рахман аль-Багдади ибн Раджаб аль-Ханбали\n▫️ Тахкик: Редакция по проверке текстов Дар аль-Харамайн\n▪️ Издательство: Дар аль-Гураба аль-Асарийя\n▫️ Дата издания: 1416 г. х. \/ 1996 г.\n▪️ Место издания: Медина, Саудовская Аравия\n▫️ Издание: 1\n▪️ Количество томов: 10\n▫️ Страницы: 4584\n▪️ Тип материала: Книга\n▫️ Основная категория: Хадисы и хадисоведение\n▪️ Подкатегория: Шесть канонических сборников&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nFath al-Bari Sharh Sahih al-Bukhari (Ufunguzi wa Muumba, maelezo ya Sahih al-Bukhari) - Toleo la al-Ghuraba, juzuu\n\n▪️ Mwandishi: Abdulrahman al-Baghdadi bin Rajab al-Hanbali\n▫️ Mhakiki: Ofisi ya Uhakiki ya Dar al-Haramayn\n▪️ Mchapishaji: Dar al-Ghuraba al-Athariyya\n▫️ Tarehe ya kuchapishwa: 1416 H 1996\n▪️ Mahali pa kuchapishwa: Madina, Saudi Arabia\n▫️ Toleo: 1\n▪️ Idadi ya juzuu: 10\n▫️ Kurasa: 4584\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Hadithi na elimu zake\n▪️ Kundi dogo: Vitabu sita vya Hadithi&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nFethu’l-Bârî şerhu Sahîhi’l-Buhârî (Buhârî’nin Sahîh’inin şerhi) - Garîbâ baskısı, ciltler\n\n▪️ Yazar: Abdurrahman el-Bağdâdî b. Receb el-Hanbelî\n▫️ Tahkik eden: Dârü’l-Haremeyn Tahkik Bürosu\n▪️ Yayınevi: Dârü’l-Gurabâ el-Âsâriyye\n▫️ Yayın tarihi: 1416 H 1996\n▪️ Yayın yeri: Medine, Suudi Arabistan\n▫️ Baskı: 1\n▪️ Cilt sayısı: 10\n▫️ Sayfa: 4584\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Hadis ve ilimleri\n▪️ Alt kategori: Kütüb-i Sitte&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nفتح الباري شرح صحيح البخاري -ط الغرباء- أجزاء\n\n▪️ مصنف: عبد الرحمن البغدادي بن رجب الحنبلي\n▫️ محقق: مكتب تحقيق دار الحرمين\n▪️ ناشر: دار الغرباء الأثرية\n▫️ تاریخِ اشاعت: 1416ھ 1996ء\n▪️ مقامِ اشاعت: مدینہ منورہ، سعودی عرب\n▫️ طبع: 1\n▪️ جلدیں: 10\n▫️ صفحات: 4584\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: حدیث و علومِ حدیث\n▪️ ذیلی زمرہ: کتبِ ستہ&quot;,&quot;zh&quot;:&quot;▫️ 书名：\n《巴里之启示：〈布哈里圣训实录〉注释》—古拉巴版，分册\n\n▪️ 作者：阿卜杜·拉赫曼·巴格达迪·本·拉杰卜·罕百里\n▫️ 校勘者：哈拉迈因出版社校勘部\n▪️ 出版社：古拉巴遗产出版社\n▫️ 出版日期：伊历1416年／公元1996年\n▪️ 出版地：麦地那，沙特阿拉伯\n▫️ 版次：1\n▪️ 册数：10\n▫️ 页数：4584\n▪️ 资料类型：书籍\n▫️ 主分类：圣训学\n▪️ 子分类：六大圣训集&quot;}" data-original="**▫️ العنوان: 
 فتح الباري شرح صحيح البخاري -ط الغرباء- أجزاء**
 
 ▪️ المؤلف: #عبد_الرحمن_البغدادي_بن_رجب_الحنبلي
@@ -196,28 +224,10 @@
 ▪️ التصنيف الفرعي: #الكتب_الستة
 
 ۪</p>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
-      >
-        <span data-t="Close">Close</span>
-      </button>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

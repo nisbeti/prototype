@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>دار الصحابة للتراث</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,184 +70,322 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Sahaba for Heritage&quot;,&quot;es&quot;:&quot;Dar al-Sahabah li-l-Turath&quot;,&quot;fr&quot;:&quot;Dar al-Sahaba li al-Turath&quot;,&quot;id&quot;:&quot;Dar Ash-Shahabah li At-Turats&quot;,&quot;ja&quot;:&quot;ダール・アッ＝サハーバ・リッ＝トゥラース&quot;,&quot;ru&quot;:&quot;Дар ас-Сахаба ли-т-турас&quot;,&quot;sw&quot;:&quot;Dar as-Sahaba lit-Turath&quot;,&quot;tr&quot;:&quot;Dârü&#039;s-sahâbe li&#039;t-türâs&quot;,&quot;zh&quot;:&quot;圣门弟子遗产出版社&quot;}" data-original="دار الصحابة للتراث">دار الصحابة للتراث</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/525/52536.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/525/52536.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Answers to the Questions Received from Aleppo&quot;,&quot;es&quot;:&quot;Respuestas a las preguntas llegadas de Alepo&quot;,&quot;fr&quot;:&quot;Les réponses aux questions venues d’Alep&quot;,&quot;id&quot;:&quot;Jawaban-Jawaban yang Diajukan atas Pertanyaan dari Aleppo&quot;,&quot;ja&quot;:&quot;アレッポから寄せられた質問への回答&quot;,&quot;ru&quot;:&quot;Ответы на вопросы, поступившие из Алеппо&quot;,&quot;sw&quot;:&quot;Al-Ajwiba al-Warida ala al-As&#039;ila al-Wafida min Halab (Majibu kwa Maswali Yaliyotoka Aleppo)&quot;,&quot;tr&quot;:&quot;el-Ecvibetü’l-vâride ale’l-es’ileti’l-vâfide min Haleb (Halep’ten Gelen Sorulara Verilen Cevaplar)&quot;,&quot;ur&quot;:&quot;الأجوبة الواردة على الأسئلة الوافدة من حلب (حلب سے آنے والے سوالات کے جوابات)&quot;,&quot;zh&quot;:&quot;《答复来自阿勒颇的问题》&quot;}" data-original="الأجوبة الواردة على الأسئلة الوافدة من حلب">الأجوبة الواردة على الأسئلة الوافدة من حلب</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Sahaba for Heritage&quot;,&quot;es&quot;:&quot;Dar al-Sahabah li-l-Turath&quot;,&quot;fr&quot;:&quot;Dar al-Sahaba li al-Turath&quot;,&quot;id&quot;:&quot;Dar Ash-Shahabah li At-Turats&quot;,&quot;ja&quot;:&quot;ダール・アッ＝サハーバ・リッ＝トゥラース&quot;,&quot;ru&quot;:&quot;Дар ас-Сахаба ли-т-турас&quot;,&quot;sw&quot;:&quot;Dar as-Sahaba lit-Turath&quot;,&quot;tr&quot;:&quot;Dârü&#039;s-sahâbe li&#039;t-türâs&quot;,&quot;zh&quot;:&quot;圣门弟子遗产出版社&quot;}" data-original="دار الصحابة للتراث">دار الصحابة للتراث</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/525/52536.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Answers to the Questions Received from Aleppo&quot;,&quot;es&quot;:&quot;Respuestas a las preguntas llegadas de Alepo&quot;,&quot;fr&quot;:&quot;Les réponses aux questions venues d’Alep&quot;,&quot;id&quot;:&quot;Jawaban-Jawaban yang Diajukan atas Pertanyaan dari Aleppo&quot;,&quot;ja&quot;:&quot;アレッポから寄せられた質問への回答&quot;,&quot;ru&quot;:&quot;Ответы на вопросы, поступившие из Алеппо&quot;,&quot;sw&quot;:&quot;Al-Ajwiba al-Warida ala al-As&#039;ila al-Wafida min Halab (Majibu kwa Maswali Yaliyotoka Aleppo)&quot;,&quot;tr&quot;:&quot;el-Ecvibetü’l-vâride ale’l-es’ileti’l-vâfide min Haleb (Halep’ten Gelen Sorulara Verilen Cevaplar)&quot;,&quot;ur&quot;:&quot;الأجوبة الواردة على الأسئلة الوافدة من حلب (حلب سے آنے والے سوالات کے جوابات)&quot;,&quot;zh&quot;:&quot;《答复来自阿勒颇的问题》&quot;}" data-original="الأجوبة الواردة على الأسئلة الوافدة من حلب">الأجوبة الواردة على الأسئلة الوافدة من حلب</span>
-          </a>
-        </td>
-        <td dir="auto">ابن حجر العسقلاني</td>
-        <td dir="auto">دار الصحابة</td>
-        <td dir="auto">1412هــ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/992/99282.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Horrors of the Graves&quot;,&quot;es&quot;:&quot;Los horrores de las tumbas&quot;,&quot;fr&quot;:&quot;Les terreurs des tombes&quot;,&quot;id&quot;:&quot;Kengerian Alam Kubur&quot;,&quot;ja&quot;:&quot;墓の恐怖&quot;,&quot;ru&quot;:&quot;Ужасы могил&quot;,&quot;sw&quot;:&quot;Vitisho vya Makaburi&quot;,&quot;tr&quot;:&quot;Kabirlerin Dehşetleri&quot;,&quot;ur&quot;:&quot;أهوال القبور (قبروں کی ہولناکیاں)&quot;,&quot;zh&quot;:&quot;坟墓的恐怖&quot;}" data-original="أهوال القبور">أهوال القبور</span>
-          </a>
-        </td>
-        <td dir="auto">ابن رجب</td>
-        <td dir="auto">دار الصحابة للتراث</td>
-        <td dir="auto">1991-1412</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1033/103351.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Fatwas of Al-Hafiz Ibn Hajar Al-Asqalani on Creed&quot;,&quot;es&quot;:&quot;Dictámenes doctrinales de al-Hafiz Ibn Hajar al-Asqalani&quot;,&quot;fr&quot;:&quot;Avis juridiques d’Ibn Hajar al-Asqalani sur le dogme&quot;,&quot;id&quot;:&quot;Fatwa-Fatwa Al-Hafiz Ibnu Hajar Al-Asqalani tentang Akidah&quot;,&quot;ja&quot;:&quot;ハーフィズ、イブン・ハジャル・アル＝アスカラーニーの信条に関するファトワー&quot;,&quot;ru&quot;:&quot;Фетвы хафиза Ибн Хаджара аль-Аскаляни по вопросам вероучения&quot;,&quot;sw&quot;:&quot;Fatwa za al-Hafiz Ibn Hajar al-Asqalani kuhusu itikadi&quot;,&quot;tr&quot;:&quot;Hâfız İbn Hacer el-Askalânî&#039;nin akide hakkındaki fetvaları&quot;,&quot;ur&quot;:&quot;فتاوى الحافظ ابن حجر العسقلاني في العقيدة (حافظ ابن حجر عسقلانی کے عقیدے سے متعلق فتاویٰ)&quot;,&quot;zh&quot;:&quot;《哈菲兹伊本·哈杰尔·阿斯卡拉尼关于信仰的教法判例》&quot;}" data-original="فتاوى الحافظ ابن حجر العسقلاني في العقيدة">فتاوى الحافظ ابن حجر العسقلاني في العقيدة</span>
-          </a>
-        </td>
-        <td dir="auto">ابن حجر العسقلاني</td>
-        <td dir="auto">دار الصحابة للتراث</td>
-        <td dir="auto">1410، 1989</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1048/104897.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Word of Sincerity and Its Meaning&quot;,&quot;es&quot;:&quot;La palabra de la sinceridad y la aclaración de su significado (Kalimat al-Ikhlas)&quot;,&quot;fr&quot;:&quot;La parole de sincérité et l&#039;explication de son sens&quot;,&quot;id&quot;:&quot;Kalimat Ikhlas dan Penjelasan Maknanya&quot;,&quot;ja&quot;:&quot;純粋な信仰告白とその意味の確定&quot;,&quot;ru&quot;:&quot;Слово искренности и разъяснение его смысла&quot;,&quot;sw&quot;:&quot;Kalimat al-Ikhlas wa Tahqiq Ma&#039;naha (Neno la Ikhlasi na ufafanuzi wa maana yake)&quot;,&quot;tr&quot;:&quot;İhlâs Kelimesi ve Anlamının Tahkiki&quot;,&quot;zh&quot;:&quot;《清真言及其含义考释》&quot;}" data-original="كلمة الاخلاص وتحقيق معناها">كلمة الاخلاص وتحقيق معناها</span>
-          </a>
-        </td>
-        <td dir="auto">الحافظ ابن رجب الحنبلي</td>
-        <td dir="auto">دار الصحابة للتراث</td>
-        <td dir="auto">1408ه</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1085/108542.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Richness in the Issue of Vision&quot;,&quot;es&quot;:&quot;Al-Ghunya fi mas&#039;alat al-ru&#039;ya (La suficiencia sobre la cuestión de la visión de Allah)&quot;,&quot;fr&quot;:&quot;Al-Ghuniya fi masalat al-ruya (L’essentiel sur la question de la vision)&quot;,&quot;id&quot;:&quot;Al-Ghunyah fi Mas&#039;alat al-Ru&#039;yah (Pembahasan tentang Masalah Melihat Allah)&quot;,&quot;ja&quot;:&quot;見ることの問題に関する『アル＝グニヤ』&quot;,&quot;ru&quot;:&quot;Достаточное наставление о вопросе видения&quot;,&quot;sw&quot;:&quot;Al-Ghunya fi Mas&#039;alat al-Ru&#039;ya (Utoshelevu kuhusu suala la kuona Allah)&quot;,&quot;tr&quot;:&quot;Rü&#039;yet Meselesi Hakkında el-Gunye&quot;,&quot;zh&quot;:&quot;《关于见主问题的充足论述》&quot;}" data-original="الغنية في مسألة الرؤية">الغنية في مسألة الرؤية</span>
-          </a>
-        </td>
-        <td dir="auto">ابن حجر العسقلاني</td>
-        <td dir="auto">دار الصحابة للتراث</td>
-        <td dir="auto">1412هـ 1992م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1155/115573.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Word of Sincerity and Its Meaning - T. Farrah&quot;,&quot;es&quot;:&quot;La declaración de la sinceridad y la clarificación de su significado — edición de Farra&quot;,&quot;fr&quot;:&quot;La formule de la sincérité et l&#039;explication de son sens — éd. Farra&quot;,&quot;id&quot;:&quot;Kalimat Ikhlas dan Penegasan Maknanya — Tahkik Furrah&quot;,&quot;ja&quot;:&quot;純粋な信仰告白の言葉とその意味の確立――フッラ校訂&quot;,&quot;ru&quot;:&quot;Слово искренности и раскрытие его смысла — тахкик Фарры&quot;,&quot;sw&quot;:&quot;Tamko la ikhlasi na kuthibitisha maana yake — toleo lililohakikiwa na Farra&quot;,&quot;tr&quot;:&quot;İhlâs Kelimesi ve Anlamının Tahkiki - Tahkik eden: Ferre&quot;,&quot;ur&quot;:&quot;كلمة الإخلاص وتحقيق معناها- ت. فرة (کلمۂ اخلاص اور اس کے مفہوم کی تحقیق — تحقیق: فرة)&quot;,&quot;zh&quot;:&quot;《真诚信仰之言及其含义的确证》—富拉校勘&quot;}" data-original="كلمة الإخلاص وتحقيق معناها- ت. فرة">كلمة الإخلاص وتحقيق معناها- ت. فرة</span>
-          </a>
-        </td>
-        <td dir="auto">الحافظ ابن رجب الحنبلي</td>
-        <td dir="auto">دار الصحابة للتراث</td>
-        <td dir="auto">1408هـ 1988م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1358/135869.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Commentary on His Saying, \&quot;Indeed, it is only those who have knowledge among His servants that fear Allah.\&quot;&quot;,&quot;es&quot;:&quot;Comentario sobre las palabras de Allah, exaltado sea: «Solo temen a Allah, de entre Sus siervos, los sabios»&quot;,&quot;fr&quot;:&quot;Commentaire sur la parole du Très-Haut : « Parmi Ses serviteurs, seuls les savants craignent Allah »&quot;,&quot;id&quot;:&quot;Pembahasan tentang Firman Allah, “Sesungguhnya yang takut kepada Allah di antara hamba-hamba-Nya hanyalah para ulama”&quot;,&quot;ja&quot;:&quot;至高なるアッラーの御言葉「アッラーを畏れるのは、かれのしもべのうち学者たちである」について&quot;,&quot;ru&quot;:&quot;Рассуждение о словах Всевышнего: «Воистину, Аллаха из Его рабов страшатся лишь знающие»&quot;,&quot;sw&quot;:&quot;Maelezo kuhusu kauli ya Allah Aliyetukuka: {Hakika wanaomcha Allah miongoni mwa waja wake ni wanazuoni}&quot;,&quot;tr&quot;:&quot;Allah Teâlâ’nın “Allah’tan kulları arasında ancak âlimler korkar” sözü üzerine&quot;,&quot;zh&quot;:&quot;《论真主的话：“真主的仆人中，只有学者敬畏他。”》&quot;}" data-original="الكلام على قوله تعالى {إِنَّمَا يَخْشَى اللَّهَ مِنْ عِبَادِهِ الْعُلَمَاءُ}">الكلام على قوله تعالى {إِنَّمَا يَخْشَى اللَّهَ مِنْ عِبَادِهِ الْعُلَمَاءُ}</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن رجب الحنبلي أبو الفرج</td>
-        <td dir="auto">دار الصحابة للتراث بطنطا</td>
-        <td dir="auto">1991م 1412هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1388/138803.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Answers to the Questions Received from Aleppo&quot;,&quot;es&quot;:&quot;Respuestas a las preguntas enviadas desde Alepo&quot;,&quot;fr&quot;:&quot;Les réponses aux questions venues d&#039;Alep&quot;,&quot;id&quot;:&quot;Jawaban atas pertanyaan-pertanyaan yang datang dari Aleppo&quot;,&quot;ja&quot;:&quot;アレッポから寄せられた質問に対する回答&quot;,&quot;ru&quot;:&quot;Ответы на вопросы, поступившие из Алеппо&quot;,&quot;sw&quot;:&quot;Majibu yaliyotolewa kwa maswali yaliyotumwa kutoka Aleppo&quot;,&quot;tr&quot;:&quot;el-Ecvibetü&#039;l-vâride ale&#039;l-es&#039;ileti&#039;l-vâfide min Haleb (Halep&#039;ten gelen sorulara verilen cevaplar)&quot;,&quot;ur&quot;:&quot;الأجوبة الواردة على الأسئلة الوافدة من حلب (حلب سے آنے والے سوالات کے جوابات)&quot;,&quot;zh&quot;:&quot;答复来自阿勒颇的问题&quot;}" data-original="الأجوبة الواردة على الأسئلة الوافدة من حلب">الأجوبة الواردة على الأسئلة الوافدة من حلب</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">دار الصحابة للتراث بطنطا</td>
-        <td dir="auto">1412هـ 1992م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2537/253721.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Breathing in the Fragrance of Fellowship from the Breezes of the Gardens of Holiness&quot;,&quot;es&quot;:&quot;Respirar la brisa de la intimidad entre las emanaciones de los jardines de la santidad&quot;,&quot;fr&quot;:&quot;Respirer les brises de l&#039;intimité parmi les effluves des jardins sacrés&quot;,&quot;id&quot;:&quot;Istinsyaq Nasim al-Uns min Nafahat Riyadh al-Quds [Menghirup Semilir Keakraban dari Hembusan Taman Suci]&quot;,&quot;ja&quot;:&quot;聖なる園のそよ風から安らぎの風を吸い込む&quot;,&quot;ru&quot;:&quot;Вдыхая благоухание близости из дуновений садов святости&quot;,&quot;sw&quot;:&quot;Kuvuta pumzi ya ukaribu kutoka katika upepo mwanana wa Bustani za Utakatifu&quot;,&quot;tr&quot;:&quot;Kuds bahçelerinin esintilerinden ünsiyet meltemini solumak&quot;,&quot;ur&quot;:&quot;استنشاق نسيم الأنس من نفحات رياض القدس (روضۂ قدس کی خوشبوؤں سے انس کی ہوا سونگھنا)&quot;,&quot;zh&quot;:&quot;《从圣洁园圃的芬芳中汲取亲近之风》&quot;}" data-original="استنشاق نسيم الأنس من نفحات رياض القدس">استنشاق نسيم الأنس من نفحات رياض القدس</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن أحمد ابن رجب الحنبلي</td>
-        <td dir="auto">دار الصحابة للتراث بطنطا</td>
-        <td dir="auto">1411هـ 1910م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        الأجوبة الواردة على الأسئلة الوافدة من حلب
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      ابن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/992/99282.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/992/99282.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Horrors of the Graves&quot;,&quot;es&quot;:&quot;Los horrores de las tumbas&quot;,&quot;fr&quot;:&quot;Les terreurs des tombes&quot;,&quot;id&quot;:&quot;Kengerian Alam Kubur&quot;,&quot;ja&quot;:&quot;墓の恐怖&quot;,&quot;ru&quot;:&quot;Ужасы могил&quot;,&quot;sw&quot;:&quot;Vitisho vya Makaburi&quot;,&quot;tr&quot;:&quot;Kabirlerin Dehşetleri&quot;,&quot;ur&quot;:&quot;أهوال القبور (قبروں کی ہولناکیاں)&quot;,&quot;zh&quot;:&quot;坟墓的恐怖&quot;}" data-original="أهوال القبور">أهوال القبور</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        أهوال القبور
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      ابن رجب
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1033/103351.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1033/103351.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Fatwas of Al-Hafiz Ibn Hajar Al-Asqalani on Creed&quot;,&quot;es&quot;:&quot;Dictámenes doctrinales de al-Hafiz Ibn Hajar al-Asqalani&quot;,&quot;fr&quot;:&quot;Avis juridiques d’Ibn Hajar al-Asqalani sur le dogme&quot;,&quot;id&quot;:&quot;Fatwa-Fatwa Al-Hafiz Ibnu Hajar Al-Asqalani tentang Akidah&quot;,&quot;ja&quot;:&quot;ハーフィズ、イブン・ハジャル・アル＝アスカラーニーの信条に関するファトワー&quot;,&quot;ru&quot;:&quot;Фетвы хафиза Ибн Хаджара аль-Аскаляни по вопросам вероучения&quot;,&quot;sw&quot;:&quot;Fatwa za al-Hafiz Ibn Hajar al-Asqalani kuhusu itikadi&quot;,&quot;tr&quot;:&quot;Hâfız İbn Hacer el-Askalânî&#039;nin akide hakkındaki fetvaları&quot;,&quot;ur&quot;:&quot;فتاوى الحافظ ابن حجر العسقلاني في العقيدة (حافظ ابن حجر عسقلانی کے عقیدے سے متعلق فتاویٰ)&quot;,&quot;zh&quot;:&quot;《哈菲兹伊本·哈杰尔·阿斯卡拉尼关于信仰的教法判例》&quot;}" data-original="فتاوى الحافظ ابن حجر العسقلاني في العقيدة">فتاوى الحافظ ابن حجر العسقلاني في العقيدة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        فتاوى الحافظ ابن حجر العسقلاني في العقيدة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      ابن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1048/104897.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1048/104897.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Word of Sincerity and Its Meaning&quot;,&quot;es&quot;:&quot;La palabra de la sinceridad y la aclaración de su significado (Kalimat al-Ikhlas)&quot;,&quot;fr&quot;:&quot;La parole de sincérité et l&#039;explication de son sens&quot;,&quot;id&quot;:&quot;Kalimat Ikhlas dan Penjelasan Maknanya&quot;,&quot;ja&quot;:&quot;純粋な信仰告白とその意味の確定&quot;,&quot;ru&quot;:&quot;Слово искренности и разъяснение его смысла&quot;,&quot;sw&quot;:&quot;Kalimat al-Ikhlas wa Tahqiq Ma&#039;naha (Neno la Ikhlasi na ufafanuzi wa maana yake)&quot;,&quot;tr&quot;:&quot;İhlâs Kelimesi ve Anlamının Tahkiki&quot;,&quot;zh&quot;:&quot;《清真言及其含义考释》&quot;}" data-original="كلمة الاخلاص وتحقيق معناها">كلمة الاخلاص وتحقيق معناها</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        كلمة الاخلاص وتحقيق معناها
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      الحافظ ابن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1085/108542.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1085/108542.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Richness in the Issue of Vision&quot;,&quot;es&quot;:&quot;Al-Ghunya fi mas&#039;alat al-ru&#039;ya (La suficiencia sobre la cuestión de la visión de Allah)&quot;,&quot;fr&quot;:&quot;Al-Ghuniya fi masalat al-ruya (L’essentiel sur la question de la vision)&quot;,&quot;id&quot;:&quot;Al-Ghunyah fi Mas&#039;alat al-Ru&#039;yah (Pembahasan tentang Masalah Melihat Allah)&quot;,&quot;ja&quot;:&quot;見ることの問題に関する『アル＝グニヤ』&quot;,&quot;ru&quot;:&quot;Достаточное наставление о вопросе видения&quot;,&quot;sw&quot;:&quot;Al-Ghunya fi Mas&#039;alat al-Ru&#039;ya (Utoshelevu kuhusu suala la kuona Allah)&quot;,&quot;tr&quot;:&quot;Rü&#039;yet Meselesi Hakkında el-Gunye&quot;,&quot;zh&quot;:&quot;《关于见主问题的充足论述》&quot;}" data-original="الغنية في مسألة الرؤية">الغنية في مسألة الرؤية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الغنية في مسألة الرؤية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      ابن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1155/115573.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1155/115573.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Word of Sincerity and Its Meaning - T. Farrah&quot;,&quot;es&quot;:&quot;La declaración de la sinceridad y la clarificación de su significado — edición de Farra&quot;,&quot;fr&quot;:&quot;La formule de la sincérité et l&#039;explication de son sens — éd. Farra&quot;,&quot;id&quot;:&quot;Kalimat Ikhlas dan Penegasan Maknanya — Tahkik Furrah&quot;,&quot;ja&quot;:&quot;純粋な信仰告白の言葉とその意味の確立――フッラ校訂&quot;,&quot;ru&quot;:&quot;Слово искренности и раскрытие его смысла — тахкик Фарры&quot;,&quot;sw&quot;:&quot;Tamko la ikhlasi na kuthibitisha maana yake — toleo lililohakikiwa na Farra&quot;,&quot;tr&quot;:&quot;İhlâs Kelimesi ve Anlamının Tahkiki - Tahkik eden: Ferre&quot;,&quot;ur&quot;:&quot;كلمة الإخلاص وتحقيق معناها- ت. فرة (کلمۂ اخلاص اور اس کے مفہوم کی تحقیق — تحقیق: فرة)&quot;,&quot;zh&quot;:&quot;《真诚信仰之言及其含义的确证》—富拉校勘&quot;}" data-original="كلمة الإخلاص وتحقيق معناها- ت. فرة">كلمة الإخلاص وتحقيق معناها- ت. فرة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        كلمة الإخلاص وتحقيق معناها- ت. فرة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      الحافظ ابن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1358/135869.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1358/135869.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Commentary on His Saying, \&quot;Indeed, it is only those who have knowledge among His servants that fear Allah.\&quot;&quot;,&quot;es&quot;:&quot;Comentario sobre las palabras de Allah, exaltado sea: «Solo temen a Allah, de entre Sus siervos, los sabios»&quot;,&quot;fr&quot;:&quot;Commentaire sur la parole du Très-Haut : « Parmi Ses serviteurs, seuls les savants craignent Allah »&quot;,&quot;id&quot;:&quot;Pembahasan tentang Firman Allah, “Sesungguhnya yang takut kepada Allah di antara hamba-hamba-Nya hanyalah para ulama”&quot;,&quot;ja&quot;:&quot;至高なるアッラーの御言葉「アッラーを畏れるのは、かれのしもべのうち学者たちである」について&quot;,&quot;ru&quot;:&quot;Рассуждение о словах Всевышнего: «Воистину, Аллаха из Его рабов страшатся лишь знающие»&quot;,&quot;sw&quot;:&quot;Maelezo kuhusu kauli ya Allah Aliyetukuka: {Hakika wanaomcha Allah miongoni mwa waja wake ni wanazuoni}&quot;,&quot;tr&quot;:&quot;Allah Teâlâ’nın “Allah’tan kulları arasında ancak âlimler korkar” sözü üzerine&quot;,&quot;zh&quot;:&quot;《论真主的话：“真主的仆人中，只有学者敬畏他。”》&quot;}" data-original="الكلام على قوله تعالى {إِنَّمَا يَخْشَى اللَّهَ مِنْ عِبَادِهِ الْعُلَمَاءُ}">الكلام على قوله تعالى {إِنَّمَا يَخْشَى اللَّهَ مِنْ عِبَادِهِ الْعُلَمَاءُ}</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الكلام على قوله تعالى {إِنَّمَا يَخْشَى اللَّهَ مِنْ عِبَادِهِ الْعُلَمَاءُ}
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن رجب الحنبلي أبو الفرج
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1388/138803.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1388/138803.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Answers to the Questions Received from Aleppo&quot;,&quot;es&quot;:&quot;Respuestas a las preguntas enviadas desde Alepo&quot;,&quot;fr&quot;:&quot;Les réponses aux questions venues d&#039;Alep&quot;,&quot;id&quot;:&quot;Jawaban atas pertanyaan-pertanyaan yang datang dari Aleppo&quot;,&quot;ja&quot;:&quot;アレッポから寄せられた質問に対する回答&quot;,&quot;ru&quot;:&quot;Ответы на вопросы, поступившие из Алеппо&quot;,&quot;sw&quot;:&quot;Majibu yaliyotolewa kwa maswali yaliyotumwa kutoka Aleppo&quot;,&quot;tr&quot;:&quot;el-Ecvibetü&#039;l-vâride ale&#039;l-es&#039;ileti&#039;l-vâfide min Haleb (Halep&#039;ten gelen sorulara verilen cevaplar)&quot;,&quot;ur&quot;:&quot;الأجوبة الواردة على الأسئلة الوافدة من حلب (حلب سے آنے والے سوالات کے جوابات)&quot;,&quot;zh&quot;:&quot;答复来自阿勒颇的问题&quot;}" data-original="الأجوبة الواردة على الأسئلة الوافدة من حلب">الأجوبة الواردة على الأسئلة الوافدة من حلب</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الأجوبة الواردة على الأسئلة الوافدة من حلب
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2537/253721.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2537/253721.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Breathing in the Fragrance of Fellowship from the Breezes of the Gardens of Holiness&quot;,&quot;es&quot;:&quot;Respirar la brisa de la intimidad entre las emanaciones de los jardines de la santidad&quot;,&quot;fr&quot;:&quot;Respirer les brises de l&#039;intimité parmi les effluves des jardins sacrés&quot;,&quot;id&quot;:&quot;Istinsyaq Nasim al-Uns min Nafahat Riyadh al-Quds [Menghirup Semilir Keakraban dari Hembusan Taman Suci]&quot;,&quot;ja&quot;:&quot;聖なる園のそよ風から安らぎの風を吸い込む&quot;,&quot;ru&quot;:&quot;Вдыхая благоухание близости из дуновений садов святости&quot;,&quot;sw&quot;:&quot;Kuvuta pumzi ya ukaribu kutoka katika upepo mwanana wa Bustani za Utakatifu&quot;,&quot;tr&quot;:&quot;Kuds bahçelerinin esintilerinden ünsiyet meltemini solumak&quot;,&quot;ur&quot;:&quot;استنشاق نسيم الأنس من نفحات رياض القدس (روضۂ قدس کی خوشبوؤں سے انس کی ہوا سونگھنا)&quot;,&quot;zh&quot;:&quot;《从圣洁园圃的芬芳中汲取亲近之风》&quot;}" data-original="استنشاق نسيم الأنس من نفحات رياض القدس">استنشاق نسيم الأنس من نفحات رياض القدس</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        استنشاق نسيم الأنس من نفحات رياض القدس
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن أحمد ابن رجب الحنبلي
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="items"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>تفسير القرآن العظيم- ط. الريان</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,131 +70,119 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
-    </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <div class="book-head">
-          <img
-        class="cover"
-        src="../../catalogue/1820/182064.jpg"
-        alt=""
-      />
-    
-    <div class="book-head-text">
-      <h1 class="page-title">
-        <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Interpretation of the Great Quran - Al-Rayan Edition&quot;,&quot;es&quot;:&quot;Tafsir del Noble Quran — edición de al-Rayyan&quot;,&quot;fr&quot;:&quot;Tafsir du Noble Coran – édition al-Rayyan&quot;,&quot;id&quot;:&quot;Tafsir Al-Qur&#039;an Al-Azhim – edisi Ar-Rayyan&quot;,&quot;ja&quot;:&quot;偉大なるクルアーンの注釈―ライヤーン版&quot;,&quot;ru&quot;:&quot;Великий тафсир — издательство «ар-Райян»&quot;,&quot;sw&quot;:&quot;Tafsiri Kuu ya Quran - toleo la Al-Rayyan&quot;,&quot;tr&quot;:&quot;Kur’ân-ı Azîm’in tefsiri - er-Reyyân baskısı&quot;,&quot;zh&quot;:&quot;《伟大古兰经注释》—拉扬版&quot;}" data-original="تفسير القرآن العظيم- ط. الريان">تفسير القرآن العظيم- ط. الريان</span>
-      </h1>
-
-                        <p class="credits">
-            <span data-t="Authors">Authors</span>:
-                                        <a href="../../authors/347/34728.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ismail ibn Umar ibn Kathir al-Qurashi al-Dimashqi Abu al-Fida&quot;,&quot;es&quot;:&quot;Ismail ibn Umar ibn Kathir al-Qurashi al-Dimashqi Abu al-Fida&quot;,&quot;fr&quot;:&quot;Ismail ibn Umar ibn Kathir al-Qurashi al-Dimashqi Abu al-Fida&quot;,&quot;id&quot;:&quot;Ismail bin Umar bin Katsir Al-Qurasyi Ad-Dimasyqi Abu al-Fida&quot;,&quot;ja&quot;:&quot;イスマーイール・イブン・ウマル・イブン・カスィール・アル＝クラシー・アッ＝ディマシュキー・アブー・アル＝フィダー&quot;,&quot;ru&quot;:&quot;Исмаил ибн Умар ибн Касир аль-Кураши ад-Димашки Абу аль-Фида&quot;,&quot;sw&quot;:&quot;Ismail bin Umar bin Kathir al-Qurashi al-Dimashqi Abu al-Fida&quot;,&quot;tr&quot;:&quot;İsmâil b. Ömer b. Kesîr el-Kureşî ed-Dımaşkî Ebü&#039;l-Fidâ&quot;,&quot;zh&quot;:&quot;伊斯玛仪·本·欧麦尔·本·凯西尔·古莱什·大马士革·艾布·菲达&quot;}" data-original="إسماعيل بن عمر بن كثير القرشي الدمشقي أبو الفداء">إسماعيل بن عمر بن كثير القرشي الدمشقي أبو الفداء</span>
-              </a>
-                                    </p>
-                                              <p class="credits">
-            <span data-t="Publishers">Publishers</span>:
-                                        <a href="../../publishers/898/89808.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Rayan Foundation&quot;,&quot;es&quot;:&quot;Mu&#039;assasat al-Rayyan&quot;,&quot;fr&quot;:&quot;Muassasat al-Rayyan&quot;,&quot;id&quot;:&quot;Mu&#039;assasah Ar-Rayyan&quot;,&quot;ja&quot;:&quot;ムアッササト・アッ＝ライヤーン&quot;,&quot;ru&quot;:&quot;Муассасат ар-Райян&quot;,&quot;sw&quot;:&quot;Muassasat ar-Rayyan&quot;,&quot;tr&quot;:&quot;Müessesetü&#039;r-Reyyân&quot;,&quot;zh&quot;:&quot;莱扬基金会&quot;}" data-original="مؤسسة الريان">مؤسسة الريان</span>
-              </a>
-                              ،
-                                                      <a href="../../publishers/976/97695.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ministry of Awqaf and Islamic Affairs of Qatar&quot;,&quot;es&quot;:&quot;Ministerio de Awqaf y Asuntos Islámicos de Catar&quot;,&quot;fr&quot;:&quot;Ministère des Awqaf et des Affaires islamiques du Qatar&quot;,&quot;id&quot;:&quot;Kementerian Wakaf dan Urusan Islam Qatar&quot;,&quot;ja&quot;:&quot;カタール・ワクフ・イスラーム問題省&quot;,&quot;ru&quot;:&quot;Министерство вакфов и исламских дел Катара&quot;,&quot;sw&quot;:&quot;Wizara ya Awqaf na Mambo ya Kiislamu ya Qatar&quot;,&quot;tr&quot;:&quot;Katar Evkaf ve İslâmî İşler Bakanlığı&quot;,&quot;zh&quot;:&quot;卡塔尔宗教基金与伊斯兰事务部&quot;}" data-original="وزارة الأوقاف والشؤون الإسلامية القطرية">وزارة الأوقاف والشؤون الإسلامية القطرية</span>
-              </a>
-                                    </p>
-              
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/Quraan/182064_Quraan15391_%D8%AA%D9%81%D8%B3%D9%8A%D8%B1_%D8%A7%D9%84%D9%82%D8%B1%D8%A2%D9%86_%D8%A7%D9%84%D8%B9%D8%B8%D9%8A%D9%85_%D8%A7%D8%A8%D9%86_%D9%83%D8%AB%D9%8A%D8%B1_%D8%B7_%D8%A3%D9%88%D9%82%D8%A7%D9%81_%D9%82%D8%B7%D8%B1_pdf__%D8%A7%D9%84%D9%82%D8%B1%D8%A2%D9%86.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T102658Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=4285c41057093d7b9fde1ea6dea687e8d136b7ebb18c6a1e53ed5d49577954eb"
-            rel="noopener"
-            target="_blank"
-          >
-            <span data-t="Download">Download</span>
-          </a>
-          <span class="muted"><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></span>
-                      </p>
-    </div>
-  </div>
-
-      <section class="panel">
-      <dl class="book-card">
-                  <div>
-            <dt><span data-t="Published">Published</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;2007 CE \/ 1428 AH&quot;,&quot;es&quot;:&quot;2007 d. C. 1428 H&quot;,&quot;fr&quot;:&quot;2007 1428H&quot;,&quot;id&quot;:&quot;2007 M 1428 H&quot;,&quot;ja&quot;:&quot;西暦2007年 ヒジュラ暦1428年&quot;,&quot;ru&quot;:&quot;2007 г. \/ 1428 г. х.&quot;,&quot;sw&quot;:&quot;2007 M 1428 H&quot;,&quot;tr&quot;:&quot;2007 1428 H&quot;,&quot;ur&quot;:&quot;2007ء 1428ھ&quot;,&quot;zh&quot;:&quot;公元2007年 伊历1428年&quot;}" data-original="2007م 1428هـ">2007م 1428هـ</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Country">Country</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Doha, Qatar • Beirut, Lebanon&quot;,&quot;es&quot;:&quot;Doha, Catar • Beirut, Líbano&quot;,&quot;fr&quot;:&quot;Doha, Qatar • Beyrouth, Liban&quot;,&quot;id&quot;:&quot;Doha, Qatar • Beirut, Lebanon&quot;,&quot;ja&quot;:&quot;ドーハ（カタール） • ベイルート（レバノン）&quot;,&quot;ru&quot;:&quot;Доха, Катар • Бейрут, Ливан&quot;,&quot;sw&quot;:&quot;Doha, Qatar • Beirut, Lebanoni&quot;,&quot;tr&quot;:&quot;Doha, Katar • Beyrut, Lübnan&quot;,&quot;ur&quot;:&quot;دوحہ، قطر • بیروت، لبنان&quot;,&quot;zh&quot;:&quot;多哈，卡塔尔 • 贝鲁特，黎巴嫩&quot;}" data-original="الدوحة، قطر • بيروت، لبنان">الدوحة، قطر • بيروت، لبنان</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Edition">Edition</span></dt>
-            <dd><span dir="auto">3</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Volumes">Volumes</span></dt>
-            <dd><span dir="auto">4</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Pages">Pages</span></dt>
-            <dd><span dir="auto">2597</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Type">Type</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Category">Category</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Tafsir and Quranic Sciences&quot;,&quot;es&quot;:&quot;Exégesis y ciencias del Quran&quot;,&quot;fr&quot;:&quot;Exégèse et sciences coraniques&quot;,&quot;id&quot;:&quot;Tafsir dan Ilmu-Ilmu Al-Qur’an&quot;,&quot;ja&quot;:&quot;クルアーン注釈・クルアーン学&quot;,&quot;ru&quot;:&quot;Тафсир и коранические науки&quot;,&quot;sw&quot;:&quot;Tafsiri na elimu za Quran&quot;,&quot;tr&quot;:&quot;Tefsir ve Kur’an İlimleri&quot;,&quot;ur&quot;:&quot;تفسیر اور علومِ قرآن&quot;,&quot;zh&quot;:&quot;古兰经注释与古兰经学&quot;}" data-original="التفسير وعلوم القرآن">التفسير وعلوم القرآن</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Subcategory">Subcategory</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Classical Tafsir&quot;,&quot;es&quot;:&quot;Exégesis coránicas clásicas&quot;,&quot;fr&quot;:&quot;Tafsir ancien&quot;,&quot;id&quot;:&quot;Kitab-kitab tafsir klasik&quot;,&quot;ja&quot;:&quot;古典クルアーン注釈書&quot;,&quot;ru&quot;:&quot;Классические тафсиры&quot;,&quot;sw&quot;:&quot;Tafsiri za kale&quot;,&quot;tr&quot;:&quot;Klasik tefsirler&quot;,&quot;ur&quot;:&quot;قدیم تفاسیر&quot;,&quot;zh&quot;:&quot;古典古兰经注释&quot;}" data-original="التفاسير القديمة">التفاسير القديمة</span></dd>
-          </div>
-              </dl>
-    </section>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
-      <section class="panel">
-      <h2><span data-t="Description">Description</span></h2>
-      <p class="caption" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: The Interpretation of the Great Quran - Al-Rayan Edition\n\n▪️ Author: Ismail ibn Umar ibn Kathir al-Qurashi al-Dimashqi Abu al-Fida\n▫️ Publisher: Ministry of Awqaf and Islamic Affairs • Al-Rayan Foundation\n▪️ Publish Date: 2007 CE \/ 1428 AH\n▫️ Publish Country: Doha, Qatar • Beirut, Lebanon\n▪️ Edition: 3\n▫️ Number of Volumes: 4\n▪️ Pages: 2597\n▫️ Type: Book\n▪️ Main Category: Interpretation and Quranic Sciences\n▫️ Sub Category: Old Interpretations&quot;,&quot;es&quot;:&quot;▫️ Título: \nTafsir del Noble Quran — edición de al-Rayyan\n\n▪️ Autor: Isma&#039;il ibn Umar ibn Kathir al-Qurashi al-Dimashqi Abu al-Fida\n▫️ Editorial: Ministerio de Asuntos Religiosos e Islámicos • Mu&#039;assasat al-Rayyan\n▪️ Fecha de publicación: 2007 d. C. 1428 H\n▫️ Lugar de publicación: Doha, Catar • Beirut, Líbano\n▪️ Edición: 3\n▫️ Número de volúmenes: 4\n▪️ Páginas: 2597\n▫️ Tipo de material: Libro\n▪️ Categoría principal: Tafsir y ciencias del Quran\n▫️ Subcategoría: Tafsir clásico&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nTafsir du Noble Coran – édition al-Rayyan\n\n▪️ Auteur : Isma&#039;il ibn Umar ibn Kathir al-Qurashi al-Dimashqi, Abu al-Fida\n▫️ Éditeur : Ministere des Awqaf et des Affaires islamiques • Mu&#039;assasat al-Rayyan\n▪️ Date de publication : 2007 1428H\n▫️ Lieu de publication : Doha, Qatar • Beyrouth, Liban\n▪️ Édition : 3\n▫️ Nombre de volumes : 4\n▪️ Pages : 2597\n▫️ Type de document : Livre\n▪️ Catégorie principale : Tafsir et sciences coraniques\n▫️ Sous-catégorie : Tafsirs anciens&quot;,&quot;id&quot;:&quot;▫️ Judul: \nTafsir Al-Qur&#039;an Al-Azhim – edisi Ar-Rayyan\n\n▪️ Penulis: Ismail bin Umar bin Katsir Al-Qurasyi Ad-Dimasyqi Abu al-Fida&#039;\n▫️ Penerbit: Kementerian Wakaf dan Urusan Islam • Mu&#039;assasat ar-Rayyan\n▪️ Tahun terbit: 2007 M 1428 H\n▫️ Tempat terbit: Doha, Qatar • Beirut, Lebanon\n▪️ Cetakan: 3\n▫️ Jumlah jilid: 4\n▪️ Halaman: 2597\n▫️ Jenis bahan: Buku\n▪️ Kategori utama: Tafsir dan ilmu Al-Qur&#039;an\n▫️ Subkategori: Kitab-kitab tafsir klasik&quot;,&quot;ja&quot;:&quot;▫️ 書名:\n偉大なるクルアーンの注釈―ライヤーン版\n\n▪️ 著者: イスマーイール・イブン・ウマル・イブン・カスィール・アル＝クラシー・アッ＝ディマシュキー、アブー・アル＝フィダー\n▫️ 出版社: ワクフ・イスラーム問題省 • ムアッササト・アッ＝ライヤーン\n▪️ 出版年: 西暦2007年 ヒジュラ暦1428年\n▫️ 出版地: ドーハ、カタール • ベイルート、レバノン\n▪️ 版: 3\n▫️ 巻数: 4\n▪️ ページ数: 2597\n▫️ 資料の種類: 書籍\n▪️ 主分類: クルアーン注釈・諸学\n▫️ 下位分類: 古典注釈書&quot;,&quot;ru&quot;:&quot;▫️ Название: \nВеликий тафсир — издательство «ар-Райян»\n\n▪️ Автор: Исмаил ибн Умар ибн Касир аль-Кураши ад-Димашки Абу аль-Фида\n▫️ Издательство: Министерство вакфов и исламских дел • Фонд «ар-Райян»\n▪️ Дата издания: 2007 г. \/ 1428 г. х.\n▫️ Место издания: Доха, Катар • Бейрут, Ливан\n▪️ Издание: 3\n▫️ Количество томов: 4\n▪️ Страницы: 2597\n▫️ Тип материала: Книга\n▪️ Основная категория: Тафсир и науки о Коране\n▫️ Подкатегория: Классические тафсиры&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nTafsiri Kuu ya Quran - toleo la Al-Rayyan\n\n▪️ Mwandishi: Ismail bin Umar bin Kathir al-Qurashi al-Dimashqi Abu al-Fida\n▫️ Mchapishaji: Wizara ya Wakfu na Masuala ya Kiislamu • Mu&#039;assasat al-Rayyan\n▪️ Tarehe ya kuchapishwa: 2007 M 1428 H\n▫️ Mahali pa kuchapishwa: Doha, Qatar • Beirut, Lebanon\n▪️ Toleo: 3\n▫️ Idadi ya juzuu: 4\n▪️ Kurasa: 2597\n▫️ Aina ya nyenzo: Kitabu\n▪️ Kundi kuu: Tafsiri na elimu za Quran\n▫️ Kundi dogo: Tafsiri za kale&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nKur’ân-ı Azîm’in tefsiri - er-Reyyân baskısı\n\n▪️ Yazar: İsmâil b. Ömer b. Kesîr el-Kureşî ed-Dımaşkî, Ebü’l-Fidâ\n▫️ Yayınevi: Vizârat al-Awqaf wa al-Shu&#039;un al-Islamiyya • Mu&#039;assasat al-Rayan\n▪️ Yayın tarihi: 2007 1428 H\n▫️ Yayın yeri: Doha, Katar • Beyrut, Lübnan\n▪️ Baskı: 3\n▫️ Cilt sayısı: 4\n▪️ Sayfa: 2597\n▫️ Materyal türü: Kitap\n▪️ Ana kategori: Tefsir ve Kur’an ilimleri\n▫️ Alt kategori: Klasik tefsirler&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nتفسير القرآن العظيم- ط. الريان\n\n▪️ مصنف: إسماعيل بن عمر بن كثير القرشي الدمشقي أبو الفداء\n▫️ ناشر: وزارة الأوقاف والشؤون الإسلامية • مؤسسة الريان\n▪️ تاریخِ اشاعت: 2007ء 1428ھ\n▫️ مقامِ اشاعت: دوحہ، قطر • بیروت، لبنان\n▪️ طبع: 3\n▫️ جلدیں: 4\n▪️ صفحات: 2597\n▫️ نوعیت: کتاب\n▪️ بنیادی زمرہ: تفسیر و علومِ قرآن\n▫️ ذیلی زمرہ: قدیم تفاسیر&quot;,&quot;zh&quot;:&quot;▫️ 书名： \n《伟大古兰经注释》—拉扬版\n\n▪️ 作者：伊斯玛仪·本·欧麦尔·本·凯西尔·古莱什·大马士革·艾布·菲达\n▫️ 出版社：宗教基金与伊斯兰事务部 • 拉扬机构\n▪️ 出版日期：公元2007年 伊历1428年\n▫️ 出版地：卡塔尔多哈 • 黎巴嫩贝鲁特\n▪️ 版次：3\n▫️ 册数：4\n▪️ 页数：2597\n▫️ 资料类型：图书\n▪️ 主分类：古兰经注释与古兰经学\n▫️ 子分类：古典经注&quot;}" data-original="**▫️ العنوان: 
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../catalogue.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Resources</span>
+    </a>
+
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <img
+            src="../../catalogue/1820/182064.jpg"
+            alt=""
+            class="aspect-[3/4] w-full rounded-xl border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+          />
+        
+        <div class="mt-4 flex flex-col gap-2">
+                                <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/Quraan/182064_Quraan15391_%D8%AA%D9%81%D8%B3%D9%8A%D8%B1_%D8%A7%D9%84%D9%82%D8%B1%D8%A2%D9%86_%D8%A7%D9%84%D8%B9%D8%B8%D9%8A%D9%85_%D8%A7%D8%A8%D9%86_%D9%83%D8%AB%D9%8A%D8%B1_%D8%B7_%D8%A3%D9%88%D9%82%D8%A7%D9%81_%D9%82%D8%B7%D8%B1_pdf__%D8%A7%D9%84%D9%82%D8%B1%D8%A2%D9%86.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T180142Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=dbc5a8491b5c85c38526a93578d3f8e3ce44fff84e34d8c7d2f447025153c989" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" rel="noopener">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z"/>
+  <path d="M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Download</span>
+    </a>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></p>                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;The Interpretation of the Great Quran - Al-Rayan Edition&quot;,&quot;es&quot;:&quot;Tafsir del Noble Quran — edición de al-Rayyan&quot;,&quot;fr&quot;:&quot;Tafsir du Noble Coran – édition al-Rayyan&quot;,&quot;id&quot;:&quot;Tafsir Al-Qur&#039;an Al-Azhim – edisi Ar-Rayyan&quot;,&quot;ja&quot;:&quot;偉大なるクルアーンの注釈―ライヤーン版&quot;,&quot;ru&quot;:&quot;Великий тафсир — издательство «ар-Райян»&quot;,&quot;sw&quot;:&quot;Tafsiri Kuu ya Quran - toleo la Al-Rayyan&quot;,&quot;tr&quot;:&quot;Kur’ân-ı Azîm’in tefsiri - er-Reyyân baskısı&quot;,&quot;zh&quot;:&quot;《伟大古兰经注释》—拉扬版&quot;}" data-original="تفسير القرآن العظيم- ط. الريان">تفسير القرآن العظيم- ط. الريان</span></h1>
+
+                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1" lang="ar" dir="rtl" data-arabic-original="data-arabic-original" data-flux-text >تفسير القرآن العظيم- ط. الريان</p>        
+                              <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Authors">Authors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/347/34728.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ismail ibn Umar ibn Kathir al-Qurashi al-Dimashqi Abu al-Fida&quot;,&quot;es&quot;:&quot;Ismail ibn Umar ibn Kathir al-Qurashi al-Dimashqi Abu al-Fida&quot;,&quot;fr&quot;:&quot;Ismail ibn Umar ibn Kathir al-Qurashi al-Dimashqi Abu al-Fida&quot;,&quot;id&quot;:&quot;Ismail bin Umar bin Katsir Al-Qurasyi Ad-Dimasyqi Abu al-Fida&quot;,&quot;ja&quot;:&quot;イスマーイール・イブン・ウマル・イブン・カスィール・アル＝クラシー・アッ＝ディマシュキー・アブー・アル＝フィダー&quot;,&quot;ru&quot;:&quot;Исмаил ибн Умар ибн Касир аль-Кураши ад-Димашки Абу аль-Фида&quot;,&quot;sw&quot;:&quot;Ismail bin Umar bin Kathir al-Qurashi al-Dimashqi Abu al-Fida&quot;,&quot;tr&quot;:&quot;İsmâil b. Ömer b. Kesîr el-Kureşî ed-Dımaşkî Ebü&#039;l-Fidâ&quot;,&quot;zh&quot;:&quot;伊斯玛仪·本·欧麦尔·本·凯西尔·古莱什·大马士革·艾布·菲达&quot;}" data-original="إسماعيل بن عمر بن كثير القرشي الدمشقي أبو الفداء">إسماعيل بن عمر بن كثير القرشي الدمشقي أبو الفداء</span></a></p>                                                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Publishers">Publishers</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../publishers/898/89808.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Rayan Foundation&quot;,&quot;es&quot;:&quot;Mu&#039;assasat al-Rayyan&quot;,&quot;fr&quot;:&quot;Muassasat al-Rayyan&quot;,&quot;id&quot;:&quot;Mu&#039;assasah Ar-Rayyan&quot;,&quot;ja&quot;:&quot;ムアッササト・アッ＝ライヤーン&quot;,&quot;ru&quot;:&quot;Муассасат ар-Райян&quot;,&quot;sw&quot;:&quot;Muassasat ar-Rayyan&quot;,&quot;tr&quot;:&quot;Müessesetü&#039;r-Reyyân&quot;,&quot;zh&quot;:&quot;莱扬基金会&quot;}" data-original="مؤسسة الريان">مؤسسة الريان</span></a>                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../publishers/976/97695.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ministry of Awqaf and Islamic Affairs of Qatar&quot;,&quot;es&quot;:&quot;Ministerio de Awqaf y Asuntos Islámicos de Catar&quot;,&quot;fr&quot;:&quot;Ministère des Awqaf et des Affaires islamiques du Qatar&quot;,&quot;id&quot;:&quot;Kementerian Wakaf dan Urusan Islam Qatar&quot;,&quot;ja&quot;:&quot;カタール・ワクフ・イスラーム問題省&quot;,&quot;ru&quot;:&quot;Министерство вакфов и исламских дел Катара&quot;,&quot;sw&quot;:&quot;Wizara ya Awqaf na Mambo ya Kiislamu ya Qatar&quot;,&quot;tr&quot;:&quot;Katar Evkaf ve İslâmî İşler Bakanlığı&quot;,&quot;zh&quot;:&quot;卡塔尔宗教基金与伊斯兰事务部&quot;}" data-original="وزارة الأوقاف والشؤون الإسلامية القطرية">وزارة الأوقاف والشؤون الإسلامية القطرية</span></a></p>                  
+                  <div class="mt-6 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+            <dl class="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[fit-content(12rem)_1fr]">
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Published">Published</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;2007 CE \/ 1428 AH&quot;,&quot;es&quot;:&quot;2007 d. C. 1428 H&quot;,&quot;fr&quot;:&quot;2007 1428H&quot;,&quot;id&quot;:&quot;2007 M 1428 H&quot;,&quot;ja&quot;:&quot;西暦2007年 ヒジュラ暦1428年&quot;,&quot;ru&quot;:&quot;2007 г. \/ 1428 г. х.&quot;,&quot;sw&quot;:&quot;2007 M 1428 H&quot;,&quot;tr&quot;:&quot;2007 1428 H&quot;,&quot;ur&quot;:&quot;2007ء 1428ھ&quot;,&quot;zh&quot;:&quot;公元2007年 伊历1428年&quot;}" data-original="2007م 1428هـ">2007م 1428هـ</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Country">Country</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Doha, Qatar • Beirut, Lebanon&quot;,&quot;es&quot;:&quot;Doha, Catar • Beirut, Líbano&quot;,&quot;fr&quot;:&quot;Doha, Qatar • Beyrouth, Liban&quot;,&quot;id&quot;:&quot;Doha, Qatar • Beirut, Lebanon&quot;,&quot;ja&quot;:&quot;ドーハ（カタール） • ベイルート（レバノン）&quot;,&quot;ru&quot;:&quot;Доха, Катар • Бейрут, Ливан&quot;,&quot;sw&quot;:&quot;Doha, Qatar • Beirut, Lebanoni&quot;,&quot;tr&quot;:&quot;Doha, Katar • Beyrut, Lübnan&quot;,&quot;ur&quot;:&quot;دوحہ، قطر • بیروت، لبنان&quot;,&quot;zh&quot;:&quot;多哈，卡塔尔 • 贝鲁特，黎巴嫩&quot;}" data-original="الدوحة، قطر • بيروت، لبنان">الدوحة، قطر • بيروت، لبنان</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Edition">Edition</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">3</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Volumes">Volumes</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">4</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Pages">Pages</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">2597</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Type">Type</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Category">Category</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Tafsir and Quranic Sciences&quot;,&quot;es&quot;:&quot;Exégesis y ciencias del Quran&quot;,&quot;fr&quot;:&quot;Exégèse et sciences coraniques&quot;,&quot;id&quot;:&quot;Tafsir dan Ilmu-Ilmu Al-Qur’an&quot;,&quot;ja&quot;:&quot;クルアーン注釈・クルアーン学&quot;,&quot;ru&quot;:&quot;Тафсир и коранические науки&quot;,&quot;sw&quot;:&quot;Tafsiri na elimu za Quran&quot;,&quot;tr&quot;:&quot;Tefsir ve Kur’an İlimleri&quot;,&quot;ur&quot;:&quot;تفسیر اور علومِ قرآن&quot;,&quot;zh&quot;:&quot;古兰经注释与古兰经学&quot;}" data-original="التفسير وعلوم القرآن">التفسير وعلوم القرآن</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Subcategory">Subcategory</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Classical Tafsir&quot;,&quot;es&quot;:&quot;Exégesis coránicas clásicas&quot;,&quot;fr&quot;:&quot;Tafsir ancien&quot;,&quot;id&quot;:&quot;Kitab-kitab tafsir klasik&quot;,&quot;ja&quot;:&quot;古典クルアーン注釈書&quot;,&quot;ru&quot;:&quot;Классические тафсиры&quot;,&quot;sw&quot;:&quot;Tafsiri za kale&quot;,&quot;tr&quot;:&quot;Klasik tefsirler&quot;,&quot;ur&quot;:&quot;قدیم تفاسیر&quot;,&quot;zh&quot;:&quot;古典古兰经注释&quot;}" data-original="التفاسير القديمة">التفاسير القديمة</span>
+                </dd>
+                          </dl>
+          </div>
+        
+                  <div class="mt-4 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Description</div>
+            <p class="text-sm leading-relaxed whitespace-pre-line text-zinc-800 dark:text-zinc-100" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: The Interpretation of the Great Quran - Al-Rayan Edition\n\n▪️ Author: Ismail ibn Umar ibn Kathir al-Qurashi al-Dimashqi Abu al-Fida\n▫️ Publisher: Ministry of Awqaf and Islamic Affairs • Al-Rayan Foundation\n▪️ Publish Date: 2007 CE \/ 1428 AH\n▫️ Publish Country: Doha, Qatar • Beirut, Lebanon\n▪️ Edition: 3\n▫️ Number of Volumes: 4\n▪️ Pages: 2597\n▫️ Type: Book\n▪️ Main Category: Interpretation and Quranic Sciences\n▫️ Sub Category: Old Interpretations&quot;,&quot;es&quot;:&quot;▫️ Título: \nTafsir del Noble Quran — edición de al-Rayyan\n\n▪️ Autor: Isma&#039;il ibn Umar ibn Kathir al-Qurashi al-Dimashqi Abu al-Fida\n▫️ Editorial: Ministerio de Asuntos Religiosos e Islámicos • Mu&#039;assasat al-Rayyan\n▪️ Fecha de publicación: 2007 d. C. 1428 H\n▫️ Lugar de publicación: Doha, Catar • Beirut, Líbano\n▪️ Edición: 3\n▫️ Número de volúmenes: 4\n▪️ Páginas: 2597\n▫️ Tipo de material: Libro\n▪️ Categoría principal: Tafsir y ciencias del Quran\n▫️ Subcategoría: Tafsir clásico&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nTafsir du Noble Coran – édition al-Rayyan\n\n▪️ Auteur : Isma&#039;il ibn Umar ibn Kathir al-Qurashi al-Dimashqi, Abu al-Fida\n▫️ Éditeur : Ministere des Awqaf et des Affaires islamiques • Mu&#039;assasat al-Rayyan\n▪️ Date de publication : 2007 1428H\n▫️ Lieu de publication : Doha, Qatar • Beyrouth, Liban\n▪️ Édition : 3\n▫️ Nombre de volumes : 4\n▪️ Pages : 2597\n▫️ Type de document : Livre\n▪️ Catégorie principale : Tafsir et sciences coraniques\n▫️ Sous-catégorie : Tafsirs anciens&quot;,&quot;id&quot;:&quot;▫️ Judul: \nTafsir Al-Qur&#039;an Al-Azhim – edisi Ar-Rayyan\n\n▪️ Penulis: Ismail bin Umar bin Katsir Al-Qurasyi Ad-Dimasyqi Abu al-Fida&#039;\n▫️ Penerbit: Kementerian Wakaf dan Urusan Islam • Mu&#039;assasat ar-Rayyan\n▪️ Tahun terbit: 2007 M 1428 H\n▫️ Tempat terbit: Doha, Qatar • Beirut, Lebanon\n▪️ Cetakan: 3\n▫️ Jumlah jilid: 4\n▪️ Halaman: 2597\n▫️ Jenis bahan: Buku\n▪️ Kategori utama: Tafsir dan ilmu Al-Qur&#039;an\n▫️ Subkategori: Kitab-kitab tafsir klasik&quot;,&quot;ja&quot;:&quot;▫️ 書名:\n偉大なるクルアーンの注釈―ライヤーン版\n\n▪️ 著者: イスマーイール・イブン・ウマル・イブン・カスィール・アル＝クラシー・アッ＝ディマシュキー、アブー・アル＝フィダー\n▫️ 出版社: ワクフ・イスラーム問題省 • ムアッササト・アッ＝ライヤーン\n▪️ 出版年: 西暦2007年 ヒジュラ暦1428年\n▫️ 出版地: ドーハ、カタール • ベイルート、レバノン\n▪️ 版: 3\n▫️ 巻数: 4\n▪️ ページ数: 2597\n▫️ 資料の種類: 書籍\n▪️ 主分類: クルアーン注釈・諸学\n▫️ 下位分類: 古典注釈書&quot;,&quot;ru&quot;:&quot;▫️ Название: \nВеликий тафсир — издательство «ар-Райян»\n\n▪️ Автор: Исмаил ибн Умар ибн Касир аль-Кураши ад-Димашки Абу аль-Фида\n▫️ Издательство: Министерство вакфов и исламских дел • Фонд «ар-Райян»\n▪️ Дата издания: 2007 г. \/ 1428 г. х.\n▫️ Место издания: Доха, Катар • Бейрут, Ливан\n▪️ Издание: 3\n▫️ Количество томов: 4\n▪️ Страницы: 2597\n▫️ Тип материала: Книга\n▪️ Основная категория: Тафсир и науки о Коране\n▫️ Подкатегория: Классические тафсиры&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nTafsiri Kuu ya Quran - toleo la Al-Rayyan\n\n▪️ Mwandishi: Ismail bin Umar bin Kathir al-Qurashi al-Dimashqi Abu al-Fida\n▫️ Mchapishaji: Wizara ya Wakfu na Masuala ya Kiislamu • Mu&#039;assasat al-Rayyan\n▪️ Tarehe ya kuchapishwa: 2007 M 1428 H\n▫️ Mahali pa kuchapishwa: Doha, Qatar • Beirut, Lebanon\n▪️ Toleo: 3\n▫️ Idadi ya juzuu: 4\n▪️ Kurasa: 2597\n▫️ Aina ya nyenzo: Kitabu\n▪️ Kundi kuu: Tafsiri na elimu za Quran\n▫️ Kundi dogo: Tafsiri za kale&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nKur’ân-ı Azîm’in tefsiri - er-Reyyân baskısı\n\n▪️ Yazar: İsmâil b. Ömer b. Kesîr el-Kureşî ed-Dımaşkî, Ebü’l-Fidâ\n▫️ Yayınevi: Vizârat al-Awqaf wa al-Shu&#039;un al-Islamiyya • Mu&#039;assasat al-Rayan\n▪️ Yayın tarihi: 2007 1428 H\n▫️ Yayın yeri: Doha, Katar • Beyrut, Lübnan\n▪️ Baskı: 3\n▫️ Cilt sayısı: 4\n▪️ Sayfa: 2597\n▫️ Materyal türü: Kitap\n▪️ Ana kategori: Tefsir ve Kur’an ilimleri\n▫️ Alt kategori: Klasik tefsirler&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nتفسير القرآن العظيم- ط. الريان\n\n▪️ مصنف: إسماعيل بن عمر بن كثير القرشي الدمشقي أبو الفداء\n▫️ ناشر: وزارة الأوقاف والشؤون الإسلامية • مؤسسة الريان\n▪️ تاریخِ اشاعت: 2007ء 1428ھ\n▫️ مقامِ اشاعت: دوحہ، قطر • بیروت، لبنان\n▪️ طبع: 3\n▫️ جلدیں: 4\n▪️ صفحات: 2597\n▫️ نوعیت: کتاب\n▪️ بنیادی زمرہ: تفسیر و علومِ قرآن\n▫️ ذیلی زمرہ: قدیم تفاسیر&quot;,&quot;zh&quot;:&quot;▫️ 书名： \n《伟大古兰经注释》—拉扬版\n\n▪️ 作者：伊斯玛仪·本·欧麦尔·本·凯西尔·古莱什·大马士革·艾布·菲达\n▫️ 出版社：宗教基金与伊斯兰事务部 • 拉扬机构\n▪️ 出版日期：公元2007年 伊历1428年\n▫️ 出版地：卡塔尔多哈 • 黎巴嫩贝鲁特\n▪️ 版次：3\n▫️ 册数：4\n▪️ 页数：2597\n▫️ 资料类型：图书\n▪️ 主分类：古兰经注释与古兰经学\n▫️ 子分类：古典经注&quot;}" data-original="**▫️ العنوان: 
 تفسير القرآن العظيم- ط. الريان**
 
 ▪️ المؤلف: #إسماعيل_بن_عمر_بن_كثير_القرشي_الدمشقي_أبو_الفداء
@@ -186,28 +211,10 @@
 ▫️ التصنيف الفرعي: #التفاسير_القديمة
 
 ۪</p>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
-      >
-        <span data-t="Close">Close</span>
-      </button>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

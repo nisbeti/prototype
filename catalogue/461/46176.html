@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="items"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>مدونة الفقه المالكي وأدلته</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,127 +70,119 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
-    </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <div class="book-head">
-          <img
-        class="cover"
-        src="../../catalogue/461/46176.jpg"
-        alt=""
-      />
-    
-    <div class="book-head-text">
-      <h1 class="page-title">
-        <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Maliki Jurisprudence and Its Evidence&quot;,&quot;es&quot;:&quot;Compendio del derecho malikí y sus pruebas&quot;,&quot;fr&quot;:&quot;Recueil de droit malékite et de ses preuves&quot;,&quot;id&quot;:&quot;Mudawwanah Fikih Maliki dan Dalil-Dalilnya&quot;,&quot;ja&quot;:&quot;マーリキー派フィクフとその根拠の集成&quot;,&quot;ru&quot;:&quot;Свод маликитского фикха и его доказательств&quot;,&quot;sw&quot;:&quot;Mudawwanat al-Fiqh al-Maliki wa Adillatuhu (Mkusanyo wa fiqhi ya Maliki na dalili zake)&quot;,&quot;tr&quot;:&quot;Mâlikî Fıkhı ve Delilleri Ansiklopedisi&quot;,&quot;ur&quot;:&quot;مدونة الفقه المالكي وأدلته (فقہ مالکی اور اس کے دلائل کا مدونہ)&quot;,&quot;zh&quot;:&quot;马立克派教法及其证据汇编&quot;}" data-original="مدونة الفقه المالكي وأدلته">مدونة الفقه المالكي وأدلته</span>
-      </h1>
-
-                        <p class="credits">
-            <span data-t="Authors">Authors</span>:
-                                        <a href="../../authors/018/1879.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Sadiq bin Abdul Rahman Al-Ghiryani&quot;,&quot;es&quot;:&quot;al-Sadiq ibn Abd al-Rahman al-Ghiryani&quot;,&quot;fr&quot;:&quot;al-Sadiq ibn Abd al-Rahman al-Ghiryani&quot;,&quot;id&quot;:&quot;As-Sadiq bin Abdulrahman Al-Ghiryani&quot;,&quot;ja&quot;:&quot;アル＝サーディク・ビン・アブドゥッラフマーン・アル＝グリヤーニー&quot;,&quot;ru&quot;:&quot;ас-Садик ибн Абд ар-Рахман аль-Гирьяни&quot;,&quot;sw&quot;:&quot;Al-Sadiq bin Abdulrahman Al-Ghiryani&quot;,&quot;tr&quot;:&quot;es-Sâdık b. Abdurrahman el-Gıryânî&quot;,&quot;zh&quot;:&quot;萨迪克·本·阿卜杜·拉赫曼·吉里亚尼&quot;}" data-original="الصادق بن عبد الرحمن الغرياني">الصادق بن عبد الرحمن الغرياني</span>
-              </a>
-                                    </p>
-                                              <p class="credits">
-            <span data-t="Publishers">Publishers</span>:
-                                        <a href="../../publishers/898/89808.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Rayan Foundation&quot;,&quot;es&quot;:&quot;Mu&#039;assasat al-Rayyan&quot;,&quot;fr&quot;:&quot;Muassasat al-Rayyan&quot;,&quot;id&quot;:&quot;Mu&#039;assasah Ar-Rayyan&quot;,&quot;ja&quot;:&quot;ムアッササト・アッ＝ライヤーン&quot;,&quot;ru&quot;:&quot;Муассасат ар-Райян&quot;,&quot;sw&quot;:&quot;Muassasat ar-Rayyan&quot;,&quot;tr&quot;:&quot;Müessesetü&#039;r-Reyyân&quot;,&quot;zh&quot;:&quot;莱扬基金会&quot;}" data-original="مؤسسة الريان">مؤسسة الريان</span>
-              </a>
-                                    </p>
-              
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/Figh/46176_Figh00214%20%D9%85%D8%AF%D9%88%D9%86%D8%A9%20%D8%A7%D9%84%D9%81%D9%82%D9%87%20%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%83%D9%8A%20%D9%88%D8%A3%D8%AF%D9%84%D8%AA%D9%87.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T102447Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=0a09471e2c55f993f611bb3655597cd79371a1580766f74e030b7561c5569d39"
-            rel="noopener"
-            target="_blank"
-          >
-            <span data-t="Download">Download</span>
-          </a>
-          <span class="muted"><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></span>
-                      </p>
-    </div>
-  </div>
-
-      <section class="panel">
-      <dl class="book-card">
-                  <div>
-            <dt><span data-t="Published">Published</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;1423 AH \/ 2002 CE&quot;,&quot;es&quot;:&quot;1423 H 2002&quot;,&quot;fr&quot;:&quot;1423 H 2002&quot;,&quot;id&quot;:&quot;1423 H 2002 M&quot;,&quot;ja&quot;:&quot;ヒジュラ暦1423年／西暦2002年&quot;,&quot;ru&quot;:&quot;1423 г. х. \/ 2002 г.&quot;,&quot;sw&quot;:&quot;1423 H 2002 M&quot;,&quot;tr&quot;:&quot;1423 H 2002&quot;,&quot;ur&quot;:&quot;1423ھ 2002ء&quot;,&quot;zh&quot;:&quot;伊历1423年 公元2002年&quot;}" data-original="1423هـ 2002 م">1423هـ 2002 م</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Country">Country</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Beirut, Lebanon&quot;,&quot;es&quot;:&quot;Beirut, Líbano&quot;,&quot;fr&quot;:&quot;Beyrouth, Liban&quot;,&quot;id&quot;:&quot;Beirut, Lebanon&quot;,&quot;ja&quot;:&quot;ベイルート、レバノン&quot;,&quot;ru&quot;:&quot;Бейрут, Ливан&quot;,&quot;sw&quot;:&quot;Beirut, Lebanoni&quot;,&quot;tr&quot;:&quot;Beyrut, Lübnan&quot;,&quot;ur&quot;:&quot;بیروت، لبنان&quot;,&quot;zh&quot;:&quot;贝鲁特，黎巴嫩&quot;}" data-original="بيروت، لبنان">بيروت، لبنان</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Edition">Edition</span></dt>
-            <dd><span dir="auto">1</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Volumes">Volumes</span></dt>
-            <dd><span dir="auto">5</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Pages">Pages</span></dt>
-            <dd><span dir="auto">3061</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Type">Type</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Category">Category</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Jurisprudence and Its Principles&quot;,&quot;es&quot;:&quot;Jurisprudencia y sus fundamentos&quot;,&quot;fr&quot;:&quot;Jurisprudence et ses fondements&quot;,&quot;id&quot;:&quot;Fikih dan Ushul Fikih&quot;,&quot;ja&quot;:&quot;法学・法源学&quot;,&quot;ru&quot;:&quot;Фикх и его основы&quot;,&quot;sw&quot;:&quot;Fiqhi na misingi yake&quot;,&quot;tr&quot;:&quot;Fıkıh ve Fıkıh Usulü&quot;,&quot;ur&quot;:&quot;فقہ اور اصولِ فقہ&quot;,&quot;zh&quot;:&quot;教法与教法原理&quot;}" data-original="الفقه وأصوله">الفقه وأصوله</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Subcategory">Subcategory</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Maliki Jurisprudence&quot;,&quot;es&quot;:&quot;Jurisprudencia malikí&quot;,&quot;fr&quot;:&quot;Jurisprudence malékite&quot;,&quot;id&quot;:&quot;Fikih mazhab Maliki&quot;,&quot;ja&quot;:&quot;マーリク派法学&quot;,&quot;ru&quot;:&quot;Маликитское право&quot;,&quot;sw&quot;:&quot;Fiqhi ya Maliki&quot;,&quot;tr&quot;:&quot;Mâlikî fıkhı&quot;,&quot;ur&quot;:&quot;مالکی فقہ&quot;,&quot;zh&quot;:&quot;马立克派法学&quot;}" data-original="فقه مالكي">فقه مالكي</span></dd>
-          </div>
-              </dl>
-    </section>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
-      <section class="panel">
-      <h2><span data-t="Description">Description</span></h2>
-      <p class="caption" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: The Maliki Jurisprudence and Its Evidence\n\n▪️ Author: Sadek Abdul Rahman Al-Ghiryani\n▫️ Publisher: Al-Rayan Printing and Publishing Foundation\n▪️ Publish Date: 1423 AH \/ 2002 CE\n▫️ Publish Country: Beirut, Lebanon\n▪️ Edition: 1\n▫️ Number of Volumes: 5\n▪️ Pages: 3061\n▫️ Type: Book\n▪️ Main Category: Jurisprudence and Its Foundations\n▫️ Sub Category: Maliki Jurisprudence&quot;,&quot;es&quot;:&quot;▫️ Título: \nCompendio del derecho malikí y sus pruebas\n\n▪️ Autor: al-Sadiq Abd al-Rahman al-Ghiryani\n▫️ Editorial: Muassasat al-Rayyan li-l-Tibaa wa-l-Nashr\n▪️ Fecha de publicación: 1423 H 2002\n▫️ Lugar de publicación: Beirut, Líbano\n▪️ Edición: 1\n▫️ Número de volúmenes: 5\n▪️ Páginas: 3061\n▫️ Tipo de material: Libro\n▪️ Categoría principal: Derecho islámico y sus fundamentos\n▫️ Subcategoría: Derecho malikí&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nRecueil de droit malékite et de ses preuves\n\n▪️ Auteur : al-Sadiq Abd al-Rahman al-Gharyani\n▫️ Éditeur : Mu&#039;assasat al-Rayyan li-l-Tiba&#039;a wa-l-Nashr\n▪️ Date de publication : 1423 H 2002\n▫️ Lieu de publication : Beyrouth, Liban\n▪️ Édition : 1\n▫️ Nombre de volumes : 5\n▪️ Pages : 3061\n▫️ Type de document : Livre\n▪️ Catégorie principale : Droit musulman et ses fondements\n▫️ Sous-catégorie : Droit malékite&quot;,&quot;id&quot;:&quot;▫️ Judul: \nMudawwanah Fikih Maliki dan Dalil-Dalilnya\n\n▪️ Penulis: As-Sadiq Abdurrahman Al-Ghiryani\n▫️ Penerbit: Mu&#039;assasat ar-Rayyan untuk Percetakan dan Penerbitan\n▪️ Tahun terbit: 1423 H 2002 M\n▫️ Tempat terbit: Beirut, Lebanon\n▪️ Cetakan: 1\n▫️ Jumlah jilid: 5\n▪️ Halaman: 3061\n▫️ Jenis bahan: Buku\n▪️ Kategori utama: Fikih dan usul fikih\n▫️ Subkategori: Fikih Maliki&quot;,&quot;ja&quot;:&quot;▫️ 書名：\nマーリキー派フィクフとその根拠の集成\n\n▪️ 著者：アッ＝サーディク・アブドゥッラフマーン・アル＝グライヤーニー\n▫️ 出版社：ムアッササト・アッ＝ライヤーン・リッティバーア・ワンナシュル\n▪️ 出版年：ヒジュラ暦1423年／西暦2002年\n▫️ 出版地：ベイルート、レバノン\n▪️ 版：1\n▫️ 巻数：5\n▪️ ページ数：3061\n▫️ 資料の種類：書籍\n▪️ 主分類：フィクフとその法源\n▫️ 下位分類：マーリキー派フィクフ&quot;,&quot;ru&quot;:&quot;▫️ Название: \nСвод маликитского фикха и его доказательств\n\n▪️ Автор: ас-Садик Абд ар-Рахман аль-Гарьяни\n▫️ Издательство: Муассасат ар-Райян ли-т-Тиба&#039;а ва-н-Нашр\n▪️ Дата издания: 1423 г. х. \/ 2002 г.\n▫️ Место издания: Бейрут, Ливан\n▪️ Издание: 1\n▫️ Количество томов: 5\n▪️ Страницы: 3061\n▫️ Тип материала: Книга\n▪️ Основная категория: Фикх и его основы\n▪️ Подкатегория: Маликитский фикх&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nMudawwanat al-Fiqh al-Maliki wa Adillatuhu (Mkusanyo wa fiqhi ya Maliki na dalili zake)\n\n▪️ Mwandishi: al-Sadiq Abd al-Rahman al-Gharyani\n▫️ Mchapishaji: Mu&#039;assasat al-Rayyan lil-Tiba&#039;a wa al-Nashr\n▪️ Tarehe ya kuchapishwa: 1423 H 2002 M\n▫️ Mahali pa kuchapishwa: Beirut, Lebanon\n▪️ Toleo: 1\n▫️ Idadi ya juzuu: 5\n▪️ Kurasa: 3061\n▫️ Aina ya nyenzo: Kitabu\n▪️ Kundi kuu: Fiqhi na misingi yake\n▪️ Kundi dogo: Fiqhi ya Maliki&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nMâlikî Fıkhı ve Delilleri Ansiklopedisi\n\n▪️ Yazar: es-Sâdık Abdurrahman el-Gıryânî\n▫️ Yayınevi: Mu&#039;assasat al-Rayyan li&#039;l-Tiba&#039;a wa&#039;l-Nashr\n▪️ Yayın tarihi: 1423 H 2002\n▫️ Yayın yeri: Beyrut, Lübnan\n▪️ Baskı: 1\n▫️ Cilt sayısı: 5\n▪️ Sayfa: 3061\n▫️ Materyal türü: Kitap\n▪️ Ana kategori: Fıkıh ve Usûlü\n▫️ Alt kategori: Mâlikî fıkhı&quot;,&quot;ur&quot;:&quot;▫️ عنوان:\nمدونة الفقه المالكي وأدلته (فقہ مالکی اور اس کے دلائل کا مدونہ)\n\n▪️ مصنف: الصادق عبد الرحمن الغرياني\n▫️ ناشر: مؤسسة الريان للطباعة والنشر\n▪️ تاریخِ اشاعت: 1423ھ 2002ء\n▫️ مقامِ اشاعت: بیروت، لبنان\n▪️ طبع: 1\n▫️ جلدیں: 5\n▪️ صفحات: 3061\n▫️ نوعیت: کتاب\n▪️ بنیادی زمرہ: فقہ اور اصولِ فقہ\n▫️ ذیلی زمرہ: فقہ مالکی&quot;,&quot;zh&quot;:&quot;▫️ 书名： \n《马立克派教法及其证据汇编》\n\n▪️ 作者：萨迪克·阿卜杜·拉赫曼·吉拉尼\n▫️ 出版社：莱扬印刷出版机构\n▪️ 出版日期：伊历1423年 公元2002年\n▫️ 出版地：贝鲁特，黎巴嫩\n▪️ 版次：1\n▫️ 册数：5\n▪️ 页数：3061\n▫️ 资料类型：图书\n▪️ 主分类：教法学及其原理\n▫️ 子分类：马立克派教法学&quot;}" data-original="**▫️ العنوان: 
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../catalogue.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Resources</span>
+    </a>
+
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <img
+            src="../../catalogue/461/46176.jpg"
+            alt=""
+            class="aspect-[3/4] w-full rounded-xl border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+          />
+        
+        <div class="mt-4 flex flex-col gap-2">
+                                <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/Figh/46176_Figh00214%20%D9%85%D8%AF%D9%88%D9%86%D8%A9%20%D8%A7%D9%84%D9%81%D9%82%D9%87%20%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%83%D9%8A%20%D9%88%D8%A3%D8%AF%D9%84%D8%AA%D9%87.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T175904Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=f2808f65ac025233bf13df77f3c885e27cb97319f7f3bbabf7b7af4194096fd8" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" rel="noopener">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z"/>
+  <path d="M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Download</span>
+    </a>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></p>                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;The Maliki Jurisprudence and Its Evidence&quot;,&quot;es&quot;:&quot;Compendio del derecho malikí y sus pruebas&quot;,&quot;fr&quot;:&quot;Recueil de droit malékite et de ses preuves&quot;,&quot;id&quot;:&quot;Mudawwanah Fikih Maliki dan Dalil-Dalilnya&quot;,&quot;ja&quot;:&quot;マーリキー派フィクフとその根拠の集成&quot;,&quot;ru&quot;:&quot;Свод маликитского фикха и его доказательств&quot;,&quot;sw&quot;:&quot;Mudawwanat al-Fiqh al-Maliki wa Adillatuhu (Mkusanyo wa fiqhi ya Maliki na dalili zake)&quot;,&quot;tr&quot;:&quot;Mâlikî Fıkhı ve Delilleri Ansiklopedisi&quot;,&quot;ur&quot;:&quot;مدونة الفقه المالكي وأدلته (فقہ مالکی اور اس کے دلائل کا مدونہ)&quot;,&quot;zh&quot;:&quot;马立克派教法及其证据汇编&quot;}" data-original="مدونة الفقه المالكي وأدلته">مدونة الفقه المالكي وأدلته</span></h1>
+
+                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1" lang="ar" dir="rtl" data-arabic-original="data-arabic-original" data-flux-text >مدونة الفقه المالكي وأدلته</p>        
+                              <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Authors">Authors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/018/1879.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Sadiq bin Abdul Rahman Al-Ghiryani&quot;,&quot;es&quot;:&quot;al-Sadiq ibn Abd al-Rahman al-Ghiryani&quot;,&quot;fr&quot;:&quot;al-Sadiq ibn Abd al-Rahman al-Ghiryani&quot;,&quot;id&quot;:&quot;As-Sadiq bin Abdulrahman Al-Ghiryani&quot;,&quot;ja&quot;:&quot;アル＝サーディク・ビン・アブドゥッラフマーン・アル＝グリヤーニー&quot;,&quot;ru&quot;:&quot;ас-Садик ибн Абд ар-Рахман аль-Гирьяни&quot;,&quot;sw&quot;:&quot;Al-Sadiq bin Abdulrahman Al-Ghiryani&quot;,&quot;tr&quot;:&quot;es-Sâdık b. Abdurrahman el-Gıryânî&quot;,&quot;zh&quot;:&quot;萨迪克·本·阿卜杜·拉赫曼·吉里亚尼&quot;}" data-original="الصادق بن عبد الرحمن الغرياني">الصادق بن عبد الرحمن الغرياني</span></a></p>                                                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Publishers">Publishers</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../publishers/898/89808.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Rayan Foundation&quot;,&quot;es&quot;:&quot;Mu&#039;assasat al-Rayyan&quot;,&quot;fr&quot;:&quot;Muassasat al-Rayyan&quot;,&quot;id&quot;:&quot;Mu&#039;assasah Ar-Rayyan&quot;,&quot;ja&quot;:&quot;ムアッササト・アッ＝ライヤーン&quot;,&quot;ru&quot;:&quot;Муассасат ар-Райян&quot;,&quot;sw&quot;:&quot;Muassasat ar-Rayyan&quot;,&quot;tr&quot;:&quot;Müessesetü&#039;r-Reyyân&quot;,&quot;zh&quot;:&quot;莱扬基金会&quot;}" data-original="مؤسسة الريان">مؤسسة الريان</span></a></p>                  
+                  <div class="mt-6 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+            <dl class="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[fit-content(12rem)_1fr]">
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Published">Published</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;1423 AH \/ 2002 CE&quot;,&quot;es&quot;:&quot;1423 H 2002&quot;,&quot;fr&quot;:&quot;1423 H 2002&quot;,&quot;id&quot;:&quot;1423 H 2002 M&quot;,&quot;ja&quot;:&quot;ヒジュラ暦1423年／西暦2002年&quot;,&quot;ru&quot;:&quot;1423 г. х. \/ 2002 г.&quot;,&quot;sw&quot;:&quot;1423 H 2002 M&quot;,&quot;tr&quot;:&quot;1423 H 2002&quot;,&quot;ur&quot;:&quot;1423ھ 2002ء&quot;,&quot;zh&quot;:&quot;伊历1423年 公元2002年&quot;}" data-original="1423هـ 2002 م">1423هـ 2002 م</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Country">Country</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Beirut, Lebanon&quot;,&quot;es&quot;:&quot;Beirut, Líbano&quot;,&quot;fr&quot;:&quot;Beyrouth, Liban&quot;,&quot;id&quot;:&quot;Beirut, Lebanon&quot;,&quot;ja&quot;:&quot;ベイルート、レバノン&quot;,&quot;ru&quot;:&quot;Бейрут, Ливан&quot;,&quot;sw&quot;:&quot;Beirut, Lebanoni&quot;,&quot;tr&quot;:&quot;Beyrut, Lübnan&quot;,&quot;ur&quot;:&quot;بیروت، لبنان&quot;,&quot;zh&quot;:&quot;贝鲁特，黎巴嫩&quot;}" data-original="بيروت، لبنان">بيروت، لبنان</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Edition">Edition</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">1</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Volumes">Volumes</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">5</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Pages">Pages</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">3061</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Type">Type</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Category">Category</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Jurisprudence and Its Principles&quot;,&quot;es&quot;:&quot;Jurisprudencia y sus fundamentos&quot;,&quot;fr&quot;:&quot;Jurisprudence et ses fondements&quot;,&quot;id&quot;:&quot;Fikih dan Ushul Fikih&quot;,&quot;ja&quot;:&quot;法学・法源学&quot;,&quot;ru&quot;:&quot;Фикх и его основы&quot;,&quot;sw&quot;:&quot;Fiqhi na misingi yake&quot;,&quot;tr&quot;:&quot;Fıkıh ve Fıkıh Usulü&quot;,&quot;ur&quot;:&quot;فقہ اور اصولِ فقہ&quot;,&quot;zh&quot;:&quot;教法与教法原理&quot;}" data-original="الفقه وأصوله">الفقه وأصوله</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Subcategory">Subcategory</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Maliki Jurisprudence&quot;,&quot;es&quot;:&quot;Jurisprudencia malikí&quot;,&quot;fr&quot;:&quot;Jurisprudence malékite&quot;,&quot;id&quot;:&quot;Fikih mazhab Maliki&quot;,&quot;ja&quot;:&quot;マーリク派法学&quot;,&quot;ru&quot;:&quot;Маликитское право&quot;,&quot;sw&quot;:&quot;Fiqhi ya Maliki&quot;,&quot;tr&quot;:&quot;Mâlikî fıkhı&quot;,&quot;ur&quot;:&quot;مالکی فقہ&quot;,&quot;zh&quot;:&quot;马立克派法学&quot;}" data-original="فقه مالكي">فقه مالكي</span>
+                </dd>
+                          </dl>
+          </div>
+        
+                  <div class="mt-4 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Description</div>
+            <p class="text-sm leading-relaxed whitespace-pre-line text-zinc-800 dark:text-zinc-100" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: The Maliki Jurisprudence and Its Evidence\n\n▪️ Author: Sadek Abdul Rahman Al-Ghiryani\n▫️ Publisher: Al-Rayan Printing and Publishing Foundation\n▪️ Publish Date: 1423 AH \/ 2002 CE\n▫️ Publish Country: Beirut, Lebanon\n▪️ Edition: 1\n▫️ Number of Volumes: 5\n▪️ Pages: 3061\n▫️ Type: Book\n▪️ Main Category: Jurisprudence and Its Foundations\n▫️ Sub Category: Maliki Jurisprudence&quot;,&quot;es&quot;:&quot;▫️ Título: \nCompendio del derecho malikí y sus pruebas\n\n▪️ Autor: al-Sadiq Abd al-Rahman al-Ghiryani\n▫️ Editorial: Muassasat al-Rayyan li-l-Tibaa wa-l-Nashr\n▪️ Fecha de publicación: 1423 H 2002\n▫️ Lugar de publicación: Beirut, Líbano\n▪️ Edición: 1\n▫️ Número de volúmenes: 5\n▪️ Páginas: 3061\n▫️ Tipo de material: Libro\n▪️ Categoría principal: Derecho islámico y sus fundamentos\n▫️ Subcategoría: Derecho malikí&quot;,&quot;fr&quot;:&quot;▫️ Titre : \nRecueil de droit malékite et de ses preuves\n\n▪️ Auteur : al-Sadiq Abd al-Rahman al-Gharyani\n▫️ Éditeur : Mu&#039;assasat al-Rayyan li-l-Tiba&#039;a wa-l-Nashr\n▪️ Date de publication : 1423 H 2002\n▫️ Lieu de publication : Beyrouth, Liban\n▪️ Édition : 1\n▫️ Nombre de volumes : 5\n▪️ Pages : 3061\n▫️ Type de document : Livre\n▪️ Catégorie principale : Droit musulman et ses fondements\n▫️ Sous-catégorie : Droit malékite&quot;,&quot;id&quot;:&quot;▫️ Judul: \nMudawwanah Fikih Maliki dan Dalil-Dalilnya\n\n▪️ Penulis: As-Sadiq Abdurrahman Al-Ghiryani\n▫️ Penerbit: Mu&#039;assasat ar-Rayyan untuk Percetakan dan Penerbitan\n▪️ Tahun terbit: 1423 H 2002 M\n▫️ Tempat terbit: Beirut, Lebanon\n▪️ Cetakan: 1\n▫️ Jumlah jilid: 5\n▪️ Halaman: 3061\n▫️ Jenis bahan: Buku\n▪️ Kategori utama: Fikih dan usul fikih\n▫️ Subkategori: Fikih Maliki&quot;,&quot;ja&quot;:&quot;▫️ 書名：\nマーリキー派フィクフとその根拠の集成\n\n▪️ 著者：アッ＝サーディク・アブドゥッラフマーン・アル＝グライヤーニー\n▫️ 出版社：ムアッササト・アッ＝ライヤーン・リッティバーア・ワンナシュル\n▪️ 出版年：ヒジュラ暦1423年／西暦2002年\n▫️ 出版地：ベイルート、レバノン\n▪️ 版：1\n▫️ 巻数：5\n▪️ ページ数：3061\n▫️ 資料の種類：書籍\n▪️ 主分類：フィクフとその法源\n▫️ 下位分類：マーリキー派フィクフ&quot;,&quot;ru&quot;:&quot;▫️ Название: \nСвод маликитского фикха и его доказательств\n\n▪️ Автор: ас-Садик Абд ар-Рахман аль-Гарьяни\n▫️ Издательство: Муассасат ар-Райян ли-т-Тиба&#039;а ва-н-Нашр\n▪️ Дата издания: 1423 г. х. \/ 2002 г.\n▫️ Место издания: Бейрут, Ливан\n▪️ Издание: 1\n▫️ Количество томов: 5\n▪️ Страницы: 3061\n▫️ Тип материала: Книга\n▪️ Основная категория: Фикх и его основы\n▪️ Подкатегория: Маликитский фикх&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nMudawwanat al-Fiqh al-Maliki wa Adillatuhu (Mkusanyo wa fiqhi ya Maliki na dalili zake)\n\n▪️ Mwandishi: al-Sadiq Abd al-Rahman al-Gharyani\n▫️ Mchapishaji: Mu&#039;assasat al-Rayyan lil-Tiba&#039;a wa al-Nashr\n▪️ Tarehe ya kuchapishwa: 1423 H 2002 M\n▫️ Mahali pa kuchapishwa: Beirut, Lebanon\n▪️ Toleo: 1\n▫️ Idadi ya juzuu: 5\n▪️ Kurasa: 3061\n▫️ Aina ya nyenzo: Kitabu\n▪️ Kundi kuu: Fiqhi na misingi yake\n▪️ Kundi dogo: Fiqhi ya Maliki&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nMâlikî Fıkhı ve Delilleri Ansiklopedisi\n\n▪️ Yazar: es-Sâdık Abdurrahman el-Gıryânî\n▫️ Yayınevi: Mu&#039;assasat al-Rayyan li&#039;l-Tiba&#039;a wa&#039;l-Nashr\n▪️ Yayın tarihi: 1423 H 2002\n▫️ Yayın yeri: Beyrut, Lübnan\n▪️ Baskı: 1\n▫️ Cilt sayısı: 5\n▪️ Sayfa: 3061\n▫️ Materyal türü: Kitap\n▪️ Ana kategori: Fıkıh ve Usûlü\n▫️ Alt kategori: Mâlikî fıkhı&quot;,&quot;ur&quot;:&quot;▫️ عنوان:\nمدونة الفقه المالكي وأدلته (فقہ مالکی اور اس کے دلائل کا مدونہ)\n\n▪️ مصنف: الصادق عبد الرحمن الغرياني\n▫️ ناشر: مؤسسة الريان للطباعة والنشر\n▪️ تاریخِ اشاعت: 1423ھ 2002ء\n▫️ مقامِ اشاعت: بیروت، لبنان\n▪️ طبع: 1\n▫️ جلدیں: 5\n▪️ صفحات: 3061\n▫️ نوعیت: کتاب\n▪️ بنیادی زمرہ: فقہ اور اصولِ فقہ\n▫️ ذیلی زمرہ: فقہ مالکی&quot;,&quot;zh&quot;:&quot;▫️ 书名： \n《马立克派教法及其证据汇编》\n\n▪️ 作者：萨迪克·阿卜杜·拉赫曼·吉拉尼\n▫️ 出版社：莱扬印刷出版机构\n▪️ 出版日期：伊历1423年 公元2002年\n▫️ 出版地：贝鲁特，黎巴嫩\n▪️ 版次：1\n▫️ 册数：5\n▪️ 页数：3061\n▫️ 资料类型：图书\n▪️ 主分类：教法学及其原理\n▫️ 子分类：马立克派教法学&quot;}" data-original="**▫️ العنوان: 
 مدونة الفقه المالكي وأدلته**
 
 ▪️ المؤلف: #الصادق_عبد_الرحمن_الغرياني
@@ -182,28 +211,10 @@
 ▫️ التصنيف الفرعي: #فقه_مالكي
 
 ۪</p>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
-      >
-        <span data-t="Close">Close</span>
-      </button>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

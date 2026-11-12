@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../"
+  data-section="quran"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>المنافقون</title>
   <link
-    rel="stylesheet"
-    href="../assets/reader.css"
+    rel="icon"
+    href="../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,74 +70,76 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../assets/reader.js"
+    src="../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../index.html"
-      lang="ar"
-    >
-      باحث
-    </a>
-    <nav class="site-nav">
-      <a href="../books.html"><span data-t="Books">Books</span></a>
-      <a href="../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
 
-  <main class="site-main">
-      <div class="reader-head">
-    <a
-      class="button"
-      href="../quran/index.html"
-    >
-      <span data-t="Quran">Quran</span>
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <div class="mb-6 flex flex-wrap items-start justify-between gap-4">
+    <div class="flex min-w-0 items-center gap-3">
+      <a href="../quran/index.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Quran</span>
     </a>
-    <div class="reader-title">
-      <strong lang="ar">المنافقون</strong>
-      <span class="muted">
-        Al-Munafiqun · <span data-t="Surah :number" data-r="{&quot;number&quot;:63}">Surah 63</span> · <span data-t="Medinan">Medinan</span>
-      </span>
+      <div class="min-w-0">
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Al-Munafiqun
+          <span
+            class="font-amiri ms-2"
+            lang="ar"
+            dir="rtl"
+          >
+            المنافقون
+          </span></div>
+        <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    <span data-t="Surah :number" data-r="{&quot;number&quot;:63}">Surah 63</span> · Medinan · <span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:11}" data-n="11">11 ayat</span>
+</div>
+      </div>
     </div>
-    <div class="reader-tools">
-      <button
-        type="button"
-        class="button"
-        data-quran-listen
-      >
-        <span data-t="Listen">Listen</span>
-      </button>
-    </div>
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" data-quran-listen="data-quran-listen" data-test="quran-listen">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M3 3.732a1.5 1.5 0 0 1 2.305-1.265l6.706 4.267a1.5 1.5 0 0 1 0 2.531l-6.706 4.268A1.5 1.5 0 0 1 3 12.267V3.732Z"/>
+</svg>
+
+                
+                    
+            
+            <span><span data-label>Listen</span></span>
+    </button>
   </div>
 
   <div
-    class="quran-reader"
+    class="quran-reader rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800"
     lang="ar"
     dir="rtl"
     data-quran
@@ -108,13 +147,13 @@
     data-basmalah="1"
     data-reciters="{&quot;alafasy&quot;:&quot;https:\/\/everyayah.com\/data\/Alafasy_128kbps\/&quot;,&quot;husary&quot;:&quot;https:\/\/everyayah.com\/data\/Husary_128kbps\/&quot;,&quot;hudhaify&quot;:&quot;https:\/\/everyayah.com\/data\/Hudhaify_128kbps\/&quot;,&quot;muaiqly&quot;:&quot;https:\/\/everyayah.com\/data\/MaherAlMuaiqly128kbps\/&quot;,&quot;ayyoub&quot;:&quot;https:\/\/everyayah.com\/data\/Muhammad_Ayyoub_128kbps\/&quot;}"
   >
-                <p class="quran-text basmalah">
+                <p class="quran-text mb-4 text-center text-3xl leading-loose">
         <span class="when-uthmani">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ</span>
         <span class="when-amiri">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِیمِ</span>
         <span class="when-indopak">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِیْمِ ۟</span>
       </p>
     
-    <p class="quran-text">
+    <p class="quran-text text-3xl leading-[2.4]">
                       <span
           id="ayah-1"
           class="quran-ayah"
@@ -261,26 +300,110 @@
           </p>
   </div>
 
-  <nav
-    class="pager"
-    dir="rtl"
-  >
-          <a
-        class="button"
-        href="../quran/62.html"
+  <div class="mt-4 flex items-center justify-between gap-2">
+          <a href="../quran/62.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white       rtl:[&_svg]:rotate-180">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Previous</span>
+    </a>
+              <a href="../quran/64.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-3 pe-2 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white       rtl:[&_svg]:rotate-180">
+        <span>Next</span>
+        
+        
+                    
+                        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+    </a>
+      </div>
+
+  
+  <ui-modal  data-flux-modal>
+    
+    <dialog
+        wire:ignore.self 
+        class="fixed m-0 p-8 min-w-[100%] overflow-y-auto mt-auto [--flux-flyout-translate:translateY(50px)] border-t bg-white dark:bg-zinc-800 border-transparent dark:border-zinc-700 max-h-[70vh] p-0!"
+         data-modal="ayah"          data-flux-flyout                         x-data="fluxModal('ayah', null)"
+                x-on:modal-show.document="handleShow($event)"
+        x-on:modal-close.document="handleClose($event)"
+    >
+                    <div class="mx-auto max-w-3xl" dir="rtl" lang="ar">
+    <div
+      class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-zinc-200 bg-white px-6 py-3 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 min-w-0 truncate text-2xl!" data-flux-heading>Ayah</div>
+
+      <ui-close data-flux-modal-close >
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]    shrink-0" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" data-test="ayah-close">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Close</span>
+    </button>
+</ui-close>
+    </div>
+
+    <div class="px-6 pt-4 pb-8"><div
+      x-data="staticAyahSheet"
+      x-on:ayah.window="show($event.detail.number)"
+      class="space-y-5"
+    >
+      <template
+        x-for="
+          [label, rows] in
+          [
+            [$t('Quoted in'), quotes],
+            [$t('Tafsir'), tafsirs],
+          ]
+        "
+        :key="label"
       >
-        <span data-t="Previous">Previous</span>
-      </a>
-        <span class="muted">
-      <span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:11}" data-n="11">11 ayat</span>
-    </span>
-          <a
-        class="button"
-        href="../quran/64.html"
-      >
-        <span data-t="Next">Next</span>
-      </a>
-      </nav>
+        <div x-show="rows.length">
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" x-text="label" data-flux-heading></div>
+          <ul class="divide-y divide-zinc-200 border-y border-zinc-200 dark:divide-zinc-700 dark:border-zinc-700">
+            <template
+              x-for="(row, index) in rows"
+              :key="index"
+            >
+              <li class="flex items-start justify-between gap-3 py-2">
+                <a
+                  class="min-w-0 flex-1"
+                  :class="row.url ? 'hover:underline' : 'pointer-events-none opacity-60'"
+                  :href="row.url"
+                  dir="auto"
+                >
+                  <span
+                    class="block text-lg font-semibold"
+                    x-text="row.title"
+                  ></span>
+                  <span
+                    class="block text-zinc-500 dark:text-zinc-400"
+                    x-text="row.author"
+                  ></span>
+                </a>
+                <bdi
+                  class="shrink-0 text-sm text-zinc-500 dark:text-zinc-400"
+                  x-text="row.died"
+                ></bdi>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </template>
+    </div></div>
+  </div>
+
+                        </dialog>
+</ui-modal>
 
   <script
     type="application/json"
@@ -288,27 +411,6 @@
   >
     {"1":{"quotes":[{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/612.html#p614"},{"title":"جامع العلوم والحكم - ت الفحل","author":"ابن رجب الحنبلي","href":"books/033/3318/876.html#p903"},{"title":"جامع العلوم والحكم - ت الأرنؤوط","author":"ابن رجب الحنبلي","href":"books/033/3325/984.html#p1006"},{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/17.html#p21"}],"tafsirs":[]},"7":{"quotes":[{"title":"صحيح مسلم - ت عبد الباقي","author":"مسلم","href":"books/003/353/6941.html#p6957"},{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/612.html#p613"},{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/94.html#p125"}],"tafsirs":[]},"8":{"quotes":[{"title":"صحيح مسلم - ت عبد الباقي","author":"مسلم","href":"books/003/353/6507.html#p6518"},{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/612.html#p613"}],"tafsirs":[]},"9":{"quotes":[{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/152.html#p171"},{"title":"فتح الباري لابن رجب","author":"ابن رجب الحنبلي","href":"books/033/3315/1779.html#p1785"}],"tafsirs":[]},"10":{"quotes":[{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/152.html#p171"},{"title":"جامع العلوم والحكم - ت الفحل","author":"ابن رجب الحنبلي","href":"books/033/3318/576.html#p594"},{"title":"جامع العلوم والحكم - ت الأرنؤوط","author":"ابن رجب الحنبلي","href":"books/033/3325/887.html#p908"}],"tafsirs":[]},"11":{"quotes":[{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/152.html#p171"},{"title":"جامع العلوم والحكم - ت الفحل","author":"ابن رجب الحنبلي","href":"books/033/3318/805.html#p817"},{"title":"جامع العلوم والحكم - ت الأرنؤوط","author":"ابن رجب الحنبلي","href":"books/033/3325/887.html#p908"},{"title":"شرح الأربعين النووية للعثيمين","author":"ابن عثيمين","href":"books/054/5472/54.html#p84"}],"tafsirs":[]}}
   </script>
-  </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
-      >
-        <span data-t="Close">Close</span>
-      </button>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

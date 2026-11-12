@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>أضواء السلف</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,184 +70,324 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Lights of the Salaf&quot;,&quot;es&quot;:&quot;Adwa&#039; al-Salaf&quot;,&quot;fr&quot;:&quot;Lumières des salaf&quot;,&quot;id&quot;:&quot;Cahaya Para Salaf&quot;,&quot;ja&quot;:&quot;サラフの光&quot;,&quot;ru&quot;:&quot;Светочи саляфов&quot;,&quot;sw&quot;:&quot;Adwa&#039; as-Salaf&quot;,&quot;tr&quot;:&quot;Selef&#039;in Işıkları&quot;,&quot;zh&quot;:&quot;萨拉夫之光&quot;}" data-original="أضواء السلف">أضواء السلف</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/641/64143.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/641/64143.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;A Treatise on Prostration of Forgetfulness&quot;,&quot;es&quot;:&quot;Tratado sobre la prosternación por olvido&quot;,&quot;fr&quot;:&quot;Épître sur la prosternation de l’oubli&quot;,&quot;id&quot;:&quot;Risalah tentang Sujud Sahwi&quot;,&quot;ja&quot;:&quot;忘却のサジュダに関する論考&quot;,&quot;ru&quot;:&quot;Послание о земном поклоне по забывчивости&quot;,&quot;sw&quot;:&quot;Risala kuhusu sujud as-sahw (sujudu ya kusahau)&quot;,&quot;tr&quot;:&quot;Sehiv Secdesi Hakkında Bir Risale&quot;,&quot;zh&quot;:&quot;《关于疏忽叩头的论文》&quot;}" data-original="رسالة في سجود السهو">رسالة في سجود السهو</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Lights of the Salaf&quot;,&quot;es&quot;:&quot;Adwa&#039; al-Salaf&quot;,&quot;fr&quot;:&quot;Lumières des salaf&quot;,&quot;id&quot;:&quot;Cahaya Para Salaf&quot;,&quot;ja&quot;:&quot;サラフの光&quot;,&quot;ru&quot;:&quot;Светочи саляфов&quot;,&quot;sw&quot;:&quot;Adwa&#039; as-Salaf&quot;,&quot;tr&quot;:&quot;Selef&#039;in Işıkları&quot;,&quot;zh&quot;:&quot;萨拉夫之光&quot;}" data-original="أضواء السلف">أضواء السلف</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/641/64143.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;A Treatise on Prostration of Forgetfulness&quot;,&quot;es&quot;:&quot;Tratado sobre la prosternación por olvido&quot;,&quot;fr&quot;:&quot;Épître sur la prosternation de l’oubli&quot;,&quot;id&quot;:&quot;Risalah tentang Sujud Sahwi&quot;,&quot;ja&quot;:&quot;忘却のサジュダに関する論考&quot;,&quot;ru&quot;:&quot;Послание о земном поклоне по забывчивости&quot;,&quot;sw&quot;:&quot;Risala kuhusu sujud as-sahw (sujudu ya kusahau)&quot;,&quot;tr&quot;:&quot;Sehiv Secdesi Hakkında Bir Risale&quot;,&quot;zh&quot;:&quot;《关于疏忽叩头的论文》&quot;}" data-original="رسالة في سجود السهو">رسالة في سجود السهو</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">دار الفرقان • دار أضواء السلف</td>
-        <td dir="auto">1429هـ 2008م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/982/98230.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Sessions of the Month of Ramadan&quot;,&quot;es&quot;:&quot;Reuniones del mes de Ramadán&quot;,&quot;fr&quot;:&quot;Séances du mois de Ramadan&quot;,&quot;id&quot;:&quot;Majelis-majelis Bulan Ramadan&quot;,&quot;ja&quot;:&quot;ラマダーン月の講話集&quot;,&quot;ru&quot;:&quot;Собрания в месяц Рамадан&quot;,&quot;sw&quot;:&quot;Mabaraza ya mwezi wa Ramadhani&quot;,&quot;tr&quot;:&quot;Ramazan ayı sohbetleri&quot;,&quot;ur&quot;:&quot;رمضان کے مہینے کی مجالس&quot;,&quot;zh&quot;:&quot;斋月讲坛&quot;}" data-original="مجالس شهر رمضان">مجالس شهر رمضان</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مكتبة أضواء السلف</td>
-        <td dir="auto">1416- 1996</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1085/108560.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Glimmer of Faith Leading to the Path of Guidance&quot;,&quot;es&quot;:&quot;Luma&#039;at al-I&#039;tiqad al-hadi ila sabil al-rashad [Destellos de la creencia que guía al camino recto]&quot;,&quot;fr&quot;:&quot;Lumat al-i&#039;tiqad al-hadi ila sabil al-rashad (Éclat de la croyance, guide vers la voie de la droiture)&quot;,&quot;id&quot;:&quot;Luma&#039;at al-I&#039;tiqad (Secercah Akidah yang Menuntun ke Jalan Petunjuk)&quot;,&quot;ja&quot;:&quot;信仰の閃光―正しい道へ導くもの&quot;,&quot;ru&quot;:&quot;Проблеск вероубеждения, ведущий на путь истинный&quot;,&quot;sw&quot;:&quot;Lam&#039;at al-Itiqad al-Hadi ila Sabil al-Rashad (Mwanga wa itikadi unaoongoza kwenye njia ya uongofu)&quot;,&quot;tr&quot;:&quot;Lümaʿatü’l-İʿtikād (Doğru Yola İleten İnanç Parıltısı)&quot;,&quot;ur&quot;:&quot;لمعة الاعتقاد الهادي إلى سبيل الرشاد (عقیدے کی جھلک، ہدایت کی راہ دکھانے والی)&quot;,&quot;zh&quot;:&quot;《信仰之光：引导正道》&quot;}" data-original="لمعة الاعتقاد الهادي إلى سبيل الرشاد">لمعة الاعتقاد الهادي إلى سبيل الرشاد</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">أضواء السلف</td>
-        <td dir="auto">1415 -1995</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1107/110798.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;A Brief Commentary on the Book \&quot;Lum&#039;at al-I&#039;tiqad: The Guide to the Path of Guidance\&quot;&quot;,&quot;es&quot;:&quot;Comentario breve de Lum&#039;at al-Itiqad al-Hadi ila Sabil al-Rashad [Destello de la doctrina que guía por el camino recto]&quot;,&quot;fr&quot;:&quot;Commentaire succinct du livre Lum&#039;at al-I&#039;tiqad al-Hadi ila Sabil al-Rashad (Lueur de la croyance, guide vers la voie de la rectitude)&quot;,&quot;id&quot;:&quot;Ulasan Ringkas atas Kitab Lum&#039;at al-I&#039;tiqad al-Hadi ila Sabil ar-Rasyad (Secercah Keyakinan yang Menuntun ke Jalan Kebenaran)&quot;,&quot;ja&quot;:&quot;正しい道へ導く信仰の閃光に関する簡潔な注解&quot;,&quot;ru&quot;:&quot;Краткий комментарий к книге «Сияние вероубеждения, ведущее к пути прямому»&quot;,&quot;sw&quot;:&quot;Maelezo mafupi kuhusu kitabu Lum&#039;at al-I&#039;tiqad al-Hadi ila Sabil al-Rashad (Mng&#039;ao wa itikadi, uongozao kwenye njia ya uongofu)&quot;,&quot;tr&quot;:&quot;Reşad Yoluna Kılavuzluk Eden İnanç Parıltısı Kitabına Kısa Not&quot;,&quot;ur&quot;:&quot;کتاب لمعة الاعتقاد الهادي إلى سبيل الرشاد پر مختصر تعلیق&quot;,&quot;zh&quot;:&quot;《信仰之光：指引正道之书》简注&quot;}" data-original="تعليق مختصر على كتاب لمعة الاعتقاد الهادي إلى سبيل الرشاد">تعليق مختصر على كتاب لمعة الاعتقاد الهادي إلى سبيل الرشاد</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">مكتبة أضواء السلف</td>
-        <td dir="auto">1416هـ 1995م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1118/111824.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Good Rules on Names and Attributes&quot;,&quot;es&quot;:&quot;Las reglas excelentes sobre los nombres y atributos&quot;,&quot;fr&quot;:&quot;Les excellentes règles concernant les noms et les attributs&quot;,&quot;id&quot;:&quot;Kaidah-kaidah Terbaik tentang Nama-nama dan Sifat-sifat Allah&quot;,&quot;ja&quot;:&quot;神の諸名と属性に関する優れた規則&quot;,&quot;ru&quot;:&quot;Прекрасные правила об именах и атрибутах&quot;,&quot;sw&quot;:&quot;Kanuni bora kuhusu majina na sifa za Allah&quot;,&quot;tr&quot;:&quot;İsimler ve Sıfatlar Hakkında Güzel Kaideler&quot;,&quot;ur&quot;:&quot;القواعد الطيبات في الأسماء والصفات (اسماء و صفات کے عمدہ قواعد)&quot;,&quot;zh&quot;:&quot;《关于尊名与属性的美善准则》&quot;}" data-original="القواعد الطيبات في الأسماء والصفات">القواعد الطيبات في الأسماء والصفات</span>
-          </a>
-        </td>
-        <td dir="auto">ابن القيم • الشنقيطي • ابن عثيمين</td>
-        <td dir="auto">أضواء السلف</td>
-        <td dir="auto">1416 هـ 1995 م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1127/112777.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Refinement of the Explanation of the Belief of Ahl al-Sunnah wa al-Jama&#039;ah&quot;,&quot;es&quot;:&quot;Compendio del comentario de la creencia de la gente de la Sunna y la comunidad&quot;,&quot;fr&quot;:&quot;Abrégé du commentaire de la croyance des gens de la Sunna et de la communauté&quot;,&quot;id&quot;:&quot;Ringkasan Penjelasan Akidah Ahlusunah wal Jamaah&quot;,&quot;ja&quot;:&quot;スンナと共同体の信条解説の精選版&quot;,&quot;ru&quot;:&quot;Сокращённое изложение комментария к вероучению приверженцев Сунны и общины&quot;,&quot;sw&quot;:&quot;Muhtasari wa Sharh Aqidat Ahl al-Sunna wal-Jama&#039;a&quot;,&quot;tr&quot;:&quot;Ehl-i Sünnet ve&#039;l-Cemaat Akaid Şerhinin Özeti&quot;,&quot;ur&quot;:&quot;تهذيب شرح عقيدة أهل السنة والجماعة (عقیدہ اہل سنت والجماعت کی شرح کی تلخیص)&quot;,&quot;zh&quot;:&quot;《逊尼派与大众派信仰释义》的删节本&quot;}" data-original="تهذيب شرح عقيدة أهل السنة والجماعة">تهذيب شرح عقيدة أهل السنة والجماعة</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">دار المحسن • دار أضواء السلف</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1444/144491.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Distinction in Summarizing the Extraction of Hadiths from the Famous Explanation of the Brief Summary&quot;,&quot;es&quot;:&quot;Libro de al-Tamyiz (La distinción), compendio del takhrij de los hadices del comentario de al-Wajiz, conocido como al-Talkhis al-Habir&quot;,&quot;fr&quot;:&quot;Kitab al-Tamyiz fi Talkhis Takhrij Ahadith Sharh al-Wajiz al-Mashhur bi-al-Talkhis al-Habir (Distinction et résumé de l&#039;extraction des hadiths du commentaire d&#039;al-Wajiz, connu sous le nom d&#039;al-Talkhis al-Habir)&quot;,&quot;id&quot;:&quot;Kitab At-Tamyiz fi Talkhis Takhrij Ahadits Syarh Al-Wajiz, yang dikenal sebagai At-Talkhis Al-Habir&quot;,&quot;ja&quot;:&quot;『キターブ・アッ＝タミーズ』――『アッ＝タルヒース・アル＝ハビール』として知られる『シャルフ・アル＝ワジーズ』のハディース出典検証要約&quot;,&quot;ru&quot;:&quot;Книга «ат-Тамйиз» — сокращённый тахридж хадисов комментария к «аль-Ваджиз», известного как «ат-Тальхис аль-Хабир»&quot;,&quot;sw&quot;:&quot;Kitab al-Tamyiz fi Talkhis Takhrij Ahadith Sharh al-Wajiz, maarufu kama al-Talkhis al-Habir&quot;,&quot;tr&quot;:&quot;et-Temyîz: et-Telhîsü’l-habîr adıyla meşhur olan et-Telhîs’in hadis tahricine dair&quot;,&quot;zh&quot;:&quot;《辨析之书：〈简明注释〉圣训考证摘要，亦称〈精要汇编〉》&quot;}" data-original="كتاب التمييز في تلخيص تخريج أحاديث شرح الوجيز المشهور التلخيص الحبير">كتاب التمييز في تلخيص تخريج أحاديث شرح الوجيز المشهور التلخيص الحبير</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">أضواء السلف</td>
-        <td dir="auto">1428هـ 2007م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1481/148158.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Answers of Al-Hafiz Ibn Hajar Al-Asqalani to Questions from Some of His Students, followed by Answers of Al-Hafiz Al-Iraqi to Questions from His Student Ibn Hajar Al-Asqalani&quot;,&quot;es&quot;:&quot;Respuestas de al-Hafiz Ibn Hajar al-Asqalani a preguntas de algunos de sus discípulos, seguidas de las respuestas de al-Hafiz al-Iraqi a preguntas de su discípulo Ibn Hajar al-Asqalani&quot;,&quot;fr&quot;:&quot;Réponses du hafiz Ibn Hajar al-Asqalani aux questions de certains de ses élèves, suivies des réponses du hafiz al-Iraqi aux questions de son élève Ibn Hajar al-Asqalani&quot;,&quot;id&quot;:&quot;Jawaban Al-Hafizh Ibnu Hajar Al-Asqalani atas pertanyaan sebagian muridnya, disusul jawaban Al-Hafizh Al-Iraqi atas pertanyaan muridnya, Ibnu Hajar Al-Asqalani&quot;,&quot;ja&quot;:&quot;ハーフィズ・イブン・ハジャル・アル＝アスカラーニーへの弟子たちの質問に対する回答、およびイブン・ハジャル・アル＝アスカラーニーからの質問に対するハーフィズ・イラーキーの回答&quot;,&quot;ru&quot;:&quot;Ответы хафиза Ибн Хаджара аль-Аскаляни на вопросы некоторых его учеников; далее следуют ответы хафиза аль-Ираки на вопросы его ученика Ибн Хаджара аль-Аскаляни&quot;,&quot;sw&quot;:&quot;Majibu ya al-Hafidh Ibn Hajar al-Asqalani kwa maswali ya baadhi ya wanafunzi wake, yakifuatiwa na majibu ya al-Hafidh al-Iraqi kwa maswali ya mwanafunzi wake Ibn Hajar al-Asqalani&quot;,&quot;tr&quot;:&quot;Hâfız İbn Hacer el-Askalânî’nin Bazı Öğrencilerinin Sorularına Cevapları ve Ardından Öğrencisi İbn Hacer el-Askalânî’nin Sorularına Hâfız Irâkî’nin Cevapları&quot;,&quot;zh&quot;:&quot;哈菲兹·伊本·哈杰尔·阿斯卡拉尼答复其部分弟子的问题，附哈菲兹·伊拉基答复其弟子伊本·哈杰尔·阿斯卡拉尼的问题&quot;}" data-original="أجوبة الحافظ ابن حجر العسقلاني على أسئلة بعض تلامذته ويليه أجوبة الحافظ العراقي على أسئلة تلميذه ابن حجر العسقلاني">أجوبة الحافظ ابن حجر العسقلاني على أسئلة بعض تلامذته ويليه أجوبة الحافظ العراقي على أسئلة تلميذه ابن حجر العسقلاني</span>
-          </a>
-        </td>
-        <td dir="auto">أحمد بن علي بن حجر العسقلاني</td>
-        <td dir="auto">أضواء السلف</td>
-        <td dir="auto">1424هـ 2003م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1743/174357.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Fatwas of Ramadan on Fasting, Night Prayers, I&#039;tikaf, and Zakat al-Fitr&quot;,&quot;es&quot;:&quot;Dictámenes jurídicos de Ramadán sobre el ayuno, la oración nocturna, el retiro espiritual y el zakat al-fitr&quot;,&quot;fr&quot;:&quot;Fatwas du Ramadan sur le jeûne, les prières nocturnes, la retraite spirituelle et l’aumône de la rupture du jeûne&quot;,&quot;id&quot;:&quot;Fatwa Ramadan tentang Puasa, Salat Malam, Iktikaf, dan Zakat Fitrah&quot;,&quot;ja&quot;:&quot;ラマダーンの断食・夜の礼拝・隠遁礼拝・ザカート・アル＝フィトルに関するファトワー&quot;,&quot;ru&quot;:&quot;Фетвы о Рамадане: пост, ночные молитвы, уединение в мечети и закят разговения&quot;,&quot;sw&quot;:&quot;Fatwa za Ramadhani kuhusu funga, swala za usiku, itikafu na Zaka ya Fitri&quot;,&quot;tr&quot;:&quot;Ramazan&#039;da Oruç, Gece İbadeti, İtikâf ve Fıtır Zekâtı Hakkında Fetvalar&quot;,&quot;zh&quot;:&quot;《斋月教法判令：斋戒、夜间礼拜、静修与开斋施舍》&quot;}" data-original="فتاوى رمضان في الصيام والقيام والاعتكاف وزكاة الفطر">فتاوى رمضان في الصيام والقيام والاعتكاف وزكاة الفطر</span>
-          </a>
-        </td>
-        <td dir="auto">ابن تيمية • عبد الله أبا بطين • محمد بن إبراهيم آل الشيخ • عبد الرحمن السعدي • ابن باز • ابن عثيمين • ابن فوزان • ابن جبرين</td>
-        <td dir="auto">أضواء السلف</td>
-        <td dir="auto">1408هـ 1988م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        رسالة في سجود السهو
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/982/98230.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/982/98230.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Sessions of the Month of Ramadan&quot;,&quot;es&quot;:&quot;Reuniones del mes de Ramadán&quot;,&quot;fr&quot;:&quot;Séances du mois de Ramadan&quot;,&quot;id&quot;:&quot;Majelis-majelis Bulan Ramadan&quot;,&quot;ja&quot;:&quot;ラマダーン月の講話集&quot;,&quot;ru&quot;:&quot;Собрания в месяц Рамадан&quot;,&quot;sw&quot;:&quot;Mabaraza ya mwezi wa Ramadhani&quot;,&quot;tr&quot;:&quot;Ramazan ayı sohbetleri&quot;,&quot;ur&quot;:&quot;رمضان کے مہینے کی مجالس&quot;,&quot;zh&quot;:&quot;斋月讲坛&quot;}" data-original="مجالس شهر رمضان">مجالس شهر رمضان</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        مجالس شهر رمضان
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1085/108560.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1085/108560.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Glimmer of Faith Leading to the Path of Guidance&quot;,&quot;es&quot;:&quot;Luma&#039;at al-I&#039;tiqad al-hadi ila sabil al-rashad [Destellos de la creencia que guía al camino recto]&quot;,&quot;fr&quot;:&quot;Lumat al-i&#039;tiqad al-hadi ila sabil al-rashad (Éclat de la croyance, guide vers la voie de la droiture)&quot;,&quot;id&quot;:&quot;Luma&#039;at al-I&#039;tiqad (Secercah Akidah yang Menuntun ke Jalan Petunjuk)&quot;,&quot;ja&quot;:&quot;信仰の閃光―正しい道へ導くもの&quot;,&quot;ru&quot;:&quot;Проблеск вероубеждения, ведущий на путь истинный&quot;,&quot;sw&quot;:&quot;Lam&#039;at al-Itiqad al-Hadi ila Sabil al-Rashad (Mwanga wa itikadi unaoongoza kwenye njia ya uongofu)&quot;,&quot;tr&quot;:&quot;Lümaʿatü’l-İʿtikād (Doğru Yola İleten İnanç Parıltısı)&quot;,&quot;ur&quot;:&quot;لمعة الاعتقاد الهادي إلى سبيل الرشاد (عقیدے کی جھلک، ہدایت کی راہ دکھانے والی)&quot;,&quot;zh&quot;:&quot;《信仰之光：引导正道》&quot;}" data-original="لمعة الاعتقاد الهادي إلى سبيل الرشاد">لمعة الاعتقاد الهادي إلى سبيل الرشاد</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        لمعة الاعتقاد الهادي إلى سبيل الرشاد
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1107/110798.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <div
+      class="flex aspect-[3/4] w-full flex-col items-center justify-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-6 size-8" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+            </div>
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;A Brief Commentary on the Book \&quot;Lum&#039;at al-I&#039;tiqad: The Guide to the Path of Guidance\&quot;&quot;,&quot;es&quot;:&quot;Comentario breve de Lum&#039;at al-Itiqad al-Hadi ila Sabil al-Rashad [Destello de la doctrina que guía por el camino recto]&quot;,&quot;fr&quot;:&quot;Commentaire succinct du livre Lum&#039;at al-I&#039;tiqad al-Hadi ila Sabil al-Rashad (Lueur de la croyance, guide vers la voie de la rectitude)&quot;,&quot;id&quot;:&quot;Ulasan Ringkas atas Kitab Lum&#039;at al-I&#039;tiqad al-Hadi ila Sabil ar-Rasyad (Secercah Keyakinan yang Menuntun ke Jalan Kebenaran)&quot;,&quot;ja&quot;:&quot;正しい道へ導く信仰の閃光に関する簡潔な注解&quot;,&quot;ru&quot;:&quot;Краткий комментарий к книге «Сияние вероубеждения, ведущее к пути прямому»&quot;,&quot;sw&quot;:&quot;Maelezo mafupi kuhusu kitabu Lum&#039;at al-I&#039;tiqad al-Hadi ila Sabil al-Rashad (Mng&#039;ao wa itikadi, uongozao kwenye njia ya uongofu)&quot;,&quot;tr&quot;:&quot;Reşad Yoluna Kılavuzluk Eden İnanç Parıltısı Kitabına Kısa Not&quot;,&quot;ur&quot;:&quot;کتاب لمعة الاعتقاد الهادي إلى سبيل الرشاد پر مختصر تعلیق&quot;,&quot;zh&quot;:&quot;《信仰之光：指引正道之书》简注&quot;}" data-original="تعليق مختصر على كتاب لمعة الاعتقاد الهادي إلى سبيل الرشاد">تعليق مختصر على كتاب لمعة الاعتقاد الهادي إلى سبيل الرشاد</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تعليق مختصر على كتاب لمعة الاعتقاد الهادي إلى سبيل الرشاد
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1118/111824.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1118/111824.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Good Rules on Names and Attributes&quot;,&quot;es&quot;:&quot;Las reglas excelentes sobre los nombres y atributos&quot;,&quot;fr&quot;:&quot;Les excellentes règles concernant les noms et les attributs&quot;,&quot;id&quot;:&quot;Kaidah-kaidah Terbaik tentang Nama-nama dan Sifat-sifat Allah&quot;,&quot;ja&quot;:&quot;神の諸名と属性に関する優れた規則&quot;,&quot;ru&quot;:&quot;Прекрасные правила об именах и атрибутах&quot;,&quot;sw&quot;:&quot;Kanuni bora kuhusu majina na sifa za Allah&quot;,&quot;tr&quot;:&quot;İsimler ve Sıfatlar Hakkında Güzel Kaideler&quot;,&quot;ur&quot;:&quot;القواعد الطيبات في الأسماء والصفات (اسماء و صفات کے عمدہ قواعد)&quot;,&quot;zh&quot;:&quot;《关于尊名与属性的美善准则》&quot;}" data-original="القواعد الطيبات في الأسماء والصفات">القواعد الطيبات في الأسماء والصفات</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        القواعد الطيبات في الأسماء والصفات
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      ابن القيم • الشنقيطي • ابن عثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1127/112777.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1127/112777.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Refinement of the Explanation of the Belief of Ahl al-Sunnah wa al-Jama&#039;ah&quot;,&quot;es&quot;:&quot;Compendio del comentario de la creencia de la gente de la Sunna y la comunidad&quot;,&quot;fr&quot;:&quot;Abrégé du commentaire de la croyance des gens de la Sunna et de la communauté&quot;,&quot;id&quot;:&quot;Ringkasan Penjelasan Akidah Ahlusunah wal Jamaah&quot;,&quot;ja&quot;:&quot;スンナと共同体の信条解説の精選版&quot;,&quot;ru&quot;:&quot;Сокращённое изложение комментария к вероучению приверженцев Сунны и общины&quot;,&quot;sw&quot;:&quot;Muhtasari wa Sharh Aqidat Ahl al-Sunna wal-Jama&#039;a&quot;,&quot;tr&quot;:&quot;Ehl-i Sünnet ve&#039;l-Cemaat Akaid Şerhinin Özeti&quot;,&quot;ur&quot;:&quot;تهذيب شرح عقيدة أهل السنة والجماعة (عقیدہ اہل سنت والجماعت کی شرح کی تلخیص)&quot;,&quot;zh&quot;:&quot;《逊尼派与大众派信仰释义》的删节本&quot;}" data-original="تهذيب شرح عقيدة أهل السنة والجماعة">تهذيب شرح عقيدة أهل السنة والجماعة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تهذيب شرح عقيدة أهل السنة والجماعة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1444/144491.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1444/144491.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Distinction in Summarizing the Extraction of Hadiths from the Famous Explanation of the Brief Summary&quot;,&quot;es&quot;:&quot;Libro de al-Tamyiz (La distinción), compendio del takhrij de los hadices del comentario de al-Wajiz, conocido como al-Talkhis al-Habir&quot;,&quot;fr&quot;:&quot;Kitab al-Tamyiz fi Talkhis Takhrij Ahadith Sharh al-Wajiz al-Mashhur bi-al-Talkhis al-Habir (Distinction et résumé de l&#039;extraction des hadiths du commentaire d&#039;al-Wajiz, connu sous le nom d&#039;al-Talkhis al-Habir)&quot;,&quot;id&quot;:&quot;Kitab At-Tamyiz fi Talkhis Takhrij Ahadits Syarh Al-Wajiz, yang dikenal sebagai At-Talkhis Al-Habir&quot;,&quot;ja&quot;:&quot;『キターブ・アッ＝タミーズ』――『アッ＝タルヒース・アル＝ハビール』として知られる『シャルフ・アル＝ワジーズ』のハディース出典検証要約&quot;,&quot;ru&quot;:&quot;Книга «ат-Тамйиз» — сокращённый тахридж хадисов комментария к «аль-Ваджиз», известного как «ат-Тальхис аль-Хабир»&quot;,&quot;sw&quot;:&quot;Kitab al-Tamyiz fi Talkhis Takhrij Ahadith Sharh al-Wajiz, maarufu kama al-Talkhis al-Habir&quot;,&quot;tr&quot;:&quot;et-Temyîz: et-Telhîsü’l-habîr adıyla meşhur olan et-Telhîs’in hadis tahricine dair&quot;,&quot;zh&quot;:&quot;《辨析之书：〈简明注释〉圣训考证摘要，亦称〈精要汇编〉》&quot;}" data-original="كتاب التمييز في تلخيص تخريج أحاديث شرح الوجيز المشهور التلخيص الحبير">كتاب التمييز في تلخيص تخريج أحاديث شرح الوجيز المشهور التلخيص الحبير</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        كتاب التمييز في تلخيص تخريج أحاديث شرح الوجيز المشهور التلخيص الحبير
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1481/148158.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1481/148158.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Answers of Al-Hafiz Ibn Hajar Al-Asqalani to Questions from Some of His Students, followed by Answers of Al-Hafiz Al-Iraqi to Questions from His Student Ibn Hajar Al-Asqalani&quot;,&quot;es&quot;:&quot;Respuestas de al-Hafiz Ibn Hajar al-Asqalani a preguntas de algunos de sus discípulos, seguidas de las respuestas de al-Hafiz al-Iraqi a preguntas de su discípulo Ibn Hajar al-Asqalani&quot;,&quot;fr&quot;:&quot;Réponses du hafiz Ibn Hajar al-Asqalani aux questions de certains de ses élèves, suivies des réponses du hafiz al-Iraqi aux questions de son élève Ibn Hajar al-Asqalani&quot;,&quot;id&quot;:&quot;Jawaban Al-Hafizh Ibnu Hajar Al-Asqalani atas pertanyaan sebagian muridnya, disusul jawaban Al-Hafizh Al-Iraqi atas pertanyaan muridnya, Ibnu Hajar Al-Asqalani&quot;,&quot;ja&quot;:&quot;ハーフィズ・イブン・ハジャル・アル＝アスカラーニーへの弟子たちの質問に対する回答、およびイブン・ハジャル・アル＝アスカラーニーからの質問に対するハーフィズ・イラーキーの回答&quot;,&quot;ru&quot;:&quot;Ответы хафиза Ибн Хаджара аль-Аскаляни на вопросы некоторых его учеников; далее следуют ответы хафиза аль-Ираки на вопросы его ученика Ибн Хаджара аль-Аскаляни&quot;,&quot;sw&quot;:&quot;Majibu ya al-Hafidh Ibn Hajar al-Asqalani kwa maswali ya baadhi ya wanafunzi wake, yakifuatiwa na majibu ya al-Hafidh al-Iraqi kwa maswali ya mwanafunzi wake Ibn Hajar al-Asqalani&quot;,&quot;tr&quot;:&quot;Hâfız İbn Hacer el-Askalânî’nin Bazı Öğrencilerinin Sorularına Cevapları ve Ardından Öğrencisi İbn Hacer el-Askalânî’nin Sorularına Hâfız Irâkî’nin Cevapları&quot;,&quot;zh&quot;:&quot;哈菲兹·伊本·哈杰尔·阿斯卡拉尼答复其部分弟子的问题，附哈菲兹·伊拉基答复其弟子伊本·哈杰尔·阿斯卡拉尼的问题&quot;}" data-original="أجوبة الحافظ ابن حجر العسقلاني على أسئلة بعض تلامذته ويليه أجوبة الحافظ العراقي على أسئلة تلميذه ابن حجر العسقلاني">أجوبة الحافظ ابن حجر العسقلاني على أسئلة بعض تلامذته ويليه أجوبة الحافظ العراقي على أسئلة تلميذه ابن حجر العسقلاني</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        أجوبة الحافظ ابن حجر العسقلاني على أسئلة بعض تلامذته ويليه أجوبة الحافظ العراقي على أسئلة تلميذه ابن حجر العسقلاني
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1743/174357.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1743/174357.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Fatwas of Ramadan on Fasting, Night Prayers, I&#039;tikaf, and Zakat al-Fitr&quot;,&quot;es&quot;:&quot;Dictámenes jurídicos de Ramadán sobre el ayuno, la oración nocturna, el retiro espiritual y el zakat al-fitr&quot;,&quot;fr&quot;:&quot;Fatwas du Ramadan sur le jeûne, les prières nocturnes, la retraite spirituelle et l’aumône de la rupture du jeûne&quot;,&quot;id&quot;:&quot;Fatwa Ramadan tentang Puasa, Salat Malam, Iktikaf, dan Zakat Fitrah&quot;,&quot;ja&quot;:&quot;ラマダーンの断食・夜の礼拝・隠遁礼拝・ザカート・アル＝フィトルに関するファトワー&quot;,&quot;ru&quot;:&quot;Фетвы о Рамадане: пост, ночные молитвы, уединение в мечети и закят разговения&quot;,&quot;sw&quot;:&quot;Fatwa za Ramadhani kuhusu funga, swala za usiku, itikafu na Zaka ya Fitri&quot;,&quot;tr&quot;:&quot;Ramazan&#039;da Oruç, Gece İbadeti, İtikâf ve Fıtır Zekâtı Hakkında Fetvalar&quot;,&quot;zh&quot;:&quot;《斋月教法判令：斋戒、夜间礼拜、静修与开斋施舍》&quot;}" data-original="فتاوى رمضان في الصيام والقيام والاعتكاف وزكاة الفطر">فتاوى رمضان في الصيام والقيام والاعتكاف وزكاة الفطر</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        فتاوى رمضان في الصيام والقيام والاعتكاف وزكاة الفطر
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      ابن تيمية • عبد الله أبا بطين • محمد بن إبراهيم آل الشيخ • عبد الرحمن السعدي • ابن باز • ابن عثيمين • ابن فوزان • ابن جبرين
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

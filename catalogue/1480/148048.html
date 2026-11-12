@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="items"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>إرشاد الساري لشرح صحيح البخاري مدمجة- طبعة الهند</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,127 +70,115 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
-    </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <div class="book-head">
-          <img
-        class="cover"
-        src="../../catalogue/1480/148048.jpg"
-        alt=""
-      />
-    
-    <div class="book-head-text">
-      <h1 class="page-title">
-        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Guidance of the Sari for Explaining Sahih al-Bukhari - Integrated Edition, India&quot;,&quot;es&quot;:&quot;Irshad al-Sari li-sharh Sahih al-Bujari [Guía del caminante: comentario de Sahih al-Bujari] (edición en un solo volumen, edición india)&quot;,&quot;fr&quot;:&quot;Irshad al-Sari (Guide du lecteur) : commentaire du Sahih al-Bukhari — édition reliée, édition indienne&quot;,&quot;id&quot;:&quot;Irsyad as-Sari dalam Mensyarah Shahih Al-Bukhari [Bimbingan bagi Pembaca] — Edisi India, Jilid Terpadu&quot;,&quot;ja&quot;:&quot;『イルシャード・アッ＝サーリー』――『サヒーフ・アル＝ブハーリー』注釈（合冊版・インド版）&quot;,&quot;ru&quot;:&quot;Иршад ас-сари (Наставление странствующего) — комментарий к «Сахиху» аль-Бухари, комплектное издание — индийская печать&quot;,&quot;sw&quot;:&quot;Irshad al-Sari li Sharh Sahih al-Bukhari (Mwongozo wa msomaji katika ufafanuzi wa Sahih al-Bukhari), chapa iliyounganishwa — toleo la India&quot;,&quot;tr&quot;:&quot;İrşâdü’s-sârî li-şerhi Sahîhi’l-Buhârî (Buhârî’nin Sahih’inin şerhi) — birleştirilmiş baskı, Hindistan baskısı&quot;,&quot;ur&quot;:&quot;إرشاد الساري لشرح صحيح البخاري مدمجة- طبعة الهند (صحیح بخاری کی شرح کے لیے ارشاد الساری—یکجا، ہندوستانی طبع)&quot;,&quot;zh&quot;:&quot;《伊尔沙德·萨里：〈布哈里圣训实录〉注释》（合订本·印度版）&quot;}" data-original="إرشاد الساري لشرح صحيح البخاري مدمجة- طبعة الهند">إرشاد الساري لشرح صحيح البخاري مدمجة- طبعة الهند</span>
-      </h1>
-
-                        <p class="credits">
-            <span data-t="Authors">Authors</span>:
-                                        <a href="../../authors/002/271.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Yahya ibn Sharaf al-Nawawi&quot;,&quot;es&quot;:&quot;Yahya ibn Sharaf al-Nawawi&quot;,&quot;fr&quot;:&quot;Yahya ibn Sharaf al-Nawawi&quot;,&quot;id&quot;:&quot;Yahya bin Syaraf An-Nawawi&quot;,&quot;ja&quot;:&quot;ヤフヤー・イブン・シャラフ・アン＝ナワウィー&quot;,&quot;ru&quot;:&quot;Яхья ибн Шараф ан-Навави&quot;,&quot;sw&quot;:&quot;Yahya bin Sharaf al-Nawawi&quot;,&quot;tr&quot;:&quot;Yahyâ b. Şeref en-Nevevî&quot;,&quot;zh&quot;:&quot;叶海亚·本·谢拉夫·脑威&quot;}" data-original="يحيى بن شرف النووي">يحيى بن شرف النووي</span>
-              </a>
-                              ،
-                                                      <a href="../../authors/119/11919.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Ahmad ibn Muhammad al-Qastalani&quot;,&quot;es&quot;:&quot;Ahmad ibn Muhammad al-Qastalani&quot;,&quot;fr&quot;:&quot;Ahmad ibn Muhammad al-Qastalani&quot;,&quot;id&quot;:&quot;Ahmad bin Muhammad Al-Qastalani&quot;,&quot;ja&quot;:&quot;アフマド・イブン・ムハンマド・アル＝カスタラーニー&quot;,&quot;ru&quot;:&quot;Ахмад ибн Мухаммад аль-Касталани&quot;,&quot;sw&quot;:&quot;Ahmad bin Muhammad Al-Qastalani&quot;,&quot;tr&quot;:&quot;Ahmed b. Muhammed el-Kastallânî&quot;,&quot;zh&quot;:&quot;艾哈迈德·本·穆罕默德·卡斯塔拉尼&quot;}" data-original="أحمد بن محمد القسطلاني">أحمد بن محمد القسطلاني</span>
-              </a>
-                                    </p>
-                                              <p class="credits">
-            <span data-t="Publishers">Publishers</span>:
-                                        <a href="../../publishers/998/99876.html">
-                <span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Matba&#039;a Al-Arabi&quot;,&quot;es&quot;:&quot;Imprenta al-Matba&#039;a al-Arabi&quot;,&quot;fr&quot;:&quot;Matba&#039;at al-Ma&#039;rabi&quot;,&quot;id&quot;:&quot;Percetakan Al-Matba&#039;ah Al-Arabiyah&quot;,&quot;ja&quot;:&quot;アル＝マトバア・アル＝アラビー&quot;,&quot;ru&quot;:&quot;Типография аль-Арабия&quot;,&quot;sw&quot;:&quot;Matba&#039;a al-Arabi&quot;,&quot;tr&quot;:&quot;Matbaatü&#039;l-Arabî&quot;,&quot;zh&quot;:&quot;阿拉比印刷所&quot;}" data-original="المطبع المعربي">المطبع المعربي</span>
-              </a>
-                                    </p>
-              
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/hadeeth/148048_hadeeth0311_%D8%A7%D8%B1%D8%B4%D8%A7%D8%AF_%D8%A7%D9%84%D8%B3%D8%A7%D8%B1%D9%8A_%D9%84%D8%B4%D8%B1%D8%AD_%D8%B5%D8%AD%D9%8A%D8%AD_%D8%A7%D9%84%D8%A8%D8%AE%D8%A7%D8%B1%D9%8A_%D8%A7%D9%84%D9%82%D8%B3%D8%B7%D9%84%D8%A7%D9%86%D9%8A_%D8%B7%D8%A8%D8%B9%D9%87_%D8%A7%D9%84%D9%85%D8%B7%D8%A8%D8%B9%D9%87.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T102651Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=924d4c20f2f091de946f7010b88272a48396e1a9449431e8dfd291eaf82ba652"
-            rel="noopener"
-            target="_blank"
-          >
-            <span data-t="Download">Download</span>
-          </a>
-          <span class="muted"><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></span>
-                      </p>
-    </div>
-  </div>
-
-      <section class="panel">
-      <dl class="book-card">
-                  <div>
-            <dt><span data-t="Country">Country</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Kanpur, India&quot;,&quot;es&quot;:&quot;Kanpur, India&quot;,&quot;fr&quot;:&quot;Cannanore, Inde&quot;,&quot;id&quot;:&quot;Kannur, India&quot;,&quot;ja&quot;:&quot;カーンプル、インド&quot;,&quot;ru&quot;:&quot;Канпур, Индия&quot;,&quot;sw&quot;:&quot;Kanpur, India&quot;,&quot;tr&quot;:&quot;Kanpur, Hindistan&quot;,&quot;ur&quot;:&quot;کانفور، ہندوستان&quot;,&quot;zh&quot;:&quot;坎努尔，印度&quot;}" data-original="كانفور، الهند">كانفور، الهند</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Edition">Edition</span></dt>
-            <dd><span dir="auto">1</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Volumes">Volumes</span></dt>
-            <dd><span dir="auto">10</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Pages">Pages</span></dt>
-            <dd><span dir="auto">2398</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Type">Type</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Category">Category</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Hadith and Its Sciences&quot;,&quot;es&quot;:&quot;Hadiz y sus ciencias&quot;,&quot;fr&quot;:&quot;Hadith et sciences du hadith&quot;,&quot;id&quot;:&quot;Hadis dan Ilmu-Ilmunya&quot;,&quot;ja&quot;:&quot;ハディース・ハディース学&quot;,&quot;ru&quot;:&quot;Хадис и хадисоведческие науки&quot;,&quot;sw&quot;:&quot;Hadithi na elimu zake&quot;,&quot;tr&quot;:&quot;Hadis ve Hadis İlimleri&quot;,&quot;ur&quot;:&quot;حدیث اور علومِ حدیث&quot;,&quot;zh&quot;:&quot;圣训与圣训学&quot;}" data-original="الحديث وعلومه">الحديث وعلومه</span></dd>
-          </div>
-                  <div>
-            <dt><span data-t="Subcategory">Subcategory</span></dt>
-            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentaries&quot;,&quot;es&quot;:&quot;Comentarios&quot;,&quot;fr&quot;:&quot;Commentaires&quot;,&quot;id&quot;:&quot;Syarah&quot;,&quot;ja&quot;:&quot;注釈&quot;,&quot;ru&quot;:&quot;Комментарии&quot;,&quot;sw&quot;:&quot;Sharh&quot;,&quot;tr&quot;:&quot;Şerhler&quot;,&quot;zh&quot;:&quot;注释&quot;}" data-original="شروحات">شروحات</span></dd>
-          </div>
-              </dl>
-    </section>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
   
-      <section class="panel">
-      <h2><span data-t="Description">Description</span></h2>
-      <p class="caption" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: Guidance of the Sari for Explaining Sahih al-Bukhari - Integrated Edition, India\n▪️ Author: Ahmad ibn Muhammad ibn Abi Bakr al-Qastalani • Yahya ibn Sharaf al-Nawawi\n▫️ Publisher: Al-Matba&#039;a Al-Arabi\n▪️ Publish Country: Kanpur, India\n▫️ Edition: 1\n▪️ Number of Volumes: 10\n▫️ Pages: 2398\n▪️ Type: Book\n▫️ Main Category: Hadith and Its Sciences\n▪️ Sub Category: Commentaries&quot;,&quot;es&quot;:&quot;▫️ Título: \nIrshad al-Sari li-sharh Sahih al-Bujari [Guía del caminante: comentario de Sahih al-Bujari] (edición en un solo volumen, edición india)\n\n▪️ Autor: Ahmad ibn Muhammad ibn Abi Bakr al-Qastallani • Yahya ibn Sharaf al-Nawawi\n▫️ Editorial: al-Matba al-Arabi\n▪️ Lugar de publicación: Kanpur, India\n▫️ Edición: 1\n▪️ Número de volúmenes: 10\n▫️ Páginas: 2398\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Hadiz y sus ciencias\n▪️ Subcategoría: Comentarios&quot;,&quot;fr&quot;:&quot;▫️ Titre: \nIrshad al-Sari (Guide du lecteur) : commentaire du Sahih al-Bukhari — édition reliée, édition indienne\n\n▪️ Auteur: Ahmad ibn Muhammad ibn Abi Bakr al-Qastallani • Yahya ibn Sharaf al-Nawawi\n▫️ Éditeur: al-Matba al-Arabi\n▪️ Lieu de publication: Kanpur, Inde\n▫️ Édition: 1\n▪️ Nombre de volumes: 10\n▫️ Pages: 2398\n▪️ Type de document: Livre\n▫️ Catégorie principale: Hadith et ses sciences\n▪️ Sous-catégorie: Commentaires&quot;,&quot;id&quot;:&quot;▫️ Judul: \nIrsyad as-Sari dalam Mensyarah Shahih Al-Bukhari [Bimbingan bagi Pembaca] — Edisi India, Jilid Terpadu\n\n▪️ Penulis: Ahmad bin Muhammad bin Abi Bakr Al-Qasthallani • Yahya bin Syaraf An-Nawawi\n▫️ Penerbit: Al-Matba&#039; al-Ma&#039;rabi\n▪️ Tempat terbit: Kanpur, India\n▫️ Cetakan: 1\n▪️ Jumlah jilid: 10\n▫️ Halaman: 2398\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Hadis dan ilmunya\n▪️ Subkategori: Syarah&quot;,&quot;ja&quot;:&quot;▫️ 書名： \n『イルシャード・アッ＝サーリー』――『サヒーフ・アル＝ブハーリー』注釈（合冊版・インド版）\n\n▪️ 著者：アフマド・イブン・ムハンマド・イブン・アビー・バクル・アル＝カスタラーニー • ヤフヤー・イブン・シャラフ・アン＝ナワウィー\n▫️ 出版社：アル＝マトバウ・アル＝アラビー\n▪️ 出版地：カーンプル、インド\n▫️ 版：1\n▪️ 巻数：10\n▫️ ページ数：2398\n▪️ 資料の種類：書籍\n▫️ 主分類：ハディース学\n▪️ 下位分類：注釈書&quot;,&quot;ru&quot;:&quot;▫️ Название: \nИршад ас-сари (Наставление странствующего) — комментарий к «Сахиху» аль-Бухари, комплектное издание — индийская печать\n\n▪️ Автор: Ахмад ибн Мухаммад ибн Аби Бакр аль-Касталляни • Яхья ибн Шараф ан-Навави\n▫️ Издательство: Арабская типография\n▪️ Место издания: Канпур, Индия\n▫️ Издание: 1\n▪️ Количество томов: 10\n▫️ Страницы: 2398\n▪️ Тип материала: Книга\n▫️ Основная категория: Хадис и его науки\n▪️ Подкатегория: Комментарии&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nIrshad al-Sari li Sharh Sahih al-Bukhari (Mwongozo wa msomaji katika ufafanuzi wa Sahih al-Bukhari), chapa iliyounganishwa — toleo la India\n\n▪️ Mwandishi: Ahmad bin Muhammad bin Abi Bakr al-Qastallani • Yahya bin Sharaf al-Nawawi\n▫️ Mchapishaji: al-Matba&#039;a al-Ma&#039;rabi\n▪️ Mahali pa kuchapishwa: Kanpur, India\n▫️ Toleo: 1\n▪️ Idadi ya juzuu: 10\n▫️ Kurasa: 2398\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Hadith na elimu zake\n▪️ Kundi dogo: Sharhu&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nİrşâdü’s-sârî li-şerhi Sahîhi’l-Buhârî (Buhârî’nin Sahih’inin şerhi) — birleştirilmiş baskı, Hindistan baskısı\n\n▪️ Yazar: Ahmed b. Muhammed b. Ebû Bekir el-Kastallânî • Yahyâ b. Şeref en-Nevevî\n▫️ Yayınevi: el-Matbaatü&#039;l-Ma‘ribiyye\n▪️ Yayın yeri: Kanpur, Hindistan\n▫️ Baskı: 1\n▪️ Cilt sayısı: 10\n▫️ Sayfa: 2398\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Hadis ve ilimleri\n▪️ Alt kategori: Şerhler&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nإرشاد الساري لشرح صحيح البخاري مدمجة- طبعة الهند (صحیح بخاری کی شرح کے لیے ارشاد الساری—یکجا، ہندوستانی طبع)\n\n▪️ مصنف: أحمد بن محمد بن أبي بكر القسطلاني • يحيى بن شرف النووي\n▫️ ناشر: المطبع المعربي\n▪️ مقامِ اشاعت: کانپور، ہندوستان\n▫️ طبع: 1\n▪️ جلدیں: 10\n▫️ صفحات: 2398\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: حدیث و علومِ حدیث\n▪️ ذیلی زمرہ: شروح&quot;,&quot;zh&quot;:&quot;▫️ 书名： \n《伊尔沙德·萨里：〈布哈里圣训实录〉注释》（合订本·印度版）\n\n▪️ 作者：艾哈迈德·本·穆罕默德·本·艾比·伯克尔·卡斯塔拉尼 • 叶海亚·本·谢里夫·脑威\n▫️ 出版社：阿拉伯印刷所\n▪️ 出版地：坎普尔，印度\n▫️ 版次：1\n▪️ 册数：10\n▫️ 页数：2398\n▪️ 资料类型：图书\n▫️ 主分类：圣训学\n▪️ 子分类：注释&quot;}" data-original="**▫️ العنوان: 
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../catalogue.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Resources</span>
+    </a>
+
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <img
+            src="../../catalogue/1480/148048.jpg"
+            alt=""
+            class="aspect-[3/4] w-full rounded-xl border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+          />
+        
+        <div class="mt-4 flex flex-col gap-2">
+                                <a href="https://6070f232b2b9b1687b921ed455985e59.r2.cloudflarestorage.com/items/hadeeth/148048_hadeeth0311_%D8%A7%D8%B1%D8%B4%D8%A7%D8%AF_%D8%A7%D9%84%D8%B3%D8%A7%D8%B1%D9%8A_%D9%84%D8%B4%D8%B1%D8%AD_%D8%B5%D8%AD%D9%8A%D8%AD_%D8%A7%D9%84%D8%A8%D8%AE%D8%A7%D8%B1%D9%8A_%D8%A7%D9%84%D9%82%D8%B3%D8%B7%D9%84%D8%A7%D9%86%D9%8A_%D8%B7%D8%A8%D8%B9%D9%87_%D8%A7%D9%84%D9%85%D8%B7%D8%A8%D8%B9%D9%87.pdf?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&amp;X-Amz-Algorithm=AWS4-HMAC-SHA256&amp;X-Amz-Credential=0d29801290d3208f3cd359b8b77ed097%2F20261112%2Fauto%2Fs3%2Faws4_request&amp;X-Amz-Date=20261112T180133Z&amp;X-Amz-SignedHeaders=host&amp;X-Amz-Expires=604800&amp;X-Amz-Signature=44a8483262b4ae85825517e81583fb3e816eb04bd7770dfbd5796ed446dd54df" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-group-target="data-flux-group-target" target="_blank" rel="noopener">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M8.75 2.75a.75.75 0 0 0-1.5 0v5.69L5.03 6.22a.75.75 0 0 0-1.06 1.06l3.5 3.5a.75.75 0 0 0 1.06 0l3.5-3.5a.75.75 0 0 0-1.06-1.06L8.75 8.44V2.75Z"/>
+  <path d="M3.5 9.75a.75.75 0 0 0-1.5 0v1.5A2.75 2.75 0 0 0 4.75 14h6.5A2.75 2.75 0 0 0 14 11.25v-1.5a.75.75 0 0 0-1.5 0v1.5c0 .69-.56 1.25-1.25 1.25h-6.5c-.69 0-1.25-.56-1.25-1.25v-1.5Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Download</span>
+    </a>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t="Downloads need an internet connection.">Downloads need an internet connection.</span></p>                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Guidance of the Sari for Explaining Sahih al-Bukhari - Integrated Edition, India&quot;,&quot;es&quot;:&quot;Irshad al-Sari li-sharh Sahih al-Bujari [Guía del caminante: comentario de Sahih al-Bujari] (edición en un solo volumen, edición india)&quot;,&quot;fr&quot;:&quot;Irshad al-Sari (Guide du lecteur) : commentaire du Sahih al-Bukhari — édition reliée, édition indienne&quot;,&quot;id&quot;:&quot;Irsyad as-Sari dalam Mensyarah Shahih Al-Bukhari [Bimbingan bagi Pembaca] — Edisi India, Jilid Terpadu&quot;,&quot;ja&quot;:&quot;『イルシャード・アッ＝サーリー』――『サヒーフ・アル＝ブハーリー』注釈（合冊版・インド版）&quot;,&quot;ru&quot;:&quot;Иршад ас-сари (Наставление странствующего) — комментарий к «Сахиху» аль-Бухари, комплектное издание — индийская печать&quot;,&quot;sw&quot;:&quot;Irshad al-Sari li Sharh Sahih al-Bukhari (Mwongozo wa msomaji katika ufafanuzi wa Sahih al-Bukhari), chapa iliyounganishwa — toleo la India&quot;,&quot;tr&quot;:&quot;İrşâdü’s-sârî li-şerhi Sahîhi’l-Buhârî (Buhârî’nin Sahih’inin şerhi) — birleştirilmiş baskı, Hindistan baskısı&quot;,&quot;ur&quot;:&quot;إرشاد الساري لشرح صحيح البخاري مدمجة- طبعة الهند (صحیح بخاری کی شرح کے لیے ارشاد الساری—یکجا، ہندوستانی طبع)&quot;,&quot;zh&quot;:&quot;《伊尔沙德·萨里：〈布哈里圣训实录〉注释》（合订本·印度版）&quot;}" data-original="إرشاد الساري لشرح صحيح البخاري مدمجة- طبعة الهند">إرشاد الساري لشرح صحيح البخاري مدمجة- طبعة الهند</span></h1>
+
+                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1" lang="ar" dir="rtl" data-arabic-original="data-arabic-original" data-flux-text >إرشاد الساري لشرح صحيح البخاري مدمجة- طبعة الهند</p>        
+                              <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Authors">Authors</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/002/271.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Yahya ibn Sharaf al-Nawawi&quot;,&quot;es&quot;:&quot;Yahya ibn Sharaf al-Nawawi&quot;,&quot;fr&quot;:&quot;Yahya ibn Sharaf al-Nawawi&quot;,&quot;id&quot;:&quot;Yahya bin Syaraf An-Nawawi&quot;,&quot;ja&quot;:&quot;ヤフヤー・イブン・シャラフ・アン＝ナワウィー&quot;,&quot;ru&quot;:&quot;Яхья ибн Шараф ан-Навави&quot;,&quot;sw&quot;:&quot;Yahya bin Sharaf al-Nawawi&quot;,&quot;tr&quot;:&quot;Yahyâ b. Şeref en-Nevevî&quot;,&quot;zh&quot;:&quot;叶海亚·本·谢拉夫·脑威&quot;}" data-original="يحيى بن شرف النووي">يحيى بن شرف النووي</span></a>                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../authors/119/11919.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ahmad ibn Muhammad al-Qastalani&quot;,&quot;es&quot;:&quot;Ahmad ibn Muhammad al-Qastalani&quot;,&quot;fr&quot;:&quot;Ahmad ibn Muhammad al-Qastalani&quot;,&quot;id&quot;:&quot;Ahmad bin Muhammad Al-Qastalani&quot;,&quot;ja&quot;:&quot;アフマド・イブン・ムハンマド・アル＝カスタラーニー&quot;,&quot;ru&quot;:&quot;Ахмад ибн Мухаммад аль-Касталани&quot;,&quot;sw&quot;:&quot;Ahmad bin Muhammad Al-Qastalani&quot;,&quot;tr&quot;:&quot;Ahmed b. Muhammed el-Kastallânî&quot;,&quot;zh&quot;:&quot;艾哈迈德·本·穆罕默德·卡斯塔拉尼&quot;}" data-original="أحمد بن محمد القسطلاني">أحمد بن محمد القسطلاني</span></a></p>                                                          <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-2 flex flex-wrap items-baseline gap-x-2" data-flux-text ><span><span data-t="Publishers">Publishers</span>:</span>
+                                              <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../publishers/998/99876.html" data-flux-link ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Al-Matba&#039;a Al-Arabi&quot;,&quot;es&quot;:&quot;Imprenta al-Matba&#039;a al-Arabi&quot;,&quot;fr&quot;:&quot;Matba&#039;at al-Ma&#039;rabi&quot;,&quot;id&quot;:&quot;Percetakan Al-Matba&#039;ah Al-Arabiyah&quot;,&quot;ja&quot;:&quot;アル＝マトバア・アル＝アラビー&quot;,&quot;ru&quot;:&quot;Типография аль-Арабия&quot;,&quot;sw&quot;:&quot;Matba&#039;a al-Arabi&quot;,&quot;tr&quot;:&quot;Matbaatü&#039;l-Arabî&quot;,&quot;zh&quot;:&quot;阿拉比印刷所&quot;}" data-original="المطبع المعربي">المطبع المعربي</span></a></p>                  
+                  <div class="mt-6 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+            <dl class="grid gap-x-6 gap-y-3 text-sm sm:grid-cols-[fit-content(12rem)_1fr]">
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Country">Country</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Kanpur, India&quot;,&quot;es&quot;:&quot;Kanpur, India&quot;,&quot;fr&quot;:&quot;Cannanore, Inde&quot;,&quot;id&quot;:&quot;Kannur, India&quot;,&quot;ja&quot;:&quot;カーンプル、インド&quot;,&quot;ru&quot;:&quot;Канпур, Индия&quot;,&quot;sw&quot;:&quot;Kanpur, India&quot;,&quot;tr&quot;:&quot;Kanpur, Hindistan&quot;,&quot;ur&quot;:&quot;کانفور، ہندوستان&quot;,&quot;zh&quot;:&quot;坎努尔，印度&quot;}" data-original="كانفور، الهند">كانفور، الهند</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Edition">Edition</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">1</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Volumes">Volumes</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">10</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Pages">Pages</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto">2398</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Type">Type</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Book&quot;,&quot;es&quot;:&quot;Libro&quot;,&quot;fr&quot;:&quot;Livre&quot;,&quot;id&quot;:&quot;Buku&quot;,&quot;ja&quot;:&quot;書籍&quot;,&quot;ru&quot;:&quot;Книга&quot;,&quot;sw&quot;:&quot;Kitabu&quot;,&quot;tr&quot;:&quot;Kitap&quot;,&quot;ur&quot;:&quot;کتاب&quot;,&quot;zh&quot;:&quot;书籍&quot;}" data-original="كتاب">كتاب</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Category">Category</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Hadith and Its Sciences&quot;,&quot;es&quot;:&quot;Hadiz y sus ciencias&quot;,&quot;fr&quot;:&quot;Hadith et sciences du hadith&quot;,&quot;id&quot;:&quot;Hadis dan Ilmu-Ilmunya&quot;,&quot;ja&quot;:&quot;ハディース・ハディース学&quot;,&quot;ru&quot;:&quot;Хадис и хадисоведческие науки&quot;,&quot;sw&quot;:&quot;Hadithi na elimu zake&quot;,&quot;tr&quot;:&quot;Hadis ve Hadis İlimleri&quot;,&quot;ur&quot;:&quot;حدیث اور علومِ حدیث&quot;,&quot;zh&quot;:&quot;圣训与圣训学&quot;}" data-original="الحديث وعلومه">الحديث وعلومه</span>
+                </dd>
+                              <dt class="font-medium text-zinc-500 dark:text-zinc-400"><span data-t="Subcategory">Subcategory</span></dt>
+                <dd class="min-w-0 text-zinc-800 dark:text-zinc-100">
+                  <span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentaries&quot;,&quot;es&quot;:&quot;Comentarios&quot;,&quot;fr&quot;:&quot;Commentaires&quot;,&quot;id&quot;:&quot;Syarah&quot;,&quot;ja&quot;:&quot;注釈&quot;,&quot;ru&quot;:&quot;Комментарии&quot;,&quot;sw&quot;:&quot;Sharh&quot;,&quot;tr&quot;:&quot;Şerhler&quot;,&quot;zh&quot;:&quot;注释&quot;}" data-original="شروحات">شروحات</span>
+                </dd>
+                          </dl>
+          </div>
+        
+                  <div class="mt-4 rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Description</div>
+            <p class="text-sm leading-relaxed whitespace-pre-line text-zinc-800 dark:text-zinc-100" dir="auto" data-tr="{&quot;en&quot;:&quot;▫️ Title: Guidance of the Sari for Explaining Sahih al-Bukhari - Integrated Edition, India\n▪️ Author: Ahmad ibn Muhammad ibn Abi Bakr al-Qastalani • Yahya ibn Sharaf al-Nawawi\n▫️ Publisher: Al-Matba&#039;a Al-Arabi\n▪️ Publish Country: Kanpur, India\n▫️ Edition: 1\n▪️ Number of Volumes: 10\n▫️ Pages: 2398\n▪️ Type: Book\n▫️ Main Category: Hadith and Its Sciences\n▪️ Sub Category: Commentaries&quot;,&quot;es&quot;:&quot;▫️ Título: \nIrshad al-Sari li-sharh Sahih al-Bujari [Guía del caminante: comentario de Sahih al-Bujari] (edición en un solo volumen, edición india)\n\n▪️ Autor: Ahmad ibn Muhammad ibn Abi Bakr al-Qastallani • Yahya ibn Sharaf al-Nawawi\n▫️ Editorial: al-Matba al-Arabi\n▪️ Lugar de publicación: Kanpur, India\n▫️ Edición: 1\n▪️ Número de volúmenes: 10\n▫️ Páginas: 2398\n▪️ Tipo de material: Libro\n▫️ Categoría principal: Hadiz y sus ciencias\n▪️ Subcategoría: Comentarios&quot;,&quot;fr&quot;:&quot;▫️ Titre: \nIrshad al-Sari (Guide du lecteur) : commentaire du Sahih al-Bukhari — édition reliée, édition indienne\n\n▪️ Auteur: Ahmad ibn Muhammad ibn Abi Bakr al-Qastallani • Yahya ibn Sharaf al-Nawawi\n▫️ Éditeur: al-Matba al-Arabi\n▪️ Lieu de publication: Kanpur, Inde\n▫️ Édition: 1\n▪️ Nombre de volumes: 10\n▫️ Pages: 2398\n▪️ Type de document: Livre\n▫️ Catégorie principale: Hadith et ses sciences\n▪️ Sous-catégorie: Commentaires&quot;,&quot;id&quot;:&quot;▫️ Judul: \nIrsyad as-Sari dalam Mensyarah Shahih Al-Bukhari [Bimbingan bagi Pembaca] — Edisi India, Jilid Terpadu\n\n▪️ Penulis: Ahmad bin Muhammad bin Abi Bakr Al-Qasthallani • Yahya bin Syaraf An-Nawawi\n▫️ Penerbit: Al-Matba&#039; al-Ma&#039;rabi\n▪️ Tempat terbit: Kanpur, India\n▫️ Cetakan: 1\n▪️ Jumlah jilid: 10\n▫️ Halaman: 2398\n▪️ Jenis bahan: Buku\n▫️ Kategori utama: Hadis dan ilmunya\n▪️ Subkategori: Syarah&quot;,&quot;ja&quot;:&quot;▫️ 書名： \n『イルシャード・アッ＝サーリー』――『サヒーフ・アル＝ブハーリー』注釈（合冊版・インド版）\n\n▪️ 著者：アフマド・イブン・ムハンマド・イブン・アビー・バクル・アル＝カスタラーニー • ヤフヤー・イブン・シャラフ・アン＝ナワウィー\n▫️ 出版社：アル＝マトバウ・アル＝アラビー\n▪️ 出版地：カーンプル、インド\n▫️ 版：1\n▪️ 巻数：10\n▫️ ページ数：2398\n▪️ 資料の種類：書籍\n▫️ 主分類：ハディース学\n▪️ 下位分類：注釈書&quot;,&quot;ru&quot;:&quot;▫️ Название: \nИршад ас-сари (Наставление странствующего) — комментарий к «Сахиху» аль-Бухари, комплектное издание — индийская печать\n\n▪️ Автор: Ахмад ибн Мухаммад ибн Аби Бакр аль-Касталляни • Яхья ибн Шараф ан-Навави\n▫️ Издательство: Арабская типография\n▪️ Место издания: Канпур, Индия\n▫️ Издание: 1\n▪️ Количество томов: 10\n▫️ Страницы: 2398\n▪️ Тип материала: Книга\n▫️ Основная категория: Хадис и его науки\n▪️ Подкатегория: Комментарии&quot;,&quot;sw&quot;:&quot;▫️ Kichwa: \nIrshad al-Sari li Sharh Sahih al-Bukhari (Mwongozo wa msomaji katika ufafanuzi wa Sahih al-Bukhari), chapa iliyounganishwa — toleo la India\n\n▪️ Mwandishi: Ahmad bin Muhammad bin Abi Bakr al-Qastallani • Yahya bin Sharaf al-Nawawi\n▫️ Mchapishaji: al-Matba&#039;a al-Ma&#039;rabi\n▪️ Mahali pa kuchapishwa: Kanpur, India\n▫️ Toleo: 1\n▪️ Idadi ya juzuu: 10\n▫️ Kurasa: 2398\n▪️ Aina ya nyenzo: Kitabu\n▫️ Kundi kuu: Hadith na elimu zake\n▪️ Kundi dogo: Sharhu&quot;,&quot;tr&quot;:&quot;▫️ Başlık: \nİrşâdü’s-sârî li-şerhi Sahîhi’l-Buhârî (Buhârî’nin Sahih’inin şerhi) — birleştirilmiş baskı, Hindistan baskısı\n\n▪️ Yazar: Ahmed b. Muhammed b. Ebû Bekir el-Kastallânî • Yahyâ b. Şeref en-Nevevî\n▫️ Yayınevi: el-Matbaatü&#039;l-Ma‘ribiyye\n▪️ Yayın yeri: Kanpur, Hindistan\n▫️ Baskı: 1\n▪️ Cilt sayısı: 10\n▫️ Sayfa: 2398\n▪️ Materyal türü: Kitap\n▫️ Ana kategori: Hadis ve ilimleri\n▪️ Alt kategori: Şerhler&quot;,&quot;ur&quot;:&quot;▫️ عنوان: \nإرشاد الساري لشرح صحيح البخاري مدمجة- طبعة الهند (صحیح بخاری کی شرح کے لیے ارشاد الساری—یکجا، ہندوستانی طبع)\n\n▪️ مصنف: أحمد بن محمد بن أبي بكر القسطلاني • يحيى بن شرف النووي\n▫️ ناشر: المطبع المعربي\n▪️ مقامِ اشاعت: کانپور، ہندوستان\n▫️ طبع: 1\n▪️ جلدیں: 10\n▫️ صفحات: 2398\n▪️ نوعیت: کتاب\n▫️ بنیادی زمرہ: حدیث و علومِ حدیث\n▪️ ذیلی زمرہ: شروح&quot;,&quot;zh&quot;:&quot;▫️ 书名： \n《伊尔沙德·萨里：〈布哈里圣训实录〉注释》（合订本·印度版）\n\n▪️ 作者：艾哈迈德·本·穆罕默德·本·艾比·伯克尔·卡斯塔拉尼 • 叶海亚·本·谢里夫·脑威\n▫️ 出版社：阿拉伯印刷所\n▪️ 出版地：坎普尔，印度\n▫️ 版次：1\n▪️ 册数：10\n▫️ 页数：2398\n▪️ 资料类型：图书\n▫️ 主分类：圣训学\n▪️ 子分类：注释&quot;}" data-original="**▫️ العنوان: 
 إرشاد الساري لشرح صحيح البخاري مدمجة- طبعة الهند**
 
 ▪️ المؤلف: #أحمد_بن_محمد_بن_أبي_بكر_القسطلاني • #يحيى_بن_شرف_النووي
@@ -180,28 +205,10 @@
 ▪️ التصنيف الفرعي: #شروحات
 
 ۪</p>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
-      >
-        <span data-t="Close">Close</span>
-      </button>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

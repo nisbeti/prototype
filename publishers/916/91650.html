@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>دار المحدث</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,134 +70,177 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Muhaddith&quot;,&quot;es&quot;:&quot;Dar Al-Muhaddith&quot;,&quot;fr&quot;:&quot;Dar al-Muhaddith&quot;,&quot;id&quot;:&quot;Dar Al-Muhaddits&quot;,&quot;ja&quot;:&quot;ダール・アル＝ムハッディス&quot;,&quot;ru&quot;:&quot;Дар аль-Мухаддис&quot;,&quot;sw&quot;:&quot;Dar al-Muhaddith&quot;,&quot;tr&quot;:&quot;Dârü’l-Muhaddis&quot;,&quot;zh&quot;:&quot;穆哈迪斯出版社&quot;}" data-original="دار المحدث">دار المحدث</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/1287/128737.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1287/128737.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Interpretation of Al-Fatiha - Dar Al-Muhaddith&quot;,&quot;es&quot;:&quot;Exégesis de al-Fatiha - Dar al-Muhaddith&quot;,&quot;fr&quot;:&quot;Exégèse de la Fatiha - Dar al-Muhaddith&quot;,&quot;id&quot;:&quot;Tafsir Surah Al-Fatihah—Dar Al-Muhaddits&quot;,&quot;ja&quot;:&quot;ファーティハ章の解釈――ダール・アル＝ムハッディス版&quot;,&quot;ru&quot;:&quot;Тафсир суры «аль-Фатиха» — Дар аль-Мухаддис&quot;,&quot;sw&quot;:&quot;Tafsiri ya Surat al-Fatiha - Dar al-Muhaddith&quot;,&quot;tr&quot;:&quot;Fâtiha sûresinin tefsiri - Dar al-Muhaddith&quot;,&quot;ur&quot;:&quot;تفسير الفاتحة- دار المحدث (سورۂ فاتحہ کی تفسیر—دار المحدث)&quot;,&quot;zh&quot;:&quot;《开端章注释》—穆哈迪斯出版社版&quot;}" data-original="تفسير الفاتحة- دار المحدث">تفسير الفاتحة- دار المحدث</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Dar Al-Muhaddith&quot;,&quot;es&quot;:&quot;Dar Al-Muhaddith&quot;,&quot;fr&quot;:&quot;Dar al-Muhaddith&quot;,&quot;id&quot;:&quot;Dar Al-Muhaddits&quot;,&quot;ja&quot;:&quot;ダール・アル＝ムハッディス&quot;,&quot;ru&quot;:&quot;Дар аль-Мухаддис&quot;,&quot;sw&quot;:&quot;Dar al-Muhaddith&quot;,&quot;tr&quot;:&quot;Dârü’l-Muhaddis&quot;,&quot;zh&quot;:&quot;穆哈迪斯出版社&quot;}" data-original="دار المحدث">دار المحدث</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/1287/128737.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Interpretation of Al-Fatiha - Dar Al-Muhaddith&quot;,&quot;es&quot;:&quot;Exégesis de al-Fatiha - Dar al-Muhaddith&quot;,&quot;fr&quot;:&quot;Exégèse de la Fatiha - Dar al-Muhaddith&quot;,&quot;id&quot;:&quot;Tafsir Surah Al-Fatihah—Dar Al-Muhaddits&quot;,&quot;ja&quot;:&quot;ファーティハ章の解釈――ダール・アル＝ムハッディス版&quot;,&quot;ru&quot;:&quot;Тафсир суры «аль-Фатиха» — Дар аль-Мухаддис&quot;,&quot;sw&quot;:&quot;Tafsiri ya Surat al-Fatiha - Dar al-Muhaddith&quot;,&quot;tr&quot;:&quot;Fâtiha sûresinin tefsiri - Dar al-Muhaddith&quot;,&quot;ur&quot;:&quot;تفسير الفاتحة- دار المحدث (سورۂ فاتحہ کی تفسیر—دار المحدث)&quot;,&quot;zh&quot;:&quot;《开端章注释》—穆哈迪斯出版社版&quot;}" data-original="تفسير الفاتحة- دار المحدث">تفسير الفاتحة- دار المحدث</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن أحمد بن رجب الدمشقي الحنبلي</td>
-        <td dir="auto">دار المحدث</td>
-        <td dir="auto">2006م 1427هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1292/129211.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Interpretation of Al-Fatiha - 2nd Edition&quot;,&quot;es&quot;:&quot;Exégesis de al-Fatiha — 2.ª edición&quot;,&quot;fr&quot;:&quot;Exégèse de la sourate al-Fatiha — 2e édition&quot;,&quot;id&quot;:&quot;Tafsir Surah Al-Fatihah – Cetakan ke-2&quot;,&quot;ja&quot;:&quot;スーラ・アル＝ファーティハの注釈—第2版&quot;,&quot;ru&quot;:&quot;Тафсир суры «Аль-Фатиха» — 2-е издание&quot;,&quot;sw&quot;:&quot;Tafsiri ya Al-Fatiha - toleo la 2&quot;,&quot;tr&quot;:&quot;Fâtiha Tefsiri - 2. Baskı&quot;,&quot;ur&quot;:&quot;تفسير الفاتحة (سورۂ فاتحہ کی تفسیر)- ط2&quot;,&quot;zh&quot;:&quot;《〈开端章〉注释》——第二版&quot;}" data-original="تفسير الفاتحة- ط2">تفسير الفاتحة- ط2</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الرحمن بن أحمد بن رجب الدمشقي الحنبلي</td>
-        <td dir="auto">دار المحدث • مركز ثبت للبحوث والدراسات</td>
-        <td dir="auto">2018م 1439هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1376/137642.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentary on the Selected Reports of the Prophet ﷺ&quot;,&quot;es&quot;:&quot;Comentario de Al-Muntaqa min Akhbar al-Mustafa (Selección de noticias del Elegido) ﷺ&quot;,&quot;fr&quot;:&quot;Commentaire de al-Muntaqa min Akhbar al-Mustafa ﷺ (Sélection des récits du Prophète ﷺ)&quot;,&quot;id&quot;:&quot;Komentar atas Al-Muntaqa min Akhbar Al-Mushthafa ﷺ [Pilihan Riwayat tentang Nabi Terpilih ﷺ]&quot;,&quot;ja&quot;:&quot;ムスタファーの伝承選集への注釈 ﷺ&quot;,&quot;ru&quot;:&quot;Комментарий к «Аль-Мунтака мин ахбар аль-Мустафа» ﷺ&quot;,&quot;sw&quot;:&quot;Maelezo kuhusu Al-Muntaqa min Akhbar al-Mustafa ﷺ (Teuzi ya habari za Mtume ﷺ)&quot;,&quot;tr&quot;:&quot;el-Ta‘lîk ale&#039;l-Müntekâ min ahbâri&#039;l-Mustafâ ﷺ (Mustafâ&#039;nın Haberlerinden Seçmeler Üzerine Notlar)&quot;,&quot;zh&quot;:&quot;《〈穆斯塔法圣训选集〉注释》&quot;}" data-original="التعليق على المنتقى من أخبار المصطفى ﷺ">التعليق على المنتقى من أخبار المصطفى ﷺ</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">دار المحدث للنشر والتوزيع</td>
-        <td dir="auto">1426هـ 2005م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1460/146037.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Hadith of Jabir ibn Abdullah on the Description of the Prophet&#039;s Pilgrimage ﷺ - Dar Al-Muhaddith Edition&quot;,&quot;es&quot;:&quot;Comentario del hadiz de Jabir ibn Abd Allah sobre la descripción de la peregrinación del Profeta ﷺ — edición de Dar al-Muhaddith&quot;,&quot;fr&quot;:&quot;Commentaire du hadith de Jabir ibn Abd Allah sur la description du pèlerinage du Prophète ﷺ — édition Dar al-Muhaddith&quot;,&quot;id&quot;:&quot;Syarah hadis Jabir bin Abdullah tentang tata cara haji Nabi ﷺ — edisi Dar Al-Muhaddits&quot;,&quot;ja&quot;:&quot;預言者 ﷺ の巡礼のあり方に関するジャービル・イブン・アブド・アッラーのハディース注釈（ダール・アル＝ムハッディース版）&quot;,&quot;ru&quot;:&quot;Шарх хадиса Джабира ибн Абдаллаха об описании хаджа Пророка ﷺ — издательство «Дар аль-Мухаддис»&quot;,&quot;sw&quot;:&quot;Sharh Hadith ya Jabir bin Abdullah kuhusu namna Mtume ﷺ alivyotekeleza Hija – toleo la Dar al-Muhaddith&quot;,&quot;tr&quot;:&quot;Câbir b. Abdullah&#039;ın Hz. Peygamber&#039;in ﷺ haccının niteliklerine dair hadisinin şerhi – Dârü&#039;l-Muhaddis baskısı&quot;,&quot;ur&quot;:&quot;شرح حديث جابر بن عبد الله في صفة حجة النبي ﷺ- ط. دار المحدث&quot;,&quot;zh&quot;:&quot;《贾比尔·本·阿卜杜拉关于先知ﷺ朝觐仪式的圣训注释》（圣训学者出版社版）&quot;}" data-original="شرح حديث جابر بن عبد الله في صفة حجة النبيﷺ- ط. دار المحدث">شرح حديث جابر بن عبد الله في صفة حجة النبيﷺ- ط. دار المحدث</span>
-          </a>
-        </td>
-        <td dir="auto">محمد بن صالح العثيمين</td>
-        <td dir="auto">دار المحدث</td>
-        <td dir="auto">1424هـ 2003م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        تفسير الفاتحة- دار المحدث
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن أحمد بن رجب الدمشقي الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1292/129211.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1292/129211.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Interpretation of Al-Fatiha - 2nd Edition&quot;,&quot;es&quot;:&quot;Exégesis de al-Fatiha — 2.ª edición&quot;,&quot;fr&quot;:&quot;Exégèse de la sourate al-Fatiha — 2e édition&quot;,&quot;id&quot;:&quot;Tafsir Surah Al-Fatihah – Cetakan ke-2&quot;,&quot;ja&quot;:&quot;スーラ・アル＝ファーティハの注釈—第2版&quot;,&quot;ru&quot;:&quot;Тафсир суры «Аль-Фатиха» — 2-е издание&quot;,&quot;sw&quot;:&quot;Tafsiri ya Al-Fatiha - toleo la 2&quot;,&quot;tr&quot;:&quot;Fâtiha Tefsiri - 2. Baskı&quot;,&quot;ur&quot;:&quot;تفسير الفاتحة (سورۂ فاتحہ کی تفسیر)- ط2&quot;,&quot;zh&quot;:&quot;《〈开端章〉注释》——第二版&quot;}" data-original="تفسير الفاتحة- ط2">تفسير الفاتحة- ط2</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        تفسير الفاتحة- ط2
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن بن أحمد بن رجب الدمشقي الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1376/137642.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1376/137642.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Commentary on the Selected Reports of the Prophet ﷺ&quot;,&quot;es&quot;:&quot;Comentario de Al-Muntaqa min Akhbar al-Mustafa (Selección de noticias del Elegido) ﷺ&quot;,&quot;fr&quot;:&quot;Commentaire de al-Muntaqa min Akhbar al-Mustafa ﷺ (Sélection des récits du Prophète ﷺ)&quot;,&quot;id&quot;:&quot;Komentar atas Al-Muntaqa min Akhbar Al-Mushthafa ﷺ [Pilihan Riwayat tentang Nabi Terpilih ﷺ]&quot;,&quot;ja&quot;:&quot;ムスタファーの伝承選集への注釈 ﷺ&quot;,&quot;ru&quot;:&quot;Комментарий к «Аль-Мунтака мин ахбар аль-Мустафа» ﷺ&quot;,&quot;sw&quot;:&quot;Maelezo kuhusu Al-Muntaqa min Akhbar al-Mustafa ﷺ (Teuzi ya habari za Mtume ﷺ)&quot;,&quot;tr&quot;:&quot;el-Ta‘lîk ale&#039;l-Müntekâ min ahbâri&#039;l-Mustafâ ﷺ (Mustafâ&#039;nın Haberlerinden Seçmeler Üzerine Notlar)&quot;,&quot;zh&quot;:&quot;《〈穆斯塔法圣训选集〉注释》&quot;}" data-original="التعليق على المنتقى من أخبار المصطفى ﷺ">التعليق على المنتقى من أخبار المصطفى ﷺ</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        التعليق على المنتقى من أخبار المصطفى ﷺ
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1460/146037.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1460/146037.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Hadith of Jabir ibn Abdullah on the Description of the Prophet&#039;s Pilgrimage ﷺ - Dar Al-Muhaddith Edition&quot;,&quot;es&quot;:&quot;Comentario del hadiz de Jabir ibn Abd Allah sobre la descripción de la peregrinación del Profeta ﷺ — edición de Dar al-Muhaddith&quot;,&quot;fr&quot;:&quot;Commentaire du hadith de Jabir ibn Abd Allah sur la description du pèlerinage du Prophète ﷺ — édition Dar al-Muhaddith&quot;,&quot;id&quot;:&quot;Syarah hadis Jabir bin Abdullah tentang tata cara haji Nabi ﷺ — edisi Dar Al-Muhaddits&quot;,&quot;ja&quot;:&quot;預言者 ﷺ の巡礼のあり方に関するジャービル・イブン・アブド・アッラーのハディース注釈（ダール・アル＝ムハッディース版）&quot;,&quot;ru&quot;:&quot;Шарх хадиса Джабира ибн Абдаллаха об описании хаджа Пророка ﷺ — издательство «Дар аль-Мухаддис»&quot;,&quot;sw&quot;:&quot;Sharh Hadith ya Jabir bin Abdullah kuhusu namna Mtume ﷺ alivyotekeleza Hija – toleo la Dar al-Muhaddith&quot;,&quot;tr&quot;:&quot;Câbir b. Abdullah&#039;ın Hz. Peygamber&#039;in ﷺ haccının niteliklerine dair hadisinin şerhi – Dârü&#039;l-Muhaddis baskısı&quot;,&quot;ur&quot;:&quot;شرح حديث جابر بن عبد الله في صفة حجة النبي ﷺ- ط. دار المحدث&quot;,&quot;zh&quot;:&quot;《贾比尔·本·阿卜杜拉关于先知ﷺ朝觐仪式的圣训注释》（圣训学者出版社版）&quot;}" data-original="شرح حديث جابر بن عبد الله في صفة حجة النبيﷺ- ط. دار المحدث">شرح حديث جابر بن عبد الله في صفة حجة النبيﷺ- ط. دار المحدث</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح حديث جابر بن عبد الله في صفة حجة النبيﷺ- ط. دار المحدث
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      محمد بن صالح العثيمين
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="authors"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>عمر بن علي أحمد الأنصاري ابن الملقن</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,124 +70,148 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../authors.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Authors</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Omar bin Ali Ahmad Al-Ansari Ibn Al-Mulaqqin&quot;,&quot;es&quot;:&quot;Umar ibn Ali Ahmad al-Ansari Ibn al-Mulaqqin&quot;,&quot;fr&quot;:&quot;Umar ibn Ali Ahmad al-Ansari Ibn al-Mulaqqin&quot;,&quot;id&quot;:&quot;Umar bin Ali Ahmad Al-Anshari Ibnu Al-Mulaqqin&quot;,&quot;ja&quot;:&quot;ウマル・ビン・アリー・アフマド・アル＝アンサーリー・イブン・アル＝ムラッキン&quot;,&quot;ru&quot;:&quot;Умар ибн Али Ахмад аль-Ансари Ибн аль-Мулаккин&quot;,&quot;sw&quot;:&quot;Omar bin Ali Ahmad al-Ansari Ibn al-Mulaqqin&quot;,&quot;tr&quot;:&quot;Ömer b. Ali Ahmed el-Ensârî İbnü’l-Mülakkın&quot;,&quot;zh&quot;:&quot;奥马尔·本·阿里·艾哈迈德·安萨里·伊本·穆莱金&quot;}" data-original="عمر بن علي أحمد الأنصاري ابن الملقن">عمر بن علي أحمد الأنصاري ابن الملقن</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Author
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/661/66141.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/661/66141.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Stories of the Prophets and the Virtues of the Tribes from the Explanation of the Comprehensive Authentic&quot;,&quot;es&quot;:&quot;Relatos de los profetas y virtudes de las tribus, de al-Tawdih li-sharh al-Jami al-Sahih (La explicación del comentario de la recopilación auténtica)&quot;,&quot;fr&quot;:&quot;Récits des prophètes et mérites des tribus, extraits d&#039;al-Tawdih li-Sharh al-Jami al-Sahih (L&#039;explication du commentaire du Recueil authentique)&quot;,&quot;id&quot;:&quot;Kisah Para Nabi dan Keutamaan Kabilah dari at-Taudhih li Syarh al-Jami&#039; ash-Shahih (Penjelasan atas Syarah Kitab al-Jami&#039; ash-Shahih)&quot;,&quot;ja&quot;:&quot;預言者たちの物語と部族の美徳：『アル＝ジャーミウ・アッ＝サヒーフ』注釈書『アッ＝タウディーフ』より&quot;,&quot;ru&quot;:&quot;Истории пророков и достоинства племен из «ат-Таудых» к комментарию «аль-Джами ас-Сахих»&quot;,&quot;sw&quot;:&quot;Qisas al-Anbiya&#039; wa Manaqib al-Qaba&#039;il min al-Tawdih li-Sharh al-Jami&#039; al-Sahih (Visa vya Manabii na fadhila za makabila kutoka al-Tawdih, ufafanuzi wa al-Jami&#039; al-Sahih)&quot;,&quot;tr&quot;:&quot;Peygamberlerin Kıssaları ve Kabilelerin Menkıbeleri: et-Tavzîh’ten, el-Câmiu’s-Sahîh Şerhi’nden&quot;,&quot;ur&quot;:&quot;قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح (انبیاء کے قصے اور قبائل کے فضائل، التوضيح لشرح الجامع الصحيح سے)&quot;,&quot;zh&quot;:&quot;《先知故事与部族美德——选自〈阐明〈正确汇编注释〉〉》&quot;}" data-original="قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح">قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Omar bin Ali Ahmad Al-Ansari Ibn Al-Mulaqqin&quot;,&quot;es&quot;:&quot;Umar ibn Ali Ahmad al-Ansari Ibn al-Mulaqqin&quot;,&quot;fr&quot;:&quot;Umar ibn Ali Ahmad al-Ansari Ibn al-Mulaqqin&quot;,&quot;id&quot;:&quot;Umar bin Ali Ahmad Al-Anshari Ibnu Al-Mulaqqin&quot;,&quot;ja&quot;:&quot;ウマル・ビン・アリー・アフマド・アル＝アンサーリー・イブン・アル＝ムラッキン&quot;,&quot;ru&quot;:&quot;Умар ибн Али Ахмад аль-Ансари Ибн аль-Мулаккин&quot;,&quot;sw&quot;:&quot;Omar bin Ali Ahmad al-Ansari Ibn al-Mulaqqin&quot;,&quot;tr&quot;:&quot;Ömer b. Ali Ahmed el-Ensârî İbnü’l-Mülakkın&quot;,&quot;zh&quot;:&quot;奥马尔·本·阿里·艾哈迈德·安萨里·伊本·穆莱金&quot;}" data-original="عمر بن علي أحمد الأنصاري ابن الملقن">عمر بن علي أحمد الأنصاري ابن الملقن</span></h1>
-  <p class="muted">
-    <span data-t="Author">Author</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/661/66141.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Stories of the Prophets and the Virtues of the Tribes from the Explanation of the Comprehensive Authentic&quot;,&quot;es&quot;:&quot;Relatos de los profetas y virtudes de las tribus, de al-Tawdih li-sharh al-Jami al-Sahih (La explicación del comentario de la recopilación auténtica)&quot;,&quot;fr&quot;:&quot;Récits des prophètes et mérites des tribus, extraits d&#039;al-Tawdih li-Sharh al-Jami al-Sahih (L&#039;explication du commentaire du Recueil authentique)&quot;,&quot;id&quot;:&quot;Kisah Para Nabi dan Keutamaan Kabilah dari at-Taudhih li Syarh al-Jami&#039; ash-Shahih (Penjelasan atas Syarah Kitab al-Jami&#039; ash-Shahih)&quot;,&quot;ja&quot;:&quot;預言者たちの物語と部族の美徳：『アル＝ジャーミウ・アッ＝サヒーフ』注釈書『アッ＝タウディーフ』より&quot;,&quot;ru&quot;:&quot;Истории пророков и достоинства племен из «ат-Таудых» к комментарию «аль-Джами ас-Сахих»&quot;,&quot;sw&quot;:&quot;Qisas al-Anbiya&#039; wa Manaqib al-Qaba&#039;il min al-Tawdih li-Sharh al-Jami&#039; al-Sahih (Visa vya Manabii na fadhila za makabila kutoka al-Tawdih, ufafanuzi wa al-Jami&#039; al-Sahih)&quot;,&quot;tr&quot;:&quot;Peygamberlerin Kıssaları ve Kabilelerin Menkıbeleri: et-Tavzîh’ten, el-Câmiu’s-Sahîh Şerhi’nden&quot;,&quot;ur&quot;:&quot;قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح (انبیاء کے قصے اور قبائل کے فضائل، التوضيح لشرح الجامع الصحيح سے)&quot;,&quot;zh&quot;:&quot;《先知故事与部族美德——选自〈阐明〈正确汇编注释〉〉》&quot;}" data-original="قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح">قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح</span>
-          </a>
-        </td>
-        <td dir="auto">عمر بن علي بن أحمد الأنصاري الشافعي الملقبب ابن الملقن</td>
-        <td dir="auto">المكتبة المكية • مؤسسة الريان</td>
-        <td dir="auto">1418هـ 1998م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/905/90513.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Stories of the Prophets and the Virtues of the Tribes from the Explanation of the Authentic Collection&quot;,&quot;es&quot;:&quot;Relatos de los profetas y virtudes de las tribus, de al-Tawdih li-sharh al-Jami al-Sahih (La aclaración del comentario de la recopilación auténtica)&quot;,&quot;fr&quot;:&quot;Récits des prophètes et mérites des tribus, extrait d&#039;al-Tawdih, commentaire du Jami al-Sahih&quot;,&quot;id&quot;:&quot;Kisah Para Nabi dan Keutamaan Suku-Suku dalam at-Taudih li Syarh al-Jami&#039; as-Sahih [Penjelasan atas Syarah al-Jami&#039; as-Sahih]&quot;,&quot;ja&quot;:&quot;預言者たちの物語と部族の美徳：『アル＝ジャーミウ・アッ＝サヒーフ』注解書『アット＝タウディーフ』より&quot;,&quot;ru&quot;:&quot;Рассказы о пророках и достоинства племён из книги «Ат-Таудих» к «Аль-Джами ас-сахих»&quot;,&quot;sw&quot;:&quot;Simulizi za Manabii na Fadhila za Makabila kutoka al-Tawdih katika Ufafanuzi wa al-Jami al-Sahih&quot;,&quot;tr&quot;:&quot;Peygamber Kıssaları ve Kabilelerin Faziletleri: et-Tavzîh li-Şerhi&#039;l-Câmi&#039;i&#039;s-Sahîh&#039;ten&quot;,&quot;ur&quot;:&quot;قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح (انبیاء کے قصے اور قبائل کے فضائل، التوضيح لشرح الجامع الصحيح سے)&quot;,&quot;zh&quot;:&quot;《正确汇编注释详解》中的先知故事与部族美德&quot;}" data-original="قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح">قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح</span>
-          </a>
-        </td>
-        <td dir="auto">سراج الدين أبي حفص عمر بن علي بن أحمد الأنصاري الشافعي</td>
-        <td dir="auto">مؤسسة الريان</td>
-        <td dir="auto">1418 - 1998</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1412/141208.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Stories of the Prophets and the Virtues of the Tribes from the Explanation of the Comprehensive Authentic&quot;,&quot;es&quot;:&quot;Relatos de los profetas y méritos de las tribus, tomado de al-Tawdih li-Sharh al-Jami al-Sahih (La aclaración del comentario de la compilación auténtica)&quot;,&quot;fr&quot;:&quot;Les récits des prophètes et les mérites des tribus, extraits d&#039;al-Tawdih (Commentaire du Sahih)&quot;,&quot;id&quot;:&quot;Kisah Para Nabi dan Keutamaan Kabilah-Kabilah dari At-Taudhih fi Syarh al-Jami&#039; as-Sahih (Penjelasan atas Syarah Al-Jami&#039; Ash-Shahih)&quot;,&quot;ja&quot;:&quot;『アル＝ジャーミウ・アッ＝サヒーフ』注釈書『アット＝タウディーフ』からの預言者物語と部族の美徳&quot;,&quot;ru&quot;:&quot;Рассказы о пророках и достоинства племен из книги «Ат-Таудих» — комментария к «Сахиху»&quot;,&quot;sw&quot;:&quot;Hadithi za manabii na fadhila za makabila kutoka katika Al-Tawdih, sharh ya Al-Jami al-Sahih&quot;,&quot;tr&quot;:&quot;Peygamber Kıssaları ve Kabilelerin Menkıbeleri: et-Tavdîh li-Şerhi’l-Câmi‘i’s-Sahîh’ten&quot;,&quot;zh&quot;:&quot;《〈正确汇编注释〉中的先知故事与部族美德》&quot;}" data-original="قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح">قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح</span>
-          </a>
-        </td>
-        <td dir="auto">عمر بن علي أحمد الأنصاري ابن الملقن</td>
-        <td dir="auto">مؤسسة الريان • المكتبة المكية</td>
-        <td dir="auto">1418هـ 1998م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عمر بن علي بن أحمد الأنصاري الشافعي الملقبب ابن الملقن
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/905/90513.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/905/90513.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Stories of the Prophets and the Virtues of the Tribes from the Explanation of the Authentic Collection&quot;,&quot;es&quot;:&quot;Relatos de los profetas y virtudes de las tribus, de al-Tawdih li-sharh al-Jami al-Sahih (La aclaración del comentario de la recopilación auténtica)&quot;,&quot;fr&quot;:&quot;Récits des prophètes et mérites des tribus, extrait d&#039;al-Tawdih, commentaire du Jami al-Sahih&quot;,&quot;id&quot;:&quot;Kisah Para Nabi dan Keutamaan Suku-Suku dalam at-Taudih li Syarh al-Jami&#039; as-Sahih [Penjelasan atas Syarah al-Jami&#039; as-Sahih]&quot;,&quot;ja&quot;:&quot;預言者たちの物語と部族の美徳：『アル＝ジャーミウ・アッ＝サヒーフ』注解書『アット＝タウディーフ』より&quot;,&quot;ru&quot;:&quot;Рассказы о пророках и достоинства племён из книги «Ат-Таудих» к «Аль-Джами ас-сахих»&quot;,&quot;sw&quot;:&quot;Simulizi za Manabii na Fadhila za Makabila kutoka al-Tawdih katika Ufafanuzi wa al-Jami al-Sahih&quot;,&quot;tr&quot;:&quot;Peygamber Kıssaları ve Kabilelerin Faziletleri: et-Tavzîh li-Şerhi&#039;l-Câmi&#039;i&#039;s-Sahîh&#039;ten&quot;,&quot;ur&quot;:&quot;قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح (انبیاء کے قصے اور قبائل کے فضائل، التوضيح لشرح الجامع الصحيح سے)&quot;,&quot;zh&quot;:&quot;《正确汇编注释详解》中的先知故事与部族美德&quot;}" data-original="قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح">قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      سراج الدين أبي حفص عمر بن علي بن أحمد الأنصاري الشافعي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1412/141208.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1412/141208.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Stories of the Prophets and the Virtues of the Tribes from the Explanation of the Comprehensive Authentic&quot;,&quot;es&quot;:&quot;Relatos de los profetas y méritos de las tribus, tomado de al-Tawdih li-Sharh al-Jami al-Sahih (La aclaración del comentario de la compilación auténtica)&quot;,&quot;fr&quot;:&quot;Les récits des prophètes et les mérites des tribus, extraits d&#039;al-Tawdih (Commentaire du Sahih)&quot;,&quot;id&quot;:&quot;Kisah Para Nabi dan Keutamaan Kabilah-Kabilah dari At-Taudhih fi Syarh al-Jami&#039; as-Sahih (Penjelasan atas Syarah Al-Jami&#039; Ash-Shahih)&quot;,&quot;ja&quot;:&quot;『アル＝ジャーミウ・アッ＝サヒーフ』注釈書『アット＝タウディーフ』からの預言者物語と部族の美徳&quot;,&quot;ru&quot;:&quot;Рассказы о пророках и достоинства племен из книги «Ат-Таудих» — комментария к «Сахиху»&quot;,&quot;sw&quot;:&quot;Hadithi za manabii na fadhila za makabila kutoka katika Al-Tawdih, sharh ya Al-Jami al-Sahih&quot;,&quot;tr&quot;:&quot;Peygamber Kıssaları ve Kabilelerin Menkıbeleri: et-Tavdîh li-Şerhi’l-Câmi‘i’s-Sahîh’ten&quot;,&quot;zh&quot;:&quot;《〈正确汇编注释〉中的先知故事与部族美德》&quot;}" data-original="قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح">قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        قصص الأنبياء ومناقب القبائل من التوضيح لشرح الجامع الصحيح
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عمر بن علي أحمد الأنصاري ابن الملقن
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

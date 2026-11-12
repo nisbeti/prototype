@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../../"
+  data-section="books"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>شرح الأربعين النووية - عبد الكريم الخضير</title>
   <link
-    rel="stylesheet"
-    href="../../../assets/reader.css"
+    rel="icon"
+    href="../../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,434 +70,538 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../../assets/reader.js"
+    src="../../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../../books.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Books</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
-      >
-        ⚙
-      </a>
-    </nav>
-  </header>
 
-  <main class="site-main">
-      <div class="book-head">
-    
-    <div class="book-head-text">
-      <h1
-        class="page-title"
-        lang="ar"
-        dir="rtl"
-      >
-        شرح الأربعين النووية - عبد الكريم الخضير
-      </h1>
-      <p class="muted translated-only" dir="auto" data-tr="{&quot;en&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Commentary on al-Nawawi&#039;s Forty Hadiths)&quot;,&quot;es&quot;:&quot;Comentario de los Cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya [Commentaire des Quarante hadiths de al-Nawawi]&quot;,&quot;id&quot;:&quot;Syarah Al-Arba&#039;in An-Nawawiyah [Penjelasan Empat Puluh Hadis An-Nawawi]&quot;,&quot;ja&quot;:&quot;シャルフ・アル＝アルバイーン・アン＝ナワウィーヤ&quot;,&quot;ru&quot;:&quot;Шарх аль-Арбаин ан-Нававийя (Комментарий к сорока хадисам ан-Навави)&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arobaini za Nawawi)&quot;,&quot;tr&quot;:&quot;Şerhu’l-Erbaîn en-Neveviyye (Nevevî’nin Kırk Hadis’inin Şerhi)&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية (اربعین نووی کی شرح)&quot;,&quot;zh&quot;:&quot;《注释〈奈萨仪四十段圣训〉》&quot;}" data-original=""></p>
-
-      <p class="credits">
-                  <a
-            href="../../../authors/040/4027.html"
-            lang="ar"
+    <div class="flex flex-col gap-8 md:flex-row">
+      <div class="md:w-56 md:shrink-0">
+                  <div
+            class="flex h-56 w-full shrink-0 items-center justify-center rounded-sm border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
           >
-            عبد الكريم الخضير
-          </a>
-                                  <button
-            type="button"
-            class="button small"
-            data-open-card="author-card"
-          >
-            <span data-t="About the author">About the author</span>
-          </button>
-              </p>
+            <svg class="shrink-0 [:where(&amp;)]:size-6 size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+</svg>
 
-      
-      <p class="actions">
-                  <a
-            class="button primary"
-            href="../../../books/076/7603/1.html#p1"
-          >
-            <span data-t="Read">Read</span>
-          </a>
-                <span class="muted">
-          <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;447&quot;}" data-n="447">447 pages</span>
-                      · <span data-t=":count part|:count parts" data-r="{&quot;count&quot;:14}" data-n="14">14 parts</span>
-                  </span>
-      </p>
-    </div>
-  </div>
-
-      <template id="author-card">
-      <div
-        class="card-text"
-        lang="ar"
-        dir="rtl"
-      >
+                  </div>
         
+        <div class="mt-4 flex flex-col gap-2">
+                      <a href="../../../books/076/7603/1.html#p1" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-[var(--color-accent)] hover:bg-[color-mix(in_oklab,_var(--color-accent),_transparent_10%)] text-[var(--color-accent-foreground)] border border-black/10 dark:border-0 shadow-[inset_0px_1px_--theme(--color-white/.2)] [[data-flux-button-group]_&amp;]:border-e-0 [:is([data-flux-button-group]&gt;&amp;:last-child,_[data-flux-button-group]_:last-child&gt;&amp;)]:border-e-[1px] dark:[:is([data-flux-button-group]&gt;&amp;:last-child,_[data-flux-button-group]_:last-child&gt;&amp;)]:border-e-0 [:is([data-flux-button-group]&gt;&amp;:not(:first-child),_[data-flux-button-group]_:not(:first-child)&gt;&amp;)]:border-s-[1px]! [:is([data-flux-button-group]&gt;&amp;:not(:first-child),_[data-flux-button-group]_:not(:first-child)&gt;&amp;)]:border-s-[color-mix(in_srgb,var(--color-accent-foreground),transparent_85%)]" data-flux-group-target="data-flux-group-target" data-test="start-reading">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M7.25 3.688a8.035 8.035 0 0 0-4.872-.523A.48.48 0 0 0 2 3.64v7.994c0 .345.342.588.679.512a6.02 6.02 0 0 1 4.571.81V3.688ZM8.75 12.956a6.02 6.02 0 0 1 4.571-.81c.337.075.679-.167.679-.512V3.64a.48.48 0 0 0-.378-.475 8.034 8.034 0 0 0-4.872.523v9.268Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Read</span>
+    </a>
+          
+                  </div>
+      </div>
+
+      <div class="min-w-0 flex-1">
+        <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" dir="auto" lang="ar" data-flux-heading>شرح الأربعين النووية - عبد الكريم الخضير</h1>
+
+                <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span dir="auto" data-tr="{&quot;en&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Commentary on al-Nawawi&#039;s Forty Hadiths)&quot;,&quot;es&quot;:&quot;Comentario de los Cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya [Commentaire des Quarante hadiths de al-Nawawi]&quot;,&quot;id&quot;:&quot;Syarah Al-Arba&#039;in An-Nawawiyah [Penjelasan Empat Puluh Hadis An-Nawawi]&quot;,&quot;ja&quot;:&quot;シャルフ・アル＝アルバイーン・アン＝ナワウィーヤ&quot;,&quot;ru&quot;:&quot;Шарх аль-Арбаин ан-Нававийя (Комментарий к сорока хадисам ан-Навави)&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arobaini za Nawawi)&quot;,&quot;tr&quot;:&quot;Şerhu’l-Erbaîn en-Neveviyye (Nevevî’nin Kırk Hadis’inin Şerhi)&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية (اربعین نووی کی شرح)&quot;,&quot;zh&quot;:&quot;《注释〈奈萨仪四十段圣训〉》&quot;}" data-original=""></span></p>
+                  <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mt-1 flex flex-wrap items-baseline gap-x-2" data-flux-subheading>
+    <a class="inline font-medium underline-offset-[6px] hover:decoration-current underline [[data-color]&gt;&amp;]:text-inherit [[data-color]&gt;&amp;]:decoration-current/20 dark:[[data-color]&gt;&amp;]:decoration-current/50 [[data-color]&gt;&amp;]:hover:decoration-current text-[var(--color-accent-content)] decoration-[color-mix(in_oklab,var(--color-accent-content),transparent_80%)]" href="../../../authors/040/4027.html" lang="ar" data-flux-link >عبد الكريم الخضير</a>                        <bdi class="text-zinc-400">
+              (<span data-t="d. :year" data-r="{&quot;year&quot;:&quot;-&quot;}">d. -</span>)
+            </bdi>
+</div>
+        
+        
+        <div class="mt-3 flex flex-wrap gap-2">
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50">
+        <span lang="ar">شروح الحديث</span>
+    </div>
+                    <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50">
+        <span data-t=":count page|:count pages" data-r="{&quot;count&quot;:&quot;447&quot;}" data-n="447">447 pages</span>
+    </div>
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50">
+        <span data-t=":count part|:count parts" data-r="{&quot;count&quot;:14}" data-n="14">14 parts</span>
+    </div>
+                  </div>
+
+        
+        <div class="mt-6 grid grid-cols-1 gap-4 xl:grid-cols-2">
+                      <div class="min-w-0 rounded-xl border border-zinc-200 p-5 [overflow-wrap:anywhere] dark:border-zinc-700">
+              <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Details</div>
+              <dl
+  class="text-sm grid gap-x-6 gap-y-3 sm:grid-cols-[fit-content(12rem)_1fr]"
+  dir="auto"
+>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Title&quot;,&quot;es&quot;:&quot;Título&quot;,&quot;fr&quot;:&quot;Titre&quot;,&quot;id&quot;:&quot;Judul&quot;,&quot;ja&quot;:&quot;書名&quot;,&quot;ru&quot;:&quot;Название&quot;,&quot;sw&quot;:&quot;Jina la kitabu&quot;,&quot;tr&quot;:&quot;Kitap adı&quot;,&quot;ur&quot;:&quot;نام کتاب&quot;,&quot;zh&quot;:&quot;书名&quot;}" data-original="الكتاب">الكتاب</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Commentary on al-Nawawi&#039;s Forty Hadiths)&quot;,&quot;es&quot;:&quot;Comentario de los Cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya [Commentaire des Quarante hadiths de al-Nawawi]&quot;,&quot;id&quot;:&quot;Syarah Al-Arba&#039;in An-Nawawiyah [Penjelasan Empat Puluh Hadis An-Nawawi]&quot;,&quot;ja&quot;:&quot;シャルフ・アル＝アルバイーン・アン＝ナワウィーヤ&quot;,&quot;ru&quot;:&quot;Шарх аль-Арбаин ан-Нававийя (Комментарий к сорока хадисам ан-Навави)&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arobaini za Nawawi)&quot;,&quot;tr&quot;:&quot;Şerhu’l-Erbaîn en-Neveviyye (Nevevî’nin Kırk Hadis’inin Şerhi)&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية (اربعین نووی کی شرح)&quot;,&quot;zh&quot;:&quot;《注释〈奈萨仪四十段圣训〉》&quot;}" data-original="شرح الأربعين النووية">شرح الأربعين النووية</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Author of the original&quot;,&quot;es&quot;:&quot;Autor del original&quot;,&quot;fr&quot;:&quot;Auteur de l&#039;original&quot;,&quot;id&quot;:&quot;Penulis karya asli&quot;,&quot;ja&quot;:&quot;原著者&quot;,&quot;ru&quot;:&quot;Автор оригинала&quot;,&quot;sw&quot;:&quot;Mwandishi wa kitabu asili&quot;,&quot;tr&quot;:&quot;Asıl eserin yazarı&quot;,&quot;ur&quot;:&quot;اصل کتاب کے مصنف&quot;,&quot;zh&quot;:&quot;原著作者&quot;}" data-original="مؤلف الأصل">مؤلف الأصل</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Abu Zakariya Muhyi al-Din Yahya ibn Sharaf al-Nawawi (d. 676 AH)&quot;,&quot;es&quot;:&quot;Abu Zakariya Muhyi al-Din Yahya ibn Sharaf al-Nawawi (m. 676 H)&quot;,&quot;fr&quot;:&quot;Abu Zakariya Muhyi al-Din Yahya ibn Sharaf al-Nawawi (m. 676 H)&quot;,&quot;id&quot;:&quot;Abu Zakaria Muhyiddin Yahya bin Syaraf An-Nawawi (w. 676 H)&quot;,&quot;ja&quot;:&quot;アブー・ザカリヤー・ムヒー・アッディーン・ヤフヤー・イブン・シャラフ・アン＝ナワウィー（没年：ヒジュラ暦676年）&quot;,&quot;ru&quot;:&quot;Абу Закария Мухйи ад-Дин Яхья ибн Шараф ан-Навави (ум. 676 г. х.)&quot;,&quot;sw&quot;:&quot;Abu Zakariya Muhyi al-Din Yahya bin Sharaf al-Nawawi (aliyefariki 676H)&quot;,&quot;tr&quot;:&quot;Ebû Zekeriyyâ Muhyiddin Yahyâ b. Şeref en-Nevevî (ö. 676 H)&quot;,&quot;ur&quot;:&quot;أبو زكريا محيي الدين يحيى بن شرف النووي (ت ٦٧٦ھ)&quot;,&quot;zh&quot;:&quot;艾布·扎卡里亚·穆希丁·叶海亚·本·谢里夫·脑威（卒于伊历676年）&quot;}" data-original="أبو زكريا محيي الدين يحيى بن شرف النووي (ت ٦٧٦هـ)">أبو زكريا محيي الدين يحيى بن شرف النووي (ت ٦٧٦هـ)</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentator&quot;,&quot;es&quot;:&quot;Comentarista&quot;,&quot;fr&quot;:&quot;Commentateur&quot;,&quot;id&quot;:&quot;Pensyarah&quot;,&quot;ja&quot;:&quot;注釈者&quot;,&quot;ru&quot;:&quot;Комментатор&quot;,&quot;sw&quot;:&quot;Mfafanuzi&quot;,&quot;tr&quot;:&quot;Şârih&quot;,&quot;ur&quot;:&quot;شارح&quot;,&quot;zh&quot;:&quot;注释者&quot;}" data-original="الشارح">الشارح</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Abd al-Karim ibn Abd Allah ibn Abd al-Rahman ibn Hamad al-Khudayr&quot;,&quot;es&quot;:&quot;Abd al-Karim ibn Abd Allah ibn Abd al-Rahman ibn Hamad al-Khudayr&quot;,&quot;fr&quot;:&quot;Abd al-Karim ibn Abd Allah ibn Abd al-Rahman ibn Hamad al-Khudayr&quot;,&quot;id&quot;:&quot;Abdul Karim bin Abdullah bin Abdurrahman bin Hamad Al-Khudair&quot;,&quot;ja&quot;:&quot;アブドゥルカリーム・イブン・アブドゥッラー・イブン・アブドゥッラフマーン・イブン・ハマド・アル＝フダイル&quot;,&quot;ru&quot;:&quot;Абд аль-Карим ибн Абдаллах ибн Абд ар-Рахман ибн Хамд аль-Худейр&quot;,&quot;sw&quot;:&quot;Abdulkarim bin Abdullah bin Abdulrahman bin Hamad al-Khudayr&quot;,&quot;tr&quot;:&quot;Abdülkerîm b. Abdullah b. Abdurrahman b. Hamd el-Hudayr&quot;,&quot;zh&quot;:&quot;阿卜杜·凯里姆·本·阿卜杜拉·本·阿卜杜·拉赫曼·本·哈马德·胡代尔&quot;}" data-original="عبد الكريم بن عبد الله بن عبد الرحمن بن حمد الخضير">عبد الكريم بن عبد الله بن عبد الرحمن بن حمد الخضير</span>
+          </dd>
+          <dd
+      class="min-w-0 sm:col-span-2 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Transcribed lessons from Shaykh al-Khudayr&#039;s website&quot;,&quot;es&quot;:&quot;Lecciones transcritas del sitio web del jeque al-Khudayr&quot;,&quot;fr&quot;:&quot;Cours retranscrits depuis le site du cheikh al-Khudayr&quot;,&quot;id&quot;:&quot;Pelajaran yang ditranskripsikan dari situs Syekh Al-Khudair&quot;,&quot;ja&quot;:&quot;フダイル師のウェブサイトから書き起こした講義&quot;,&quot;ru&quot;:&quot;Расшифрованные уроки с сайта шейха аль-Худейра&quot;,&quot;sw&quot;:&quot;Masomo yaliyorekodiwa kutoka kwenye tovuti ya Sheikh al-Khudayr&quot;,&quot;tr&quot;:&quot;Şeyh el-Hudayr’ın internet sitesinden derlenmiş dersler&quot;,&quot;ur&quot;:&quot;شیخ خضير کی ویب سائٹ سے نقل کیے گئے دروس&quot;,&quot;zh&quot;:&quot;整理自胡代尔谢赫网站的课程讲稿&quot;}" data-original="دروس مفرغة من موقع الشيخ الخضير">دروس مفرغة من موقع الشيخ الخضير</span>
+          </dd>
+          <dd
+      class="min-w-0 sm:col-span-2 text-zinc-500 dark:text-zinc-400"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Pages numbered automatically; the part number corresponds to the lesson number — 14 lessons&quot;,&quot;es&quot;:&quot;Páginas numeradas automáticamente; el número de volumen corresponde al número de la lección: 14 lecciones&quot;,&quot;fr&quot;:&quot;Pagination automatique ; le numéro du volume correspond au numéro du cours — 14 cours&quot;,&quot;id&quot;:&quot;Halaman dinomori otomatis; nomor jilid menunjukkan nomor pelajaran — 14 pelajaran&quot;,&quot;ja&quot;:&quot;ページ番号は自動付与。巻番号は講義番号に対応（全14講義）&quot;,&quot;ru&quot;:&quot;Страницы пронумерованы автоматически; номер тома соответствует номеру урока — 14 уроков&quot;,&quot;sw&quot;:&quot;Kurasa zimehesabiwa kiotomatiki; nambari ya juzuu ni nambari ya somo — masomo 14&quot;,&quot;tr&quot;:&quot;Sayfalar otomatik numaralandırılmıştır; cilt numarası ders numarasıdır — 14 ders&quot;,&quot;ur&quot;:&quot;صفحات خودکار طور پر نمبر کیے گئے ہیں، اور جلد کا نمبر درس کا نمبر ہے - ١٤ دروس&quot;,&quot;zh&quot;:&quot;页码为自动编排；册号即课程编号——共14课&quot;}" data-original="الكتاب مرقم آليا، رقم الجزء هو رقم الدرس - ١٤ درسا">الكتاب مرقم آليا، رقم الجزء هو رقم الدرس - ١٤ درسا</span>
+          </dd>
+            <dt class="font-medium text-zinc-500 dark:text-zinc-400">
+        <span dir="auto" data-tr="{&quot;en&quot;:&quot;Author page&quot;,&quot;es&quot;:&quot;Página del autor&quot;,&quot;fr&quot;:&quot;Page de l&#039;auteur&quot;,&quot;id&quot;:&quot;Halaman penulis&quot;,&quot;ja&quot;:&quot;著者ページ&quot;,&quot;ru&quot;:&quot;Страница автора&quot;,&quot;sw&quot;:&quot;Ukurasa wa mwandishi&quot;,&quot;tr&quot;:&quot;Yazar sayfası&quot;,&quot;ur&quot;:&quot;مصنف کا صفحہ&quot;,&quot;zh&quot;:&quot;作者页面&quot;}" data-original="صفحة المؤلف">صفحة المؤلف</span>
+      </dt>
+        <dd
+      class="min-w-0 text-zinc-800 dark:text-zinc-100"
+    >
+              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Abd al-Karim al-Khudayr&quot;,&quot;es&quot;:&quot;Abd al-Karim al-Khudayr&quot;,&quot;fr&quot;:&quot;Abd al-Karim al-Khudayr&quot;,&quot;id&quot;:&quot;Abdul Karim Al-Khudair&quot;,&quot;ja&quot;:&quot;アブドゥルカリーム・アル＝フダイル&quot;,&quot;ru&quot;:&quot;Абд аль-Карим аль-Худейр&quot;,&quot;sw&quot;:&quot;Abdulkarim al-Khudayr&quot;,&quot;tr&quot;:&quot;Abdülkerîm el-Hudayr&quot;,&quot;zh&quot;:&quot;阿卜杜·凯里姆·胡代尔&quot;}" data-original="عبد الكريم الخضير">عبد الكريم الخضير</span>
+          </dd>
+  </dl>
+            </div>
+          
+                      <div class="min-w-0 rounded-xl border border-zinc-200 p-5 [overflow-wrap:anywhere] dark:border-zinc-700">
+              <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>About the author</div>
+              <div class="max-h-96 overflow-y-auto text-sm leading-relaxed text-zinc-800 dark:text-zinc-100">
+                                  
+                  <div class="whitespace-pre-line" dir="auto" data-tr="{&quot;en&quot;:&quot;Abd al-Karim al-Khudayr (1374–? AH = 1955–? CE)\nHis name is Abd al-Karim ibn Abd Allah ibn Abd al-Rahman ibn Hamad al-Khudayr.\n* Place and date of birth: He was born in Buraydah in 1374 AH.\n* Occupation: He was a faculty member in the Department of Sunna and Its Sciences at the College of Usul al-Din, Imam Muhammad ibn Saud Islamic University, in Riyadh, until taking early retirement on 27\/8\/1424 AH. On 19\/2\/1430 AH, a royal decree appointed the shaykh, may God preserve him, as a member of the Council of Senior Scholars.\n* His teachers:\n* In Qassim:\n1- Shaykh Mubarak ibn Hasan al-Rajih, may God have mercy on him.\n2- Shaykh Ibrahim ibn Muhammad al-Mushayqih, may God preserve him.\n3- Shaykh Muhammad Dhakir, may God preserve him.\n4- Shaykh Muhammad ibn Salih al-Mutawwi, may God have mercy on him.\n5- Shaykh Salih ibn Ahmad al-Khuraysi, may God have mercy on him.\n6- Shaykh Salih al-Sukayti, may God have mercy on him.\n7- Shaykh Ali al-Dali, may God have mercy on him.\n8- Shaykh Muhammad ibn Ali al-Rawq, may God have mercy on him.\n9- Shaykh Fahd ibn Muhammad ibn Hamud al-Mushayqih, may God preserve him.\n* In Riyadh:\n1- Shaykh Abd Allah ibn Abd al-Rahman al-Ghudayyan, may God preserve him.\n2- His Eminence Shaykh Abd al-Aziz ibn Abd Allah ibn Baz, may God have mercy on him.\n3- Shaykh Fahd ibn Humayn al-Fahd al-Humayn, may God have mercy on him.\n4- Shaykh Abd al-Rahman al-Sadhan, may God preserve him.\n5- Shaykh Abd al-Aziz al-Dawud, may God preserve him.\n6- Shaykh Abd al-Aziz al-Falih, may God preserve him.\n7- Shaykh Salih ibn Abd al-Rahman al-Atram, may God preserve him.\n* His works:\n1- Al-Hadith al-Daif wa Hukm al-Ihtijaj Bihi (Weak Hadith and the Ruling on Citing It as Evidence) (published).\n2- Critical edition of the first half of Fath al-Mughith by al-Sakhawi (published).\n3- Critical edition of al-Raghba: Sharh al-Nukhba (published).\n4- Commentary on Qasab al-Sukkar (manuscript).\n5- Commentary on al-Waraqat (manuscript).\n6- Commentary on al-Tajrid al-Sarih li-Ahadith al-Jami al-Sahih (manuscript).\nHe also wrote notes and observations on foundational books and commentaries in Quranic exegesis, hadith, creed, and other fields.\n* * *\nBiography:\nHe is Abd al-Karim ibn Abd Allah ibn Abd al-Rahman ibn Hamad al-Khudayr, known by the teknonym Abu Muhammad. He was born in Buraydah in 1374 AH and is now about fifty years old. May God grant him a long life spent in obedience. In his childhood, he studied the Quran with a reciter named Mubarak ibn Hasan al-Rajih, then with Shaykh Ibrahim ibn Muhammad al-Mushayqih. In 1385 AH, he studied a large portion of the Quran with Shaykh Muhammad Dhakir, who taught him Surat al-Baqara and Al Imran by heart.\nHis formal education:\nHe entered primary school in 1381 AH and graduated in 1386 AH. He then enrolled at the religious institute in Buraydah in 1387 AH and graduated in 1393 AH. That same year, he entered the College of Sharia in Riyadh and graduated in 1397 AH. He was then appointed as a teaching assistant in the Department of Sunna and Its Sciences at the College of Usul al-Din. He continued his studies and earned a master&#039;s degree in 1402 AH with a thesis entitled Al-Hadith al-Daif wa Hukm al-Ihtijaj Bihi (Weak Hadith and the Ruling on Citing It as Evidence). In 1407 AH, he received his doctorate for a thesis entitled Critical Edition of the First Half of Fath al-Mughith bi-Sharh Alfiyyat al-Hadith by the hadith scholar Muhammad ibn Abd al-Rahman al-Sakhawi. He was then appointed assistant professor in the Department of Sunna and Its Sciences at the College of Usul al-Din. He worked as an assistant professor there until taking early retirement on 27\/8\/1424 AH, at the age of fifty. On 19\/2\/1430 AH, a royal decree appointed the shaykh, may God preserve him, as a member of the Council of Senior Scholars.\nHis pursuit of knowledge:\nIn his early years, he studied the rudiments of various disciplines with Shaykh Muhammad ibn Salih al-Mutawwi, may God have mercy on him, including The Three Fundamental Principles, Etiquette of Walking to Prayer, Zad al-Mustaqni, and The Book of Tawhid, as well as other foundational texts. He then studied with and remained close to His Eminence Shaykh Salih ibn Ahmad al-Khuraysi, then head of the courts of Qassim, may God have mercy on him. After moving to Riyadh, he studied usul al-fiqh and legal maxims with Shaykh Abd Allah ibn Abd al-Rahman al-Ghudayyan, and inheritance law, Tafsir Ibn Kathir, Sunan al-Tirmidhi, and other books with His Eminence Shaykh Abd al-Aziz ibn Abd Allah ibn Baz, may God have mercy on him. He regularly studied with him both at the mosque and at his home. After graduating from the College of Sharia, during the preparatory year, he devoted himself to systematically reading extensive works, annotating them, and drawing out their insights. May God preserve him; he read books on Quranic exegesis, hadith, and creed, as well as works on jurisprudence, history, and literature.\nHe also studied the opening sections of Ibn Hajar&#039;s commentary on al-Bukhari with Shaykh Salih ibn Abd al-Rahman al-Atram. Among his teachers at the religious institute in Buraydah were Shaykh Salih al-Sukayti, Shaykh Ali al-Dali, and Shaykh Muhammad al-Rawq, may God have mercy on them, and Shaykh Fahd ibn Muhammad al-Mushayqih, may God preserve him, among others.\nAmong the teachers under whom he studied at the College of Sharia were Shaykh Fahd al-Humayn, Shaykh Abd al-Aziz al-Dawud, Shaykh Abd al-Aziz al-Falih, and Shaykh Abd al-Rahman al-Sadhan, may God preserve them, along with other scholars and shaykhs.\n* The shaykh’s dedication to seeking knowledge is also evident in his extensive scholarly library, containing books and manuscripts of many kinds, which serves as a reference for many researchers.\nHis scholarly activities:\nThe shaykh has participated in many scholarly activities, supervising master&#039;s and doctoral theses in the Department of Sunna and Its Sciences and delivering a variety of courses, many of which have been recorded. These include commentaries on the chapters on fasting and pilgrimage from Zad al-Mustaqni, the hadith of Jabir on pilgrimage, Nukhbat al-Fikar and its versification, and al-Waraqat and its versification. He has delivered many other commentaries, most of which, praise be to God, have been recorded.\nThe shaykh has also participated in scholarly courses in many parts of the Kingdom.\n* The shaykh has also taken part in radio programs on the Holy Quran Radio:\n* The first was an interview in Mawthib al-Dawa, in which he spoke about his scholarly and professional life. The interview was conducted by Muhammad al-Mishwah and broadcast in 1420 AH.\n* He also presented thirty episodes on the jurisprudence of fasting, broadcast in Ramadan 1421 AH.\n* He also gives a weekly lesson on the same radio station, commenting on al-Zabidi&#039;s Mukhtasar Sahih al-Bukhari.\n* He presented thirty episodes on Prophetic guidance during Ramadan, broadcast in 1423 AH.\n* He presented thirty episodes on the Prophetic characteristics, broadcast during Ramadan 1424 AH.\n* He presented thirteen episodes on Imam al-Bukhari&#039;s jurisprudence of pilgrimage, broadcast during the Hajj season of 1424 AH.\n* He has also given interviews on the same radio station about the student of knowledge&#039;s library.\n* He answers listeners&#039; questions on Holy Quran Radio; the program is broadcast every Friday at four in the afternoon.\nHis lessons:\nThe shaykh gives occasional scholarly lessons on most days of the week. In earlier lessons, many texts and scholarly commentaries were read with him, may God preserve him. Some were completed in full and others in part. A brief list follows:\n(Sharh al-Waraqat by al-Mahalli; al-Qalaid al-Anbariyya fi Sharh al-Manzuma al-Bayquniyya; Khulasat al-Kalam; al-Taliqat al-Saniyya ala al-Aqida al-Wasitiyya by Ibn Sa&#039;di; al-Tawhid by Ibn Khuzayma; Mukhtasar Qawaid Ibn Rajab by Ibn Sa&#039;di; Sharh Ilal al-Tirmidhi; Fath al-Bari; Alfiyyat al-Hadith; al-Bulbul fi Usul al-Fiqh; al-Baith al-Hathith; Qasab al-Sukkar; al-Muwatta; Musnad al-Imam Ahmad; al-Muntaqa by Majd ibn Taymiyya; Fath al-Majid; Kitab al-Tawhid; Taysir al-Aziz al-Hamid; Qurrat Uyun al-Muwahhidin; al-Ajurumiyya; Akhsar al-Mukhtasarat; al-Mufhim, commentary on Mukhtasar Sahih Muslim, by al-Qurtubi; al-Muqiza by al-Dhahabi; Fath al-Mughith; al-Kafi by Ibn Qudama; The Three Fundamental Principles; al-Arba&#039;in al-Nawawiyya; al-Durar al-Saniyya; Tafsir al-Jalalayn; Tafsir Ibn Kathir)…\n-\nCopied from the shaykh&#039;s official website&quot;,&quot;es&quot;:&quot;Abd al-Karim al-Khudayr (1374 - ? H = 1955 - ?)\nSu nombre es Abd al-Karim ibn Abd Allah ibn Abd al-Rahman ibn Hamad al-Khudayr.\n* Lugar y fecha de nacimiento: nació en Buraida en 1374 H.\n* Ocupación: fue profesor en el Departamento de Sunna y sus ciencias, en la Facultad de Fundamentos de la Religión de la Universidad Islámica Imam Muhammad ibn Saud de Riad, hasta que se jubiló anticipadamente el 27\/8\/1424 H. El 19\/2\/1430 se emitió el decreto real que nombraba al shayj —que Allah lo preserve— miembro del Consejo de Grandes Eruditos.\n* Sus maestros:\n* En al-Qasim:\n1- El shayj Mubarak ibn Hasan al-Rajih, que Allah tenga misericordia de él.\n2- El shayj Ibrahim ibn Muhammad al-Mushayqih, que Allah lo preserve.\n3- El shayj Muhammad Dhakir, que Allah lo preserve.\n4- El shayj Muhammad ibn Salih al-Mutawwa, que Allah tenga misericordia de él.\n5- El shayj Salih ibn Ahmad al-Khuraysi, que Allah tenga misericordia de él.\n6- El shayj Salih al-Sukayti, que Allah tenga misericordia de él.\n7- El shayj Ali al-Dali, que Allah tenga misericordia de él.\n8- El shayj Muhammad ibn Ali al-Ruq, que Allah tenga misericordia de él.\n9- El shayj Fahd ibn Muhammad ibn Hamud al-Mushayqih, que Allah lo preserve.\n* En Riad:\n1- El shayj Abd Allah ibn Abd al-Rahman al-Ghudayyan, que Allah lo preserve.\n2- Su eminencia el shayj Abd al-Aziz ibn Abd Allah ibn Baz, que Allah tenga misericordia de él.\n3- El shayj Fahd ibn Humayn al-Fahd al-Humayn, que Allah tenga misericordia de él.\n4- El shayj Abd al-Rahman al-Sadhan, que Allah lo preserve.\n5- El shayj Abd al-Aziz al-Dawud, que Allah lo preserve.\n6- El shayj Abd al-Aziz al-Falih, que Allah lo preserve.\n7- El shayj Salih ibn Abd al-Rahman al-Atram, que Allah lo preserve.\n* Sus obras:\n1- El hadiz débil y el dictamen sobre su uso como prueba (impreso).\n2- Edición de la primera mitad de Fath al-Mughith [El auxilio del afligido], de al-Sakhawi (impreso).\n3- Edición de al-Raghba, comentario de al-Nukhba (impreso).\n4- Comentario de Qasab al-sukkar [La caña de azúcar] (manuscrito).\n5- Comentario de al-Waraqat [Los pliegos] (manuscrito).\n6- Comentario de al-Tajrid al-sarih de los hadices de al-Jami al-sahih (manuscrito).\nTambién tiene anotaciones y observaciones sobre los libros fundamentales y sus comentarios, en obras de exégesis, hadiz, doctrina y otras materias.\n* * *\nPresentación:\nEs Abd al-Karim ibn Abd Allah ibn Abd al-Rahman ibn Hamad al-Khudayr, conocido por la kunya Abu Muhammad. Nació en Buraida en 1374 H y tiene ahora cerca de cincuenta años; que Allah prolongue su vida en la obediencia. De niño, estudió el Quran con un recitador llamado Mubarak ibn Hasan al-Rajih. Luego estudió con el shayj Ibrahim ibn Muhammad al-Mushayqih y, en 1385 H, estudió con el honorable shayj Muhammad Dhakir una gran parte del Quran y memorizó con él las suras al-Baqara y Al Imran...\nEstudios reglados:\nIngresó en la escuela primaria en 1381 H y se graduó en 1386 H. Después ingresó en el Instituto Científico de Buraida en 1387 H y se graduó en 1393 H. Ese mismo año se matriculó en la Facultad de Sharia de Riad y se graduó en 1397 H. A continuación fue nombrado profesor ayudante en el Departamento de Sunna y sus ciencias de la Facultad de Fundamentos de la Religión. Prosiguió sus estudios superiores y obtuvo el máster en 1402 H; su tesis se tituló El hadiz débil y el dictamen sobre su uso como prueba. Más tarde, en 1407 H, obtuvo el doctorado; su tesis se tituló Edición de la primera mitad de Fath al-Mughith, comentario de la Alfiyya del hadiz, del hafiz Muhammad ibn Abd al-Rahman al-Sakhawi. A raíz de ello fue nombrado profesor adjunto en el Departamento de Sunna y sus ciencias de la Facultad de Fundamentos de la Religión. Trabajó allí como profesor adjunto hasta que se jubiló anticipadamente el 27\/8\/1424 H, a los cincuenta años. El 19\/2\/1430 se emitió el decreto real que nombraba al shayj —que Allah lo preserve— miembro del Consejo de Grandes Eruditos.\nSu búsqueda del conocimiento:\nEn sus primeros años estudió con el shayj Muhammad ibn Salih al-Mutawwa, que Allah tenga misericordia de él, los rudimentos de las ciencias (Los tres principios, La etiqueta de caminar hacia la oración, Zad al-mustaqni y El libro de la unicidad), entre otros textos fundamentales. Después estudió y acompañó al eminente shayj Salih ibn Ahmad al-Khuraysi, entonces presidente de los tribunales de al-Qasim, que Allah tenga misericordia de él. Luego se trasladó a Riad, donde estudió con el shayj Abd Allah ibn Abd al-Rahman al-Ghudayyan los fundamentos del derecho y los principios jurídicos, y con su eminencia el shayj Abd al-Aziz ibn Abd Allah ibn Baz, que Allah tenga misericordia de él, los preceptos sucesorios, la exégesis de Ibn Kathir y las Sunan de al-Tirmidhi, además de otros libros. Fue alumno suyo y estudió con él en la mezquita y en su casa, que Allah tenga misericordia de él. Después de graduarse en la Facultad de Sharia, durante el año preparatorio se dedicó a revisar y leer extensamente obras voluminosas, anotarlas y extraer sus contenidos. Que Allah lo preserve: leyó libros de exégesis, hadiz y doctrina, así como de jurisprudencia, historia y literatura...\nLuego estudió con el shayj Salih ibn Abd al-Rahman al-Atram los primeros capítulos del comentario de al-Bukhari escrito por el hafiz Ibn Hajar. Entre sus maestros en el Instituto Científico de Buraida estaban los shayjs Salih al-Sukayti, Ali al-Dali y Muhammad al-Ruq, que Allah tenga misericordia de ellos, y el shayj Fahd ibn Muhammad al-Mushayqih, que Allah lo preserve, entre otros.\n...\nEn cuanto a los maestros con quienes estudió en la Facultad de Sharia, cabe mencionar al shayj Fahd al-Humayn, al shayj Abd al-Aziz al-Dawud, al shayj Abd al-Aziz al-Falih y al shayj Abd al-Rahman al-Sadhan, que Allah los preserve, además de otros eruditos y shayjs...\n* La dedicación del shayj —que Allah lo preserve— a la búsqueda del conocimiento también se refleja en su nutrida biblioteca especializada, con libros y manuscritos de diversas clases, que constituye una referencia para muchos investigadores.\nSus actividades académicas:\nEl shayj ha participado en numerosas actividades académicas, supervisando tesis de máster y doctorado en el Departamento de Sunna y sus ciencias, y mediante sus diversos cursos, muchos de los cuales han sido grabados. Entre ellos figuran: comentario del libro sobre el ayuno de Zad al-mustaqni; el libro sobre la peregrinación de esa misma obra; comentario del hadiz de Jabir sobre la peregrinación; comentario de Nukhbat al-fikar y su poema; y comentario de al-Waraqat y su poema. Tiene muchos otros comentarios, la mayoría grabados, gracias a Allah.\nEl shayj ha participado en cursos académicos en numerosas regiones del reino.\n* El shayj también ha participado en programas de Radio Quran, entre ellos:\n* El primero fue una entrevista en el programa Mawakib al-dawa, en la que habló de su trayectoria académica y profesional. La entrevista fue realizada por el profesor Muhammad al-Mashuh y emitida en 1420 H.\n* También tiene treinta episodios sobre jurisprudencia del ayuno, emitidos en ramadán de 1421 H.\n* Además, tiene una lección semanal en la misma emisora sobre el comentario de Mukhtasar Sahih al-Bukhari, de al-Zabidi.\n* También tiene treinta episodios sobre la guía profética durante ramadán, emitidos en 1423 H.\n* También tiene treinta episodios sobre las características del Profeta, emitidos en ramadán de 1424 H.\n* También tiene trece episodios sobre la jurisprudencia del imam al-Bukhari acerca de la peregrinación, emitidos durante la temporada del hajj de 1424 H.\n* También ha concedido entrevistas en la misma emisora sobre la biblioteca del estudiante de conocimiento.\n* Asimismo, responde a las preguntas de los oyentes en Radio Quran; el programa se emite cada viernes a las cuatro de la tarde.\nSus lecciones:\nEl shayj imparte lecciones académicas en distintos periodos durante la mayoría de los días de la semana. En lecciones anteriores, sus alumnos estudiaron con él numerosos textos y comentarios académicos, algunos íntegramente y otros en parte. Los enumeramos brevemente:\n(Comentario de al-Waraqat, de al-Mahalli; Las perlas de ámbar, comentario del poema al-Bayquniyya; Resumen de la exposición; Anotaciones sobre la doctrina Wasitiyya, de Ibn Sa&#039;di; al-Tawhid, de Ibn Khuzayma; Resumen de las reglas de Ibn Rajab, de Ibn Sa&#039;di; Comentario de las causas ocultas de al-Tirmidhi; Fath al-Bari; Alfiyya del hadiz; al-Bulbul en los fundamentos del derecho; al-Baith al-hathith; Qasab al-sukkar; al-Muwatta; Musnad del imam Ahmad; al-Muntaqa, de al-Majd Ibn Taymiyya; Fath al-Majid; El libro de la unicidad; Taysir al-Aziz al-Hamid; Qurrat uyun al-muwahhidin; al-Ajurrumiyya; Los compendios más breves; al-Mufhim, comentario de Mukhtasar Sahih Muslim, de al-Qurtubi; al-Muqiza, de al-Dhahabi; Fath al-Mughith; al-Kafi, de Ibn Qudama; Los tres principios; Los cuarenta hadices de al-Nawawi; Las perlas luminosas; Tafsir al-Jalalayn; Exégesis de Ibn Kathir)... \n-\nTranscrito del sitio oficial del shayj&quot;,&quot;fr&quot;:&quot;Abd al-Karim al-Khudayr (1374 - ? H = 1955 - ? apr. J.-C.)\nSon nom : Abd al-Karim ibn Abd Allah ibn Abd al-Rahman ibn Hamad al-Khudayr.\n* Lieu et date de naissance : il est né à Burayda en 1374 H.\n* Fonction : enseignant au département de la Sunna et de ses sciences, à la faculté des fondements de la religion de l&#039;université Imam Muhammad ibn Saoud islamique à Riyad, jusqu&#039;à sa retraite anticipée, le 27\/8\/1424 H. Le 19\/2\/1430, un décret royal a nommé le cheikh, qu&#039;Allah le préserve, membre du Conseil des grands oulémas.\n* Ses maîtres :\n* Dans le Qasim :\n1- Le cheikh Mubarak ibn Hasan al-Rajih, qu&#039;Allah lui fasse miséricorde.\n2- Le cheikh Ibrahim ibn Muhammad al-Mushayqih, qu&#039;Allah le préserve.\n3- Le cheikh Muhammad Dhakir, qu&#039;Allah le préserve.\n4- Le cheikh Muhammad ibn Salih al-Mutawwi, qu&#039;Allah lui fasse miséricorde.\n5- Le cheikh Salih ibn Ahmad al-Khuraysi, qu&#039;Allah lui fasse miséricorde.\n6- Le cheikh Salih al-Sukayti, qu&#039;Allah lui fasse miséricorde.\n7- Le cheikh Ali al-Dali, qu&#039;Allah lui fasse miséricorde.\n8- Le cheikh Muhammad ibn Ali al-Rawq, qu&#039;Allah lui fasse miséricorde.\n9- Le cheikh Fahd ibn Muhammad ibn Hamud al-Mushayqih, qu&#039;Allah le préserve.\n* À Riyad :\n1- Le cheikh Abd Allah ibn Abd al-Rahman al-Ghudayyan, qu&#039;Allah le préserve.\n2- Son Éminence le cheikh Abd al-Aziz ibn Abd Allah ibn Baz, qu&#039;Allah lui fasse miséricorde.\n3- Le cheikh Fahd ibn Humayn al-Fahd al-Humayn, qu&#039;Allah lui fasse miséricorde.\n4- Le cheikh Abd al-Rahman al-Sadhan, qu&#039;Allah le préserve.\n5- Le cheikh Abd al-Aziz al-Dawud, qu&#039;Allah le préserve.\n6- Le cheikh Abd al-Aziz al-Falih, qu&#039;Allah le préserve.\n7- Le cheikh Salih ibn Abd al-Rahman al-Atram, qu&#039;Allah le préserve.\n* Ses ouvrages :\n1- Le hadith faible et la règle concernant son usage comme preuve (publié).\n2- Édition critique de la première moitié de Fath al-Mughith, d&#039;al-Sakhawi (publié).\n3- Édition critique d&#039;al-Raghba, commentaire d&#039;al-Nukhba (publié).\n4- Commentaire de Qasab al-sukkar (manuscrit).\n5- Commentaire d&#039;al-Waraqat (manuscrit).\n6- Commentaire d&#039;al-Tajrid al-sarih des hadiths du Jami al-sahih (manuscrit).\nIl a également rédigé des annotations et des remarques sur les ouvrages de référence et les commentaires majeurs en exégèse, en hadith, en doctrine et dans d&#039;autres domaines.\n* * *\nPrésentation :\nIl s&#039;agit d&#039;Abd al-Karim ibn Abd Allah ibn Abd al-Rahman ibn Hamad al-Khudayr, surnommé Abu Muhammad. Né à Burayda en 1374 H, il a aujourd&#039;hui près de cinquante ans. Qu&#039;Allah prolonge sa vie dans l&#039;obéissance. Dans son enfance, il apprit le Quran auprès d&#039;un récitant nommé Mubarak ibn Hasan al-Rajih, puis auprès du cheikh Ibrahim ibn Muhammad al-Mushayqih. En 1385 H, il étudia une grande partie du Quran auprès de Son Éminence le cheikh Muhammad Dhakir, qui lui fit mémoriser les sourates al-Baqara et Al Imran, entre autres.\nÉtudes formelles :\nIl entra à l&#039;école primaire en 1381 H et en sortit en 1386 H. Il intégra ensuite l&#039;institut scientifique de Burayda en 1387 H et y obtint son diplôme en 1393 H. La même année, il rejoignit la faculté de charia à Riyad et en sortit diplômé en 1397 H. Il fut alors nommé assistant d&#039;enseignement à la faculté des fondements de la religion, au département de la Sunna et de ses sciences. Il poursuivit ses études supérieures et obtint une maîtrise en 1402 H avec un mémoire intitulé « Le hadith faible et la règle concernant son usage comme preuve ». Puis, en 1407 H, il obtint un doctorat avec une thèse intitulée « Édition critique de la première moitié de Fath al-Mughith bi-sharh Alfiyyat al-hadith, du hafiz Muhammad ibn Abd al-Rahman al-Sakhawi ». Il fut alors nommé professeur assistant au département de la Sunna et de ses sciences de la faculté des fondements de la religion. Il y exerça jusqu&#039;à sa retraite anticipée, le 27\/8\/1424 H, à l&#039;âge de cinquante ans. Le 19\/2\/1430, un décret royal nomma le cheikh, qu&#039;Allah le préserve, membre du Conseil des grands oulémas.\nSa quête du savoir :\nDurant ses premières années, il étudia auprès du cheikh Muhammad ibn Salih al-Mutawwi, qu&#039;Allah lui fasse miséricorde, les notions élémentaires des sciences religieuses : Les trois fondements, Les règles de la marche vers la prière, Zad al-mustaqni et Le livre de l&#039;unicité, ainsi que d&#039;autres textes fondamentaux. Il étudia ensuite assidûment auprès de Son Éminence le cheikh Salih ibn Ahmad al-Khuraysi, alors président des tribunaux du Qasim, qu&#039;Allah lui fasse miséricorde. Puis il partit pour Riyad, où il étudia les fondements du droit et les règles juridiques auprès du cheikh Abd Allah ibn Abd al-Rahman al-Ghudayyan, et les successions, le Tafsir d&#039;Ibn Kathir et les Sunan d&#039;al-Tirmidhi, entre autres ouvrages, auprès de Son Éminence le cheikh Abd al-Aziz ibn Abd Allah ibn Baz, qu&#039;Allah lui fasse miséricorde. Il s&#039;attacha à lui et étudia auprès de lui à la mosquée et chez lui. Après avoir obtenu son diplôme de la faculté de charia, durant l&#039;année préparatoire, il se consacra à la lecture exhaustive des ouvrages détaillés, à leur étude, à leur annotation et à l&#039;extraction de leurs trésors. Qu&#039;Allah le préserve : il étudia les livres d&#039;exégèse, de hadith et de doctrine, ainsi que des ouvrages de droit, d&#039;histoire et de littérature.\nIl étudia ensuite auprès du cheikh Salih ibn Abd al-Rahman al-Atram le début du commentaire de Sahih al-Bukhari par le hafiz Ibn Hajar. Parmi ses maîtres à l&#039;institut scientifique de Burayda figuraient également les cheikhs Salih al-Sukayti, Ali al-Dali et Muhammad al-Rawq, qu&#039;Allah leur fasse miséricorde, ainsi que le cheikh Fahd ibn Muhammad al-Mushayqih, qu&#039;Allah le préserve, et d&#039;autres.\nParmi ses maîtres à la faculté de charia figuraient les cheikhs Fahd al-Humayn, Abd al-Aziz al-Dawud, Abd al-Aziz al-Falih et Abd al-Rahman al-Sadhan, qu&#039;Allah les préserve, ainsi que d&#039;autres savants et cheikhs.\n* Le grand soin que le cheikh, qu&#039;Allah le préserve, porte à la quête du savoir se manifeste aussi dans sa riche bibliothèque, avec ses nombreux livres et manuscrits, qui sert de référence à de nombreux chercheurs.\nSes activités scientifiques :\nLe cheikh a participé à de nombreuses activités scientifiques en encadrant des mémoires de maîtrise et des thèses de doctorat au département de la Sunna et de ses sciences, ainsi qu&#039;en dispensant divers cours, dont beaucoup ont été enregistrés. On peut citer : le commentaire du livre du jeûne de Zad al-mustaqni, le livre du pèlerinage du même ouvrage, le commentaire du hadith de Jabir sur le pèlerinage, le commentaire de Nukhbat al-fikar et de son poème, ainsi que le commentaire d&#039;al-Waraqat et de son poème. Il a donné de nombreux autres commentaires, dont la plupart ont été enregistrés, louange à Allah.\nLe cheikh a également participé à des sessions d&#039;enseignement dans de nombreuses régions du royaume.\n* Le cheikh a aussi participé à des émissions de la Radio du Quran, notamment :\n* La première émission, « Rencontre dans le cortège de l&#039;appel à l&#039;islam », portait sur son parcours scientifique et professionnel. L&#039;entretien a été mené par le professeur Muhammad al-Mashuh et diffusé en 1420 H.\n* Il a également consacré trente épisodes au droit du jeûne, diffusés pendant le Ramadan de 1421 H.\n* Il donne aussi un cours hebdomadaire sur cette même radio, consacré au commentaire du Mukhtasar Sahih al-Bukhari d&#039;al-Zabidi.\n* Il a également consacré trente épisodes à la conduite prophétique, diffusés pendant le Ramadan de 1423 H.\n* Il a également consacré trente épisodes aux qualités du Prophète, diffusés pendant le Ramadan de 1424 H.\n* Il a également donné treize épisodes sur la jurisprudence de l&#039;imam al-Bukhari concernant le pèlerinage, diffusés pendant la saison du pèlerinage de 1424 H.\n* Il a aussi participé à des émissions sur cette même radio au sujet de la bibliothèque de l&#039;étudiant en sciences religieuses.\n* Il répond également aux questions des auditeurs sur la Radio du Quran ; l&#039;émission est diffusée chaque vendredi à seize heures.\nSes cours :\nLe cheikh donne des cours religieux à différentes périodes de la semaine, la plupart des jours. Lors de cours antérieurs, de nombreux textes et commentaires ont été étudiés auprès de lui, qu&#039;Allah le préserve : certains intégralement, d&#039;autres en partie. En voici une liste succincte :\n(Commentaire d&#039;al-Waraqat par al-Mahalli ; al-Qala&#039;id al-anbariyya, commentaire du poème d&#039;al-Bayquniyya ; Khulasat al-kalam ; al-Ta&#039;liqat al-sunniyya sur al-Aqida al-wasitiyya d&#039;Ibn Sa&#039;di ; al-Tawhid d&#039;Ibn Khuzayma ; Mukhtasar qawa&#039;id Ibn Rajab d&#039;Ibn Sa&#039;di ; commentaire des défauts du hadith d&#039;al-Tirmidhi ; Fath al-Bari ; Alfiyyat al-hadith ; al-Bulbul sur les fondements du droit ; al-Ba&#039;ith al-hathith ; Qasab al-sukkar ; al-Muwatta ; Musnad de l&#039;imam Ahmad ; al-Muntaqa d&#039;al-Majd Ibn Taymiyya ; Fath al-Majid ; Le livre de l&#039;unicité ; Taysir al-Aziz al-Hamid ; Qurrat uyun al-muwahhidin ; al-Ajurrumiyya ; Akhsar al-mukhtasarat ; al-Mufhim, commentaire du Mukhtasar Sahih Muslim, par al-Qurtubi ; al-Muqiza d&#039;al-Dhahabi ; Fath al-Mughith ; al-Kafi d&#039;Ibn Qudama ; Les trois fondements ; Les quarante hadiths d&#039;al-Nawawi ; al-Durar al-saniyya ; Tafsir al-Jalalayn ; Tafsir d&#039;Ibn Kathir)…\n-\nRepris du site officiel du cheikh&quot;,&quot;id&quot;:&quot;Abdul Karim Al-Khudair (1374–? H = 1955–? M)\nNamanya: Abdul Karim bin Abdullah bin Abdurrahman bin Hamad Al-Khudair.\n* Tempat dan tanggal lahir: Lahir di Buraidah pada tahun 1374 H.\n* Pekerjaan: Dosen di Departemen Sunnah dan Ilmu-Ilmunya, Fakultas Ushuluddin, Universitas Islam Imam Muhammad bin Saud di Riyadh, hingga pensiun dini pada 27\/8\/1424 H. Pada 19\/2\/1430 H, dikeluarkan keputusan kerajaan yang mengangkat Syekh—semoga Allah menjaganya—sebagai anggota Hai&#039;ah Kibaril Ulama.\n* Guru-gurunya:\n* Di Qasim:\n1- Syekh Mubarak bin Hasan Ar-Rajih, semoga Allah merahmatinya.\n2- Syekh Ibrahim bin Muhammad Al-Musyaiqih, semoga Allah menjaganya.\n3- Syekh Muhammad Zakir, semoga Allah menjaganya.\n4- Syekh Muhammad bin Shalih Al-Muthawwi&#039;, semoga Allah merahmatinya.\n5- Syekh Shalih bin Ahmad Al-Khuraisi, semoga Allah merahmatinya.\n6- Syekh Shalih As-Sukaiti, semoga Allah merahmatinya.\n7- Syekh Ali Adh-Dhali&#039;, semoga Allah merahmatinya.\n8- Syekh Muhammad bin Ali Ar-Rauq, semoga Allah merahmatinya.\n9- Syekh Fahd bin Muhammad bin Hamud Al-Musyaiqih, semoga Allah menjaganya.\n* Di Riyadh:\n1- Syekh Abdullah bin Abdurrahman Al-Ghudayyan, semoga Allah menjaganya.\n2- Syekh Abdul Aziz bin Abdullah bin Baz, semoga Allah merahmatinya.\n3- Syekh Fahd bin Hamin Al-Fahd Al-Hamin, semoga Allah merahmatinya.\n4- Syekh Abdurrahman As-Sadhan, semoga Allah menjaganya.\n5- Syekh Abdul Aziz Ad-Dawud, semoga Allah menjaganya.\n6- Syekh Abdul Aziz Al-Falih, semoga Allah menjaganya.\n7- Syekh Shalih bin Abdurrahman Al-Athram, semoga Allah menjaganya.\n* Karya-karyanya:\n1- Hadis Dhaif dan Hukum Berhujah Dengannya (terbit).\n2- Tahqiq separuh pertama Fath al-Mughits karya As-Sakhawi (terbit).\n3- Tahqiq Ar-Raghbah Syarh An-Nukhbah (terbit).\n4- Syarah Qashab as-Sukkar (manuskrip).\n5- Syarah Al-Waraqat (manuskrip).\n6- Syarah At-Tajrid ash-Sharih li-Ahadits al-Jami&#039; ash-Shahih (manuskrip).\nIa juga memiliki catatan dan komentar atas kitab-kitab induk dan syarah dalam bidang tafsir, hadis, akidah, dan lainnya.\n* * *\nBiografinya:\nIa adalah Abdul Karim bin Abdullah bin Abdurrahman bin Hamad Al-Khudair, berkunyah Abu Muhammad. Ia lahir di Buraidah pada tahun 1374 H dan kini berusia sekitar lima puluh tahun. Semoga Allah memanjangkan umurnya dalam ketaatan. Pada masa kecil, ia belajar membaca Al-Quran kepada seorang guru bernama Mubarak bin Hasan Ar-Rajih. Kemudian ia belajar kepada Syekh Ibrahim bin Muhammad Al-Musyaiqih. Pada tahun 1385 H, ia belajar kepada Syekh Muhammad Zakir dan mempelajari sebagian besar Al-Quran serta menghafal surah Al-Baqarah dan Ali Imran kepadanya...\nPendidikan formal:\nIa masuk sekolah dasar pada tahun 1381 H dan lulus pada tahun 1386 H. Setelah itu, ia masuk Institut Ilmiah di Buraidah pada tahun 1387 H dan lulus pada tahun 1393 H. Pada tahun yang sama, ia melanjutkan pendidikan ke Fakultas Syariah di Riyadh dan lulus pada tahun 1397 H. Kemudian ia diangkat sebagai asisten dosen di Departemen Sunnah dan Ilmu-Ilmunya, Fakultas Ushuluddin. Ia melanjutkan studi pascasarjana dan meraih gelar magister pada tahun 1402 H dengan tesis berjudul “Hadis Dhaif dan Hukum Berhujah Dengannya”. Selanjutnya, pada tahun 1407 H, ia meraih gelar doktor dengan disertasi berjudul “Tahqiq separuh pertama Fath al-Mughits bi-Syarh Alfiyyat al-Hadits karya Al-Hafizh Muhammad bin Abdurrahman As-Sakhawi”. Setelah itu, ia diangkat sebagai asisten profesor di Departemen Sunnah dan Ilmu-Ilmunya, Fakultas Ushuluddin. Ia bekerja sebagai asisten profesor hingga pensiun dini pada 27\/8\/1424 H, saat berusia lima puluh tahun. Pada 19\/2\/1430 H, dikeluarkan keputusan kerajaan yang mengangkat Syekh—semoga Allah menjaganya—sebagai anggota Hai&#039;ah Kibaril Ulama.\nMenuntut ilmu:\nPada tahun-tahun awalnya, ia mempelajari dasar-dasar ilmu kepada Syekh Muhammad bin Shalih Al-Muthawwi&#039;, semoga Allah merahmatinya, di antaranya Tsalatsatul Ushul, Adab al-Masyi ila ash-Shalah, Zad al-Mustaqni&#039;, dan Kitab At-Tauhid, serta matan-matan lainnya dalam dasar-dasar ilmu. Kemudian ia belajar dan senantiasa mendampingi Syekh Shalih bin Ahmad Al-Khuraisi, ketua pengadilan Qasim pada masanya, semoga Allah merahmatinya. Setelah itu, ia pindah ke Riyadh dan belajar kepada Syekh Abdullah bin Abdurrahman Al-Ghudayyan dalam ushul fikih dan kaidah-kaidah fikih. Ia juga belajar kepada Syekh Abdul Aziz bin Abdullah bin Baz, semoga Allah merahmatinya, dalam ilmu faraid, Tafsir Ibnu Katsir, Sunan At-Tirmidzi, dan kitab-kitab lainnya. Ia terus mendampingi beliau dan belajar kepadanya di masjid maupun di rumahnya, semoga Allah merahmatinya. Setelah lulus dari Fakultas Syariah, pada tahun persiapan ia mencurahkan diri untuk menelaah kitab-kitab besar, membacanya, memberi catatan, dan menggali kandungan ilmunya. Semoga Allah menjaganya. Ia membaca kitab-kitab tafsir, hadis, dan akidah, serta kitab-kitab fikih, sejarah, dan sastra...\nIa juga belajar kepada Syekh Shalih bin Abdurrahman Al-Athram bagian awal Fath al-Bari karya Al-Hafizh Ibnu Hajar. Adapun guru-gurunya di Institut Ilmiah Buraidah, di antaranya Syekh Shalih As-Sukaiti, Syekh Ali Adh-Dhali&#039;, dan Syekh Muhammad Ar-Rauq, semoga Allah merahmati mereka, serta Syekh Fahd bin Muhammad Al-Musyaiqih, semoga Allah menjaganya, dan lainnya!\n...\nAdapun guru-gurunya yang ia timba ilmunya di Fakultas Syariah, di antaranya Syekh Fahd Al-Hamin, Syekh Abdul Aziz Ad-Dawud, Syekh Abdul Aziz Al-Falih, dan Syekh Abdurrahman As-Sadhan, semoga Allah menjaga mereka, serta ulama dan para syekh lainnya...\n* Kesungguhan Syekh—semoga Allah menjaganya—dalam menuntut ilmu juga tampak dari perpustakaan pribadinya yang kaya akan beragam buku dan manuskrip, yang menjadi rujukan banyak peneliti.\nKegiatan ilmiahnya:\nSyekh memiliki banyak kegiatan ilmiah, antara lain membimbing tesis magister dan disertasi doktoral di Departemen Sunnah dan Ilmu-Ilmunya, serta mengadakan beragam kajian ilmiah. Banyak kajiannya telah direkam, di antaranya Syarah Kitab Puasa dari Zad al-Mustaqni&#039;, Kitab Haji dari kitab yang sama, Syarah Hadis Jabir tentang Haji, Syarah Nukhbat al-Fikar dan nazamnya, serta Syarah Al-Waraqat dan nazamnya. Banyak syarah lainnya juga telah direkam, alhamdulillah.\nSyekh juga turut serta dalam kajian-kajian ilmiah di berbagai wilayah Kerajaan Arab Saudi.\n* Syekh juga memiliki sejumlah acara di Radio Al-Quran Al-Karim, yaitu:\n* Acara pertama adalah “Liqa&#039; fi Mawkib ad-Da&#039;wah” (Wawancara dalam Rombongan Dakwah), yang membahas perjalanan ilmiah dan pekerjaannya. Wawancara ini dilakukan oleh Ustaz Muhammad Al-Masyuh dan disiarkan pada tahun 1420 H.\n* Ia juga memiliki 30 episode tentang fikih puasa yang disiarkan pada Ramadan tahun 1421 H.\n* Ia juga mengisi pelajaran mingguan di radio yang sama, membahas Mukhtashar Shahih Al-Bukhari karya Az-Zabidi.\n* Ia juga memiliki 30 episode tentang petunjuk Nabi pada Ramadan yang disiarkan pada tahun 1423 H.\n* Ia juga memiliki 30 episode tentang syamail Nabi yang disiarkan pada Ramadan tahun 1424 H.\n* Ia juga memiliki 13 episode tentang fikih Imam Al-Bukhari dalam ibadah haji yang disiarkan pada musim haji tahun 1424 H.\n* Ia juga mengisi sejumlah wawancara di radio yang sama tentang perpustakaan penuntut ilmu.\n* Ia juga menjawab pertanyaan para pendengar di Radio Al-Quran; siarannya berlangsung setiap Jumat pukul empat sore.\nPelajaran-pelajarannya:\nSyekh mengadakan pelajaran-pelajaran ilmiah secara berkala pada sebagian besar hari dalam sepekan. Dalam pelajaran-pelajaran sebelumnya, semoga Allah menjaganya, banyak matan dan syarah ilmiah yang telah dibacakan kepadanya. Sebagian dituntaskan seluruhnya dan sebagian lainnya hanya dibaca beberapa bagian. Berikut daftarnya secara ringkas:\n(Syarah Al-Waraqat karya Al-Mahalli, Al-Qala&#039;id al-Anbariyyah fi Syarh al-Manzhumah al-Baiquniyyah, Khulashat al-Kalam, At-Ta&#039;liqat as-Sunniyyah &#039;ala al-&#039;Aqidah al-Wasithiyyah karya Ibnu Sa&#039;di, At-Tauhid karya Ibnu Khuzaimah, Mukhtashar Qawa&#039;id Ibnu Rajab karya Ibnu Sa&#039;di, Syarah &#039;Ilal At-Tirmidzi, Fath al-Bari, Alfiyyat al-Hadits, Al-Bulbul fi Ushul al-Fiqh, Al-Ba&#039;its al-Hatsits, Qashab as-Sukkar, Al-Muwaththa&#039;, Musnad Imam Ahmad, Al-Muntaqa karya Al-Majd Ibnu Taimiyah, Fath al-Majid, Kitab At-Tauhid, Taisir al-Aziz al-Hamid, Qurrat &#039;Uyun al-Muwahhidin, Al-Ajurumiyyah, Akhshar al-Mukhtasharat, Al-Mufhim Syarh Mukhtashar Shahih Muslim karya Al-Qurthubi, Al-Muqizhah karya Adz-Dzahabi, Fath al-Mughits, Al-Kafi karya Ibnu Qudamah, Tsalatsatul Ushul, Al-Arba&#039;in An-Nawawiyyah, Ad-Durar as-Saniyyah, Tafsir Al-Jalalain, Tafsir Ibnu Katsir)... \n-\nDinukil dari situs resmi Syekh&quot;,&quot;ja&quot;:&quot;アブドゥルカリーム・アル＝フダイル（ヒジュラ暦1374年－？年＝西暦1955年－？年）\n氏名：アブドゥルカリーム・イブン・アブドゥッラー・イブン・アブドゥッラフマーン・イブン・ハマド・アル＝フダイル。\n* 出生地と生年月日：ヒジュラ暦1374年、ブライダに生まれた。\n* 職歴：リヤドのイマーム・ムハンマド・イブン・サウード・イスラーム大学神学部スンナ学・諸学科の教員を務め、ヒジュラ暦1424年8月27日に早期退職するまで在職した。ヒジュラ暦1430年2月19日、王令により、アッラーがご加護を与え給うシェイフは最高ウラマー評議会の委員に任命された。\n* 師：\n* カスィーム地方：\n1- シェイフ、ムバーラク・イブン・ハサン・アッ＝ラージフ（アッラーの慈悲あれ）。\n2- シェイフ、イブラーヒーム・イブン・ムハンマド・アル＝ムシャイキフ（アッラーがご加護を与え給いますように）。\n3- シェイフ、ムハンマド・ザーキル（アッラーがご加護を与え給いますように）。\n4- シェイフ、ムハンマド・イブン・サーリフ・アル＝ムトゥワウ（アッラーの慈悲あれ）。\n5- シェイフ、サーリフ・イブン・アフマド・アル＝フライスィー（アッラーの慈悲あれ）。\n6- シェイフ、サーリフ・アッ＝スカイティー（アッラーの慈悲あれ）。\n7- シェイフ、アリー・アッ＝ダーリウ（アッラーの慈悲あれ）。\n8- シェイフ、ムハンマド・イブン・アリー・アッ＝ルーク（アッラーの慈悲あれ）。\n9- シェイフ、ファハド・イブン・ムハンマド・イブン・ハムード・アル＝ムシャイキフ（アッラーがご加護を与え給いますように）。\n* リヤド：\n1- シェイフ、アブドゥッラー・イブン・アブドゥッラフマーン・アル＝グダイヤーン（アッラーがご加護を与え給いますように）。\n2- 高徳なるシェイフ、アブドゥルアズィーズ・イブン・アブドゥッラー・イブン・バーズ（アッラーの慈悲あれ）。\n3- シェイフ、ファハド・イブン・フマイン・アル＝ファハド・アル＝フマイン（アッラーの慈悲あれ）。\n4- シェイフ、アブドゥッラフマーン・アッ＝サドハーン（アッラーがご加護を与え給いますように）。\n5- シェイフ、アブドゥルアズィーズ・アッ＝ダーウード（アッラーがご加護を与え給いますように）。\n6- シェイフ、アブドゥルアズィーズ・アル＝ファーリフ（アッラーがご加護を与え給いますように）。\n7- シェイフ、サーリフ・イブン・アブドゥッラフマーン・アル＝アトラム（アッラーがご加護を与え給いますように）。\n* 著作：\n1- 『弱いハディースと、それを法的根拠として援用することの حكم』（刊行済み）。\n2- サハーウィー著『ファトフ・アル＝ムギース』前半部の校訂（刊行済み）。\n3- 『アッ＝ラグバ』の校訂、『アン＝ヌフバ』注釈書（刊行済み）。\n4- 『カサブ・アッ＝スクル』注釈（写本）。\n5- 『アル＝ワラカート』注釈（写本）。\n6- 『アル＝ジャーミウ・アッ＝サヒーフ』のハディースを簡潔にまとめた『アッ＝タジュリード・アッ＝サリーフ』注釈（写本）。\nまた、クルアーン注釈、ハディース、信条などの基本的な書物や注釈書に、注記や補足を付している。\n* * *\n紹介：\nアブドゥルカリーム・イブン・アブドゥッラー・イブン・アブドゥッラフマーン・イブン・ハマド・アル＝フダイルは、アブー・ムハンマドのクンヤを持つ。ヒジュラ暦1374年にブライダで生まれ、現在およそ50歳である。アッラーが彼に、服従のうちに長寿を与え給いますように。幼少期にムバーラク・イブン・ハサン・アッ＝ラージフというクルアーン読誦者からクルアーンを学び、その後、シェイフ、イブラーヒーム・イブン・ムハンマド・アル＝ムシャイキフに師事した。さらにヒジュラ暦1385年、ファディーラ（高徳なる）シェイフ、ムハンマド・ザーキルのもとでクルアーンの大部分を学び、彼の指導のもとスーラ・アル＝バカラとスーラ・アール・イムラーンを暗記した。\n正規教育：\nヒジュラ暦1381年に小学校に入り、1386年に卒業した。その後、1387年にブライダの科学学院に入学し、1393年に卒業。同年、リヤドのシャリーア学部に進学し、1397年に卒業した。その後、神学部のスンナ学・諸学科で助手に任命された。さらに大学院で学び、1402年に修士号を取得した。論文題目は「弱いハディースと、それを法的根拠として援用することの حكم」である。続いて1407年に博士号を取得した。論文題目は「ハーフィズ、ムハンマド・イブン・アブドゥッラフマーン・アッ＝サハーウィー著『ハディース詩千行詩の注釈によるファトフ・アル＝ムギース』前半部の校訂」である。その後、神学部のスンナ学・諸学科で助教授に任命され、ヒジュラ暦1424年8月27日に早期退職するまで同職にあった。退職時、彼は50歳であった。ヒジュラ暦1430年2月19日、王令により、アッラーがご加護を与え給うシェイフは最高ウラマー評議会の委員に任命された。\n学問の修得：\n初期には、シェイフ、ムハンマド・イブン・サーリフ・アル＝ムトゥワウ（アッラーの慈悲あれ）から学問の基礎を学んだ。『三つの根本原理』『礼拝へ歩む際の作法』『ザード・アル＝ムスタクニウ』『タウヒードの書』など、学問の基礎となる諸テキストを学んだ。その後、カスィーム地方の当時の裁判所長であった高徳なるシェイフ、サーリフ・イブン・アフマド・アル＝フライスィー（アッラーの慈悲あれ）に師事し、常に学んだ。さらにリヤドへ移り、シェイフ、アブドゥッラー・イブン・アブドゥッラフマーン・アル＝グダイヤーンから法源学と法学原則を学び、高徳なるシェイフ、アブドゥルアズィーズ・イブン・アブドゥッラー・イブン・バーズ（アッラーの慈悲あれ）から相続法、『イブン・カスィールのクルアーン注釈』、『スナン・アッ＝ティルミズィー』などを学んだ。彼のもとに通い、モスクや自宅で学んだ。シャリーア学部を卒業し、準備課程に進んだ後は、長大な著作を通読し、注釈や考察を加え、その内奥を探究することに専念した。アッラーがご加護を与え給う彼は、クルアーン注釈書、ハディース書、信条書を読み、さらに法学、歴史、文学の書物も読んだ。\nその後、シェイフ、サーリフ・イブン・アブドゥッラフマーン・アル＝アトラムのもとで、ハーフィズ・イブン・ハジャル著『サヒーフ・アル＝ブハーリー注釈』の冒頭部分を学んだ。ブライダ科学学院での師には、サーリフ・アッ＝スカイティー、アリー・アッ＝ダーリウ、ムハンマド・アッ＝ルーク（アッラーの慈悲あれ）、ファハド・イブン・ムハンマド・アル＝ムシャイキフ（アッラーがご加護を与え給いますように）などがいた。\nまた、シャリーア学部で師事した人物として、ファハド・アル＝フマイン、アブドゥルアズィーズ・アッ＝ダーウード、アブドゥルアズィーズ・アル＝ファーリフ、アブドゥッラフマーン・アッ＝サドハーン（アッラーがご加護を与え給いますように）など、ほかのウラマーやシェイフたちが挙げられる。\n* 多様な書籍や写本を豊富に収めた学術図書館からも、シェイフが学問の修得に熱心であることがうかがえる。その図書館は多くの研究者の参考資料となっている。\n学術活動：\nシェイフは、スンナ学・諸学科で修士・博士論文の指導を行うほか、多様な学術講座を通して数多くの学術活動を行っている。その多くは録音されており、たとえば『ザード・アル＝ムスタクニウ』の断食篇、『同書』の巡礼篇、巡礼に関するジャービルのハディースの解説、『ヌフバト・アル＝フィカル』とその詩形式作品の解説、『アル＝ワラカート』とその詩形式作品の解説などがある。ほかにも多くの講義があり、その大半が録音されている。アッラーに讃えあれ。\nまた、シェイフは王国内の多くの地域で学術講座を担当した。\n* シェイフはクルアーン放送局でも、次のようなラジオ番組に出演している。\n* 最初の番組は「ダアワの旅路」での対談であり、学問と職業の歩みについて語った。ムハンマド・アル＝ムシャウィフ氏が聞き手を務め、ヒジュラ暦1420年に放送された。\n* また、断食法学に関する全30回の番組があり、ヒジュラ暦1421年のラマダーン月に放送された。\n* 同局で、ザビーディー著『サヒーフ・アル＝ブハーリー要約』の解説を毎週行う講座もある。\n* また、預言者の導きに関する全30回の番組があり、ヒジュラ暦1423年のラマダーン月に放送された。\n* 預言者の美徳に関する全30回の番組もあり、ヒジュラ暦1424年のラマダーン月に放送された。\n* ハッジに関するイマーム・アル＝ブハーリーの法学について全13回の番組があり、ヒジュラ暦1424年のハッジ期に放送された。\n* 同局で、学徒の図書館をテーマにした対談も行っている。\n* クルアーン放送局でリスナーからの質問にも答えており、毎週金曜日の午後4時に放送されている。\n講義：\nシェイフは週の大半の日に、時期を分けてさまざまな学術講義を行っている。過去の講義では、多くのテキストや学術的注釈書を取り上げた。全編を終えたものもあれば、一部を読んだものもある。以下に簡潔に挙げる。\n（マハッリー著『アル＝ワラカート注釈』、『アル＝カライド・アル＝アンバリーヤ：アル＝マンズーマ・アル＝バイクーニーヤ注釈』、『フラーサト・アル＝カラーム』、イブン・サアディー著『アル＝アキーダ・アル＝ワースィティーヤへのスンナ派注釈』、イブン・フザイマ著『タウヒード』、イブン・ラジャブの原則を要約したイブン・サアディー著『ムフタサル・カワーイド・イブン・ラジャブ』、『シャルフ・イラル・アッ＝ティルミズィー』、『ファトフ・アル＝バーリー』、『ハディース千行詩』、『アル＝ブルブル：法源学』、『アル＝バーイス・アル＝ハスィース』、『カサブ・アッ＝スクル』、『アル＝ムワッタ』、イマーム・アフマドの『ムスナド』、イブン・タイミーヤの孫マジド著『アル＝ムンタカー』、『ファトフ・アル＝マジード』、『タウヒードの書』、『タイスィール・アル＝アズィーズ・アル＝ハミード』、『クッラト・ウユーン・アル＝ムワッヒディーン』、『アージュルーミーヤ』、『アフサル・アル＝ムフタサラート』、クルトゥビー著『サヒーフ・ムスリム要約の解説、アル＝ムフヒム』、ザハビー著『アル＝ムーキザ』、『ファトフ・アル＝ムギース』、イブン・クダーマ著『アル＝カーフィー』、『三つの根本原理』、ナワウィー著『四十ハディース』、『アッ＝ドゥラル・アッ＝スンニーヤ』、『タフスィール・アル＝ジャラールайн』、『イブン・カスィールのクルアーン注釈』など。）\n-\nシェイフの公式ウェブサイトから転載&quot;,&quot;ru&quot;:&quot;Абд аль-Карим аль-Худейр (1374 — ? г. х. = 1955 — ? г.)\nЕго имя: Абд аль-Карим ибн Абдуллах ибн Абд ар-Рахман ибн Хамд аль-Худейр.\n* Место и дата рождения: родился в Бурайде в 1374 г. х.\n* Деятельность: преподавал в отделении Сунны и её наук на факультете основ религии Исламского университета имама Мухаммада ибн Сауда в Эр-Рияде, пока не ушёл на досрочную пенсию 27.08.1424 г. х. 19.02.1430 г. х. королевским указом шейх, да хранит его Аллах, был назначен членом Совета старших улемов.\n* Его учителя:\n* В Касиме:\n1 — шейх Мубарак ибн Хасан ар-Раджих, да помилует его Аллах.\n2 — шейх Ибрахим ибн Мухаммад аль-Мушайких, да хранит его Аллах.\n3 — шейх Мухаммад Закир, да хранит его Аллах.\n4 — шейх Мухаммад ибн Салих аль-Мутайви&#039;, да помилует его Аллах.\n5 — шейх Салих ибн Ахмад аль-Хурайси, да помилует его Аллах.\n6 — шейх Салих ас-Сукейти, да помилует его Аллах.\n7 — шейх Али ад-Дали&#039;, да помилует его Аллах.\n8 — шейх Мухаммад ибн Али ар-Рук, да помилует его Аллах.\n9 — шейх Фахд ибн Мухаммад ибн Хамуд аль-Мушайких, да хранит его Аллах.\n* В Эр-Рияде:\n1 — шейх Абдуллах ибн Абд ар-Рахман аль-Гудейян, да хранит его Аллах.\n2 — досточтимый шейх Абд аль-Азиз ибн Абдуллах ибн Баз, да помилует его Аллах.\n3 — шейх Фахд ибн Хумайн аль-Фахд аль-Хумайн, да помилует его Аллах.\n4 — шейх Абд ар-Рахман ас-Садхан, да хранит его Аллах.\n5 — шейх Абд аль-Азиз ад-Дауд, да хранит его Аллах.\n6 — шейх Абд аль-Азиз аль-Фалих, да хранит его Аллах.\n7 — шейх Салих ибн Абд ар-Рахман аль-Атрам, да хранит его Аллах.\n* Его труды:\n1 — «Слабый хадис и допустимость аргументации им» (издано).\n2 — критическое издание первой половины «Фатх аль-Мугис» ас-Сахави (издано).\n3 — критическое издание «Ар-Рагба: комментарий к „Ан-Нухбе“» (издано).\n4 — «Комментарий к „Касаб ас-Суккар“» (рукопись).\n5 — «Комментарий к „Аль-Варакат“» (рукопись).\n6 — «Комментарий к „Ат-Таджрид ас-Сарих“ — сборнику достоверных хадисов» (рукопись).\nУ него также есть примечания и замечания к основным книгам и комментариям по тафсиру, хадисам, вероубеждению и другим наукам.\n* * *\nБиография:\nЭто Абд аль-Карим ибн Абдуллах ибн Абд ар-Рахман ибн Хамд аль-Худейр, кунья — Абу Мухаммад. Он родился в Бурайде в 1374 г. х. Сейчас ему около пятидесяти лет; да продлит Аллах его жизнь в повиновении Ему. В детстве он читал Коран учителю по имени Мубарак ибн Хасан ар-Раджих, затем занимался у шейха Ибрахима ибн Мухаммада аль-Мушайкиха. В 1385 г. х. он прочитал большую часть Корана досточтимому шейху Мухаммаду Закиру и выучил с ним суры «Аль-Бакара» и «Аль Имран»…\nСветское образование:\nВ начальную школу он поступил в 1381 г. х. и окончил её в 1386 г. х. Затем, в 1387 г. х., поступил в научный институт в Бурайде и окончил его в 1393 г. х. В том же году поступил на факультет шариата в Эр-Рияде и окончил его в 1397 г. х. После этого его назначили ассистентом на отделение Сунны и её наук факультета основ религии. Продолжив обучение, в 1402 г. х. он получил степень магистра; его диссертация называлась «Слабый хадис и допустимость аргументации им». Затем, в 1407 г. х., он получил докторскую степень. Его диссертация называлась «Критическое издание первой половины „Фатх аль-Мугис би-шарх альфийят аль-хадис“ хафиза Мухаммада ибн Абд ар-Рахмана ас-Сахави». После этого его назначили доцентом отделения Сунны и её наук факультета основ религии. Он работал там до досрочного выхода на пенсию 27.08.1424 г. х., в возрасте пятидесяти лет. 19.02.1430 г. х. королевским указом шейх, да хранит его Аллах, был назначен членом Совета старших улемов.\nПолучение знаний:\nВ первые годы он изучал у шейха Мухаммада ибн Салиха аль-Мутайви, да помилует его Аллах, основы различных наук: «Три основы», «Этика пути в молитву», «Зад аль-Мустакни&#039;» и «Книга единобожия», а также другие учебные тексты. Затем он читал и постоянно занимался у досточтимого шейха Салиха ибн Ахмада аль-Хурайси, в то время главы судов Касима, да помилует его Аллах. Позже он переехал в Эр-Рияд и изучал у шейха Абдуллаха ибн Абд ар-Рахмана аль-Гудейяна основы фикха и фикховые правила, а у досточтимого шейха Абд аль-Азиза ибн Абдуллаха ибн База, да помилует его Аллах, — вопросы наследования, тафсир Ибн Касира и «Сунан» ат-Тирмизи, а также другие книги. Он постоянно занимался с ним в мечети и у него дома. После окончания факультета шариата, во время подготовительного года, он посвятил себя чтению объемных трудов, изучению их, составлению примечаний и выявлению содержащихся в них ценных знаний. Да хранит его Аллах, он читал книги по тафсиру, хадисам и вероубеждению, а также труды по фикху, истории и литературе…\nЗатем он занимался у шейха Салиха ибн Абд ар-Рахмана аль-Атрама, читая начальные разделы «Фатх аль-Бари» хафиза Ибн Хаджара. Среди его учителей в научном институте Бурайды были шейхи Салих ас-Сукейти, Али ад-Дали&#039; и Мухаммад ар-Рук, да помилует их Аллах, а также шейх Фахд ибн Мухаммад аль-Мушайких, да хранит его Аллах, и другие.\n…\nСреди его преподавателей на факультете шариата были шейхи Фахд аль-Хумайн, Абд аль-Азиз ад-Дауд, Абд аль-Азиз аль-Фалих и Абд ар-Рахман ас-Садхан, да хранит их Аллах, а также другие улемы и шейхи…\n* Стремление шейха, да хранит его Аллах, к знаниям заметно и по его обширной библиотеке, содержащей книги и рукописи разных видов и служащей источником для многих исследователей.\nЕго научная деятельность:\nШейх активно участвует в научной работе: руководит магистерскими и докторскими диссертациями на отделении Сунны и её наук, а также проводит разнообразные учебные курсы, многие из которых записаны. Среди них: «Комментарий к разделу о посте из „Зад аль-Мустакни&#039;“», «Книга хаджа из того же труда», «Комментарий к хадису Джабира о хадже», «Комментарий к „Нухбат аль-Фикр“ и её поэтической версии», «Комментарий к „Аль-Варакат“ и её поэтической версии». У него много других комментариев, большинство из которых записаны, и хвала Аллаху.\nШейх участвовал в учебных курсах во многих регионах королевства.\n* У шейха также были выступления на радио Корана:\n* Первой была передача «Встреча в караване призыва», в которой он рассказал о своей научной и практической жизни. Беседу провёл преподаватель Мухаммад аль-Мушух; она вышла в эфир в 1420 г. х.\n* У него также было тридцать выпусков о фикхе поста, вышедших в рамадан 1421 г. х.\n* Кроме того, на той же радиостанции он каждую неделю проводил урок по «Мухтасар Сахих аль-Бухари» аз-Зубайди.\n* У него также было тридцать выпусков о пророческом руководстве, вышедших в рамадан 1423 г. х.\n* У него также было тридцать выпусков о пророческих качествах, вышедших в рамадан 1424 г. х.\n* У него также было тринадцать выпусков о фикхе хаджа у имама аль-Бухари, вышедших в сезон хаджа 1424 г. х.\n* Он также участвовал в передачах на той же радиостанции о библиотеке студента знаний.\n* Кроме того, он отвечает на вопросы слушателей радио Корана; передача выходит каждую пятницу в четыре часа дня.\nЕго уроки:\nШейх проводит отдельные уроки в разные дни почти каждой недели. На прежних занятиях у него, да хранит его Аллах, изучали множество учебных текстов и комментариев: некоторые были пройдены полностью, другие — частично. Кратко перечислим их:\n(«Комментарий аль-Махалли к „Аль-Варакат“», «Аль-Каляид аль-Анбарийя: комментарий к поэме аль-Байкунийя», «Хулясат аль-Калям», «Ас-Суннийя: примечания к „Аль-Акида аль-Васитийя“ Ибн Саади», «Книга единобожия» Ибн Хузаймы, «Мухтасар каваид Ибн Раджаба» Ибн Саади, «Комментарий к скрытым недостаткам ат-Тирмизи», «Фатх аль-Бари», «Альфийя аль-хадис», «Аль-Бульбуль фи усуль аль-фикх», «Аль-Баис аль-хасис», «Касаб ас-Суккар», «Муватта», «Муснад имама Ахмада», «Аль-Мунтака» Маджд ад-Дина Ибн Таймийи, «Фатх аль-Маджид», «Книга единобожия», «Тайсир аль-Азиз аль-Хамид», «Куррат уйун аль-муваххидин», «Аль-Аджуррумийя», «Ахсар аль-Мухтасарат», «Аль-Муфхим: комментарий к „Мухтасар Сахих Муслим“» аль-Куртуби, «Аль-Мукиза» аз-Захаби, «Фатх аль-Мугис», «Аль-Кафи» Ибн Кудамы, «Три основы», «Сорок хадисов» ан-Навави, «Ад-Дурар ас-Санийя», тафсир «Аль-Джалалайн», тафсир Ибн Касира)…\n—\nПерепечатано с официального сайта шейха&quot;,&quot;sw&quot;:&quot;Abdulkarim al-Khudayr (1374–? H = 1955–? BK)\nJina lake: Abdulkarim bin Abdullah bin Abdulrahman bin Hamad al-Khudayr.\n* Mahali na tarehe ya kuzaliwa: Alizaliwa Buraidah mwaka 1374 H.\n* Kazi yake: Alikuwa mhadhiri katika Idara ya Sunnah na Sayansi zake, Chuo cha Usul al-Din katika Chuo Kikuu cha Kiislamu cha Imam Muhammad bin Saud mjini Riyadh, hadi alipostaafu mapema tarehe 27\/8\/1424 H. Tarehe 19\/2\/1430 H, amri ya kifalme ilitolewa ya kumteua Sheikh—Allah amlinde—awe mwanachama wa Baraza la Wanazuoni Wakuu.\n* Walimu wake:\n* Qasim:\n1- Sheikh Mubarak bin Hasan al-Rajih, Allah amrehemu.\n2- Sheikh Ibrahim bin Muhammad al-Mushayqih, Allah amlinde.\n3- Sheikh Muhammad Dhakir, Allah amlinde.\n4- Sheikh Muhammad bin Salih al-Mutawwi&#039;, Allah amrehemu.\n5- Sheikh Salih bin Ahmad al-Khuraysi, Allah amrehemu.\n6- Sheikh Salih al-Sukayti, Allah amrehemu.\n7- Sheikh Ali al-Dali&#039;, Allah amrehemu.\n8- Sheikh Muhammad bin Ali al-Ruq, Allah amrehemu.\n9- Sheikh Fahd bin Muhammad bin Hamud al-Mushayqih, Allah amlinde.\n* Riyadh:\n1- Sheikh Abdullah bin Abdulrahman al-Ghudayyan, Allah amlinde.\n2- Sheikh Abdulaziz bin Abdullah bin Baz, Allah amrehemu.\n3- Sheikh Fahd bin Hamin al-Fahd al-Hamin, Allah amrehemu.\n4- Sheikh Abdulrahman al-Sadhan, Allah amlinde.\n5- Sheikh Abdulaziz al-Dawud, Allah amlinde.\n6- Sheikh Abdulaziz al-Falih, Allah amlinde.\n7- Sheikh Salih bin Abdulrahman al-Atram, Allah amlinde.\n* Vitabu vyake:\n1- Hadithi dhaifu na hukumu ya kuitumia kama hoja (imechapishwa).\n2- Tahqiq ya nusu ya kwanza ya Fath al-Mughith ya al-Sakhawi (imechapishwa).\n3- Tahqiq ya al-Raghbah, sharh ya al-Nukhbah (imechapishwa).\n4- Sharh ya Qasab al-Sukkar (muswada).\n5- Sharh ya al-Waraqat (muswada).\n6- Sharh ya al-Tajrid al-Sarih ya hadithi za al-Jami al-Sahih (muswada).\nPia ana maelezo na tahadhari juu ya vitabu vikuu na sharh zake katika vitabu vya tafsiri, hadithi, aqida na vinginevyo.\n* * *\nWasifu wake:\nYeye ni Abdulkarim bin Abdullah bin Abdulrahman bin Hamad al-Khudayr, na kunya yake ni Abu Muhammad. Alizaliwa Buraidah mwaka 1374 H, na sasa ana umri wa karibu miaka hamsini. Allah amjaalie maisha marefu katika utiifu. Utotoni alisoma Quran kwa msomaji aliyeitwa Mubarak bin Hasan al-Rajih. Kisha akasoma kwa Sheikh Ibrahim bin Muhammad al-Mushayqih. Mwaka 1385 H alisoma sehemu kubwa ya Quran kwa Sheikh Muhammad Dhakir, ambaye pia alimfundisha na kumhifadhi Surat al-Baqarah na Aal Imran...\nMasomo yake rasmi:\nAlianza shule ya msingi mwaka 1381 H na kuhitimu mwaka 1386 H. Kisha akaingia katika Taasisi ya Sayansi ya Buraidah mwaka 1387 H na kuhitimu mwaka 1393 H. Mwaka huohuo alijiunga na Chuo cha Sharia mjini Riyadh na kuhitimu mwaka 1397 H. Baada ya hapo aliteuliwa kuwa msaidizi wa mhadhiri katika Chuo cha Usul al-Din, Idara ya Sunnah na Sayansi zake. Aliendelea na masomo ya juu na kupata shahada ya uzamili mwaka 1402 H. Tasnifu yake ilikuwa na kichwa “Hadithi dhaifu na hukumu ya kuitumia kama hoja.” Kisha mwaka 1407 H alipata shahada ya udaktari. Tasnifu yake ilikuwa na kichwa “Tahqiq ya nusu ya kwanza ya Fath al-Mughith bi-sharh Alfiyyat al-Hadith ya hafidh Muhammad bin Abdulrahman al-Sakhawi.” Baada ya hapo aliteuliwa kuwa mhadhiri msaidizi katika Idara ya Sunnah na Sayansi zake, Chuo cha Usul al-Din. Alifanya kazi humo hadi alipostaafu mapema tarehe 27\/8\/1424 H akiwa na umri wa miaka hamsini. Tarehe 19\/2\/1430 H, amri ya kifalme ilitolewa ya kumteua Sheikh—Allah amlinde—awe mwanachama wa Baraza la Wanazuoni Wakuu.\nKutafuta kwake elimu:\nKatika miaka yake ya awali alisoma kwa Sheikh Muhammad bin Salih al-Mutawwi&#039;, Allah amrehemu, misingi ya elimu: al-Usul al-Thalathah (Misingi Mitatu), Adab al-Mashy ila al-Salah (Adabu za Kwenda Kuswali), Zad al-Mustaqni&#039; na Kitab al-Tawhid, pamoja na matini nyingine za misingi ya elimu. Kisha alisoma na kudumu pamoja na Sheikh Salih bin Ahmad al-Khuraysi, aliyekuwa mkuu wa mahakama za Qasim wakati huo, Allah amrehemu. Baadaye alihamia Riyadh, akasoma kwa Sheikh Abdullah bin Abdulrahman al-Ghudayyan Usul al-Fiqh na kanuni za fiqhi; na kwa Sheikh Abdulaziz bin Abdullah bin Baz, Allah amrehemu, alisoma mirathi, tafsiri ya Ibn Kathir na Sunan al-Tirmidhi, pamoja na vitabu vingine. Alidumu naye na kusoma kwake msikitini na nyumbani kwake, Allah amrehemu. Baada ya kuhitimu Chuo cha Sharia, katika mwaka wa maandalizi alijitolea kusoma vitabu vikubwa kwa kina, kuvisoma, kuvifafanua na kutoa yaliyomo ndani yake. Allah amlinde, alisoma vitabu vya tafsiri, hadithi na aqida, na pia vitabu vya fiqhi, historia na fasihi...\nKisha alisoma kwa Sheikh Salih bin Abdulrahman al-Atram mwanzo wa Sharh Sahih al-Bukhari ya hafidh Ibn Hajar. Ama walimu wake katika Taasisi ya Sayansi ya Buraidah, miongoni mwao ni Sheikh Salih al-Sukayti, Sheikh Ali al-Dali&#039; na Sheikh Muhammad al-Ruq, Allah awarehemu, na Sheikh Fahd bin Muhammad al-Mushayqih, Allah amlinde, pamoja na wengine.\n...\nAma walimu wake aliowasomea katika Chuo cha Sharia, miongoni mwao tunataja Sheikh Fahd al-Hamin, Sheikh Abdulaziz al-Dawud, Sheikh Abdulaziz al-Falih na Sheikh Abdulrahman al-Sadhan, Allah awalinde, pamoja na wanazuoni na masheikh wengine...\n* Juhudi za Sheikh—Allah amlinde—katika kutafuta elimu pia zinaonekana kupitia maktaba yake kubwa ya kielimu, yenye aina mbalimbali za vitabu na miswada, ambayo ni rejea kwa watafiti wengi.\nShughuli zake za kielimu:\nSheikh ana shughuli nyingi za kielimu, zikiwemo kusimamia tasnifu zinazowasilishwa kwa ajili ya kupata shahada za uzamili na udaktari katika Idara ya Sunnah na Sayansi zake, na kutoa kozi mbalimbali za kielimu, nyingi zikiwa zimerekodiwa. Miongoni mwazo ni: sharh ya Kitab al-Siyam kutoka Zad al-Mustaqni&#039;; Kitab al-Hajj kutoka kitabu hicho hicho; sharh ya hadithi ya Jabir kuhusu Hajj; sharh ya Nukhbat al-Fikar na utenzi wake; na sharh ya al-Waraqat na utenzi wake. Ana sharh nyingine nyingi, na nyingi zimerekodiwa, sifa njema ni za Allah.\nSheikh ameshiriki katika kozi za kielimu katika sehemu nyingi za Ufalme wa Saudi Arabia.\n* Sheikh pia ameshiriki katika vipindi vya Redio ya Quran Tukufu, ambavyo ni:\n* Kipindi chake cha kwanza kilikuwa mahojiano katika “Mwakaba wa Da&#039;wa”, ambamo alizungumzia maisha yake ya kielimu na kikazi. Mahojiano hayo yalifanywa na mwalimu Muhammad al-Mashuh na kurushwa hewani mwaka 1420 H.\n* Pia ana vipindi 30 kuhusu fiqhi ya funga vilivyorushwa hewani Ramadhani mwaka 1421 H.\n* Pia ana darsa ya kila wiki katika redio hiyo hiyo, akifafanua Mukhtasar Sahih al-Bukhari ya al-Zabidi.\n* Pia ana vipindi 30 kuhusu mwenendo wa Mtume ﷺ wakati wa Ramadhani, vilivyorushwa hewani mwaka 1423 H.\n* Pia ana vipindi 30 kuhusu sifa na mwenendo wa Mtume ﷺ, vilivyorushwa hewani Ramadhani mwaka 1424 H.\n* Pia ana vipindi 13 kuhusu fiqhi ya Imam al-Bukhari kuhusu Hajj, vilivyorushwa hewani katika msimu wa Hajj mwaka 1424 H.\n* Pia ana mahojiano katika redio hiyo hiyo kuhusu maktaba ya mwanafunzi wa elimu.\n* Pia hujibu maswali ya wasikilizaji katika Redio ya Quran, na kipindi chake hurushwa kila Ijumaa saa kumi alasiri.\nDarsa zake:\nSheikh ana darsa za kielimu zinazotolewa kwa vipindi katika siku nyingi za wiki. Katika darsa zake zilizopita, Allah amlinde, amefundisha matini na sharh nyingi za kielimu; baadhi amezikamilisha na nyingine amefundisha sehemu zake. Tunazitaja kwa ufupi:\n(Sharh ya al-Waraqat ya al-Mahalli; al-Qala&#039;id al-Anbariyyah fi Sharh al-Manzumah al-Bayquniyyah; Khulasat al-Kalam; al-Ta&#039;liqat al-Saniyyah ala al-Aqidah al-Wasitiyyah ya Ibn Sa&#039;di; Kitab al-Tawhid ya Ibn Khuzaymah; Mukhtasar Qawa&#039;id Ibn Rajab ya Ibn Sa&#039;di; Sharh Ilal al-Tirmidhi; Fath al-Bari; Alfiyyat al-Hadith; al-Bulbul fi Usul al-Fiqh; al-Ba&#039;ith al-Hathith; Qasab al-Sukkar; al-Muwatta; Musnad Imam Ahmad; al-Muntaqa ya Majd Ibn Taymiyyah; Fath al-Majid; Kitab al-Tawhid; Taysir al-Aziz al-Hamid; Qurrat Uyun al-Muwahhidin; al-Ajurrumiyyah; Akhsar al-Mukhtasarat; al-Mufhim, sharh ya Mukhtasar Sahih Muslim ya al-Qurtubi; al-Muqizah ya al-Dhahabi; Fath al-Mughith; al-Kafi ya Ibn Qudama; al-Usul al-Thalathah; al-Arba&#039;in al-Nawawiyyah; al-Durar al-Saniyyah; Tafsir al-Jalalayn; Tafsir Ibn Kathir)... \n-\nImenukuliwa kutoka tovuti rasmi ya Sheikh&quot;,&quot;tr&quot;:&quot;Abdülkerîm el-Hudayr (1374-? H = 1955-? m.)\nAdı: Abdülkerîm b. Abdullah b. Abdurrahman b. Hamd el-Hudayr.\n* Doğum yeri ve tarihi: 1374 H yılında Büreyde’de doğdu.\n* Görevi: Riyad’daki İmam Muhammed b. Suûd İslâm Üniversitesi Usûlü’d-dîn Fakültesi Sünnet ve İlimleri Bölümünde öğretim üyesi olarak çalıştı. 27\/8\/1424 H tarihinde erken emekli oluncaya kadar görevini sürdürdü. 19\/2\/1430 tarihinde yayımlanan kraliyet kararnamesiyle şeyh, Allah onu korusun, Kıdemli Âlimler Heyeti üyeliğine atandı.\n* Hocaları:\n* Kasım’da:\n1- Şeyh Mübârek b. Hasan er-Râcih, Allah ona rahmet etsin.\n2- Şeyh İbrâhim b. Muhammed el-Muşeykih, Allah onu korusun.\n3- Şeyh Muhammed Zâkir, Allah onu korusun.\n4- Şeyh Muhammed b. Sâlih el-Mutavva‘, Allah ona rahmet etsin.\n5- Şeyh Sâlih b. Ahmed el-Hureysî, Allah ona rahmet etsin.\n6- Şeyh Sâlih es-Sükeytî, Allah ona rahmet etsin.\n7- Şeyh Ali ed-Dâli‘, Allah ona rahmet etsin.\n8- Şeyh Muhammed b. Ali er-Rûk, Allah ona rahmet etsin.\n9- Şeyh Fehd b. Muhammed b. Hamûd el-Muşeykih, Allah onu korusun.\n* Riyad’da:\n1- Şeyh Abdullah b. Abdurrahman el-Gudeyân, Allah onu korusun.\n2- Şeyh Abdülazîz b. Abdullah b. Bâz, Allah ona rahmet etsin.\n3- Şeyh Fehd b. Hâmîn el-Fehd el-Hamîn, Allah ona rahmet etsin.\n4- Şeyh Abdurrahman es-Sedhân, Allah onu korusun.\n5- Şeyh Abdülazîz ed-Dâvûd, Allah onu korusun.\n6- Şeyh Abdülazîz el-Fâlih, Allah onu korusun.\n7- Şeyh Sâlih b. Abdurrahman el-Atram, Allah onu korusun.\n* Eserleri:\n1- Zayıf hadis ve onunla ihticâcın hükmü (basılmıştır).\n2- Sehâvî’nin Fethu’l-mugīs̱’inin ilk yarısının tahkiki (basılmıştır).\n3- er-Rağbe Şerhu’n-nuhbe’nin tahkiki (basılmıştır).\n4- Kasabu’s-sükker şerhi (yazma).\n5- el-Varakāt şerhi (yazma).\n6- Şerhu’t-Tecrîdi’s-sarîh li-ehâdîsi’l-Câmi‘i’s-sahîh (yazma).\nTefsir, hadis, akaid ve diğer alanlardaki temel kitaplar ve şerhler üzerine notları ve uyarıları da vardır.\n* * *\nTanıtımı:\nEbû Muhammed künyesiyle bilinen Abdülkerîm b. Abdullah b. Abdurrahman b. Hamd el-Hudayr, 1374 H yılında Büreyde’de doğdu. Şu anda yaklaşık elli yaşındadır; Allah ömrünü itaat üzere uzun etsin. Çocukluğunda Mübârek b. Hasan er-Râcih adlı bir hocadan Kur’an okudu; ardından Şeyh İbrâhim b. Muhammed el-Muşeykih’ten ders aldı. 1385 H yılında Şeyh Muhammed Zâkir’den Kur’an’ın büyük bir bölümünü okudu ve Bakara ile Âl-i İmrân sûrelerini ezberledi.\n\nÖrgün eğitimi:\n1381 H yılında ilkokula başladı ve 1386 H yılında mezun oldu. Ardından 1387 H yılında Büreyde’deki İlmî Enstitü’ye girdi ve 1393 H yılında buradan mezun oldu. Aynı yıl Riyad’daki Şeriat Fakültesine kaydoldu ve 1397 H yılında mezun oldu. Daha sonra Usûlü’d-dîn Fakültesi Sünnet ve İlimleri Bölümüne araştırma görevlisi olarak atandı. Lisansüstü eğitimine devam ederek 1402 H yılında “Zayıf hadis ve onunla ihticâcın hükmü” başlıklı teziyle yüksek lisans derecesini aldı. 1407 H yılında ise “Hâfız Muhammed b. Abdurrahman es-Sehâvî’nin el-Elfiyye fi’l-hadîs şerhi Fethu’l-mugīs̱’in ilk yarısının tahkiki” başlıklı teziyle doktora derecesini aldı. Ardından Usûlü’d-dîn Fakültesi Sünnet ve İlimleri Bölümünde yardımcı profesör olarak görevlendirildi ve 27\/8\/1424 H tarihinde, elli yaşındayken erken emekli oluncaya kadar burada çalıştı. 19\/2\/1430 tarihinde yayımlanan kraliyet kararnamesiyle şeyh, Allah onu korusun, Kıdemli Âlimler Heyeti üyeliğine atandı.\n\nİlim tahsili:\nİlk yıllarında Şeyh Muhammed b. Sâlih el-Mutavva‘dan ilimlerin temel kitaplarını (Selâsetü’l-usûl, Âdâbü’l-meşyi ile’s-salât, Zâdü’l-müstekni‘ ve Kitâbü’t-tevhîd) ve ilimlerin temel metinlerinden başka eserleri okudu. Ardından Kasım bölgesindeki mahkemelerin o dönemdeki başkanı Şeyh Sâlih b. Ahmed el-Hureysî’ye devam ederek ondan ders aldı. Daha sonra Riyad’a taşındı; Şeyh Abdullah b. Abdurrahman el-Gudeyân’dan fıkıh usulü ve fıkıh kaidelerini, Şeyh Abdülazîz b. Abdullah b. Bâz’dan ise ferâiz, İbn Kesîr tefsiri ve Sünen-i Tirmizî’nin yanı sıra başka kitapları okudu. Allah ona rahmet etsin, hocasına camide ve evinde devam ederek ders aldı. Şeriat Fakültesinden mezun olduktan sonra hazırlık yılında kendisini hacimli eserleri baştan sona okuyup incelemeye, üzerlerine notlar almaya ve içeriklerini ortaya çıkarmaya verdi. Allah onu korusun, tefsir, hadis ve akaid kitaplarının yanı sıra fıkıh, tarih ve edebiyat kitaplarını da okudu.\n\nDaha sonra Şeyh Sâlih b. Abdurrahman el-Atram’dan Hâfız İbn Hacer’in Buhârî şerhinin baş taraflarını okudu. Büreyde’deki İlmî Enstitü hocaları arasında Şeyh Sâlih es-Sükeytî, Şeyh Ali ed-Dâli‘, Şeyh Muhammed er-Rûk (Allah onlara rahmet etsin) ve Şeyh Fehd b. Muhammed el-Muşeykih (Allah onu korusun) da bulunuyordu.\n\nŞeriat Fakültesinde öğrencisi olduğu hocaları arasında Şeyh Fehd el-Hamîn, Şeyh Abdülazîz ed-Dâvûd, Şeyh Abdülazîz el-Fâlih ve Şeyh Abdurrahman es-Sedhân (Allah onları korusun) ile başka âlimler ve şeyhler de vardı.\n\n* Şeyhin ilim tahsiline gösterdiği özen, araştırmacıların birçoğu için başvuru kaynağı olan, kitaplar ve yazmalarla dolu ilmî kütüphanesinden de anlaşılmaktadır.\n\nİlmî faaliyetleri:\nŞeyhin, Sünnet ve İlimleri Bölümünde yüksek lisans ve doktora tezlerine danışmanlık yapması ve kayıtları bulunan çeşitli ilmî dersleri dolayısıyla çok sayıda ilmî faaliyeti vardır. Bunlar arasında Zâdü’l-müstekni‘den oruç bölümünün şerhi, aynı eserden hac bölümünün şerhi, Câbir’in hac hadisinin şerhi, Nuhbetü’l-fiker ve manzumesinin şerhi, el-Varakāt ve manzumesinin şerhi yer alır. Allah’a hamdolsun, bunların çoğu kaydedilmiştir.\n\nŞeyh, ülkenin pek çok bölgesinde düzenlenen ilmî kurslara katılmıştır.\n\n* Şeyhin Kur’an-ı Kerim Radyosu’nda yayımlanan radyo programları da vardır:\n* Programların ilki, ilim ve çalışma hayatını anlattığı “Davet Kervanında Bir Söyleşi”dir. Söyleşiyi Üstaz Muhammed el-Muşevvih gerçekleştirmiş ve 1420 H yılında yayımlamıştır.\n* 1421 H yılının ramazan ayında yayımlanan fıkhu’s-sıyâm konusunda otuz bölümlük bir programı vardır.\n* Aynı radyoda ez-Zebîdî’nin Muhtasar Sahîh-i Buhârî’sini şerh ettiği haftalık bir dersi de bulunmaktadır.\n* 1423 H yılında ramazan ayında yayımlanan nebevî yaşayışla ilgili otuz bölümlük bir programı vardır.\n* 1424 H yılında ramazan ayında yayımlanan şemâil-i nebeviyye hakkında otuz bölümlük bir programı vardır.\n* 1424 H hac mevsiminde yayımlanan, İmam Buhârî’nin hac fıkhı hakkındaki on üç bölümlük bir programı vardır.\n* Aynı radyoda ilim talebesinin kütüphanesi hakkında söyleşileri de yayımlanmıştır.\n* Kur’an-ı Kerim Radyosu’nda dinleyicilerin sorularını yanıtlamakta; program her cuma saat 16.00’da yayımlanmaktadır.\n\nDersleri:\nŞeyhin haftanın çoğu gününde, farklı aralıklarla düzenlenen ilmî dersleri vardır. Allah onu korusun, önceki derslerinde birçok ilmî metin ve şerh okumuş; bunların bazılarını tamamlamış, bazılarının ise bir bölümünü okumuştur. Bunlardan bazıları kısaca şöyledir: el-Mahallî’nin Şerhu’l-Varakāt’ı, el-Kalâidü’l-anberiyye fî şerhi’l-manzûmeti’l-Beykūniyye, Hulâsatü’l-kelâm, İbn Sa‘dî’nin el-Akîdetü’l-vâsıtıyye üzerine et-Ta‘lîkātü’s-seniyye’si, İbn Huzeyme’nin Kitâbü’t-tevhîd’i, İbn Sa‘dî’nin Muhtasaru kavâ‘idi İbn Receb’i, Şerhu ileli’t-Tirmizî, Fethu’l-bârî, Elfiyyetü’l-hadîs, el-Bülbül fî usûli’l-fıkh, el-Bâisü’l-hasîs, Kasabu’s-sükker, el-Muvatta’, Müsnedü’l-İmâm Ahmed, el-Müntekā li’l-Mecd İbn Teymiyye, Fethu’l-mecîd, Kitâbü’t-tevhîd, Teysîrü’l-azîzi’l-hamîd, Kurretü uyûni’l-muvahhidîn, el-Âcurrûmiyye, Ahserü’l-muhtasarât, el-Kurtubî’nin el-Müfhim şerhu Muhtasari Sahîh-i Müslim’i, Zehebî’nin el-Mûkıza’sı, Fethu’l-mugīs̱, İbn Kudâme’nin el-Kâfî’si, Selâsetü’l-usûl, Nevevî’nin el-Erbaûn’u, ed-Dürerü’s-seniyye, Tefsîru’l-Celâleyn ve İbn Kesîr tefsiri.\n-\nŞeyhin resmî internet sitesinden nakledilmiştir.&quot;,&quot;ur&quot;:&quot;عبد الكريم الخضير (١٣٧٤ - ؟ ھ = ١٩٥٥ - ؟ء)\nنام: عبد الكريم بن عبد الله بن عبد الرحمن بن حمد الخضير۔\n* مقام اور تاریخِ ولادت: ١٣٧٤ھ میں بریدة میں پیدا ہوئے۔\n* ملازمت: ریاض کی امام محمد بن سعود اسلامی یونیورسٹی کے کلیۃ اصول الدین میں شعبۂ سنت و علومہا کے تدریسی عملے کے رکن رہے، یہاں تک کہ ٢٧\/٨\/١٤٢٤ھ کو قبل از وقت ریٹائر ہوگئے۔ ١٩\/٢\/١٤٣٠ کو شاہی فرمان جاری ہوا کہ شیخ حفظہ الله کو ہیئتِ کبار العلماء کا رکن مقرر کیا جائے۔\n* اساتذہ:\n* قصیم میں:\n١- شیخ مبارك بن حسن الراجح رحمہ الله۔\n٢- شیخ إبراهيم بن محمد المشيقح حفظہ الله۔\n٣- شیخ محمد ذاكر حفظہ الله۔\n٤- شیخ محمد بن صالح المطوع رحمہ الله۔\n٥- شیخ صالح بن أحمد الخريصي رحمہ الله۔\n٦- شیخ صالح السكيتي رحمہ الله۔\n٧- شیخ علي الضالع رحمہ الله۔\n٨- شیخ محمد بن علي الروق رحمہ الله۔\n٩- شیخ فهد بن محمد بن حمود المشيقح حفظہ الله۔\n* ریاض میں:\n١- شیخ عبد الله بن عبد الرحمن الغديان حفظہ الله۔\n٢- سماحۃ الشیخ عبد العزيز بن عبد الله بن باز رحمہ الله۔\n٣- شیخ فهد بن حمين الفهد الحمين رحمہ الله۔\n٤- شیخ عبد الرحمن السد حان حفظہ الله۔\n٥- شیخ عبد العزيز الداود حفظہ الله۔\n٦- شیخ عبد العزيز الفالح حفظہ الله۔\n٧- شیخ صالح بن عبد الرحمن الأطرم حفظہ الله۔\n* تصانیف:\n١- الحديث الضعيف وحكم الاحتجاج به (مطبوع)۔\n٢- فتح المغيث للسخاوي کے نصفِ اول کی تحقیق (مطبوع)۔\n٣- تحقيق الرغبة شرح النخبة (مطبوع)۔\n٤- شرح قصب السكر (مخطوط)۔\n٥- شرح الورقات (مخطوط)۔\n٦- شرح التجريد الصريح لأحاديث الجامع الصحيح (مخطوط)۔\n- تفسیر، حدیث، عقیدہ وغیرہ کی بنیادی کتابوں اور شروح پر ان کے حواشی اور تنبیہات بھی ہیں۔\n* * *\nتعارف:\nیہ عبد الكريم بن عبد الله بن عبد الرحمن بن حمد الخضير ہیں، ان کی کنیت ابو محمد ہے۔ ١٣٧٤ھ میں بریدة میں پیدا ہوئے، اور اب ان کی عمر تقریباً پچاس سال ہے۔ الله تعالیٰ انہیں اطاعت کے کاموں میں عمر دراز عطا فرمائے۔ بچپن میں مبارك بن حسن الراجح نامی قاری سے قرآن پڑھا، پھر شیخ إبراهيم بن محمد المشيقح سے پڑھا۔ اس کے بعد ١٣٨٥ھ میں فضیلۃ الشیخ محمد ذاكر سے قرآن کا ایک بڑا حصہ پڑھا اور ان کے پاس سورۂ بقرہ اور آل عمران حفظ کیں۔\nرسمی تعلیم:\n١٣٨١ھ میں ابتدائی مدرسے میں داخل ہوئے، پھر ١٣٨٦ھ میں وہاں سے فارغ ہوئے۔ اس کے بعد ١٣٨٧ھ میں بریدہ کے علمی ادارے میں داخل ہوئے اور ١٣٩٣ھ میں وہاں سے فارغ التحصیل ہوئے۔ اسی سال ریاض کے کلیۃ الشریعہ میں داخل ہوئے اور ١٣٩٧ھ میں وہاں سے فارغ ہوئے۔ پھر کلیۃ اصول الدین کے شعبۂ سنت و علومہا میں معید مقرر ہوئے۔ اس کے بعد اعلیٰ تعلیم جاری رکھی اور ١٤٠٢ھ میں ماسٹرز کی ڈگری حاصل کی۔ ان کا مقالہ «الحديث الضعيف وحكم الاحتجاج به» کے عنوان سے تھا۔ پھر ١٤٠٧ھ میں ڈاکٹریٹ کی سند حاصل کی۔ ان کا مقالہ «تحقيق النصف الأول من فتح المغيث بشرح ألفية الحديث للحافظ محمد بن عبد الرحمن السخاوي» کے عنوان سے تھا۔ اس کے بعد شعبۂ سنت و علومہا، کلیۃ اصول الدین میں اسسٹنٹ پروفیسر مقرر ہوئے اور قبل از وقت ریٹائر ہونے تک اسی حیثیت سے کام کرتے رہے۔ ٢٧\/٨\/١٤٢٤ھ کو ان کی عمر پچاس سال تھی۔ ١٩\/٢\/١٤٣٠ کو شاہی فرمان جاری ہوا کہ شیخ حفظہ الله کو ہیئتِ کبار العلماء کا رکن مقرر کیا جائے۔\nطلبِ علم:\nاپنے ابتدائی زمانے میں انہوں نے شیخ محمد بن صالح المطوع رحمہ الله سے علوم کی بنیادی کتابیں پڑھیں، جن میں «ثلاثة الأصول»، «آداب المشي إلى الصلاة»، «زاد المستقنع» اور «كتاب التوحيد» شامل ہیں، نیز علم کے اصول سے متعلق دیگر متون بھی۔ اس کے بعد انہوں نے قصیم کی عدالتوں کے اس وقت کے سربراہ فضیلۃ الشیخ صالح بن أحمد الخريصي رحمہ الله سے پڑھا اور ان کے ساتھ رہے۔ پھر ریاض منتقل ہوئے، جہاں شیخ عبد الله بن عبد الرحمن الغديان سے اصولِ فقہ اور فقہی قواعد کی تعلیم حاصل کی، اور سماحۃ الشیخ عبد العزيز بن عبد الله بن باز رحمہ الله سے «الفرائض»، «تفسير ابن كثير» اور «سنن الترمذي» سمیت دوسری کتابیں پڑھیں۔ وہ شیخ کے ساتھ رہے اور مسجد اور گھر میں ان سے پڑھتے رہے، الله ان پر رحم فرمائے۔ کلیۃ الشریعہ سے فارغ ہونے کے بعد، تیاری کے سال میں انہوں نے بڑی بڑی کتابوں کے مطالعے، ان پر تعلیقات لکھنے اور ان کے علمی ذخائر اخذ کرنے کے لیے خود کو وقف کردیا۔ انہوں نے تفسیر، حدیث اور عقائد کی کتابیں پڑھیں، نیز فقہ، تاریخ اور ادب کی کتابوں کا بھی مطالعہ کیا۔\nپھر انہوں نے شیخ صالح بن عبد الرحمن الأطرم سے حافظ ابن حجر کی «شرح البخاري» کے ابتدائی حصے پڑھے۔ بریدہ کے علمی ادارے میں ان کے اساتذہ میں شیخ صالح السكيتي، شیخ علي الضالع اور شیخ محمد الروق رحمہم الله، نیز شیخ فهد بن محمد المشيقح حفظہ الله اور دیگر شامل تھے۔\n،،،\nکلیۃ الشریعہ میں جن اساتذہ سے انہوں نے تعلیم حاصل کی، ان میں شیخ فهد الحمين، شیخ عبد العزيز الداود اور شیخ عبد العزيز الفالح حفظہم الله، نیز دوسرے علماء اور مشائخ شامل ہیں۔\n* شیخ حفظہ الله کا طلبِ علم کے لیے شوق ان کی وسیع علمی لائبریری سے بھی نمایاں ہے، جس میں طرح طرح کی کتابیں اور مخطوطات ہیں اور جو بہت سے محققین کے لیے مرجع ہے۔\nعلمی سرگرمیاں:\nشیخ کی علمی سرگرمیاں بہت زیادہ ہیں۔ وہ شعبۂ سنت و علومہا میں ماسٹرز اور ڈاکٹریٹ کے مقالوں کی نگرانی کرتے ہیں، اور ان کے متنوع علمی دروس بھی ہیں، جن میں سے بہت سے ریکارڈ کیے گئے ہیں۔ ان میں «زاد المستقنع» سے کتاب الصیام کی شرح، اسی کتاب سے کتاب الحج کی شرح، حج کے بارے میں حدیثِ جابر کی شرح، «نخبة الفكر» اور اس کے منظومے کی شرح، اور «الورقات» اور اس کے منظومے کی شرح شامل ہیں۔ ان کے بہت سے دروس ہیں اور الحمد لله اکثر ریکارڈ شدہ ہیں۔\nشیخ نے مملکت کے کئی علاقوں میں علمی دوروں میں بھی شرکت کی ہے۔\n* شیخ کے قرآن کریم ریڈیو پر نشریاتی پروگرام بھی ہیں، جن میں یہ شامل ہیں:\n* ان کا پہلا پروگرام «لقاء في موكب الدعوة» تھا، جس میں انہوں نے اپنی علمی اور عملی زندگی کے بارے میں گفتگو کی۔ یہ نشست استاد محمد المشوح نے کی اور ١٤٢٠ھ میں نشر ہوئی۔\n* روزے کے فقہ پر ان کے تیس پروگرام بھی ہیں، جو رمضان ١٤٢١ھ میں نشر ہوئے۔\n* اسی ریڈیو پر ان کا ایک ہفتہ وار درس بھی ہے، جس میں «مختصر صحيح البخاري» للزبيدي کی شرح ہے۔\n* ہدایتِ نبوی پر ان کے تیس پروگرام بھی ہیں، جو رمضان ١٤٢٣ھ میں نشر ہوئے۔\n* شمائلِ نبویہ پر بھی ان کے تیس پروگرام ہیں، جو رمضان ١٤٢٤ھ میں نشر ہوئے۔\n* حج کے بارے میں امام بخاری کے فقہ پر ان کے تیرہ پروگرام ہیں، جو حج کے موسم ١٤٢٤ھ میں نشر ہوئے۔\n* اسی ریڈیو پر طالبِ علم کی لائبریری کے بارے میں ان کے انٹرویو بھی نشر ہوئے ہیں۔\n* وہ قرآن کریم ریڈیو پر سامعین کے سوالوں کے جواب بھی دیتے ہیں، جو ہر جمعہ سہ پہر چار بجے نشر ہوتے ہیں۔\nدروس:\nشیخ ہفتے کے بیشتر دنوں میں مختلف اوقات پر علمی دروس دیتے ہیں۔ ان کے گزشتہ دروس میں بہت سے متون اور علمی شروح پڑھی گئی ہیں؛ بعض مکمل ہوئی ہیں اور بعض کے کچھ حصے پڑھے گئے ہیں۔ ان کا مختصر ذکر یہ ہے:\n(المحلي کی «شرح الورقات»، «القلائد العنبرية في شرح المنظومة البيقونية»، «خلاصة الكلام»، ابن سعدي کی «التعليقات السنية على العقيدة الواسطية»، ابن خزيمة کی «التوحيد»، ابن سعدي کی «مختصر قواعد ابن رجب»، «شرح علل الترمذي»، «فتح الباري»، «ألفية الحديث»، «البلبل في أصول الفقه»، «الباعث الحثيث»، «قصب السكر»، «الموطأ»، «مسند الإمام أحمد»، المجد ابن تيمية کی «المنتقى»، «فتح المجيد»، «كتاب التوحيد»، «تيسير العزيز الحميد»، «قرة عيون الموحدين»، «الآجرومية»، «أخصر المختصرات»، القرطبي کی «المفهم شرح مختصر صحيح مسلم»، الذهبي کی «الموقظة»، «فتح المغيث»، ابن قدامة کی «الكافي»، «ثلاثة الأصول»، «الأربعين النووية»، «الدرر السنية»، «تفسير الجلالين»، «تفسير ابن كثير» وغیرہ۔\n-\nشیخ کی سرکاری ویب سائٹ سے نقل&quot;,&quot;zh&quot;:&quot;阿卜杜·卡里姆·胡代尔（伊历1374年—？年＝公元1955年—？年）\n他的名字是：阿卜杜·卡里姆·本·阿卜杜拉·本·阿卜杜·拉赫曼·本·哈姆德·胡代尔。\n* 出生地点与日期：伊历1374年出生于布赖代。\n* 职务：曾任利雅得伊玛目穆罕默德·本·沙特伊斯兰大学宗教基础学院圣训及其学科系教员，直至伊历1424年8月27日提前退休。伊历1430年2月19日，王室颁令任命这位学者（愿真主护佑他）为高级学者委员会成员。\n* 师长：\n* 在盖西姆地区：\n1—谢赫·穆巴拉克·本·哈桑·拉吉赫（愿真主怜悯他）。\n2—谢赫·易卜拉欣·本·穆罕默德·穆沙伊盖赫（愿真主护佑他）。\n3—谢赫·穆罕默德·扎基尔（愿真主护佑他）。\n4—谢赫·穆罕默德·本·萨利赫·穆陶瓦（愿真主怜悯他）。\n5—谢赫·萨利赫·本·艾哈迈德·胡莱西（愿真主怜悯他）。\n6—谢赫·萨利赫·苏凯提（愿真主怜悯他）。\n7—谢赫·阿里·达利尔（愿真主怜悯他）。\n8—谢赫·穆罕默德·本·阿里·鲁格（愿真主怜悯他）。\n9—谢赫·法赫德·本·穆罕默德·本·哈穆德·穆沙伊盖赫（愿真主护佑他）。\n* 在利雅得：\n1—谢赫·阿卜杜拉·本·阿卜杜·拉赫曼·吉迪扬（愿真主护佑他）。\n2—尊敬的谢赫·阿卜杜·阿齐兹·本·阿卜杜拉·本·巴兹（愿真主怜悯他）。\n3—谢赫·法赫德·本·胡迈因·法赫德·哈明（愿真主怜悯他）。\n4—谢赫·阿卜杜·拉赫曼·萨德汉（愿真主护佑他）。\n5—谢赫·阿卜杜·阿齐兹·达伍德（愿真主护佑他）。\n6—谢赫·阿卜杜·阿齐兹·法利赫（愿真主护佑他）。\n7—谢赫·萨利赫·本·阿卜杜·拉赫曼·阿特拉姆（愿真主护佑他）。\n* 著作：\n1—《羸弱圣训及其作为论据的教法判定》（已刊行）。\n2—校订萨哈维《圣训学千行诗注释：赐益之门》上半部（已刊行）。\n3—校订《愿望：精要之选注释》（已刊行）。\n4—《甘蔗注释》（手稿）。\n5—《瓦尔盖特注释》（手稿）。\n6—《布哈里圣训实录诸圣训精简本注释》（手稿）。\n他还为经典著作及其注释作有批注与提示，涉及《古兰经》注释、圣训、信仰等领域。\n* * *\n简介：\n他是阿卜杜·卡里姆·本·阿卜杜拉·本·阿卜杜·拉赫曼·本·哈姆德·胡代尔，尊称艾布·穆罕默德，伊历1374年出生于布赖代。如今约五十岁，愿真主使他长寿，常行顺服之事。他幼年时曾向一位名叫穆巴拉克·本·哈桑·拉吉赫的诵经师学习《古兰经》，随后师从谢赫·易卜拉欣·本·穆罕默德·穆沙伊盖赫。伊历1385年，他开始向尊贵的谢赫·穆罕默德·扎基尔学习《古兰经》大部分内容，并在他那里背诵了《黄牛章》和《仪姆兰的家属章》……\n正规教育：\n他于伊历1381年进入小学，伊历1386年毕业。随后于伊历1387年进入布赖代宗教学院，并于伊历1393年毕业。同年，他进入利雅得伊斯兰教法学院，伊历1397年毕业，之后受聘为宗教基础学院圣训及其学科系助教。此后继续深造，伊历1402年获得硕士学位，论文题为《羸弱圣训及其作为论据的教法判定》。伊历1407年，他获得博士学位，论文题为《校订哈菲兹·穆罕默德·本·阿卜杜·拉赫曼·萨哈维〈圣训学千行诗注释：赐益之门〉上半部》。随后他被任命为宗教基础学院圣训及其学科系助理教授，并在该系任职，直至伊历1424年8月27日提前退休，时年五十岁。伊历1430年2月19日，王室颁令任命这位学者（愿真主护佑他）为高级学者委员会成员。\n求学经历：\n早年，他曾向谢赫·穆罕默德·本·萨利赫·穆陶瓦（愿真主怜悯他）学习基础学科，包括《三项根本原则》《礼拜之道的礼仪》《自足者之资粮》《认主独一之书》等，以及其他基础经典。之后，他跟随尊贵的谢赫、时任盖西姆地区法院院长的萨利赫·本·艾哈迈德·胡莱西（愿真主怜悯他）学习。后来他迁往利雅得，向谢赫·阿卜杜拉·本·阿卜杜·拉赫曼·吉迪扬学习教法原理与教法规则；又向尊敬的谢赫·阿卜杜·阿齐兹·本·阿卜杜拉·本·巴兹（愿真主怜悯他）学习继承法、《伊本·凯西尔古兰经注》和《提尔密济圣训集》等著作。他曾跟随谢赫学习，并在清真寺和家中向他求教（愿真主怜悯他）。从伊斯兰教法学院毕业后，在预科阶段，他专心研读大型典籍、作批注并发掘其精义。他（愿真主护佑他）研读了《古兰经》注释、圣训和信仰学著作，也研读了教法、历史与文学著作……\n后来，他向谢赫·萨利赫·本·阿卜杜·拉赫曼·阿特拉姆学习哈菲兹·伊本·哈杰尔《布哈里圣训实录注释》的开篇部分。至于他在布赖代宗教学院的老师，包括萨利赫·苏凯提、阿里·达利尔、穆罕默德·鲁格（愿真主怜悯他们），以及法赫德·本·穆罕默德·穆沙伊盖赫（愿真主护佑他）等人。\n……\n至于他在伊斯兰教法学院求学时的老师，其中有法赫德·哈明、阿卜杜·阿齐兹·达伍德、阿卜杜·阿齐兹·法利赫、阿卜杜·拉赫曼·萨德汉（愿真主护佑他们）等学者与谢赫。\n* 谢赫（愿真主护佑他）对求知的热忱，也体现在他藏书丰富的学术图书馆中。馆藏包括各类书籍与手稿，已成为许多研究者的参考资料。\n学术活动：\n谢赫参与许多学术活动，包括指导圣训及其学科系的硕士、博士论文，以及开设各种学术课程，其中许多课程均已录音。例如：《自足者之资粮》中的斋戒篇讲解、同书朝觐篇讲解、《贾比尔关于朝觐的圣训》讲解、《思想精要》及其诗体版讲解、《瓦尔盖特》及其诗体版讲解等；其他讲解课程也很多，大多已录制，感谢真主。\n谢赫还在王国许多地方参与学术课程。\n* 谢赫还参加了古兰经广播电台的节目：\n* 最早的一档节目是《宣教行列中的访谈》，谈及他的学术与职业生涯。访谈由穆罕默德·穆沙瓦赫主持，于伊历1420年播出。\n* 他还录制了三十集斋戒教法节目，于伊历1421年斋月播出。\n* 他还在同一电台每周开设课程，讲解祖拜迪《布哈里圣训实录精要》。\n* 他另有三十集《先知的指引》，于伊历1423年斋月播出。\n* 他还录制了三十集《先知的品德》，于伊历1424年斋月播出。\n* 他录制了十三集关于伊玛目布哈里朝觐教法的节目，于伊历1424年朝觐季播出。\n* 他还在同一电台参与有关求知者图书馆的访谈。\n* 他也在古兰经广播电台回答听众提问，每周五下午四点播出。\n课程：\n谢赫在一周的大多数日子里，分时段讲授不同的学术课程。他（愿真主护佑他）过去讲授过许多经典文本与学术注释，有些已完整讲完，有些则讲授了部分内容。简要列举如下：\n《马哈利注释〈瓦尔盖特〉》、《琥珀珠串：拜古尼诗体圣训学纲要注释》、《言论精要》、《萨阿迪对〈瓦西提信仰〉的圣训式评注》、《伊本·胡宰麦的认主独一论》、《萨阿迪〈伊本·拉杰布教法规则简编〉》、《提尔密济圣训缺陷论注释》、《法特赫·巴里》、《圣训学千行诗》、《教法原理之布布勒》、《强有力的证据》、《甘蔗》、《穆宛塔》、《伊玛目艾哈迈德圣训集》、《伊本·泰米叶的精选圣训》、《法特赫·麦吉德》、《认主独一之书》、《尊贵之主的易行之道》、《认主独一者之眼的喜悦》、《阿吉鲁米耶》、《最简明纲要》、《古尔图比〈穆斯林圣训实录精要释义〉》、《宰海比〈警醒〉》、《赐益之门》、《伊本·古达麦〈充足之书〉》、《三项根本原则》、《四十段圣训集》、《逊尼珍珠集》、《贾拉莱尼古兰经注》、《伊本·凯西尔古兰经注》……\n-\n摘自谢赫官方网站&quot;}" data-original=""></div>
+                                <details
+                  class="mt-3"
+                                  >
+                  <summary class="cursor-pointer text-zinc-500 dark:text-zinc-400">Arabic original</summary>
+                  <div
+                    class="prose-sm mt-2"
+                    dir="rtl"
+                    lang="ar"
+                  >
+                    
 عبد الكريم الخضير (١٣٧٤ - ؟ هـ = ١٩٥٥ - ؟م)اسمه: عبد الكريم بن عبد الله بن عبد الرحمن بن حمد الخضير.* مكان وتاريخ الولادة: ولد في بريده سنة ١٣٧٤هـ.* عمله: عضو هيئة التدريس في قسم السنة وعلومها في كلية أصول الدين بجامعة الإمام محمد بن سعود الإسلامية بالرياض الى أن تقاعد تقاعدا مبكرا في ٢٧/٨/١٤٢٤ هـ ،وفي يوم ١٩/٢/١٤٣٠ صدر الأمر الملكي بتعيين الشيخ حفظه الله عضوا في هيئة كبار العلماء.* شيوخه:* في القصيم:١- الشيخ مبارك بن حسن الراجح رحمه الله.٢- الشيخ إبراهيم بن محمد المشيقح حفظه الله.٣- الشيخ محمد ذاكر حفظه الله.٤- الشيخ محمد بن صالح المطوع رحمه الله.٥- الشيخ صالح بن أحمد الخريصي رحمه الله.٦- الشيخ صالح السكيتي رحمه الله.٧- الشيخ علي الضالع رحمه الله.٨- الشيخ محمد بن علي الروق رحمه الله.٩- الشيخ فهد بن محمد بن حمود المشيقح حفظه الله.* في الرياض:١- الشيخ عبد الله بن عبد الرحمن الغديان حفظه الله.٢- سماحة الشيخ عبد العزيز بن عبد الله بن باز رحمه الله.٣- الشيخ فهد بن حمين الفهد الحمين رحمه الله.٤- الشيخ عبد الرحمن السد حان حفظه الله.٥- الشيخ عبد العزيز الداود حفظه الله.٦- الشيخ عبد العزيز الفالح حفظه الله.٧- الشيخ صالح بن عبد الرحمن الأطرم حفظه الله.* مؤلفاته:-١- الحديث الضعيف وحكم الاحتجاج به ( مطبوع ).٢- تحقيق النصف الأول من فتح المغيث للسخاوي ( مطبوع ).٣- تحقيق الرغبة شرح النخبة ( مطبوع ).٤- شرح قصب السكر ( مخطوط ).٥- شرح الورقات ( مخطوط ).٦- شرح التجريد الصريح لأحاديث الجامع الصحيح ( مخطوط).- وله تعليقات و تنبيهات على أمهات الكتب والشروح من كتب التفسير والحديثوالعقيدة وغيرها.* * *تعريفه:-هو عبد الكريم بن عبد الله بن عبد الرحمن بن حمد الخضير يكنى بأبي محمد من مواليد بريده سنة ١٣٧٤ هـ ويبلغ من العمر الآن قرابة الخمسين أمد الله في عمره على الطاعة.. قرأ القران على مقرئ في الصبا اسمه مبارك بن حسن الراجح ثم قرأ على الشيخ إبراهيم بن محمد المشيقح ثم في سنة ١٣٨٥ هـ قرأ على فضيلة الشيخ محمد ذاكر قسما كبيرا من القران وحفظ عليه البقرة وال عمران ,,,دراسته النظامية:-دخل المدرسة الابتدائية سنة ١٣٨١ هـ ثم تخرج منها سن١٣٨٦ هـ على اثرها دخل المعهد العلمي في بريده سنة١٣٨٧ هـ وتخرج فيه سنة ١٣٩٣ هـ ثم التحق بعدها بكلية الشريعة بالرياض في السنه نفسها وتخرج فيها سنة ١٣٩٧ هـ على إثرها عين معيدا بكلية اصول الدين في قسم السنة وعلومها ثم واصل وتابع الدراسه العليا فحصل على درجة الماجستير سنة ١٤٠٢هـ وكانت رسالته بعنوان ( الحديث الضعيف وحكم الاحتجاج به ). ثم بعد ذلك في سنة ١٤٠٧هـ حصل على شهادة الدكتوراه وكانت رسالته بعنوان ( تحقيق النصف الأول من فتح المغيث بشرح الفية الحديث للحافظ محمد بن عبدالرحمن السخاوي ) عين على اثرها أستاذا مساعدا في قسم السنه وعلومها بكلية اصول الدين وعمل بها استاذا مساعدا الى أن تقاعد تقاعدا مبكرا في ٢٧/٨/١٤٢٤ هـ وهو ابن خمسين سنة،وفي يوم ١٩/٢/١٤٣٠ صدر الأمر الملكي بتعيين الشيخ حفظه الله عضوا في هيئة كبار العلماء.طلبه للعلم:-في سنينه الأولى قرأ على الشيخ محمد بن صالح المطوع رحمه الله مبادئ العلوم (ثلاثة الاصول - واداب المشي إلى الصلاة - وزاد المستقنع وكتاب التوحيد) وغيرهامن المتون في أصول العلم.. ثم قرأ ولازم صاحب الفضيله الشيخ صالح بن احمد الخريصي رئيس محاكم القصيم في وقته رحمه الله ثم انتقل إلى الرياض فقرأ على الشيخ عبدالله بن عبد الرحمن الغديان في أصول الفقه والقواعد الفقهيه وعلى سماحة الشيخ عبد العزيز بن عبد الله بن باز رحمه الله في ( الفرائض وفي تفسير ابن كثير وفي سنن الترمذي ) وغيرها من الكتب وقد لازمه وقرأ عليه في المسجد وفي بيته رحمه الله..ثم بعد تخرجه من كلية الشريعة وفي السنة التمهيدية تفرغ لجرد المطولات وقراءتها والتعليق عليها واستخراج مكنوناتها فقد قرأ حفظه الله في كتب التفسير والحديث وكتب العقائد وقد قرأ أيضا في كتب الفقه والتاريخ والأدب ,,,ثم قرأ على الشيخ صالح بن عبد الرحمن الأطرم أوائل شرح البخاري للحافظ بن حجر وأما بالنسبة لشيوخه في المعهد العلمي في بريده فمنهم الشيخ صالح السكيتي والشيخ على الضالع والشيخ محمد الروق رحمهم الله والشيخ فهد بن محمد المشيقح حفظه الله وغيرهم!,,,وأما بالنسبة لشيوخه الذين تتلمذ على يديهم في كلية الشريعة فنذكر منهم الشيخ فهد الحمين والشيخ عبد العزيز الداود والشيخ عبد العزيز الفالح والشيخ عبدالرحمن السد حان حفظهم الله وغيرهم من العلماء والمشائخ ,,,* كما يتجلى حرص الشيخ حفظه الله على طلب العلم من خلال مكتبته العلمية العامرة بأصناف الكتب والمخطوطات تعد مرجعا لكثير من الباحثين.مشاركا ته العلمية:-للشيخ مشاركات علميه كثيرة من خلال إشرافه على الرسائل المقدمة لنيل درجة الماجستير والدكتوراه في قسم السنة وعلومها , ومن خلال دوراته العلمية المتنوعة والتي تم تسجيل كثير منها ومن ذلك ( شرح كتاب الصيام من زاد المستقنع- وكتاب الحج من الكتاب نفسه- وشرح حديث جابر في الحج- وشرح نخبة الفكر ونظمها- وشرح الورقات ونظمها ) وشروح كثيرة وأكثرها مسجل ولله الحمد.ولقد شارك الشيخ في دورات علمية في كثير من أنحاء المملكة.* كما أن للشيخ أيضا مشاركات إذاعية في إذاعة القرآن الكريم وهي:* أول هذه البرامج لقاء في موكب الدعوة تحدث فيها عن حياته العلمية والعملية اجرى هذا اللقاء الاستاذ محمد المشوح أذيع سنة ١٤٢٠هـ.* كما أن له ثلاثون حلقة في فقه الصيام نشر في رمضان سنة ١٤٢١هـ.* كما أن له أيضا درس أسبوعي في الإذاعة نفسها في شرح مختصر صحيح البخاري للزبيدي.* كما أن له ثلاثون حلقة في الهدي النبوي في رمضان أذيع سنة ١٤٢٣هـ.*كما أن له ثلاثون حلقة في الشمائل النبوية أذيع في رمضان سنة ١٤٢٤هـ.*كما أن له ثلاث عشرة حلقة في فقه الامام البخاري في الحج أذيع في موسم الحج سنة ١٤٢٤هـ.* كما أن له لقاءات في الاذاعة نفسها حول مكتبة طالب العلم.*كما أنه يجيب عن اسئلة المستمعين في اذاعة القرآن ويبث كل يوم جمعة في الرابعة عصرا.دروسه:للشيخ دروس علميه متفرقة على فترات في أكثر أيام الأسبوع وقد قرأ عليه حفظه الله في دروس سابقة كثير من المتون والشروح العلمية منهاما أتم كاملا ومنها ما قرأ بعضها نذكرها بإيجاز:( شرح الورقات للمحلي , القلائد العنبرية في شرح المنظومة البيقونية , خلاصة الكلام , التعليقات السنية على العقيدة الواسطية لابن سعدي , التوحيد لابن خزيمة , مختصر قواعد ابن رجب لابن سعدي , شرح علل الترمذي , فتح الباري , ألفية الحديث , البلبل في أصول الفقه , الباعث الحثيث , قصب السكر , الموطأ , مسند الإمام أحمد , المنتقى للمجد ابن تيمية , فتح المجيد , كتاب التوحيد , تيسير العزيز الحميد , قرة عيون الموحدين , الآجرومية , أخصر المختصرات , المفهم شرحمختصر صحيح مسلم للقرطبي , الموقظة للذهبي , فتح المغيث , الكافي لابن قدامة , ثلاثة الأصول , الأربعين النووية ، الدرر السنية، تفسير الجلالين , تفسير ابن كثير)…-نقلا من موقع الشيخ الرسمي
 <hr>
 <ul><li>التعليق على تفسير الجلالين - عبد الكريم الخضير</li><li>التعليق على تفسير القرطبي - عبد الكريم الخضير</li><li>الحديث الضعيف وحكم الاحتجاج به</li><li>دروس الشيخ عبد الكريم الخضير</li><li>شرح ألفية العراقي - عبد الكريم الخضير</li><li>شرح اختصار علوم الحديث - عبد الكريم الخضير</li><li>شرح الآجرومية - عبد الكريم الخضير</li><li>شرح الأربعين النووية - عبد الكريم الخضير</li><li>شرح التجريد الصريح لأحاديث الجامع الصحيح - عبد الكريم الخضير</li><li>شرح الدروس المهمة لعامة الأمة</li><li>شرح العقيدة الواسطية - عبد الكريم الخضير</li><li>شرح اللؤلؤ المكنون في أحوال الأسانيد والمتون</li><li>شرح المحرر في الحديث - عبد الكريم الخضير</li><li>شرح المنظومة البيقونية - عبد الكريم الخضير</li><li>شرح المنظومة الحائية لابن أبي داود</li><li>شرح المنظومة الميمية في الآداب الشرعية</li><li>شرح الموطأ - عبد الكريم الخضير</li><li>شرح الورقات - عبد الكريم الخضير</li><li>شرح بلوغ المرام - عبد الكريم الخضير</li><li>شرح جوامع الأخبار - عبد الكريم الخضير</li><li>شرح حديث جابر في صفة حج النبي للخضير</li><li>شرح رسالة أبي داود لأهل مكة</li><li>شرح زاد المستقنع - عبد الكريم الخضير</li><li>شرح سنن الترمذي - عبد الكريم الخضير</li><li>شرح صحيح البخاري - عبد الكريم الخضير</li><li>شرح عمدة الأحكام - عبد الكريم الخضير</li><li>شرح كتاب التوحيد - عبد الكريم الخضير</li><li>شرح كتاب الحج من صحيح مسلم - عبد الكريم الخضير</li><li>شرح كتاب الصيام من تقريب الأسانيد</li><li>شرح كتاب الصيام من عمدة الفقه - عبد الكريم الخضير</li><li>شرح كتاب العلم لأبي خيثمة - عبد الكريم الخضير</li><li>شرح كتاب الفتن من صحيح البخاري - عبد الكريم الخضير</li><li>شرح لامية شيخ الإسلام</li><li>شرح مختصر الخرقي - عبد الكريم الخضير</li><li>شرح مقدمة التفسير (من النقاية) للسيوطي</li><li>شرح مقدمة سنن ابن ماجه</li><li>شرح مقدمة صحيح مسلم</li><li>شرح منسك شيخ الإسلام ابن تيمية</li><li>شرح نخبة الفكر للخضير</li><li>شرح نظم عقيدة السفاريني</li><li>كيف يبني طالب العلم مكتبته</li><li>كيف يستفيد طالب العلم من كتب السنة</li><li>مقارنة بين شروح كتب السنة الستة</li></ul>
 
-      </div>
-    </template>
-  
-      <section class="panel">
-      <h2><span data-t="About the book">About the book</span></h2>
-      <dl class="book-card">
-                              <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Title&quot;,&quot;es&quot;:&quot;Título&quot;,&quot;fr&quot;:&quot;Titre&quot;,&quot;id&quot;:&quot;Judul&quot;,&quot;ja&quot;:&quot;書名&quot;,&quot;ru&quot;:&quot;Название&quot;,&quot;sw&quot;:&quot;Jina la kitabu&quot;,&quot;tr&quot;:&quot;Kitap adı&quot;,&quot;ur&quot;:&quot;نام کتاب&quot;,&quot;zh&quot;:&quot;书名&quot;}" data-original="الكتاب">الكتاب</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Commentary on al-Nawawi&#039;s Forty Hadiths)&quot;,&quot;es&quot;:&quot;Comentario de los Cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya [Commentaire des Quarante hadiths de al-Nawawi]&quot;,&quot;id&quot;:&quot;Syarah Al-Arba&#039;in An-Nawawiyah [Penjelasan Empat Puluh Hadis An-Nawawi]&quot;,&quot;ja&quot;:&quot;シャルフ・アル＝アルバイーン・アン＝ナワウィーヤ&quot;,&quot;ru&quot;:&quot;Шарх аль-Арбаин ан-Нававийя (Комментарий к сорока хадисам ан-Навави)&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arobaini za Nawawi)&quot;,&quot;tr&quot;:&quot;Şerhu’l-Erbaîn en-Neveviyye (Nevevî’nin Kırk Hadis’inin Şerhi)&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية (اربعین نووی کی شرح)&quot;,&quot;zh&quot;:&quot;《注释〈奈萨仪四十段圣训〉》&quot;}" data-original="شرح الأربعين النووية">شرح الأربعين النووية</span></dd>
+                  </div>
+                </details>
+              </div>
             </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Author of the original&quot;,&quot;es&quot;:&quot;Autor del original&quot;,&quot;fr&quot;:&quot;Auteur de l&#039;original&quot;,&quot;id&quot;:&quot;Penulis karya asli&quot;,&quot;ja&quot;:&quot;原著者&quot;,&quot;ru&quot;:&quot;Автор оригинала&quot;,&quot;sw&quot;:&quot;Mwandishi wa kitabu asili&quot;,&quot;tr&quot;:&quot;Asıl eserin yazarı&quot;,&quot;ur&quot;:&quot;اصل کتاب کے مصنف&quot;,&quot;zh&quot;:&quot;原著作者&quot;}" data-original="مؤلف الأصل">مؤلف الأصل</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Abu Zakariya Muhyi al-Din Yahya ibn Sharaf al-Nawawi (d. 676 AH)&quot;,&quot;es&quot;:&quot;Abu Zakariya Muhyi al-Din Yahya ibn Sharaf al-Nawawi (m. 676 H)&quot;,&quot;fr&quot;:&quot;Abu Zakariya Muhyi al-Din Yahya ibn Sharaf al-Nawawi (m. 676 H)&quot;,&quot;id&quot;:&quot;Abu Zakaria Muhyiddin Yahya bin Syaraf An-Nawawi (w. 676 H)&quot;,&quot;ja&quot;:&quot;アブー・ザカリヤー・ムヒー・アッディーン・ヤフヤー・イブン・シャラフ・アン＝ナワウィー（没年：ヒジュラ暦676年）&quot;,&quot;ru&quot;:&quot;Абу Закария Мухйи ад-Дин Яхья ибн Шараф ан-Навави (ум. 676 г. х.)&quot;,&quot;sw&quot;:&quot;Abu Zakariya Muhyi al-Din Yahya bin Sharaf al-Nawawi (aliyefariki 676H)&quot;,&quot;tr&quot;:&quot;Ebû Zekeriyyâ Muhyiddin Yahyâ b. Şeref en-Nevevî (ö. 676 H)&quot;,&quot;ur&quot;:&quot;أبو زكريا محيي الدين يحيى بن شرف النووي (ت ٦٧٦ھ)&quot;,&quot;zh&quot;:&quot;艾布·扎卡里亚·穆希丁·叶海亚·本·谢里夫·脑威（卒于伊历676年）&quot;}" data-original="أبو زكريا محيي الدين يحيى بن شرف النووي (ت ٦٧٦هـ)">أبو زكريا محيي الدين يحيى بن شرف النووي (ت ٦٧٦هـ)</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentator&quot;,&quot;es&quot;:&quot;Comentarista&quot;,&quot;fr&quot;:&quot;Commentateur&quot;,&quot;id&quot;:&quot;Pensyarah&quot;,&quot;ja&quot;:&quot;注釈者&quot;,&quot;ru&quot;:&quot;Комментатор&quot;,&quot;sw&quot;:&quot;Mfafanuzi&quot;,&quot;tr&quot;:&quot;Şârih&quot;,&quot;ur&quot;:&quot;شارح&quot;,&quot;zh&quot;:&quot;注释者&quot;}" data-original="الشارح">الشارح</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Abd al-Karim ibn Abd Allah ibn Abd al-Rahman ibn Hamad al-Khudayr&quot;,&quot;es&quot;:&quot;Abd al-Karim ibn Abd Allah ibn Abd al-Rahman ibn Hamad al-Khudayr&quot;,&quot;fr&quot;:&quot;Abd al-Karim ibn Abd Allah ibn Abd al-Rahman ibn Hamad al-Khudayr&quot;,&quot;id&quot;:&quot;Abdul Karim bin Abdullah bin Abdurrahman bin Hamad Al-Khudair&quot;,&quot;ja&quot;:&quot;アブドゥルカリーム・イブン・アブドゥッラー・イブン・アブドゥッラフマーン・イブン・ハマド・アル＝フダイル&quot;,&quot;ru&quot;:&quot;Абд аль-Карим ибн Абдаллах ибн Абд ар-Рахман ибн Хамд аль-Худейр&quot;,&quot;sw&quot;:&quot;Abdulkarim bin Abdullah bin Abdulrahman bin Hamad al-Khudayr&quot;,&quot;tr&quot;:&quot;Abdülkerîm b. Abdullah b. Abdurrahman b. Hamd el-Hudayr&quot;,&quot;zh&quot;:&quot;阿卜杜·凯里姆·本·阿卜杜拉·本·阿卜杜·拉赫曼·本·哈马德·胡代尔&quot;}" data-original="عبد الكريم بن عبد الله بن عبد الرحمن بن حمد الخضير">عبد الكريم بن عبد الله بن عبد الرحمن بن حمد الخضير</span></dd>
-            </div>
-                                        <div>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Transcribed lessons from Shaykh al-Khudayr&#039;s website&quot;,&quot;es&quot;:&quot;Lecciones transcritas del sitio web del jeque al-Khudayr&quot;,&quot;fr&quot;:&quot;Cours retranscrits depuis le site du cheikh al-Khudayr&quot;,&quot;id&quot;:&quot;Pelajaran yang ditranskripsikan dari situs Syekh Al-Khudair&quot;,&quot;ja&quot;:&quot;フダイル師のウェブサイトから書き起こした講義&quot;,&quot;ru&quot;:&quot;Расшифрованные уроки с сайта шейха аль-Худейра&quot;,&quot;sw&quot;:&quot;Masomo yaliyorekodiwa kutoka kwenye tovuti ya Sheikh al-Khudayr&quot;,&quot;tr&quot;:&quot;Şeyh el-Hudayr’ın internet sitesinden derlenmiş dersler&quot;,&quot;ur&quot;:&quot;شیخ خضير کی ویب سائٹ سے نقل کیے گئے دروس&quot;,&quot;zh&quot;:&quot;整理自胡代尔谢赫网站的课程讲稿&quot;}" data-original="دروس مفرغة من موقع الشيخ الخضير">دروس مفرغة من موقع الشيخ الخضير</span></dd>
-            </div>
-                                        <div>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Pages numbered automatically; the part number corresponds to the lesson number — 14 lessons&quot;,&quot;es&quot;:&quot;Páginas numeradas automáticamente; el número de volumen corresponde al número de la lección: 14 lecciones&quot;,&quot;fr&quot;:&quot;Pagination automatique ; le numéro du volume correspond au numéro du cours — 14 cours&quot;,&quot;id&quot;:&quot;Halaman dinomori otomatis; nomor jilid menunjukkan nomor pelajaran — 14 pelajaran&quot;,&quot;ja&quot;:&quot;ページ番号は自動付与。巻番号は講義番号に対応（全14講義）&quot;,&quot;ru&quot;:&quot;Страницы пронумерованы автоматически; номер тома соответствует номеру урока — 14 уроков&quot;,&quot;sw&quot;:&quot;Kurasa zimehesabiwa kiotomatiki; nambari ya juzuu ni nambari ya somo — masomo 14&quot;,&quot;tr&quot;:&quot;Sayfalar otomatik numaralandırılmıştır; cilt numarası ders numarasıdır — 14 ders&quot;,&quot;ur&quot;:&quot;صفحات خودکار طور پر نمبر کیے گئے ہیں، اور جلد کا نمبر درس کا نمبر ہے - ١٤ دروس&quot;,&quot;zh&quot;:&quot;页码为自动编排；册号即课程编号——共14课&quot;}" data-original="الكتاب مرقم آليا، رقم الجزء هو رقم الدرس - ١٤ درسا">الكتاب مرقم آليا، رقم الجزء هو رقم الدرس - ١٤ درسا</span></dd>
-            </div>
-                                        <div>
-                              <dt><span dir="auto" data-tr="{&quot;en&quot;:&quot;Author page&quot;,&quot;es&quot;:&quot;Página del autor&quot;,&quot;fr&quot;:&quot;Page de l&#039;auteur&quot;,&quot;id&quot;:&quot;Halaman penulis&quot;,&quot;ja&quot;:&quot;著者ページ&quot;,&quot;ru&quot;:&quot;Страница автора&quot;,&quot;sw&quot;:&quot;Ukurasa wa mwandishi&quot;,&quot;tr&quot;:&quot;Yazar sayfası&quot;,&quot;ur&quot;:&quot;مصنف کا صفحہ&quot;,&quot;zh&quot;:&quot;作者页面&quot;}" data-original="صفحة المؤلف">صفحة المؤلف</span></dt>
-                            <dd><span dir="auto" data-tr="{&quot;en&quot;:&quot;Abd al-Karim al-Khudayr&quot;,&quot;es&quot;:&quot;Abd al-Karim al-Khudayr&quot;,&quot;fr&quot;:&quot;Abd al-Karim al-Khudayr&quot;,&quot;id&quot;:&quot;Abdul Karim Al-Khudair&quot;,&quot;ja&quot;:&quot;アブドゥルカリーム・アル＝フダイル&quot;,&quot;ru&quot;:&quot;Абд аль-Карим аль-Худейр&quot;,&quot;sw&quot;:&quot;Abdulkarim al-Khudayr&quot;,&quot;tr&quot;:&quot;Abdülkerîm el-Hudayr&quot;,&quot;zh&quot;:&quot;阿卜杜·凯里姆·胡代尔&quot;}" data-original="عبد الكريم الخضير">عبد الكريم الخضير</span></dd>
-            </div>
-                        </dl>
-    </section>
-  
-  
-  
-      <section class="panel">
-      <h2><span data-t="Books sharing the most passages with it">Books sharing the most passages with it</span></h2>
-      <table
-        class="table"
-        data-sortable
-      >
-        <thead>
-          <tr>
-            <th data-sort="text"><span data-t="Book">Book</span></th>
-            <th data-sort="text"><span data-t="Author">Author</span></th>
-            <th data-sort="number"><span data-t="Shared passages">Shared passages</span></th>
-          </tr>
-        </thead>
-        <tbody>
-                      <tr>
-              <td lang="ar">
+                  </div>
+
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Shares most with</div>
+          <ul class="space-y-1 text-sm">
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     فتاوى الشبكة الإسلامية
                   </span>
-                              </td>
-              <td lang="ar">مجموعة من المؤلفين</td>
-              <td data-value="99">99</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">99</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     جمع الجوامع المعروف بـ «الجامع الكبير»
                   </span>
-                              </td>
-              <td lang="ar">الجلال السيوطي</td>
-              <td data-value="88">88</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">88</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     المسند الموضوعي الجامع للكتب العشرة
                   </span>
-                              </td>
-              <td lang="ar">صهيب عبد الجبار</td>
-              <td data-value="88">88</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">88</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     مجلة البحوث الإسلامية
                   </span>
-                              </td>
-              <td lang="ar">مجموعة من المؤلفين</td>
-              <td data-value="87">87</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">86</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     موقع الإسلام سؤال وجواب
                   </span>
-                              </td>
-              <td lang="ar">محمد صالح المنجد</td>
-              <td data-value="85">85</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">84</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     المسند المصنف المعلل
                   </span>
-                              </td>
-              <td lang="ar">مجموعة من المؤلفين</td>
-              <td data-value="80">80</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">80</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     البحر المحيط الثجاج في شرح صحيح الإمام مسلم بن الحجاج
                   </span>
-                              </td>
-              <td lang="ar">محمد بن علي بن آدم الأثيوبي</td>
-              <td data-value="79">79</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">79</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     جامع العلوم والحكم - ت أبي النور
                   </span>
-                              </td>
-              <td lang="ar">ابن رجب الحنبلي</td>
-              <td data-value="78">78</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">78</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     الجامع الكامل في الحديث الصحيح الشامل المرتب على أبواب الفقه
                   </span>
-                              </td>
-              <td lang="ar">محمد ضياء الرحمن الأعظمي</td>
-              <td data-value="78">78</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">78</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     مرقاة المفاتيح شرح مشكاة المصابيح
                   </span>
-                              </td>
-              <td lang="ar">الملا على القاري</td>
-              <td data-value="76">76</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
+                                <span class="shrink-0 text-zinc-400 tabular-nums">76</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
                                   <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
-                  >
-                    مجلة البيان
-                  </span>
-                              </td>
-              <td lang="ar">مجموعة من المؤلفين</td>
-              <td data-value="74">74</td>
-            </tr>
-                      <tr>
-              <td lang="ar">
-                                  <span
-                    class="absent"
-                    title="Not in this edition" data-ta="{&quot;title&quot;:&quot;Not in this edition&quot;}"
+                    lang="ar"
+                    title="Not in this edition"
                   >
                     مسند أحمد - ط الرسالة
                   </span>
-                              </td>
-              <td lang="ar">أحمد بن حنبل</td>
-              <td data-value="73">73</td>
-            </tr>
-                  </tbody>
-      </table>
-    </section>
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <ul class="plain">
-                  <li>
-            <a href="../../../catalogue/1377/137777.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - T. Al-Ansari&quot;,&quot;es&quot;:&quot;Comentario de los cuarenta hadices de al-Nawawi - edición crítica de al-Ansari&quot;,&quot;fr&quot;:&quot;Commentaire des quarante hadiths de Nawawi - éd. al-Ansari&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah - Tahkik Al-Ansari&quot;,&quot;ja&quot;:&quot;『アン＝ナワウィーの四十ハディース』解説—アル＝アンサーリー校訂&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» — тахкик аль-Ансари&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arubaini za Nawawi) – iliyohakikiwa na Al-Ansari&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-Erbaʿîn en-Neveviyye (Nevevî&#039;nin Kırk Hadis şerhi) - Ensârî tahkiki&quot;,&quot;zh&quot;:&quot;《努瓦维四十段圣训注释》—安萨里校勘&quot;}" data-original="شرح الأربعين النووية- ت. الأنصاري">شرح الأربعين النووية- ت. الأنصاري</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/1377/137778.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - T. Al-Tahawi&quot;,&quot;es&quot;:&quot;Comentario de los cuarenta hadices de al-Nawawi - edición crítica de al-Tahtawi&quot;,&quot;fr&quot;:&quot;Commentaire des quarante hadiths de Nawawi - éd. al-Tahtawi&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah - Tahkik At-Tahtawi&quot;,&quot;ja&quot;:&quot;『アン＝ナワウィーの四十ハディース』解説—アッ＝タハターウィー校訂&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» — тахкик ат-Тахтави&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arubaini za Nawawi) – iliyohakikiwa na al-Tahtawi&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-Erbaʿîn en-Neveviyye (Nevevî&#039;nin Kırk Hadis şerhi) - Tahtâvî tahkiki&quot;,&quot;zh&quot;:&quot;《努瓦维四十段圣训注释》—塔赫塔维校勘&quot;}" data-original="شرح الأربعين النووية- ت. الطهطاوي">شرح الأربعين النووية- ت. الطهطاوي</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/1377/137779.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - Al-Zahra&quot;,&quot;es&quot;:&quot;Comentario de los cuarenta hadices de al-Nawawi - al-Zahra&quot;,&quot;fr&quot;:&quot;Commentaire des quarante hadiths de Nawawi - al-Zahra&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah - Az-Zahra&quot;,&quot;ja&quot;:&quot;『アン＝ナワウィーの四十ハディース』解説—アッ＝ザフラー&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» — «аз-Захра»&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arubaini za Nawawi) – Al-Zahra&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-Erbaʿîn en-Neveviyye (Nevevî&#039;nin Kırk Hadis şerhi) - al-Zahra&quot;,&quot;zh&quot;:&quot;《努瓦维四十段圣训注释》—宰赫拉出版社&quot;}" data-original="شرح الأربعين النووية- الزهراء">شرح الأربعين النووية- الزهراء</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/1416/141609.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Radiant Riyadh: Explanation of the Forty Hadiths of Al-Nawawi&quot;,&quot;es&quot;:&quot;Los jardines resplandecientes: comentario de al-Khudayr a los Cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Al-Riyad al-Zakiyya : commentaire des Quarante hadiths d&#039;al-Nawawi par al-Khudayr&quot;,&quot;id&quot;:&quot;Ar-Riyadh az-Zakiyyah: Syarah Al-Arba&#039;in an-Nawawiyyah karya Al-Khudair (Taman-Taman yang Semerbak)&quot;,&quot;ja&quot;:&quot;アル＝フダイルの『ナワウィーの四十ハディース』注解『アッ＝リヤード・アッ＝ザキーヤ』&quot;,&quot;ru&quot;:&quot;«Ар-Рияд аз-закия»: комментарий аль-Худейра к «Сорока хадисам ан-Навави»&quot;,&quot;sw&quot;:&quot;Al-Riyad al-Zakiyya: Sharh ya Al-Arba&#039;in al-Nawawiyya ya Al-Khudayr&quot;,&quot;tr&quot;:&quot;el-Hudayrî&#039;nin el-Erbaʿînü&#039;n-Neveviyye Şerhi: er-Riyâzü&#039;z-zekiyye (Nevevî&#039;nin Kırk Hadisi&#039;nin Şerhi: Arı Bahçeler)&quot;,&quot;zh&quot;:&quot;《清新花园：胡代尔对〈四十段圣训〉的注释》&quot;}" data-original="الرياض الزكية شرح الأربعين النووية للخضير">الرياض الزكية شرح الأربعين النووية للخضير</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/1416/141672.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths of Al-Nawawi&quot;,&quot;es&quot;:&quot;Explicación de los cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Commentaire des Quarante hadiths d’al-Nawawi&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in an-Nawawiyah (Empat Puluh Hadis Nawawi)&quot;,&quot;ja&quot;:&quot;ナワウィーの四十ハディース注解&quot;,&quot;ru&quot;:&quot;Разъяснение «Сорока хадисов» ан-Навави&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa Al-Arba&#039;in al-Nawawiyya (Hadithi Arobaini za al-Nawawi)&quot;,&quot;tr&quot;:&quot;Nevevî’nin Kırk Hadis’inin şerhi&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية (اربعین نووی کی شرح)&quot;,&quot;zh&quot;:&quot;《四十段圣训》注释&quot;}" data-original="شرح الأربعين النووية">شرح الأربعين النووية</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/1424/142456.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Forty Hadith of Al-Nawawi - Languages&quot;,&quot;es&quot;:&quot;Los Cuarenta de al-Nawawi — idiomas&quot;,&quot;fr&quot;:&quot;Les quarante hadiths d’al-Nawawi — langues&quot;,&quot;id&quot;:&quot;Al-Arba&#039;in An-Nawawiyyah (Empat Puluh Hadis An-Nawawi) - Berbagai bahasa&quot;,&quot;ja&quot;:&quot;ナワウィーの四十ハディース（多言語版）&quot;,&quot;ru&quot;:&quot;Сорок хадисов ан-Навави — переводы на разные языки&quot;,&quot;sw&quot;:&quot;Arubaini za al-Nawawi - tafsiri za lugha mbalimbali&quot;,&quot;tr&quot;:&quot;Nevevî&#039;nin Kırk Hadisi — farklı dillerde&quot;,&quot;ur&quot;:&quot;الأربعين النووية- لغات (اربعین نووی—زبانیں)&quot;,&quot;zh&quot;:&quot;《脑威四十段圣训》——多语种版&quot;}" data-original="الأربعين النووية- لغات">الأربعين النووية- لغات</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/1426/142601.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - Al-Khudair&quot;,&quot;es&quot;:&quot;Comentario de los Cuarenta hadices de al-Nawawi — al-Khudayr&quot;,&quot;fr&quot;:&quot;Commentaire des Quarante hadiths d&#039;al-Nawawi — al-Khudayr&quot;,&quot;id&quot;:&quot;Syarah Al-Arba&#039;in An-Nawawiyyah [Penjelasan Empat Puluh Hadis An-Nawawi] — Al-Khudhair&quot;,&quot;ja&quot;:&quot;ナワウィーの四十ハディース注解―アル＝フダイル&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» — аль-Худайр&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya - al-Khudayr (Ufafanuzi wa Hadithi Arubaini za al-Nawawi)&quot;,&quot;tr&quot;:&quot;en-Nevevî’nin Kırk Hadis’i şerhi – Hudayr&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية- الخضير (اربعین نوویہ کی شرح — الخضیر)&quot;,&quot;zh&quot;:&quot;《脑威四十段圣训注释》—胡代尔&quot;}" data-original="شرح الأربعين النووية- الخضير">شرح الأربعين النووية- الخضير</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/1933/193338.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Radiant Riyadh: A Commentary on the Forty Hadiths of Al-Nawawi - Colored&quot;,&quot;es&quot;:&quot;Al-Riyad al-zakiyya: sharh al-arba&#039;in al-nawawiyya (Los jardines puros: comentario a Los cuarenta hadices de al-Nawawi) - edición a color&quot;,&quot;fr&quot;:&quot;Al-Riyad al-Zakiyya (Les jardins purs), commentaire des Quarante hadiths d&#039;al-Nawawi - illustre&quot;,&quot;id&quot;:&quot;Ar-Riyadh Az-Zakiyya: Syarah Al-Arba‘in An-Nawawiyya – Berwarna&quot;,&quot;ja&quot;:&quot;アル＝リヤード・アッ＝ザキーヤ――ナワウィーの四十ハディース注釈（カラー版）&quot;,&quot;ru&quot;:&quot;Ар-Рияд аз-закийя: комментарий к сорока хадисам ан-Навави — цветное издание&quot;,&quot;sw&quot;:&quot;Bustani zinazochanua: Sharh ya Hadithi Arobaini za al-Nawawi (yenye rangi)&quot;,&quot;tr&quot;:&quot;er-Riyâzü’z-zekiyye: el-Erbaîn en-Neveviyye şerhi – renkli&quot;,&quot;ur&quot;:&quot;الرياض الزكية شرح الأربعين النووية- ملون (الاربعین النوویہ کی شرح — رنگین)&quot;,&quot;zh&quot;:&quot;《善人花园释义：圣使之言四十段》（彩色版）&quot;}" data-original="الرياض الزكية شرح الأربعين النووية- ملون">الرياض الزكية شرح الأربعين النووية- ملون</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/2097/209751.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths of Al-Nawawi&quot;,&quot;es&quot;:&quot;Comentario de los Cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Commentaire des Quarante hadiths d&#039;al-Nawawi&quot;,&quot;id&quot;:&quot;Syarah Al-Arba&#039;in An-Nawawiyah [Empat Puluh Hadis An-Nawawi]&quot;,&quot;ja&quot;:&quot;『アル＝アルバウーン・アン＝ナワウィーヤ』注解&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам» ан-Навави&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa al-Arba&#039;un al-Nawawiyya (Hadithi Arobaini za al-Nawawi)&quot;,&quot;tr&quot;:&quot;Şerhu’l-erbaîn en-Neveviyye (Nevevî’nin Kırk Hadisi Şerhi)&quot;,&quot;ur&quot;:&quot;شرح الأربعون النووية (اربعین نووی کی شرح)&quot;,&quot;zh&quot;:&quot;《四十段圣训》注释&quot;}" data-original="شرح الأربعون النووية">شرح الأربعون النووية</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/2347/234755.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Book of the Forty Hadiths - 4th Edition&quot;,&quot;es&quot;:&quot;Libro de los Cuarenta de al-Nawawi, 4.ª edición&quot;,&quot;fr&quot;:&quot;Le Livre des Quarante hadiths d&#039;al-Nawawi – 4e édition&quot;,&quot;id&quot;:&quot;Kitab Al-Arba&#039;in an-Nawawiyyah — Cetakan ke-4&quot;,&quot;ja&quot;:&quot;アン＝ナワウィーの四十のハディースの書―第4版&quot;,&quot;ru&quot;:&quot;Книга «Сорок хадисов ан-Навави» — 4-е издание&quot;,&quot;sw&quot;:&quot;Kitabu cha Hadithi Arobaini za Nawawi — Toleo la 4&quot;,&quot;tr&quot;:&quot;Nevevî&#039;nin Kırk Hadis Kitabı – 4. baskı&quot;,&quot;ur&quot;:&quot;كتاب الأربعين النووية (امام نووی کی چالیس احادیث) — طبع چہارم&quot;,&quot;zh&quot;:&quot;《努瓦维四十段圣训集》第4版&quot;}" data-original="كتاب الأربعين النووية- ط4">كتاب الأربعين النووية- ط4</span>
-            </a>
-          </li>
-                  <li>
-            <a href="../../../catalogue/2473/247331.html">
-              <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths of Al-Nawawi&quot;,&quot;es&quot;:&quot;Comentario de los cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Commentaire des Quarante hadiths d&#039;al-Nawawi&quot;,&quot;id&quot;:&quot;Syarah Al-Arba&#039;in An-Nawawiyyah&quot;,&quot;ja&quot;:&quot;『アン＝ナワウィーの四十ハディース』注釈&quot;,&quot;ru&quot;:&quot;Комментарий к сорока хадисам ан-Навави&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa Hadithi Arobaini za al-Nawawi&quot;,&quot;tr&quot;:&quot;Nevevî&#039;nin Kırk Hadisi&#039;nin Şerhi&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية (اربعین نووی کی شرح)&quot;,&quot;zh&quot;:&quot;《脑威四十圣训注释》&quot;}" data-original="شرح الأربعين النووية">شرح الأربعين النووية</span>
-            </a>
-          </li>
-              </ul>
-    </section>
-  
-      <section
-      class="panel"
-      id="contents"
-    >
-      <h2><span data-t="Contents">Contents</span></h2>
-      <ol
-        class="contents"
+                                <span class="shrink-0 text-zinc-400 tabular-nums">73</span>
+              </li>
+                          <li class="flex items-baseline justify-between gap-3">
+                                  <span
+                    lang="ar"
+                    title="Not in this edition"
+                  >
+                    مجلة البيان
+                  </span>
+                                <span class="shrink-0 text-zinc-400 tabular-nums">73</span>
+              </li>
+                      </ul>
+        
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Also in the catalogue</div>
+          <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                          <a
+  href="../../../catalogue/1377/137777.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/1377/137777.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - T. Al-Ansari&quot;,&quot;es&quot;:&quot;Comentario de los cuarenta hadices de al-Nawawi - edición crítica de al-Ansari&quot;,&quot;fr&quot;:&quot;Commentaire des quarante hadiths de Nawawi - éd. al-Ansari&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah - Tahkik Al-Ansari&quot;,&quot;ja&quot;:&quot;『アン＝ナワウィーの四十ハディース』解説—アル＝アンサーリー校訂&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» — тахкик аль-Ансари&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arubaini za Nawawi) – iliyohakikiwa na Al-Ansari&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-Erbaʿîn en-Neveviyye (Nevevî&#039;nin Kırk Hadis şerhi) - Ensârî tahkiki&quot;,&quot;zh&quot;:&quot;《努瓦维四十段圣训注释》—安萨里校勘&quot;}" data-original="شرح الأربعين النووية- ت. الأنصاري">شرح الأربعين النووية- ت. الأنصاري</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
         lang="ar"
         dir="rtl"
+        data-arabic-original
       >
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/1.html#p2">شرح الأربعين النووية (١)</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/37.html#p37">شرح الأربعين النووية (٢)</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/68.html#p68">شرح الأربعين النووية (٣)</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/100.html#p100">شرح الأربعين النووية (٤)</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/132.html#p132">شرح الأربعين النووية (٥)</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/158.html#p158">شرح الأربعين النووية (٦)</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/191.html#p191">شرح الأربعين النووية (٧)</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/221.html#p221">شرح الأربعين النووية (٨)</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/253.html#p253">شرح الأربعين النووية (٩)</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/283.html#p283">شرح الأربعين النووية (١٠)</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/311.html#p311">شرح الأربعين النووية (١١)</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/337.html#p337">شرح الأربعين النووية (١٢)</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/371.html#p371">شرح الأربعين النووية (١٣)</a>
-                      </li>
-                  <li style="--depth: 0">
-                          <a href="../../../books/076/7603/404.html#p404">شرح الأربعين النووية (١٤)</a>
-                      </li>
-              </ol>
-    </section>
-    </main>
+        شرح الأربعين النووية- ت. الأنصاري
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                          <a
+  href="../../../catalogue/1377/137778.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/1377/137778.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - T. Al-Tahawi&quot;,&quot;es&quot;:&quot;Comentario de los cuarenta hadices de al-Nawawi - edición crítica de al-Tahtawi&quot;,&quot;fr&quot;:&quot;Commentaire des quarante hadiths de Nawawi - éd. al-Tahtawi&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah - Tahkik At-Tahtawi&quot;,&quot;ja&quot;:&quot;『アン＝ナワウィーの四十ハディース』解説—アッ＝タハターウィー校訂&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» — тахкик ат-Тахтави&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arubaini za Nawawi) – iliyohakikiwa na al-Tahtawi&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-Erbaʿîn en-Neveviyye (Nevevî&#039;nin Kırk Hadis şerhi) - Tahtâvî tahkiki&quot;,&quot;zh&quot;:&quot;《努瓦维四十段圣训注释》—塔赫塔维校勘&quot;}" data-original="شرح الأربعين النووية- ت. الطهطاوي">شرح الأربعين النووية- ت. الطهطاوي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح الأربعين النووية- ت. الطهطاوي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                          <a
+  href="../../../catalogue/1377/137779.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/1377/137779.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths - Al-Zahra&quot;,&quot;es&quot;:&quot;Comentario de los cuarenta hadices de al-Nawawi - al-Zahra&quot;,&quot;fr&quot;:&quot;Commentaire des quarante hadiths de Nawawi - al-Zahra&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in An-Nawawiyyah - Az-Zahra&quot;,&quot;ja&quot;:&quot;『アン＝ナワウィーの四十ハディース』解説—アッ＝ザフラー&quot;,&quot;ru&quot;:&quot;Комментарий к «Сорока хадисам ан-Навави» — «аз-Захра»&quot;,&quot;sw&quot;:&quot;Sharh al-Arba&#039;in al-Nawawiyya (Ufafanuzi wa Hadithi Arubaini za Nawawi) – Al-Zahra&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-Erbaʿîn en-Neveviyye (Nevevî&#039;nin Kırk Hadis şerhi) - al-Zahra&quot;,&quot;zh&quot;:&quot;《努瓦维四十段圣训注释》—宰赫拉出版社&quot;}" data-original="شرح الأربعين النووية- الزهراء">شرح الأربعين النووية- الزهراء</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح الأربعين النووية- الزهراء
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                          <a
+  href="../../../catalogue/1416/141609.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/1416/141609.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Radiant Riyadh: Explanation of the Forty Hadiths of Al-Nawawi&quot;,&quot;es&quot;:&quot;Los jardines resplandecientes: comentario de al-Khudayr a los Cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Al-Riyad al-Zakiyya : commentaire des Quarante hadiths d&#039;al-Nawawi par al-Khudayr&quot;,&quot;id&quot;:&quot;Ar-Riyadh az-Zakiyyah: Syarah Al-Arba&#039;in an-Nawawiyyah karya Al-Khudair (Taman-Taman yang Semerbak)&quot;,&quot;ja&quot;:&quot;アル＝フダイルの『ナワウィーの四十ハディース』注解『アッ＝リヤード・アッ＝ザキーヤ』&quot;,&quot;ru&quot;:&quot;«Ар-Рияд аз-закия»: комментарий аль-Худейра к «Сорока хадисам ан-Навави»&quot;,&quot;sw&quot;:&quot;Al-Riyad al-Zakiyya: Sharh ya Al-Arba&#039;in al-Nawawiyya ya Al-Khudayr&quot;,&quot;tr&quot;:&quot;el-Hudayrî&#039;nin el-Erbaʿînü&#039;n-Neveviyye Şerhi: er-Riyâzü&#039;z-zekiyye (Nevevî&#039;nin Kırk Hadisi&#039;nin Şerhi: Arı Bahçeler)&quot;,&quot;zh&quot;:&quot;《清新花园：胡代尔对〈四十段圣训〉的注释》&quot;}" data-original="الرياض الزكية شرح الأربعين النووية للخضير">الرياض الزكية شرح الأربعين النووية للخضير</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الرياض الزكية شرح الأربعين النووية للخضير
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                          <a
+  href="../../../catalogue/1416/141672.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../../catalogue/1416/141672.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Forty Hadiths of Al-Nawawi&quot;,&quot;es&quot;:&quot;Explicación de los cuarenta hadices de al-Nawawi&quot;,&quot;fr&quot;:&quot;Commentaire des Quarante hadiths d’al-Nawawi&quot;,&quot;id&quot;:&quot;Penjelasan Al-Arba&#039;in an-Nawawiyah (Empat Puluh Hadis Nawawi)&quot;,&quot;ja&quot;:&quot;ナワウィーの四十ハディース注解&quot;,&quot;ru&quot;:&quot;Разъяснение «Сорока хадисов» ан-Навави&quot;,&quot;sw&quot;:&quot;Ufafanuzi wa Al-Arba&#039;in al-Nawawiyya (Hadithi Arobaini za al-Nawawi)&quot;,&quot;tr&quot;:&quot;Nevevî’nin Kırk Hadis’inin şerhi&quot;,&quot;ur&quot;:&quot;شرح الأربعين النووية (اربعین نووی کی شرح)&quot;,&quot;zh&quot;:&quot;《四十段圣训》注释&quot;}" data-original="شرح الأربعين النووية">شرح الأربعين النووية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح الأربعين النووية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                          <a
+  href="../../../catalogue/1424/142456.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <div
+      class="flex aspect-[3/4] w-full flex-col items-center justify-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-6 size-8" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
 
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+            </div>
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Forty Hadith of Al-Nawawi - Languages&quot;,&quot;es&quot;:&quot;Los Cuarenta de al-Nawawi — idiomas&quot;,&quot;fr&quot;:&quot;Les quarante hadiths d’al-Nawawi — langues&quot;,&quot;id&quot;:&quot;Al-Arba&#039;in An-Nawawiyyah (Empat Puluh Hadis An-Nawawi) - Berbagai bahasa&quot;,&quot;ja&quot;:&quot;ナワウィーの四十ハディース（多言語版）&quot;,&quot;ru&quot;:&quot;Сорок хадисов ан-Навави — переводы на разные языки&quot;,&quot;sw&quot;:&quot;Arubaini za al-Nawawi - tafsiri za lugha mbalimbali&quot;,&quot;tr&quot;:&quot;Nevevî&#039;nin Kırk Hadisi — farklı dillerde&quot;,&quot;ur&quot;:&quot;الأربعين النووية- لغات (اربعین نووی—زبانیں)&quot;,&quot;zh&quot;:&quot;《脑威四十段圣训》——多语种版&quot;}" data-original="الأربعين النووية- لغات">الأربعين النووية- لغات</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        الأربعين النووية- لغات
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                      </div>
+        
+                  <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Contents</div>
+          <div class="rounded-xl border border-zinc-200 p-5 dark:border-zinc-700">
+            <div
+  dir="rtl"
+  x-data="staticContents(JSON.parse('{\u0022src\u0022:\u0022contents.js\u0022,\u0022pageId\u0022:null}'))"
+  x-on:load-contents.window="load()"
+   x-init="load()" >
+  <div class="w-full relative block group/input mb-3" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z" clip-rule="evenodd"/>
+</svg>
+
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="query" placeholder="Filter contents..." aria-label="Filter contents" data-test="contents-filter"
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="entries === null" data-flux-text >Loading…</p>
+  <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 mb-3" x-cloak="x-cloak" x-show="entries !== null && query.trim() !== '' && shown.length === 0" data-flux-text >No entries match.</p>
+  <div class="max-h-[32rem] overflow-y-auto">
+    <ul>
+      <template
+        x-for="(entry, index) in shown"
+        :key="index"
+      >
+        <li
+          class="relative py-0.5"
+          x-bind:style="`padding-inline-start: ${entry.d * 0.875}rem`"
+          x-bind:data-current="entry === entries[current] ? '' : null"
+        >
+          <template
+            x-for="level in entry.d"
+            :key="level"
+          >
+            <span
+              class="absolute inset-y-0 border-s border-zinc-300 dark:border-zinc-600"
+              x-bind:style="`inset-inline-start: ${(level - 1) * 0.875 + 0.25}rem`"
+              aria-hidden="true"
+            ></span>
+          </template>
+          <a
+            class="text-base text-zinc-700 underline decoration-zinc-800/20 underline-offset-[6px] hover:decoration-current dark:text-zinc-300 dark:decoration-white/20"
+            x-bind:class="
+              entry === entries[current] &&
+              'rounded bg-amber-100 px-1 font-semibold text-zinc-900 dark:bg-amber-900/40 dark:text-white'
+            "
+            x-bind:href="entry.h"
+            x-on:click="$flux.modal('book-contents').close()"
+            x-text="entry.t"
+            data-test="contents-entry"
+          ></a>
+        </li>
+      </template>
+    </ul>
+  </div>
+</div>
+          </div>
+              </div>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
+  </section>
+    </div>
 </body>
 </html>

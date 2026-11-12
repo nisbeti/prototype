@@ -3,18 +3,55 @@
   lang="en"
   dir="ltr"
   data-root="../../"
+  data-section="publishers"
 >
 <head>
   <meta charset="utf-8" />
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1"
+    content="width=device-width, initial-scale=1.0"
   />
   <title>مؤسسة معالم السنن</title>
   <link
-    rel="stylesheet"
-    href="../../assets/reader.css"
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
   />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
   <script src="../../assets/i18n.js"></script>
   <script>
     (function () {
@@ -33,234 +70,467 @@
       }
       var root = document.documentElement;
       root.lang = language;
-      root.dir = languages[language] ? languages[language].dir : 'rtl';
-      var theme = get('theme');
-      if (theme === 'dark' || (theme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        root.classList.add('dark');
-      }
-      root.dataset.arabicFont = get('arabicFont') || 'amiri';
-      root.dataset.quranFont = get('quranFont') || 'uthmani';
-      if (get('passages') === 'off') {
-        root.dataset.hidePassages = '';
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
       }
     })();
   </script>
   <script
-    src="../../assets/reader.js"
+    src="../../assets/static.js"
     defer
   ></script>
 </head>
-<body>
-  <header class="site-header">
-    <a
-      class="site-name"
-      href="../../index.html"
-      lang="ar"
-    >
-      باحث
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
     </a>
-    <nav class="site-nav">
-      <a href="../../books.html"><span data-t="Books">Books</span></a>
-      <a href="../../catalogue.html"><span data-t="Catalogue">Catalogue</span></a>
-      <a href="../../authors.html"><span data-t="Authors">Authors</span></a>
-      <a href="../../publishers.html"><span data-t="Publishers">Publishers</span></a>
-      <a href="../../quran/index.html"><span data-t="Quran">Quran</span></a>
-      <a
-        href="../../settings.html"
-        aria-label="Settings" title="Settings" data-ta="{&quot;aria-label&quot;:&quot;Settings&quot;,&quot;title&quot;:&quot;Settings&quot;}"
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ma&#039;alim Al-Sunnah Foundation&quot;,&quot;es&quot;:&quot;Fundación Ma&#039;alim al-Sunnah&quot;,&quot;fr&quot;:&quot;Fondation Ma&#039;alim al-Sunna&quot;,&quot;id&quot;:&quot;Yayasan Ma&#039;alim As-Sunan&quot;,&quot;ja&quot;:&quot;マアーリム・アッ＝スンナ財団&quot;,&quot;ru&quot;:&quot;Фонд «Маалим ас-Сунна»&quot;,&quot;sw&quot;:&quot;Taasisi ya Maalim al-Sunan&quot;,&quot;tr&quot;:&quot;Meâlimü&#039;s-Sünen Kurumu&quot;,&quot;zh&quot;:&quot;圣训纲要基金会&quot;}" data-original="مؤسسة معالم السنن">مؤسسة معالم السنن</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/496/49635.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/496/49635.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Commentary on the Pages Explaining the Leaflets&quot;,&quot;es&quot;:&quot;Embellecimiento de las páginas con el comentario de al-Waraqat&quot;,&quot;fr&quot;:&quot;Tahrir al-Safahat bi-sharh al-Waraqat (Éclaircissement des pages par le commentaire d&#039;al-Waraqat)&quot;,&quot;id&quot;:&quot;Menghias Halaman dengan Syarah al-Waraqat&quot;,&quot;ja&quot;:&quot;『ワラカート』注解『タフビール・アッ＝サファハート』&quot;,&quot;ru&quot;:&quot;Украшение страниц комментарием к «аль-Варакат»&quot;,&quot;sw&quot;:&quot;Kupamba Kurasa kwa Ufafanuzi wa al-Waraqat (Vijikaratasi)&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-Verekât üzerine sayfaları süslemek&quot;,&quot;zh&quot;:&quot;《教法原理纲要》注释：书页润饰&quot;}" data-original="تحبير الصفحات بشرح الورقات">تحبير الصفحات بشرح الورقات</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        ⚙
-      </a>
-    </nav>
-  </header>
-
-  <main class="site-main">
-      <h1 class="page-title"><span dir="auto" data-tr="{&quot;en&quot;:&quot;Ma&#039;alim Al-Sunnah Foundation&quot;,&quot;es&quot;:&quot;Fundación Ma&#039;alim al-Sunnah&quot;,&quot;fr&quot;:&quot;Fondation Ma&#039;alim al-Sunna&quot;,&quot;id&quot;:&quot;Yayasan Ma&#039;alim As-Sunan&quot;,&quot;ja&quot;:&quot;マアーリム・アッ＝スンナ財団&quot;,&quot;ru&quot;:&quot;Фонд «Маалим ас-Сунна»&quot;,&quot;sw&quot;:&quot;Taasisi ya Maalim al-Sunan&quot;,&quot;tr&quot;:&quot;Meâlimü&#039;s-Sünen Kurumu&quot;,&quot;zh&quot;:&quot;圣训纲要基金会&quot;}" data-original="مؤسسة معالم السنن">مؤسسة معالم السنن</span></h1>
-  <p class="muted">
-    <span data-t="Publisher">Publisher</span>
-      </p>
-
-  
-  
-      <section class="panel">
-      <h2><span data-t="In the catalogue">In the catalogue</span></h2>
-      <table
-  class="table"
-  data-sortable
-  >
-  <thead>
-    <tr>
-      <th data-sort="text"><span data-t="Title">Title</span></th>
-      <th data-sort="text"><span data-t="Author">Author</span></th>
-      <th data-sort="text"><span data-t="Publisher">Publisher</span></th>
-      <th data-sort="text"><span data-t="Published">Published</span></th>
-    </tr>
-  </thead>
-  <tbody>
-          <tr>
-        <td>
-          <a href="../../catalogue/496/49635.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentary on the Pages Explaining the Leaflets&quot;,&quot;es&quot;:&quot;Embellecimiento de las páginas con el comentario de al-Waraqat&quot;,&quot;fr&quot;:&quot;Tahrir al-Safahat bi-sharh al-Waraqat (Éclaircissement des pages par le commentaire d&#039;al-Waraqat)&quot;,&quot;id&quot;:&quot;Menghias Halaman dengan Syarah al-Waraqat&quot;,&quot;ja&quot;:&quot;『ワラカート』注解『タフビール・アッ＝サファハート』&quot;,&quot;ru&quot;:&quot;Украшение страниц комментарием к «аль-Варакат»&quot;,&quot;sw&quot;:&quot;Kupamba Kurasa kwa Ufafanuzi wa al-Waraqat (Vijikaratasi)&quot;,&quot;tr&quot;:&quot;Şerhu&#039;l-Verekât üzerine sayfaları süslemek&quot;,&quot;zh&quot;:&quot;《教法原理纲要》注释：书页润饰&quot;}" data-original="تحبير الصفحات بشرح الورقات">تحبير الصفحات بشرح الورقات</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم بن عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/641/64118.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Guidance for the Righteous on the Explanation of the Comprehensive Narrations&quot;,&quot;es&quot;:&quot;Irshad al-Akhyar ila Sharh Jawami al-Akhbar (Guía para los virtuosos: comentario de Colecciones de noticias)&quot;,&quot;fr&quot;:&quot;Irshad al-Akhyar ila sharh Jawami al-Akhbar (Guide des meilleurs vers le commentaire des recueils de traditions)&quot;,&quot;id&quot;:&quot;Bimbingan bagi Orang-Orang Terbaik dalam Syarah Jawami&#039; Al-Akhbar&quot;,&quot;ja&quot;:&quot;イルシャード・アル＝アフヤール・イラー・シャルフ・ジャワーミウ・アル＝アフバール（善人を導く、伝承集の注釈）&quot;,&quot;ru&quot;:&quot;Иршад аль-ахйар иля шарх джавами&#039; аль-ахбар&quot;,&quot;sw&quot;:&quot;Irshad al-Akhyar ila Sharh Jawami al-Akhbar (Mwongozo wa walio wema katika ufafanuzi wa mikusanyo ya habari)&quot;,&quot;tr&quot;:&quot;İrşâdü&#039;l-ahyâr ilâ şerhi Cevâmi&#039;i&#039;l-ahbâr (Haberlerin Özlü Derlemesinin Şerhine Rehber)&quot;,&quot;ur&quot;:&quot;إرشاد الأخيار إلى شرح جوامع الأخبار (منتخب احادیث کی شرح کی جانب نیک لوگوں کی رہنمائی)&quot;,&quot;zh&quot;:&quot;《引导贤者：〈圣训总汇〉注释》&quot;}" data-original="إرشاد الأخيار إلى شرح جوامع الأخبار">إرشاد الأخيار إلى شرح جوامع الأخبار</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم بن عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن</td>
-        <td dir="auto">1437هـ 2016م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1112/111289.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Sunnah Comments on the Al-Aqeedah Al-Waasitiyyah - Colored&quot;,&quot;es&quot;:&quot;Comentarios sunníes sobre la doctrina de Wasitiyya (ilustrado)&quot;,&quot;fr&quot;:&quot;Annotations sunnites sur la profession de foi d&#039;al-Wasitiyya — en couleurs&quot;,&quot;id&quot;:&quot;Catatan-Catatan Sunnah atas Akidah Wasithiyah (Berwarna)&quot;,&quot;ja&quot;:&quot;『アル＝アキーダ・アル＝ワースィティーヤ』に関するスンナ派の注釈（カラー版）&quot;,&quot;ru&quot;:&quot;Суннитские комментарии к «Васитийскому вероучению» (цветное издание)&quot;,&quot;sw&quot;:&quot;Maelezo ya Kisunni kuhusu Aqida ya Wasitiyya — toleo la rangi&quot;,&quot;tr&quot;:&quot;Akîde-i Vâsıtıyye Üzerine Sünnî Notlar (Renkli)&quot;,&quot;zh&quot;:&quot;《对〈瓦西提信条〉的逊尼派注释——彩印版》&quot;}" data-original="التعليقات السنية على العقيدة الواسطية- ملون">التعليقات السنية على العقيدة الواسطية- ملون</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1117/111799.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Trials: Their Signs, Causes, and Ways to Prevent Them&quot;,&quot;es&quot;:&quot;Las tribulaciones: sus señales, causas y formas de prevención&quot;,&quot;fr&quot;:&quot;Les troubles : signes, causes et moyens de s’en prémunir&quot;,&quot;id&quot;:&quot;Fitnah: Tanda-Tanda, Sebab, dan Cara Menghindarinya&quot;,&quot;ja&quot;:&quot;試練―その兆候、原因、予防方法&quot;,&quot;ru&quot;:&quot;Смуты: их признаки, причины и способы защиты от них&quot;,&quot;sw&quot;:&quot;Fitna: Alama Zake, Sababu Zake na Njia za Kujikinga Nazo&quot;,&quot;tr&quot;:&quot;Fitneler: Alametleri, Sebepleri ve Korunma Yolları&quot;,&quot;zh&quot;:&quot;《纷争：征兆、成因与防范之道》&quot;}" data-original="الفتن علاماتها أسبابها طرق الوقاية منها">الفتن علاماتها أسبابها طرق الوقاية منها</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">معالم السنن • مدار الوطن للنشر</td>
-        <td dir="auto">1438 هـ</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1124/112496.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Comments of the Sunnis on the Al-Aqidah Al-Wasitiyyah&quot;,&quot;es&quot;:&quot;Comentarios suníes a al-Aqida al-Wasitiyya (La doctrina wasitiyya)&quot;,&quot;fr&quot;:&quot;Commentaires sunnites sur al-Aqida al-Wasitiyya (La profession de foi de Wasit)&quot;,&quot;id&quot;:&quot;Catatan Sunnah atas Al-Aqidah al-Wasitiyah&quot;,&quot;ja&quot;:&quot;『ワースィティーヤ信条』に関するスンナ派の注解&quot;,&quot;ru&quot;:&quot;Суннитские комментарии к «аль-Акида аль-Васитийя»&quot;,&quot;sw&quot;:&quot;Maelezo ya Kisunni kuhusu Al-Aqida al-Wasitiyya (Itikadi ya Wasit)&quot;,&quot;tr&quot;:&quot;el-Akîdetü&#039;l-Vâsıtıyye Üzerine Sünnî Açıklamalar&quot;,&quot;ur&quot;:&quot;التعليقات السنية على العقيدة الواسطية (عقیدہ واسطیہ پر سنی تعلیقات)&quot;,&quot;zh&quot;:&quot;《瓦西提信条》的逊尼派注释&quot;}" data-original="التعليقات السنية على العقيدة الواسطية">التعليقات السنية على العقيدة الواسطية</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن • دار ابن الجوزي</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1129/112935.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Signs of Trials, Their Causes, and Ways to Prevent Them - Colored&quot;,&quot;es&quot;:&quot;Las tribulaciones: sus señales, causas y formas de prevenirlas (a color)&quot;,&quot;fr&quot;:&quot;Les troubles : leurs signes, leurs causes et les moyens de s&#039;en prémunir — en couleur&quot;,&quot;id&quot;:&quot;Fitnah: Tanda-Tandanya, Sebab-Sebabnya, dan Cara Mencegahnya—Berwarna&quot;,&quot;ja&quot;:&quot;内乱――その兆候、原因、予防法（カラー版）&quot;,&quot;ru&quot;:&quot;Смута: её признаки, причины и способы защиты от неё — цветное издание&quot;,&quot;sw&quot;:&quot;Fitna: alama zake, sababu zake na njia za kujikinga nazo – yenye rangi&quot;,&quot;tr&quot;:&quot;Fitneler: alametleri, sebepleri ve korunma yolları — renkli&quot;,&quot;ur&quot;:&quot;فتنے: ان کی علامات، اسباب اور ان سے بچاؤ کے طریقے — رنگین&quot;,&quot;zh&quot;:&quot;纷争：其征兆、原因与防范方法（彩色版）&quot;}" data-original="الفتن علاماتها، أسبابها، طرق الوقاية منها- ملون">الفتن علاماتها، أسبابها، طرق الوقاية منها- ملون</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">معالم السنن • مدار الوطن للنشر</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1393/139355.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Hidden Pearl in the Conditions of Chains and Texts - Colored&quot;,&quot;es&quot;:&quot;Comentario de La perla oculta sobre el estado de las cadenas de transmisión y los textos, edición a color&quot;,&quot;fr&quot;:&quot;Sharh al-lu&#039;lu&#039; al-maknun fi ahwal al-asanid wa-l-mutun (Commentaire de la perle cachée sur l’état des chaînes de transmission et des textes) — édition en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Permata Terpendam tentang Keadaan Sanad dan Matan (Berwarna)&quot;,&quot;ja&quot;:&quot;『秘められた真珠――伝承経路と本文の諸相』の解説（カラー版）&quot;,&quot;ru&quot;:&quot;Комментарий к «Сокровенной жемчужине» о состояниях цепочек передатчиков и текстов хадисов — цветное издание&quot;,&quot;sw&quot;:&quot;Sharh al-Lu&#039;lu&#039; al-Maknun kuhusu Hali za Minyororo ya Wasimulizi na Matini — Toleo la Rangi&quot;,&quot;tr&quot;:&quot;Gizli İnci&#039;nin Şerhi: İsnad ve Metinlerin Durumları - Renkli&quot;,&quot;zh&quot;:&quot;《〈珍藏的珍珠〉注释：传述链与文本的情况》（彩色版）&quot;}" data-original="شرح اللؤلؤ المكنون في أحوال الأسانيد والمتون- ملون">شرح اللؤلؤ المكنون في أحوال الأسانيد والمتون- ملون</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن • مدار الوطن للنشر</td>
-        <td dir="auto">1439هـ 2018م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1393/139357.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of Jabir&#039;s Hadith on the Description of the Prophet&#039;s ﷺ Pilgrimage (Colored)&quot;,&quot;es&quot;:&quot;Comentario del hadiz de Jabir sobre la descripción de la peregrinación del Profeta ﷺ, edición a color&quot;,&quot;fr&quot;:&quot;Sharh hadith Jabir fi sifat hijjat al-nabi ﷺ (Commentaire du hadith de Jabir sur la description du pèlerinage du Prophète ﷺ) — édition en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Hadis Jabir tentang Tata Cara Haji Nabi ﷺ (Berwarna)&quot;,&quot;ja&quot;:&quot;預言者 ﷺ の巡礼の様式に関するジャービルのハディースの解説（カラー版）&quot;,&quot;ru&quot;:&quot;Комментарий к хадису Джабира об описании хаджа Пророка ﷺ — цветное издание&quot;,&quot;sw&quot;:&quot;Sharh ya Hadithi ya Jabir kuhusu Sifa za Hija ya Mtume ﷺ — Toleo la Rangi&quot;,&quot;tr&quot;:&quot;Câbir Hadisinin Şerhi: Hz. Peygamber&#039;in Haccının Niteliği - Renkli&quot;,&quot;zh&quot;:&quot;《贾比尔关于先知朝觐仪式描述的圣训注释》（彩色版）&quot;}" data-original="شرح حديث جابر في صفة حجة النبي ﷺ ملون">شرح حديث جابر في صفة حجة النبي ﷺ ملون</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن • مدار الوطن للنشر</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1393/139358.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Book of Trials from Sahih al-Bukhari - Colored&quot;,&quot;es&quot;:&quot;Comentario del Libro de las tribulaciones de Sahih al-Bujari, edición a color&quot;,&quot;fr&quot;:&quot;Sharh Kitab al-Fitan min Sahih al-Bukhari (Commentaire du « Livre des troubles » extrait du Sahih d’al-Bukhari) — édition en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Kitab Fitnah dalam Shahih Al-Bukhari (Berwarna)&quot;,&quot;ja&quot;:&quot;サヒーフ・ブハーリー『フィタンの書』の解説（カラー版）&quot;,&quot;ru&quot;:&quot;Комментарий к книге «Смуты» из «Сахих аль-Бухари» — цветное издание&quot;,&quot;sw&quot;:&quot;Sharh ya Kitabu cha Fitna kutoka Sahih al-Bukhari — Toleo la Rangi&quot;,&quot;tr&quot;:&quot;Sahîh-i Buhârî&#039;deki Fiten Kitabı&#039;nın Şerhi - Renkli&quot;,&quot;zh&quot;:&quot;《布哈里圣训实录〈纷争篇〉注释》（彩色版）&quot;}" data-original="شرح كتاب الفتن من صحيح البخاري- ملون">شرح كتاب الفتن من صحيح البخاري- ملون</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن • مدار الوطن للنشر</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1399/139989.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Commentary on the Summary of the Sciences of Hadith&quot;,&quot;es&quot;:&quot;Glosa a Compendio de las ciencias del hadiz&quot;,&quot;fr&quot;:&quot;Commentaire marginal de l&#039;Abrégé des sciences du hadith&quot;,&quot;id&quot;:&quot;Hasyiyah atas Ikhtishar Ulum al-Hadits&quot;,&quot;ja&quot;:&quot;『ハディース学概論』への注釈&quot;,&quot;ru&quot;:&quot;Комментарий к «Краткому изложению наук о хадисе»&quot;,&quot;sw&quot;:&quot;Tanbihi Pembeni ya Mukhtasar Ulum al-Hadith&quot;,&quot;tr&quot;:&quot;Hadis ilimlerinin ihtisarı üzerine hâşiye&quot;,&quot;zh&quot;:&quot;《〈圣训学概要〉注释》&quot;}" data-original="حاشية على اختصار علوم الحديث">حاشية على اختصار علوم الحديث</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم بن عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن • مدار الوطن للنشر</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1933/193338.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Radiant Riyadh: A Commentary on the Forty Hadiths of Al-Nawawi - Colored&quot;,&quot;es&quot;:&quot;Al-Riyad al-zakiyya: sharh al-arba&#039;in al-nawawiyya (Los jardines puros: comentario a Los cuarenta hadices de al-Nawawi) - edición a color&quot;,&quot;fr&quot;:&quot;Al-Riyad al-Zakiyya (Les jardins purs), commentaire des Quarante hadiths d&#039;al-Nawawi - illustre&quot;,&quot;id&quot;:&quot;Ar-Riyadh Az-Zakiyya: Syarah Al-Arba‘in An-Nawawiyya – Berwarna&quot;,&quot;ja&quot;:&quot;アル＝リヤード・アッ＝ザキーヤ――ナワウィーの四十ハディース注釈（カラー版）&quot;,&quot;ru&quot;:&quot;Ар-Рияд аз-закийя: комментарий к сорока хадисам ан-Навави — цветное издание&quot;,&quot;sw&quot;:&quot;Bustani zinazochanua: Sharh ya Hadithi Arobaini za al-Nawawi (yenye rangi)&quot;,&quot;tr&quot;:&quot;er-Riyâzü’z-zekiyye: el-Erbaîn en-Neveviyye şerhi – renkli&quot;,&quot;ur&quot;:&quot;الرياض الزكية شرح الأربعين النووية- ملون (الاربعین النوویہ کی شرح — رنگین)&quot;,&quot;zh&quot;:&quot;《善人花园释义：圣使之言四十段》（彩色版）&quot;}" data-original="الرياض الزكية شرح الأربعين النووية- ملون">الرياض الزكية شرح الأربعين النووية- ملون</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم بن عبد الله الخضير</td>
-        <td dir="auto">معالم السنن • دار ابن الجوزي</td>
-        <td dir="auto">1438هـ 2017م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/1989/198906.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Book of Page Elaboration with Explanation of the Leaflets - Colored&quot;,&quot;es&quot;:&quot;Libro Tahbir al-Safahat: comentario de al-Waraqat (Embellecimiento de las páginas), ilustrado&quot;,&quot;fr&quot;:&quot;Livre Tahrir al-Safahat bi-sharh al-Waraqat [Embellir les pages par le commentaire d&#039;al-Waraqat] - en couleur&quot;,&quot;id&quot;:&quot;Kitab Tahbir as-Safahat bi Syarh al-Waraqat (Menghias halaman dengan penjelasan Al-Waraqat) – berwarna&quot;,&quot;ja&quot;:&quot;『ワラカート』注解による諸ページの装飾――カラー版&quot;,&quot;ru&quot;:&quot;Книга «Тахбир ас-сафахат» с комментарием к «аль-Варакат» — цветное издание&quot;,&quot;sw&quot;:&quot;Kitabu Takhbir al-Safahat bi-Sharh al-Waraqat (Kupamba kurasa kwa ufafanuzi wa al-Waraqat) - toleo la rangi&quot;,&quot;tr&quot;:&quot;Varakât Şerhiyle Sayfaları Güzelleştirme Kitabı – Renkli&quot;,&quot;ur&quot;:&quot;كتاب تحبير الصفحات بشرح الورقات - ملون (كتاب تحبير الصفحات بشرح الورقات — رنگین)&quot;,&quot;zh&quot;:&quot;《〈瓦拉卡特〉注解：书页润饰》彩色版&quot;}" data-original="كتاب تحبير الصفحات بشرح الورقات - ملون">كتاب تحبير الصفحات بشرح الورقات - ملون</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم بن عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن</td>
-        <td dir="auto"></td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2399/239906.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Muwatta of Imam Malik, may Allah have mercy on him&quot;,&quot;es&quot;:&quot;Comentario del Muwatta del imam Malik, que Allah tenga misericordia de él&quot;,&quot;fr&quot;:&quot;Commentaire du Muwatta de l&#039;imam Malik&quot;,&quot;id&quot;:&quot;Penjelasan Al-Muwaththa&#039; karya Imam Malik, Semoga Allah Merahmatinya&quot;,&quot;ja&quot;:&quot;イマーム・マーリクの『ムワッタ』注釈&quot;,&quot;ru&quot;:&quot;Комментарий к «аль-Муватта» имама Малика, да возвеличит его Аллах&quot;,&quot;sw&quot;:&quot;Sharh al-Muwatta ya Imam Malik (Ufafanuzi wa Muwatta ya Imam Malik)&quot;,&quot;tr&quot;:&quot;İmam Mâlik’in Muvatta’ının Şerhi&quot;,&quot;ur&quot;:&quot;شرح موطأ الإمام مالك رحمه الله تعالى (امام مالک رحمہ اللہ کے موطأ کی شرح)&quot;,&quot;zh&quot;:&quot;《马立克伊玛目〈穆宛塔〉注释》&quot;}" data-original="شرح موطأ الإمام مالك رحمه الله تعالى">شرح موطأ الإمام مالك رحمه الله تعالى</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم بن عبد الله الخضير</td>
-        <td dir="auto">معالم السنن • دار طيبة الخضراء</td>
-        <td dir="auto">1444هـ 2023م</td>
-      </tr>
-          <tr>
-        <td>
-          <a href="../../catalogue/2452/245247.html">
-            <span dir="auto" data-tr="{&quot;en&quot;:&quot;The Ascension of the Ranks to the Alfiyyah of Al-Iraqi&quot;,&quot;es&quot;:&quot;Ascenso por los peldaños hasta la Alfiyya de al-Iraqi&quot;,&quot;fr&quot;:&quot;L’ascension des degrés vers l’Alfiyya d’al-Iraqi&quot;,&quot;id&quot;:&quot;Menaiki Tangga-Tangga Menuju Alfiyah al-Iraqi&quot;,&quot;ja&quot;:&quot;アル＝イラーキーの千行詩へと至る階梯の上昇&quot;,&quot;ru&quot;:&quot;Восхождение по ступеням к «Тысячестишию аль-Ираки»&quot;,&quot;sw&quot;:&quot;Su&#039;ud al-Maraqi ila Alfiyyat al-Iraqi (Kupanda ngazi kuelekea Alfiyya ya al-Iraqi)&quot;,&quot;tr&quot;:&quot;Irâkî’nin Elfiyye’sine Doğru Yükseliş&quot;,&quot;zh&quot;:&quot;《通向伊拉基千行诗的阶梯》&quot;}" data-original="صعود المراقي إلى ألفية العراقي">صعود المراقي إلى ألفية العراقي</span>
-          </a>
-        </td>
-        <td dir="auto">عبد الكريم بن عبد الله الخضير</td>
-        <td dir="auto">مؤسسة معالم السنن</td>
-        <td dir="auto">1439هـ 20188م</td>
-      </tr>
-      </tbody>
-</table>
-    </section>
-    </main>
-
-  
-  <dialog
-    class="sheet"
-    data-sheet
-  >
-    <div class="sheet-head">
-      <strong data-sheet-title></strong>
-      <button
-        type="button"
-        class="button"
-        data-sheet-close
+        تحبير الصفحات بشرح الورقات
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم بن عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/641/64118.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/641/64118.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Guidance for the Righteous on the Explanation of the Comprehensive Narrations&quot;,&quot;es&quot;:&quot;Irshad al-Akhyar ila Sharh Jawami al-Akhbar (Guía para los virtuosos: comentario de Colecciones de noticias)&quot;,&quot;fr&quot;:&quot;Irshad al-Akhyar ila sharh Jawami al-Akhbar (Guide des meilleurs vers le commentaire des recueils de traditions)&quot;,&quot;id&quot;:&quot;Bimbingan bagi Orang-Orang Terbaik dalam Syarah Jawami&#039; Al-Akhbar&quot;,&quot;ja&quot;:&quot;イルシャード・アル＝アフヤール・イラー・シャルフ・ジャワーミウ・アル＝アフバール（善人を導く、伝承集の注釈）&quot;,&quot;ru&quot;:&quot;Иршад аль-ахйар иля шарх джавами&#039; аль-ахбар&quot;,&quot;sw&quot;:&quot;Irshad al-Akhyar ila Sharh Jawami al-Akhbar (Mwongozo wa walio wema katika ufafanuzi wa mikusanyo ya habari)&quot;,&quot;tr&quot;:&quot;İrşâdü&#039;l-ahyâr ilâ şerhi Cevâmi&#039;i&#039;l-ahbâr (Haberlerin Özlü Derlemesinin Şerhine Rehber)&quot;,&quot;ur&quot;:&quot;إرشاد الأخيار إلى شرح جوامع الأخبار (منتخب احادیث کی شرح کی جانب نیک لوگوں کی رہنمائی)&quot;,&quot;zh&quot;:&quot;《引导贤者：〈圣训总汇〉注释》&quot;}" data-original="إرشاد الأخيار إلى شرح جوامع الأخبار">إرشاد الأخيار إلى شرح جوامع الأخبار</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
       >
-        <span data-t="Close">Close</span>
-      </button>
+        إرشاد الأخيار إلى شرح جوامع الأخبار
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم بن عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1112/111289.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1112/111289.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Sunnah Comments on the Al-Aqeedah Al-Waasitiyyah - Colored&quot;,&quot;es&quot;:&quot;Comentarios sunníes sobre la doctrina de Wasitiyya (ilustrado)&quot;,&quot;fr&quot;:&quot;Annotations sunnites sur la profession de foi d&#039;al-Wasitiyya — en couleurs&quot;,&quot;id&quot;:&quot;Catatan-Catatan Sunnah atas Akidah Wasithiyah (Berwarna)&quot;,&quot;ja&quot;:&quot;『アル＝アキーダ・アル＝ワースィティーヤ』に関するスンナ派の注釈（カラー版）&quot;,&quot;ru&quot;:&quot;Суннитские комментарии к «Васитийскому вероучению» (цветное издание)&quot;,&quot;sw&quot;:&quot;Maelezo ya Kisunni kuhusu Aqida ya Wasitiyya — toleo la rangi&quot;,&quot;tr&quot;:&quot;Akîde-i Vâsıtıyye Üzerine Sünnî Notlar (Renkli)&quot;,&quot;zh&quot;:&quot;《对〈瓦西提信条〉的逊尼派注释——彩印版》&quot;}" data-original="التعليقات السنية على العقيدة الواسطية- ملون">التعليقات السنية على العقيدة الواسطية- ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        التعليقات السنية على العقيدة الواسطية- ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1117/111799.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1117/111799.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Trials: Their Signs, Causes, and Ways to Prevent Them&quot;,&quot;es&quot;:&quot;Las tribulaciones: sus señales, causas y formas de prevención&quot;,&quot;fr&quot;:&quot;Les troubles : signes, causes et moyens de s’en prémunir&quot;,&quot;id&quot;:&quot;Fitnah: Tanda-Tanda, Sebab, dan Cara Menghindarinya&quot;,&quot;ja&quot;:&quot;試練―その兆候、原因、予防方法&quot;,&quot;ru&quot;:&quot;Смуты: их признаки, причины и способы защиты от них&quot;,&quot;sw&quot;:&quot;Fitna: Alama Zake, Sababu Zake na Njia za Kujikinga Nazo&quot;,&quot;tr&quot;:&quot;Fitneler: Alametleri, Sebepleri ve Korunma Yolları&quot;,&quot;zh&quot;:&quot;《纷争：征兆、成因与防范之道》&quot;}" data-original="الفتن علاماتها أسبابها طرق الوقاية منها">الفتن علاماتها أسبابها طرق الوقاية منها</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الفتن علاماتها أسبابها طرق الوقاية منها
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1124/112496.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1124/112496.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Comments of the Sunnis on the Al-Aqidah Al-Wasitiyyah&quot;,&quot;es&quot;:&quot;Comentarios suníes a al-Aqida al-Wasitiyya (La doctrina wasitiyya)&quot;,&quot;fr&quot;:&quot;Commentaires sunnites sur al-Aqida al-Wasitiyya (La profession de foi de Wasit)&quot;,&quot;id&quot;:&quot;Catatan Sunnah atas Al-Aqidah al-Wasitiyah&quot;,&quot;ja&quot;:&quot;『ワースィティーヤ信条』に関するスンナ派の注解&quot;,&quot;ru&quot;:&quot;Суннитские комментарии к «аль-Акида аль-Васитийя»&quot;,&quot;sw&quot;:&quot;Maelezo ya Kisunni kuhusu Al-Aqida al-Wasitiyya (Itikadi ya Wasit)&quot;,&quot;tr&quot;:&quot;el-Akîdetü&#039;l-Vâsıtıyye Üzerine Sünnî Açıklamalar&quot;,&quot;ur&quot;:&quot;التعليقات السنية على العقيدة الواسطية (عقیدہ واسطیہ پر سنی تعلیقات)&quot;,&quot;zh&quot;:&quot;《瓦西提信条》的逊尼派注释&quot;}" data-original="التعليقات السنية على العقيدة الواسطية">التعليقات السنية على العقيدة الواسطية</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        التعليقات السنية على العقيدة الواسطية
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1129/112935.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1129/112935.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Signs of Trials, Their Causes, and Ways to Prevent Them - Colored&quot;,&quot;es&quot;:&quot;Las tribulaciones: sus señales, causas y formas de prevenirlas (a color)&quot;,&quot;fr&quot;:&quot;Les troubles : leurs signes, leurs causes et les moyens de s&#039;en prémunir — en couleur&quot;,&quot;id&quot;:&quot;Fitnah: Tanda-Tandanya, Sebab-Sebabnya, dan Cara Mencegahnya—Berwarna&quot;,&quot;ja&quot;:&quot;内乱――その兆候、原因、予防法（カラー版）&quot;,&quot;ru&quot;:&quot;Смута: её признаки, причины и способы защиты от неё — цветное издание&quot;,&quot;sw&quot;:&quot;Fitna: alama zake, sababu zake na njia za kujikinga nazo – yenye rangi&quot;,&quot;tr&quot;:&quot;Fitneler: alametleri, sebepleri ve korunma yolları — renkli&quot;,&quot;ur&quot;:&quot;فتنے: ان کی علامات، اسباب اور ان سے بچاؤ کے طریقے — رنگین&quot;,&quot;zh&quot;:&quot;纷争：其征兆、原因与防范方法（彩色版）&quot;}" data-original="الفتن علاماتها، أسبابها، طرق الوقاية منها- ملون">الفتن علاماتها، أسبابها، طرق الوقاية منها- ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الفتن علاماتها، أسبابها، طرق الوقاية منها- ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1393/139355.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1393/139355.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Hidden Pearl in the Conditions of Chains and Texts - Colored&quot;,&quot;es&quot;:&quot;Comentario de La perla oculta sobre el estado de las cadenas de transmisión y los textos, edición a color&quot;,&quot;fr&quot;:&quot;Sharh al-lu&#039;lu&#039; al-maknun fi ahwal al-asanid wa-l-mutun (Commentaire de la perle cachée sur l’état des chaînes de transmission et des textes) — édition en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Permata Terpendam tentang Keadaan Sanad dan Matan (Berwarna)&quot;,&quot;ja&quot;:&quot;『秘められた真珠――伝承経路と本文の諸相』の解説（カラー版）&quot;,&quot;ru&quot;:&quot;Комментарий к «Сокровенной жемчужине» о состояниях цепочек передатчиков и текстов хадисов — цветное издание&quot;,&quot;sw&quot;:&quot;Sharh al-Lu&#039;lu&#039; al-Maknun kuhusu Hali za Minyororo ya Wasimulizi na Matini — Toleo la Rangi&quot;,&quot;tr&quot;:&quot;Gizli İnci&#039;nin Şerhi: İsnad ve Metinlerin Durumları - Renkli&quot;,&quot;zh&quot;:&quot;《〈珍藏的珍珠〉注释：传述链与文本的情况》（彩色版）&quot;}" data-original="شرح اللؤلؤ المكنون في أحوال الأسانيد والمتون- ملون">شرح اللؤلؤ المكنون في أحوال الأسانيد والمتون- ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح اللؤلؤ المكنون في أحوال الأسانيد والمتون- ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1393/139357.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1393/139357.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of Jabir&#039;s Hadith on the Description of the Prophet&#039;s ﷺ Pilgrimage (Colored)&quot;,&quot;es&quot;:&quot;Comentario del hadiz de Jabir sobre la descripción de la peregrinación del Profeta ﷺ, edición a color&quot;,&quot;fr&quot;:&quot;Sharh hadith Jabir fi sifat hijjat al-nabi ﷺ (Commentaire du hadith de Jabir sur la description du pèlerinage du Prophète ﷺ) — édition en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Hadis Jabir tentang Tata Cara Haji Nabi ﷺ (Berwarna)&quot;,&quot;ja&quot;:&quot;預言者 ﷺ の巡礼の様式に関するジャービルのハディースの解説（カラー版）&quot;,&quot;ru&quot;:&quot;Комментарий к хадису Джабира об описании хаджа Пророка ﷺ — цветное издание&quot;,&quot;sw&quot;:&quot;Sharh ya Hadithi ya Jabir kuhusu Sifa za Hija ya Mtume ﷺ — Toleo la Rangi&quot;,&quot;tr&quot;:&quot;Câbir Hadisinin Şerhi: Hz. Peygamber&#039;in Haccının Niteliği - Renkli&quot;,&quot;zh&quot;:&quot;《贾比尔关于先知朝觐仪式描述的圣训注释》（彩色版）&quot;}" data-original="شرح حديث جابر في صفة حجة النبي ﷺ ملون">شرح حديث جابر في صفة حجة النبي ﷺ ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح حديث جابر في صفة حجة النبي ﷺ ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1393/139358.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1393/139358.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Book of Trials from Sahih al-Bukhari - Colored&quot;,&quot;es&quot;:&quot;Comentario del Libro de las tribulaciones de Sahih al-Bujari, edición a color&quot;,&quot;fr&quot;:&quot;Sharh Kitab al-Fitan min Sahih al-Bukhari (Commentaire du « Livre des troubles » extrait du Sahih d’al-Bukhari) — édition en couleur&quot;,&quot;id&quot;:&quot;Penjelasan Kitab Fitnah dalam Shahih Al-Bukhari (Berwarna)&quot;,&quot;ja&quot;:&quot;サヒーフ・ブハーリー『フィタンの書』の解説（カラー版）&quot;,&quot;ru&quot;:&quot;Комментарий к книге «Смуты» из «Сахих аль-Бухари» — цветное издание&quot;,&quot;sw&quot;:&quot;Sharh ya Kitabu cha Fitna kutoka Sahih al-Bukhari — Toleo la Rangi&quot;,&quot;tr&quot;:&quot;Sahîh-i Buhârî&#039;deki Fiten Kitabı&#039;nın Şerhi - Renkli&quot;,&quot;zh&quot;:&quot;《布哈里圣训实录〈纷争篇〉注释》（彩色版）&quot;}" data-original="شرح كتاب الفتن من صحيح البخاري- ملون">شرح كتاب الفتن من صحيح البخاري- ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح كتاب الفتن من صحيح البخاري- ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1399/139989.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1399/139989.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Commentary on the Summary of the Sciences of Hadith&quot;,&quot;es&quot;:&quot;Glosa a Compendio de las ciencias del hadiz&quot;,&quot;fr&quot;:&quot;Commentaire marginal de l&#039;Abrégé des sciences du hadith&quot;,&quot;id&quot;:&quot;Hasyiyah atas Ikhtishar Ulum al-Hadits&quot;,&quot;ja&quot;:&quot;『ハディース学概論』への注釈&quot;,&quot;ru&quot;:&quot;Комментарий к «Краткому изложению наук о хадисе»&quot;,&quot;sw&quot;:&quot;Tanbihi Pembeni ya Mukhtasar Ulum al-Hadith&quot;,&quot;tr&quot;:&quot;Hadis ilimlerinin ihtisarı üzerine hâşiye&quot;,&quot;zh&quot;:&quot;《〈圣训学概要〉注释》&quot;}" data-original="حاشية على اختصار علوم الحديث">حاشية على اختصار علوم الحديث</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        حاشية على اختصار علوم الحديث
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم بن عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1933/193338.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1933/193338.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Radiant Riyadh: A Commentary on the Forty Hadiths of Al-Nawawi - Colored&quot;,&quot;es&quot;:&quot;Al-Riyad al-zakiyya: sharh al-arba&#039;in al-nawawiyya (Los jardines puros: comentario a Los cuarenta hadices de al-Nawawi) - edición a color&quot;,&quot;fr&quot;:&quot;Al-Riyad al-Zakiyya (Les jardins purs), commentaire des Quarante hadiths d&#039;al-Nawawi - illustre&quot;,&quot;id&quot;:&quot;Ar-Riyadh Az-Zakiyya: Syarah Al-Arba‘in An-Nawawiyya – Berwarna&quot;,&quot;ja&quot;:&quot;アル＝リヤード・アッ＝ザキーヤ――ナワウィーの四十ハディース注釈（カラー版）&quot;,&quot;ru&quot;:&quot;Ар-Рияд аз-закийя: комментарий к сорока хадисам ан-Навави — цветное издание&quot;,&quot;sw&quot;:&quot;Bustani zinazochanua: Sharh ya Hadithi Arobaini za al-Nawawi (yenye rangi)&quot;,&quot;tr&quot;:&quot;er-Riyâzü’z-zekiyye: el-Erbaîn en-Neveviyye şerhi – renkli&quot;,&quot;ur&quot;:&quot;الرياض الزكية شرح الأربعين النووية- ملون (الاربعین النوویہ کی شرح — رنگین)&quot;,&quot;zh&quot;:&quot;《善人花园释义：圣使之言四十段》（彩色版）&quot;}" data-original="الرياض الزكية شرح الأربعين النووية- ملون">الرياض الزكية شرح الأربعين النووية- ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        الرياض الزكية شرح الأربعين النووية- ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم بن عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1989/198906.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1989/198906.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Book of Page Elaboration with Explanation of the Leaflets - Colored&quot;,&quot;es&quot;:&quot;Libro Tahbir al-Safahat: comentario de al-Waraqat (Embellecimiento de las páginas), ilustrado&quot;,&quot;fr&quot;:&quot;Livre Tahrir al-Safahat bi-sharh al-Waraqat [Embellir les pages par le commentaire d&#039;al-Waraqat] - en couleur&quot;,&quot;id&quot;:&quot;Kitab Tahbir as-Safahat bi Syarh al-Waraqat (Menghias halaman dengan penjelasan Al-Waraqat) – berwarna&quot;,&quot;ja&quot;:&quot;『ワラカート』注解による諸ページの装飾――カラー版&quot;,&quot;ru&quot;:&quot;Книга «Тахбир ас-сафахат» с комментарием к «аль-Варакат» — цветное издание&quot;,&quot;sw&quot;:&quot;Kitabu Takhbir al-Safahat bi-Sharh al-Waraqat (Kupamba kurasa kwa ufafanuzi wa al-Waraqat) - toleo la rangi&quot;,&quot;tr&quot;:&quot;Varakât Şerhiyle Sayfaları Güzelleştirme Kitabı – Renkli&quot;,&quot;ur&quot;:&quot;كتاب تحبير الصفحات بشرح الورقات - ملون (كتاب تحبير الصفحات بشرح الورقات — رنگین)&quot;,&quot;zh&quot;:&quot;《〈瓦拉卡特〉注解：书页润饰》彩色版&quot;}" data-original="كتاب تحبير الصفحات بشرح الورقات - ملون">كتاب تحبير الصفحات بشرح الورقات - ملون</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        كتاب تحبير الصفحات بشرح الورقات - ملون
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم بن عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2399/239906.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2399/239906.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;Explanation of the Muwatta of Imam Malik, may Allah have mercy on him&quot;,&quot;es&quot;:&quot;Comentario del Muwatta del imam Malik, que Allah tenga misericordia de él&quot;,&quot;fr&quot;:&quot;Commentaire du Muwatta de l&#039;imam Malik&quot;,&quot;id&quot;:&quot;Penjelasan Al-Muwaththa&#039; karya Imam Malik, Semoga Allah Merahmatinya&quot;,&quot;ja&quot;:&quot;イマーム・マーリクの『ムワッタ』注釈&quot;,&quot;ru&quot;:&quot;Комментарий к «аль-Муватта» имама Малика, да возвеличит его Аллах&quot;,&quot;sw&quot;:&quot;Sharh al-Muwatta ya Imam Malik (Ufafanuzi wa Muwatta ya Imam Malik)&quot;,&quot;tr&quot;:&quot;İmam Mâlik’in Muvatta’ının Şerhi&quot;,&quot;ur&quot;:&quot;شرح موطأ الإمام مالك رحمه الله تعالى (امام مالک رحمہ اللہ کے موطأ کی شرح)&quot;,&quot;zh&quot;:&quot;《马立克伊玛目〈穆宛塔〉注释》&quot;}" data-original="شرح موطأ الإمام مالك رحمه الله تعالى">شرح موطأ الإمام مالك رحمه الله تعالى</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        شرح موطأ الإمام مالك رحمه الله تعالى
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم بن عبد الله الخضير
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/2452/245247.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/2452/245247.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;en&quot;:&quot;The Ascension of the Ranks to the Alfiyyah of Al-Iraqi&quot;,&quot;es&quot;:&quot;Ascenso por los peldaños hasta la Alfiyya de al-Iraqi&quot;,&quot;fr&quot;:&quot;L’ascension des degrés vers l’Alfiyya d’al-Iraqi&quot;,&quot;id&quot;:&quot;Menaiki Tangga-Tangga Menuju Alfiyah al-Iraqi&quot;,&quot;ja&quot;:&quot;アル＝イラーキーの千行詩へと至る階梯の上昇&quot;,&quot;ru&quot;:&quot;Восхождение по ступеням к «Тысячестишию аль-Ираки»&quot;,&quot;sw&quot;:&quot;Su&#039;ud al-Maraqi ila Alfiyyat al-Iraqi (Kupanda ngazi kuelekea Alfiyya ya al-Iraqi)&quot;,&quot;tr&quot;:&quot;Irâkî’nin Elfiyye’sine Doğru Yükseliş&quot;,&quot;zh&quot;:&quot;《通向伊拉基千行诗的阶梯》&quot;}" data-original="صعود المراقي إلى ألفية العراقي">صعود المراقي إلى ألفية العراقي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        صعود المراقي إلى ألفية العراقي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الكريم بن عبد الله الخضير
+    </span>
+  </a>
+              </div>
+      </section>
     </div>
-    <div
-      class="sheet-body"
-      data-sheet-body
-    ></div>
-  </dialog>
 </body>
 </html>

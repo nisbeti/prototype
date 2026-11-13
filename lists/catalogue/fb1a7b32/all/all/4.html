@@ -1,0 +1,719 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root="../../../../../"
+  data-section="items"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Resources</title>
+  <link
+    rel="icon"
+    href="../../../../../assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="../../../../../assets/static.css?v=be69322f0f"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="../../../../../assets/i18n.js?v=be69322f0f"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../../../assets/frame.js?v=be69322f0f"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section
+    class="w-full"
+    x-data="staticList({ kind: 'items' })"
+  >
+    <script
+      type="application/json"
+      data-rows
+    >
+      [{"id":132283,"href":"catalogue/1322/132283.html","cover":"catalogue/1322/132283.jpg","title":"تفسير القرآن الكريم- سورة آل عمران","titles":{"en":"Interpretation of the Noble Quran - Surah Al-Imran","fr":"Exégèse du Noble Coran – sourate Al Imran","es":"Exégesis del Noble Quran: sura Al Imran","ur":"تفسير القرآن الكريم- سورة آل عمران","tr":"Tefsîrü’l-Kur’âni’l-kerîm: Âl-i İmrân sûresi (Yüce Kur’an’ın tefsiri: Âl-i İmrân sûresi)","sw":"Tafsiri ya Quran Tukufu—Sura Aal Imran","id":"Tafsir Al-Quranul Karim—Surah Ali Imran","ja":"聖クルアーン注釈――スーラ・アール・イムラーン","zh":"《〈古兰经〉注释——仪姆兰家属章》","ru":"Толкование Священного Корана: сура «Аль Имран»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفسير","subLabel":"التفسير","subLabels":{"en":"Tafsir","fr":"Exégèse coranique","es":"Exégesis coránica","ur":"تفسیر","tr":"Tefsir","sw":"Tafsiri ya Quran","id":"Tafsir","ja":"クルアーン注釈","zh":"古兰经注释学","ru":"Тафсир","bn":null,"pt":null,"hi":null},"published":"2014م 1435هـ","publishedTranslations":{"en":"2014 CE / 1435 AH","fr":"2014 1435H","es":"2014 d. C. 1435 H","ur":"2014ء 1435ھ","tr":"2014 م 1435 H","sw":"2014 CE 1435 H","id":"2014 M 1435 H","ja":"西暦2014年 ヒジュラ暦1435年","zh":"公元2014年 伊历1435年","ru":"2014 г. / 1435 г. х.","bn":null,"pt":null,"hi":null},"pages":"1233"},{"id":182218,"href":"catalogue/1822/182218.html","cover":"catalogue/1822/182218.jpg","title":"تفسير القرآن الكريم- سورة آل عمران","titles":{"en":"Interpretation of the Holy Quran - Surah Al-Imran","fr":"Exégèse du Noble Quran – sourate Al Imran","es":"Comentario del Sagrado Quran: sura de La Familia de Imran","ur":"تفسير القرآن الكريم- سورة آل عمران (قرآنِ کریم کی تفسیر: سورۂ آل عمران)","tr":"Kur’an-ı Kerîm tefsiri - Âl-i İmrân sûresi","sw":"Tafsiri ya Quran Tukufu - Surah Al Imran","id":"Tafsir Al-Quran — Surah Ali Imran","ja":"聖クルアーン注釈―イムラーン家章","zh":"《古兰经注释——仪姆兰的家属章》","ru":"Тафсир Священного Корана: сура «Аль Имран»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفاسير الحديثة","subLabel":"التفاسير الحديثة","subLabels":{"en":"Modern Tafsir","fr":"Tafsir moderne","es":"Exégesis coránicas modernas","ur":"جدید تفاسیر","tr":"Modern tefsirler","sw":"Tafsiri za kisasa","id":"Kitab-kitab tafsir modern","ja":"近代クルアーン注釈書","zh":"现代古兰经注释","ru":"Современные тафсиры","bn":null,"pt":null,"hi":null},"published":"2005م 1426هـ","publishedTranslations":{"en":"2005 CE / 1426 AH","fr":"2005 1426H","es":"2005 d. C. 1426 H","ur":"2005ء 1426ھ","tr":"2005 1426 H","sw":"2005 M 1426 H","id":"2005 M 1426 H","ja":"西暦2005年 ヒジュラ暦1426年","zh":"公元2005年 伊历1426年","ru":"2005 г. / 1426 г. х.","bn":null,"pt":null,"hi":null},"pages":"1233"},{"id":131739,"href":"catalogue/1317/131739.html","cover":"catalogue/1317/131739.jpg","title":"تفسير القرآن الكريم- سورة الأحزاب","titles":{"en":"Interpretation of the Noble Quran - Surah Al-Ahzab","fr":"Commentaire du Noble Coran — sourate al-Ahzab","es":"Exégesis del Noble Corán: sura al-Ahzab","ur":"تفسير القرآن الكريم- سورة الأحزاب","tr":"Kur'an-ı Kerîm Tefsiri - Ahzâb Suresi","sw":"Tafsiri ya Quran Tukufu — Sura al-Ahzab","id":"Tafsir Al-Quran – Surah Al-Ahzab","ja":"聖クルアーン注釈――部族同盟章","zh":"《古兰经注释：同盟军章》","ru":"Тафсир Священного Корана: сура «Аль-Ахзаб»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفسير","subLabel":"التفسير","subLabels":{"en":"Tafsir","fr":"Exégèse coranique","es":"Exégesis coránica","ur":"تفسیر","tr":"Tefsir","sw":"Tafsiri ya Quran","id":"Tafsir","ja":"クルアーン注釈","zh":"古兰经注释学","ru":"Тафсир","bn":null,"pt":null,"hi":null},"published":"2005م 1436هـ","publishedTranslations":{"en":"2005 CE / 1436 AH","fr":"2005 1436 H","es":"2005 1436 H","ur":"2005ء 1436ھ","tr":"2005 M 1436 H","sw":"2005 1436H","id":"2005 M 1436 H","ja":"西暦2005年 ヒジュラ暦1436年","zh":"公元2005年 伊历1436年","ru":"2005 г. / 1436 г. х.","bn":null,"pt":null,"hi":null},"pages":"568"},{"id":131741,"href":"catalogue/1317/131741.html","cover":"catalogue/1317/131741.jpg","title":"تفسير القرآن الكريم- سورة الأنعام","titles":{"en":"Interpretation of the Noble Quran - Surah Al-An'am","fr":"Commentaire du Noble Coran — sourate al-Anam","es":"Exégesis del Noble Corán: sura al-An'am","ur":"تفسير القرآن الكريم- سورة الأنعام","tr":"Kur'an-ı Kerîm Tefsiri - En'âm Suresi","sw":"Tafsiri ya Quran Tukufu — Sura al-An'am","id":"Tafsir Al-Quran – Surah Al-An'am","ja":"聖クルアーン注釈――家畜章","zh":"《古兰经注释：牲畜章》","ru":"Тафсир Священного Корана: сура «Аль-Ан‘ам»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفسير","subLabel":"التفسير","subLabels":{"en":"Tafsir","fr":"Exégèse coranique","es":"Exégesis coránica","ur":"تفسیر","tr":"Tefsir","sw":"Tafsiri ya Quran","id":"Tafsir","ja":"クルアーン注釈","zh":"古兰经注释学","ru":"Тафсир","bn":null,"pt":null,"hi":null},"published":"2012م 1433هـ","publishedTranslations":{"en":"2012 CE / 1433 AH","fr":"2012 1433 H","es":"2012 1433 H","ur":"2012ء 1433ھ","tr":"2012 M 1433 H","sw":"2012 1433H","id":"2012 M 1433 H","ja":"西暦2012年 ヒジュラ暦1433年","zh":"公元2012年 伊历1433年","ru":"2012 г. / 1433 г. х.","bn":null,"pt":null,"hi":null},"pages":"302"},{"id":244833,"href":"catalogue/2448/244833.html","cover":"catalogue/2448/244833.jpg","title":"تفسير القرآن الكريم- سورة البقرة","titles":{"en":"Interpretation of the Holy Quran - Surah Al-Baqarah","fr":"Exégèse du Noble Quran - sourate al-Baqara","es":"Exégesis del Noble Quran: sura al-Baqara","ur":"تفسير القرآن الكريم- سورة البقرة (قرآن کریم کی تفسیر: سورۂ بقرہ)","tr":"Kur'ân-ı Kerîm tefsiri: Bakara sûresi","sw":"Tafsiri ya Quran Tukufu: Surat al-Baqara","id":"Tafsir Al-Quran — Surah Al-Baqarah","ja":"クルアーン解釈：雌牛章","zh":"《古兰经注释——黄牛章》","ru":"Тафсир Священного Корана — сура «аль-Бакара»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"699"},{"id":126658,"href":"catalogue/1266/126658.html","cover":"catalogue/1266/126658.jpg","title":"تفسير القرآن الكريم- سورة الصافات","titles":{"en":"Interpretation of the Noble Quran - Surah As-Saffat","fr":"Exégèse du noble Quran : sourate al-Saffat","es":"Exégesis del Noble Quran: sura al-Saffat","ur":"تفسير القرآن الكريم- سورة الصافات","tr":"Kur’an-ı Kerim Tefsiri: Sâffât Suresi","sw":"Tafsiri ya Quran Tukufu: Surat al-Saffat","id":"Tafsir Al-Qur’an: Surah As-Saffat","ja":"聖クルアーン注釈――サッファート章","zh":"《尊贵古兰经》注释：列阵者章","ru":"Тафсир Священного Корана — сура «ас-Саффат»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفسير","subLabel":"التفسير","subLabels":{"en":"Tafsir","fr":"Exégèse coranique","es":"Exégesis coránica","ur":"تفسیر","tr":"Tefsir","sw":"Tafsiri ya Quran","id":"Tafsir","ja":"クルアーン注釈","zh":"古兰经注释学","ru":"Тафсир","bn":null,"pt":null,"hi":null},"published":"2003م 1424هـ","publishedTranslations":{"en":"2003 CE / 1424 AH","fr":"2003 1424H","es":"2003 m 1424 H","ur":"2003ء 1424ھ","tr":"2003 M 1424 H","sw":"2003M 1424H","id":"2003 M 1424 H","ja":"西暦2003年 ヒジュラ暦1424年","zh":"公元2003年 伊历1424年","ru":"2003 г. / 1424 г. х.","bn":null,"pt":null,"hi":null},"pages":"393"},{"id":131738,"href":"catalogue/1317/131738.html","cover":"catalogue/1317/131738.jpg","title":"تفسير القرآن الكريم- سورة الكهف","titles":{"en":"Interpretation of the Noble Quran - Surah Al-Kahf","fr":"Commentaire du Noble Coran — sourate al-Kahf","es":"Exégesis del Noble Corán: sura al-Kahf","ur":"تفسير القرآن الكريم- سورة الكهف","tr":"Kur'an-ı Kerîm Tefsiri - Kehf Suresi","sw":"Tafsiri ya Quran Tukufu — Sura al-Kahf","id":"Tafsir Al-Quran – Surah Al-Kahfi","ja":"聖クルアーン注釈――洞窟章","zh":"《古兰经注释：山洞章》","ru":"Тафсир Священного Корана: сура «Аль-Кахф»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفسير","subLabel":"التفسير","subLabels":{"en":"Tafsir","fr":"Exégèse coranique","es":"Exégesis coránica","ur":"تفسیر","tr":"Tefsir","sw":"Tafsiri ya Quran","id":"Tafsir","ja":"クルアーン注釈","zh":"古兰经注释学","ru":"Тафсир","bn":null,"pt":null,"hi":null},"published":"2002م 1423هـ","publishedTranslations":{"en":"2002 CE / 1423 AH","fr":"2002 1423 H","es":"2002 1423 H","ur":"2002ء 1423ھ","tr":"2002 M 1423 H","sw":"2002 1423H","id":"2002 M 1423 H","ja":"西暦2002年 ヒジュラ暦1423年","zh":"公元2002年 伊历1423年","ru":"2002 г. / 1423 г. х.","bn":null,"pt":null,"hi":null},"pages":"158"},{"id":238866,"href":"catalogue/2388/238866.html","cover":"catalogue/2388/238866.jpg","title":"تفسير القرآن الكريم- سورة الكهف","titles":{"en":"Interpretation of the Holy Quran - Surah Al-Kahf","fr":"Exégèse du noble Quran : sourate al-Kahf","es":"Exégesis del noble Quran: sura al-Kahf","ur":"تفسير القرآن الكريم- سورة الكهف (قرآنِ کریم کی تفسیر—سورۂ کہف)","tr":"Kur'ân-ı Kerîm Tefsiri: Kehf Suresi","sw":"Tafsiri ya Quran Tukufu: Surat al-Kahf","id":"Tafsir Al-Quran: Surah Al-Kahfi","ja":"聖クルアーン解釈――洞窟章","zh":"《古兰经注释——〈山洞章〉》","ru":"Толкование Священного Корана: сура «аль-Кахф»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1442هـ 2021م","publishedTranslations":{"en":"1442 AH / 2021 CE","fr":"1442H 2021","es":"1442H 2021","ur":"1442ھ 2021ء","tr":"1442H 2021","sw":"1442H 2021","id":"1442H 2021M","ja":"ヒジュラ暦1442年／西暦2021年","zh":"伊历1442年／公元2021年","ru":"1442 г. х. / 2021 г.","bn":null,"pt":null,"hi":null},"pages":"190"},{"id":131740,"href":"catalogue/1317/131740.html","cover":"catalogue/1317/131740.jpg","title":"تفسير القرآن الكريم- سورة المائدة","titles":{"en":"Interpretation of the Noble Quran - Surah Al-Ma'idah","fr":"Commentaire du Noble Coran — sourate al-Maida","es":"Exégesis del Noble Corán: sura al-Ma'ida","ur":"تفسير القرآن الكريم- سورة المائدة","tr":"Kur'an-ı Kerîm Tefsiri - Mâide Suresi","sw":"Tafsiri ya Quran Tukufu — Sura al-Ma'ida","id":"Tafsir Al-Quran – Surah Al-Ma'idah","ja":"聖クルアーン注釈――食卓章","zh":"《古兰经注释：筵席章》","ru":"Тафсир Священного Корана: сура «Аль-Маида»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفسير","subLabel":"التفسير","subLabels":{"en":"Tafsir","fr":"Exégèse coranique","es":"Exégesis coránica","ur":"تفسیر","tr":"Tefsir","sw":"Tafsiri ya Quran","id":"Tafsir","ja":"クルアーン注釈","zh":"古兰经注释学","ru":"Тафсир","bn":null,"pt":null,"hi":null},"published":"2011م 1432هـ","publishedTranslations":{"en":"2011 CE / 1432 AH","fr":"2011 1432 H","es":"2011 1432 H","ur":"2011ء 1432ھ","tr":"2011 M 1432 H","sw":"2011 1432H","id":"2011 M 1432 H","ja":"西暦2011年 ヒジュラ暦1432年","zh":"公元2011年 伊历1432年","ru":"2011 г. / 1432 г. х.","bn":null,"pt":null,"hi":null},"pages":"1178"},{"id":182217,"href":"catalogue/1822/182217.html","cover":"catalogue/1822/182217.jpg","title":"تفسير القرآن الكريم- سورة النساء","titles":{"en":"Interpretation of the Noble Quran - Surah An-Nisa","fr":"Exégèse du Noble Quran – sourate al-Nisa","es":"Comentario del Sagrado Quran: sura de Las Mujeres","ur":"تفسير القرآن الكريم- سورة النساء (قرآنِ کریم کی تفسیر: سورۂ نساء)","tr":"Kur’an-ı Kerîm tefsiri - Nisâ sûresi","sw":"Tafsiri ya Quran Tukufu - Surah al-Nisa","id":"Tafsir Al-Quran — Surah An-Nisa","ja":"聖クルアーン注釈―婦人章","zh":"《古兰经注释——妇女章》","ru":"Тафсир Священного Корана: сура «ан-Ниса»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفاسير الحديثة","subLabel":"التفاسير الحديثة","subLabels":{"en":"Modern Tafsir","fr":"Tafsir moderne","es":"Exégesis coránicas modernas","ur":"جدید تفاسیر","tr":"Modern tefsirler","sw":"Tafsiri za kisasa","id":"Kitab-kitab tafsir modern","ja":"近代クルアーン注釈書","zh":"现代古兰经注释","ru":"Современные тафсиры","bn":null,"pt":null,"hi":null},"published":"2009م 1430هـ","publishedTranslations":{"en":"2009 CE / 1430 AH","fr":"2009 1430H","es":"2009 d. C. 1430 H","ur":"2009ء 1430ھ","tr":"2009 1430 H","sw":"2009 M 1430 H","id":"2009 M 1430 H","ja":"西暦2009年 ヒジュラ暦1430年","zh":"公元2009年 伊历1430年","ru":"2009 г. / 1430 г. х.","bn":null,"pt":null,"hi":null},"pages":"1220"},{"id":132282,"href":"catalogue/1322/132282.html","cover":"catalogue/1322/132282.jpg","title":"تفسير القرآن الكريم- سورة ص","titles":{"en":"Interpretation of the Noble Quran - Surah Sad","fr":"Exégèse du Noble Coran – sourate Sad","es":"Exégesis del Noble Quran: sura Sad","ur":"تفسير القرآن الكريم- سورة ص","tr":"Tefsîrü’l-Kur’âni’l-kerîm: Sâd sûresi (Yüce Kur’an’ın tefsiri: Sâd sûresi)","sw":"Tafsiri ya Quran Tukufu - Sura Sad","id":"Tafsir Al-Quranul Karim—Surah Sad","ja":"聖クルアーン注釈――スーラ・サード","zh":"《〈古兰经〉注释——萨德章》","ru":"Толкование Священного Корана: сура «Сад»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفسير","subLabel":"التفسير","subLabels":{"en":"Tafsir","fr":"Exégèse coranique","es":"Exégesis coránica","ur":"تفسیر","tr":"Tefsir","sw":"Tafsiri ya Quran","id":"Tafsir","ja":"クルアーン注釈","zh":"古兰经注释学","ru":"Тафсир","bn":null,"pt":null,"hi":null},"published":"2004م 1425هـ","publishedTranslations":{"en":"2004 CE / 1425 AH","fr":"2004 1425H","es":"2004 d. C. 1425 H","ur":"2004ء 1425ھ","tr":"2004 م 1425 H","sw":"2004 CE 1425 H","id":"2004 M 1425 H","ja":"西暦2004年 ヒジュラ暦1425年","zh":"公元2004年 伊历1425年","ru":"2004 г. / 1425 г. х.","bn":null,"pt":null,"hi":null},"pages":"269"},{"id":132284,"href":"catalogue/1322/132284.html","cover":"catalogue/1322/132284.jpg","title":"تفسير القرآن الكريم- سورة يس","titles":{"en":"Interpretation of the Noble Quran - Surah Yasin","fr":"Exégèse du Noble Coran – sourate Ya-Sin","es":"Exégesis del Noble Quran: sura Ya Sin","ur":"تفسير القرآن الكريم- سورة يس","tr":"Tefsîrü’l-Kur’âni’l-kerîm: Yâsîn sûresi (Yüce Kur’an’ın tefsiri: Yâsîn sûresi)","sw":"Tafsiri ya Quran Tukufu—Sura Ya Sin","id":"Tafsir Al-Quranul Karim—Surah Yasin","ja":"聖クルアーン注釈――スーラ・ヤー・スィーン","zh":"《〈古兰经〉注释——雅辛章》","ru":"Толкование Священного Корана: сура «Йа Син»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفسير","subLabel":"التفسير","subLabels":{"en":"Tafsir","fr":"Exégèse coranique","es":"Exégesis coránica","ur":"تفسیر","tr":"Tefsir","sw":"Tafsiri ya Quran","id":"Tafsir","ja":"クルアーン注釈","zh":"古兰经注释学","ru":"Тафсир","bn":null,"pt":null,"hi":null},"published":"2003م 1424هـ","publishedTranslations":{"en":"2003 CE / 1424 AH","fr":"2003 1424H","es":"2003 d. C. 1424 H","ur":"2003ء 1424ھ","tr":"2003 م 1424 H","sw":"2003 CE 1424 H","id":"2003 M 1424 H","ja":"西暦2003年 ヒジュラ暦1424年","zh":"公元2003年 伊历1424年","ru":"2003 г. / 1424 г. х.","bn":null,"pt":null,"hi":null},"pages":"338"},{"id":241204,"href":"catalogue/2412/241204.html","cover":null,"title":"تفسير القرآن الكريم- مجموع أجزاء","titles":{"en":"Interpretation of the Noble Qur'an - Collection of Parts","fr":"Exégèse du Noble Coran – collection complète","es":"Exégesis del Noble Quran: colección de volúmenes","ur":"تفسير القرآن الكريم- مجموع أجزاء (قرآنِ کریم کی تفسیر — تمام اجزا کا مجموعہ)","tr":"Kur'an-ı Kerim Tefsiri - Cüzlerin Tamamı","sw":"Tafsiri ya Quran Tukufu (juzuu zote zilizokusanywa)","id":"Tafsir Al-Qur’an — Kumpulan Jilid","ja":"聖クルアーン解釈――全巻集","zh":"《古兰经注释（分册汇编）》","ru":"Толкование Священного Корана — собрание томов","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1437هـ 2016م","publishedTranslations":{"en":"1437 AH / 2016 CE","fr":"1437H 2016","es":"1437H 2016","ur":"1437ھ 2016ء","tr":"1437H 2016","sw":"1437H 2016","id":"1437 H 2016 M","ja":"ヒジュラ暦1437年／西暦2016年","zh":"伊历1437年 公元2016年","ru":"1437 г. х. / 2016 г.","bn":null,"pt":null,"hi":null},"pages":"13625"},{"id":241203,"href":"catalogue/2412/241203.html","cover":"catalogue/2412/241203.jpg","title":"تفسير القرآن الكريم- مفهرس","titles":{"en":"Interpretation of the Noble Quran - Indexed","fr":"Exégèse du Noble Coran – édition indexée","es":"Exégesis del Noble Quran: edición indexada","ur":"تفسير القرآن الكريم- مفهرس (قرآنِ کریم کی فہرست بند تفسیر)","tr":"Kur'an-ı Kerim Tefsiri - Fihristli","sw":"Tafsiri ya Quran Tukufu (iliyo na faharasa)","id":"Tafsir Al-Qur’an (Berindeks)","ja":"聖クルアーン解釈――索引付き","zh":"《古兰经注释（索引本）》","ru":"Толкование Священного Корана — указатель","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"13927"},{"id":131742,"href":"catalogue/1317/131742.html","cover":"catalogue/1317/131742.jpg","title":"تفسير القرآن الكريم- من سورة الحجرات إلى الحديد","titles":{"en":"Interpretation of the Noble Quran - From Surah Al-Hujurat to Surah Al-Hadid","fr":"Commentaire du Noble Coran — de la sourate al-Hujurat à la sourate al-Hadid","es":"Exégesis del Noble Corán: de la sura al-Hujurat a la sura al-Hadid","ur":"تفسير القرآن الكريم- من سورة الحجرات إلى الحديد","tr":"Kur'an-ı Kerîm Tefsiri - Hucurât Suresi'nden Hadîd Suresi'ne kadar","sw":"Tafsiri ya Quran Tukufu — kuanzia Sura al-Hujurat hadi al-Hadid","id":"Tafsir Al-Quran – dari Surah Al-Hujurat hingga Al-Hadid","ja":"聖クルアーン注釈――部屋章から鉄章まで","zh":"《古兰经注释：从寝室章至铁章》","ru":"Тафсир Священного Корана: от суры «Аль-Худжурат» до суры «Аль-Хадид»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفسير","subLabel":"التفسير","subLabels":{"en":"Tafsir","fr":"Exégèse coranique","es":"Exégesis coránica","ur":"تفسیر","tr":"Tefsir","sw":"Tafsiri ya Quran","id":"Tafsir","ja":"クルアーン注釈","zh":"古兰经注释学","ru":"Тафсир","bn":null,"pt":null,"hi":null},"published":"2004م 1425هـ","publishedTranslations":{"en":"2004 CE / 1425 AH","fr":"2004 1425 H","es":"2004 1425 H","ur":"2004ء 1425ھ","tr":"2004 M 1425 H","sw":"2004 1425H","id":"2004 M 1425 H","ja":"西暦2004年 ヒジュラ暦1425年","zh":"公元2004年 伊历1425年","ru":"2004 г. / 1425 г. х.","bn":null,"pt":null,"hi":null},"pages":"448"},{"id":132074,"href":"catalogue/1320/132074.html","cover":"catalogue/1320/132074.jpg","title":"تفسير القرطبي سورة النور، سورة الفرقان، سورة القصص، سورة النمل","titles":{"en":"Interpretation of Al-Qurtubi Surah An-Nur, Surah Al-Furqan, Surah Al-Qasas, Surah An-Naml","fr":"Exégèse d'al-Qurtubi : sourates al-Nur, al-Furqan, al-Qasas et al-Naml","es":"Exégesis de al-Qurtubi: suras al-Nur, al-Furqan, al-Qasas y al-Naml","ur":"تفسير القرطبي سورة النور، سورة الفرقان، سورة القصص، سورة النمل","tr":"Kurtubî tefsiri: Nûr, Furkân, Kasas ve Neml sûreleri","sw":"Tafsiri ya Al-Qurtubi: Surah Al-Nur, Surah Al-Furqan, Surah Al-Qasas, Surah Al-Naml","id":"Tafsir Al-Qurtubi: Surah An-Nur, Surah Al-Furqan, Surah Al-Qasas, Surah An-Naml","ja":"アル＝クルトゥビーの注釈――光章、識別章、物語章、蟻章","zh":"古尔图比注释：光明章、准则章、故事章、蚂蚁章","ru":"Тафсир аль-Куртуби: суры «ан-Нур», «аль-Фуркан», «аль-Касас», «ан-Намль»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"عبد الكريم عبد الله الخضير","names":{"en":"Abdul Karim Abdullah Al-Khudair","fr":"Abd al-Karim Abd Allah al-Khudair","es":"Abdul Karim Abdullah al-Khudair","ur":"عبد الكريم عبد الله الخضير","tr":"Abdülkerîm Abdullah el-Hudayr","sw":"Abdul Karim Abdullah Al-Khudair","id":"Abdul Karim Abdullah Al-Khudair","ja":"アブドゥルカリーム・アブドゥッラー・アル＝フダイル","zh":"阿卜杜勒·卡里姆·阿卜杜拉·胡代尔","ru":"Абд аль-Карим Абдуллах аль-Худайр","bn":"عبد الكريم عبد الله الخضير","pt":"عبد الكريم عبد الله الخضير","hi":"عبد الكريم عبد الله الخضير"},"href":"authors/040/4027.html"}],"died":null,"living":false,"era":"unknown","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفسير","subLabel":"التفسير","subLabels":{"en":"Tafsir","fr":"Exégèse coranique","es":"Exégesis coránica","ur":"تفسیر","tr":"Tefsir","sw":"Tafsiri ya Quran","id":"Tafsir","ja":"クルアーン注釈","zh":"古兰经注释学","ru":"Тафсир","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"62"},{"id":128155,"href":"catalogue/1281/128155.html","cover":"catalogue/1281/128155.jpg","title":"تفسير جزء عمَّ- العثيمين","titles":{"en":"Interpretation of Juz' Amma - Al-Othaymeen","fr":"Exégèse de la partie Amma — al-Uthaymin","es":"Exégesis de Juz Amma - al-Uthaymin","ur":"تفسير جزء عمَّ- العثيمين","tr":"Amme cüzünün tefsiri - Useymîn","sw":"Tafsiri ya Juzuu ya Amma - al-Uthaymin","id":"Tafsir Juz Amma—Al-Utsaimin","ja":"アンマー巻の注釈―アル＝ウサイミーン","zh":"《阿姆玛卷注释——欧赛敏》","ru":"Толкование джуза «Амма» — аль-Усаймин","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"2002م 1423هـ","publishedTranslations":{"en":"2002 CE / 1423 AH","fr":"2002 1423 H","es":"2002 d. C. 1423 H","ur":"2002ء 1423ھ","tr":"2002 1423 H","sw":"2002 M 1423 H","id":"2002 M 1423 H","ja":"西暦2002年 ヒジュラ暦1423年","zh":"公元2002年／伊历1423年","ru":"2002 г. / 1423 г. х.","bn":null,"pt":null,"hi":null},"pages":"360"},{"id":253663,"href":"catalogue/2536/253663.html","cover":"catalogue/2536/253663.jpg","title":"تفسير سورة الإخلاص- الضالعي","titles":{"en":"Interpretation of Surah Al-Ikhlas - Al-Dhalai","fr":"Exégèse de la sourate al-Ikhlas - al-Dali'i","es":"Exégesis de la sura al-Ijlas - al-Dali","ur":"تفسير سورة الإخلاص- الضالعي","tr":"İhlâs Suresi Tefsiri – ed-Dâliî","sw":"Tafsiri ya Surat al-Ikhlas (al-Dali'i)","id":"Tafsir Surah Al-Ikhlas – Adh-Dhali'i","ja":"スーラ・アル＝イフラースの解釈―アッ＝ダーリイー","zh":"《忠诚章注释》—达莱伊","ru":"Толкование суры «аль-Ихляс» — ад-Дали'и","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1440هـ 2019م","publishedTranslations":{"en":"1440 AH / 2019 CE","fr":"1440 H 2019","es":"1440 H 2019","ur":"1440ھ 2019ء","tr":"1440 H 2019","sw":"1440H 2019","id":"1440 H 2019 M","ja":"ヒジュラ暦1440年／西暦2019年","zh":"伊历1440年／公元2019年","ru":"1440 г. х. / 2019 г.","bn":null,"pt":null,"hi":null},"pages":"72"},{"id":181918,"href":"catalogue/1819/181918.html","cover":"catalogue/1819/181918.jpg","title":"تفسير سورة الإخلاص- ت. العجمي","titles":{"en":"Interpretation of Surah Al-Ikhlas - T. Al-Ajmi","fr":"Exégèse de la sourate al-Ikhlas — édition d’al-Ajmi","es":"Exégesis de la sura al-Ijlas (ed. al-Ajami)","ur":"تفسير سورة الإخلاص- ت. العجمي","tr":"Tefsîru sûreti’l-İhlâs (İhlâs Suresi Tefsiri) – thk. el-Acemî","sw":"Tafsir Surat al-Ikhlas - tahqiq al-Ajami (Tafsiri ya Sura al-Ikhlas - tahkiki ya al-Ajami)","id":"Tafsir Surah Al-Ikhlas","ja":"スーラ・アル＝イフラースの注釈――アジュミー校訂","zh":"《忠诚章注释——阿杰米校勘本》","ru":"Толкование суры «аль-Ихляс» — тахкик аль-Аджми","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"أصول التفسير","subLabel":"أصول التفسير","subLabels":{"en":"Foundations of Interpretation","fr":"Principes de l’exégèse coranique","es":"Fundamentos de la exégesis coránica","ur":"اصولِ تفسیر","tr":"Tefsir usulü","sw":"Misingi ya tafsiri","id":"Prinsip-prinsip tafsir","ja":"クルアーン解釈学の基礎","zh":"经注学原理","ru":"Основы тафсира","bn":null,"pt":null,"hi":null},"published":"1991م 1412هـ","publishedTranslations":{"en":"1991 CE / 1412 AH","fr":"1991 1412H","es":"1991 d. C. 1412 H","ur":"1991ء 1412ھ","tr":"1991 m. 1412 H","sw":"1991 M 1412 H","id":"1991 M 1412 H","ja":"西暦1991年／ヒジュラ暦1412年","zh":"公元1991年／伊历1412年","ru":"1991 г. / 1412 г. х.","bn":null,"pt":null,"hi":null},"pages":"87"},{"id":128743,"href":"catalogue/1287/128743.html","cover":"catalogue/1287/128743.jpg","title":"تفسير سورة الإخلاص- ملون","titles":{"en":"Interpretation of Surah Al-Ikhlas - Colored","fr":"Exégèse de la sourate al-Ikhlas (en couleur)","es":"Exégesis de la sura al-Ikhlas, a color","ur":"تفسير سورة الإخلاص- ملون (سورۂ اخلاص کی تفسیر—رنگین)","tr":"İhlâs sûresinin tefsiri - Renkli","sw":"Tafsiri ya Surat al-Ikhlas - rangi","id":"Tafsir Surah Al-Ikhlas—Berwarna","ja":"誠信章の解釈（カラー版）","zh":"《忠诚章注释》（彩色版）","ru":"Тафсир суры «аль-Ихляс» — иллюстрированное издание","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1991م 1412هـ","publishedTranslations":{"en":"1991 CE / 1412 AH","fr":"1991 M 1412 H","es":"1991 d. C. 1412 H","ur":"1991ء 1412ھ","tr":"1991 M 1412 H","sw":"1991 CE 1412 H","id":"1991 M 1412 H","ja":"西暦1991年／ヒジュラ暦1412年","zh":"公元1991年／伊历1412年","ru":"1991 г. / 1412 г. х.","bn":null,"pt":null,"hi":null},"pages":"39"},{"id":128139,"href":"catalogue/1281/128139.html","cover":"catalogue/1281/128139.jpg","title":"تفسير سورة الفاتحة","titles":{"en":"Interpretation of Surah Al-Fatiha","fr":"Exégèse de la sourate al-Fatiha","es":"Exégesis de la sura Al-Fatiha","ur":"تفسير سورة الفاتحة","tr":"Fâtiha sûresinin tefsiri","sw":"Tafsiri ya Sura ya Al-Fatiha","id":"Tafsir Surah Al-Fatihah","ja":"開端章の注釈","zh":"《开端章注释》","ru":"Толкование суры «аль-Фатиха»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"2013م 1434هـ","publishedTranslations":{"en":"2013 CE / 1434 AH","fr":"2013 1434 H","es":"2013 d. C. 1434 H","ur":"2013ء 1434ھ","tr":"2013 1434 H","sw":"2013 M 1434 H","id":"2013 M 1434 H","ja":"西暦2013年 ヒジュラ暦1434年","zh":"公元2013年／伊历1434年","ru":"2013 г. / 1434 г. х.","bn":null,"pt":null,"hi":null},"pages":"134"},{"id":130985,"href":"catalogue/1309/130985.html","cover":"catalogue/1309/130985.jpg","title":"تفسير سورة الفاتحة","titles":{"en":"Interpretation of Surah Al-Fatiha","fr":"Exégèse de la sourate al-Fatiha","es":"Exégesis de la sura al-Fatiha","ur":"تفسير سورة الفاتحة","tr":"Fâtiha Suresi Tefsiri","sw":"Tafsiri ya Surat al-Fatiha","id":"Tafsir Surah Al-Fatihah","ja":"アル＝ファーティハ章の解釈","zh":"《开端章》注释","ru":"Тафсир суры «Аль-Фатиха»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"2020م 1441هـ","publishedTranslations":{"en":"2020 CE / 1441 AH","fr":"2020 1441 H","es":"2020 d. C. 1441 H","ur":"2020ء 1441ھ","tr":"2020 M 1441 H","sw":"2020 CE 1441 H","id":"2020 M 1441 H","ja":"西暦2020年 ヒジュラ暦1441年","zh":"公元2020年／伊历1441年","ru":"2020 г. / 1441 г. х.","bn":null,"pt":null,"hi":null},"pages":"145"},{"id":128138,"href":"catalogue/1281/128138.html","cover":null,"title":"تفسير سورة القارعة","titles":{"en":"Interpretation of Surah Al-Qari'a","fr":"Exégèse de la sourate al-Qari'a","es":"Exégesis de la sura Al-Qari'a","ur":"تفسير سورة القارعة","tr":"Kâria sûresinin tefsiri","sw":"Tafsiri ya Sura ya Al-Qaria","id":"Tafsir Surah Al-Qari'ah","ja":"打ち砕く章の注釈","zh":"《大震章注释》","ru":"Толкование суры «аль-Кари'а»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"عبد الكريم عبد الله الخضير","names":{"en":"Abdul Karim Abdullah Al-Khudair","fr":"Abd al-Karim Abd Allah al-Khudair","es":"Abdul Karim Abdullah al-Khudair","ur":"عبد الكريم عبد الله الخضير","tr":"Abdülkerîm Abdullah el-Hudayr","sw":"Abdul Karim Abdullah Al-Khudair","id":"Abdul Karim Abdullah Al-Khudair","ja":"アブドゥルカリーム・アブドゥッラー・アル＝フダイル","zh":"阿卜杜勒·卡里姆·阿卜杜拉·胡代尔","ru":"Абд аль-Карим Абдуллах аль-Худайр","bn":"عبد الكريم عبد الله الخضير","pt":"عبد الكريم عبد الله الخضير","hi":"عبد الكريم عبد الله الخضير"},"href":"authors/040/4027.html"}],"died":null,"living":false,"era":"unknown","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"10"},{"id":239138,"href":"catalogue/2391/239138.html","cover":"catalogue/2391/239138.jpg","title":"تفسير سورة الكهف","titles":{"en":"Interpretation of Surah Al-Kahf","fr":"Exégèse de la sourate al-Kahf (La Caverne)","es":"Exégesis de la sura La Caverna","ur":"تفسير سورة الكهف (سورۂ کہف کی تفسیر)","tr":"Kehf Suresi Tefsiri","sw":"Tafsiri ya Sura ya Al-Kahf","id":"Tafsir Surah Al-Kahfi","ja":"洞窟章の解釈","zh":"《山洞章注释》","ru":"Толкование суры «Пещера»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1442هـ 2021م","publishedTranslations":{"en":"1442 AH / 2021 CE","fr":"1442 H 2021","es":"1442 H 2021","ur":"1442ھ 2021ء","tr":"1442 H 2021","sw":"1442H 2021","id":"1442 H 2021 M","ja":"ヒジュラ暦1442年／西暦2021年","zh":"伊历1442年／公元2021年","ru":"1442 г. х. / 2021 г.","bn":null,"pt":null,"hi":null},"pages":"190"},{"id":132247,"href":"catalogue/1322/132247.html","cover":"catalogue/1322/132247.jpg","title":"تفسير سورة النصر","titles":{"en":"Interpretation of Surah Al-Nasr","fr":"Exégèse de la sourate al-Nasr","es":"Exégesis de la sura al-Nasr","ur":"تفسير سورة النصر (سورۂ نصر کی تفسیر)","tr":"Nasr suresinin tefsiri","sw":"Tafsir Surat al-Nasr (Tafsiri ya Sura al-Nasr)","id":"Tafsir Surah An-Nashr","ja":"勝利章の解釈","zh":"《援助章注释》","ru":"Толкование суры ан-Наср","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفسير","subLabel":"التفسير","subLabels":{"en":"Tafsir","fr":"Exégèse coranique","es":"Exégesis coránica","ur":"تفسیر","tr":"Tefsir","sw":"Tafsiri ya Quran","id":"Tafsir","ja":"クルアーン注釈","zh":"古兰经注释学","ru":"Тафсир","bn":null,"pt":null,"hi":null},"published":"1986م 1407هـ","publishedTranslations":{"en":"1986 CE / 1407 AH","fr":"1986 m 1407 H","es":"1986 d. C. 1407 H","ur":"1986ء 1407ھ","tr":"1986 M 1407 H","sw":"1986 M 1407 H","id":"1986 M 1407 H","ja":"西暦1986年 ヒジュラ暦1407年","zh":"公元1986年 伊历1407年","ru":"1986 г. 1407 г. х.","bn":null,"pt":null,"hi":null},"pages":"118"}]
+    </script>
+    <script
+      type="application/json"
+      data-list
+    >
+      {"list":"catalogue","category":"fb1a7b32","sub":null,"era":null,"page":4,"pages":6,"total":142,"perPage":25,"eraCounts":{"all":142,"salaf":0,"mutaqaddimun":0,"mutaakhkhirun":19,"muasirun":67,"unknown":56},"categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"subLabel":null,"subLabels":null}
+    </script>
+
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Resources</div>
+        <div class="mt-2 flex flex-wrap items-center gap-2">
+          <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-text="count(':count result|:count results', total)" data-flux-subheading>
+    
+</div>
+
+          <template x-if="category !== ''">
+            <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-category">
+        <svg class="shrink-0 [:where(&amp;)]:size-4 size-3" data-flux-badge-icon="data-flux-badge-icon" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v2.879a2.5 2.5 0 0 0 .732 1.767l4.5 4.5a2.5 2.5 0 0 0 3.536 0l2.878-2.878a2.5 2.5 0 0 0 0-3.536l-4.5-4.5A2.5 2.5 0 0 0 7.38 2H4.5ZM5 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
+</svg>
+
+            
+    <span x-text="categoryLabel"></span>
+              <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('category', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+          </template>
+
+          <template x-if="category !== '' && sub !== ''">
+            <span class="flex items-center gap-2">
+              <svg class="shrink-0 [:where(&amp;)]:size-4 text-zinc-400 rtl:rotate-180" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-sub-category">
+        <span x-text="subLabel"></span>
+                <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('sub', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+            </span>
+          </template>
+        </div>
+      </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white" data-flux-button="data-flux-button" x-show="hasFilters" x-cloak="x-cloak" x-on:click="clearFilters()">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Clear filters</span>
+    </button>
+    </div>
+
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+      <div
+  class="inline-flex max-w-full overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-700 dark:bg-zinc-800/80"
+  role="radiogroup"
+  aria-label="Era"
+  data-test="era-filter"
+>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === ''"
+      x-on:click="choose('era', '')"
+      x-bind:disabled="era !== '' && eraCounts['all'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === ''          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-all"
+    >
+      All
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === '' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['all'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'salaf'"
+      x-on:click="choose('era', 'salaf')"
+      x-bind:disabled="era !== 'salaf' && eraCounts['salaf'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'salaf'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-salaf"
+    >
+      Salaf
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'salaf' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t="to :year AH" data-r="{&quot;year&quot;:300}">to 300 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['salaf'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaqaddimun'"
+      x-on:click="choose('era', 'mutaqaddimun')"
+      x-bind:disabled="era !== 'mutaqaddimun' && eraCounts['mutaqaddimun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaqaddimun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaqaddimun"
+    >
+      Mutaqaddimun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaqaddimun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:301,&quot;to&quot;:656}">301–656 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaqaddimun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaakhkhirun'"
+      x-on:click="choose('era', 'mutaakhkhirun')"
+      x-bind:disabled="era !== 'mutaakhkhirun' && eraCounts['mutaakhkhirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaakhkhirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaakhkhirun"
+    >
+      Muta&#039;akhkhirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaakhkhirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:657,&quot;to&quot;:1265}">657–1265 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaakhkhirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'muasirun'"
+      x-on:click="choose('era', 'muasirun')"
+      x-bind:disabled="era !== 'muasirun' && eraCounts['muasirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'muasirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-muasirun"
+    >
+      Mu&#039;asirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'muasirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":year AH on, or living" data-r="{&quot;year&quot;:1266}">1266 AH on, or living</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['muasirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'unknown'"
+      x-on:click="choose('era', 'unknown')"
+      x-bind:disabled="era !== 'unknown' && eraCounts['unknown'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'unknown'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-unknown"
+    >
+      Unknown
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'unknown' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline">no year ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['unknown'])"
+        ></span>
+      </span>
+    </button>
+  </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-show="category !== ''" x-cloak="x-cloak" x-on:click="showSubs = !showSubs" x-bind:aria-pressed="showSubs" data-test="toggle-sub-categories">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M3 4.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6.25 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 7.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 11.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM4 12.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/>
+</svg>
+
+                
+                    
+            
+            <span><span x-show="!showSubs">Show sub-categories</span>
+        <span
+          x-show="showSubs"
+          x-cloak
+        >
+          Hide sub-categories
+        </span></span>
+    </button>
+    </div>
+
+    <div class="flex flex-col gap-6 lg:flex-row">
+      <aside
+        class="lg:w-72 lg:shrink-0"
+        x-show="category !== '' && showSubs"
+        x-cloak
+        data-test="sub-categories"
+      >
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" data-flux-heading>Sub-categories</div>
+
+        <div class="w-full relative block group/input mb-2" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd"/>
+</svg>
+
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="subFilter" placeholder="Filter sub-categories..."
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="subCategories.length === 0" data-flux-text >No sub-categories.</p>
+        <nav class="flex max-h-[70vh] flex-col overflow-y-auto">
+          <template
+            x-for="entry in subCategories"
+            :key="entry.value"
+          >
+            <button
+              type="button"
+              class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-lg px-3 text-start text-sm font-medium lg:h-8"
+              x-bind:class="
+                sub === entry.value
+                  ? 'bg-white text-zinc-800 shadow-xs dark:bg-white/[7%] dark:text-white'
+                  : 'text-zinc-500 hover:bg-zinc-800/5 hover:text-zinc-800 dark:text-white/80 dark:hover:bg-white/[7%] dark:hover:text-white'
+              "
+              x-on:click="choose('sub', sub === entry.value ? '' : entry.value)"
+            >
+              <span
+                class="flex-1 truncate"
+                dir="auto"
+                x-text="entry.label"
+              ></span>
+              <span
+                class="rounded-sm bg-zinc-400/15 px-1.5 py-0.5 text-xs tabular-nums dark:bg-white/10"
+                x-text="format(entry.count)"
+              ></span>
+            </button>
+          </template>
+        </nav>
+      </aside>
+
+      <div class="min-w-0 flex-1">
+        <div
+          class="rounded-xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700"
+          x-show="total === 0"
+          x-cloak
+        >
+          <svg class="shrink-0 [:where(&amp;)]:size-6 mx-auto mb-3 size-8 text-zinc-400" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+</svg>
+
+                  <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>No resources found</div>
+        </div>
+
+        <div x-show="total > 0">
+          <div class="flex flex-col  " >
+    
+
+    <ui-table-scroll-area class="overflow-auto">
+        <table class="[:where(&amp;)]:min-w-full table-fixed border-separate border-spacing-0 isolate text-zinc-800 whitespace-nowrap [&amp;_dialog]:whitespace-normal [&amp;_[popover]]:whitespace-normal" data-flux-table>
+            <thead class="" data-flux-columns>
+    <tr >
+        <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Title</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Author</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Category</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Death year</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Published</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Pages</div>
+    </th>
+    </tr>
+</thead>
+
+            <tbody  data-flux-rows>
+    <template
+                x-for="row in shown"
+                :key="row.id"
+              >
+                <tr  class="" data-flux-row>
+    <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 relative max-w-md align-top whitespace-normal" data-flux-cell>
+    <div class="flex items-start gap-3">
+                      <div class="flex w-14 shrink-0 flex-col items-center gap-1 lg:w-10">
+                        <a
+                          x-bind:href="row.href"
+                          class="relative shrink-0"
+                          tabindex="-1"
+                          aria-hidden="true"
+                        >
+                          <template x-if="row.cover">
+                            <img
+                              x-bind:src="row.cover"
+                              alt=""
+                              loading="lazy"
+                              class="h-14 w-10 rounded border border-zinc-200 bg-white object-cover object-top shadow-sm dark:border-zinc-700"
+                            />
+                          </template>
+                          <template x-if="!row.cover">
+                            <div
+                              class="flex h-14 w-10 flex-col items-center justify-center gap-0.5 rounded border border-zinc-200 bg-zinc-50 font-semibold tracking-wide text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+                            >
+                              <svg class="shrink-0 [:where(&amp;)]:size-6 size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+                                    </div>
+                          </template>
+                        </a>
+                      </div>
+
+                      <div class="min-w-0">
+                        <a
+                          x-bind:href="row.href"
+                          class="font-medium text-zinc-800 hover:underline dark:text-white"
+                          dir="auto"
+                          x-text="tx(row.title, row.titles)"
+                        ></a>
+                        <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50 ms-2" x-show="row.type">
+        <span x-text="tx(row.type, row.types)"></span>
+    </div>
+                        <div
+                          class="text-sm text-zinc-500 dark:text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(row.title, row.titles) !== row.title"
+                          x-text="row.title"
+                        ></div>
+                        <span
+                          class="mt-1 block text-sm text-zinc-500 lg:hidden dark:text-zinc-400"
+                          x-show="row.categoryLabel"
+                          x-text="tx(row.categoryLabel, row.categoryLabels)"
+                        ></span>
+                      </div>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 max-w-56 align-top whitespace-normal" data-flux-cell>
+    <template
+                      x-for="(author, index) in row.authors"
+                      :key="index"
+                    >
+                      <div>
+                        <a
+                          class="hover:underline"
+                          x-bind:href="author.href"
+                          dir="auto"
+                          x-text="tx(author.name, author.names)"
+                        ></a>
+                        <div
+                          class="text-sm text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(author.name, author.names) !== author.name"
+                          x-text="author.name"
+                        ></div>
+                      </div>
+                    </template>
+                    <div class="mt-1 text-sm text-zinc-500 lg:hidden dark:text-zinc-400">
+                      <span
+                        class="block"
+                        x-show="row.died"
+                        x-text="died(row)"
+                      ></span>
+                      <span
+                        class="block"
+                        dir="auto"
+                        x-show="row.published"
+                        x-text="tx(row.published, row.publishedTranslations)"
+                      ></span>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden max-w-56 align-top whitespace-normal lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.categoryLabel, row.categoryLabels)"
+                    ></span>
+                    <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" dir="auto" x-show="row.sub" x-text="tx(row.subLabel, row.subLabels)" data-flux-text ></p>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium"
+                      x-bind:class="
+                        row.living
+                          ? 'bg-emerald-400/15 text-emerald-700 dark:bg-emerald-400/40 dark:text-emerald-200'
+                          : 'bg-zinc-400/15 text-zinc-700 dark:bg-zinc-400/40 dark:text-zinc-200'
+                      "
+                      x-show="row.died"
+                      x-text="died(row)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.published, row.publishedTranslations)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top lg:table-cell" data-flux-cell>
+    <span x-text="row.pages ?? ''"></span>
+</td>
+</tr>
+              </template>
+</tbody>
+        </table>
+    </ui-table-scroll-area>
+
+    
+
+    </div>
+
+          <div
+  class="@container flex items-center justify-between gap-3 border-t border-zinc-100 pt-3 dark:border-zinc-700"
+  x-show="total > 0"
+  data-flux-pagination
+>
+  <div class="text-xs font-medium whitespace-nowrap text-zinc-500 dark:text-zinc-400">
+    Showing
+    <span x-text="(page - 1) * perPage + 1"></span>
+    to
+    <span x-text="Math.min(page * perPage, total)"></span>
+    of
+    <span x-text="total"></span>
+    results
+  </div>
+
+  <div
+    class="flex items-center rounded-[8px] border border-zinc-200 bg-white p-[1px] dark:border-white/10 dark:bg-white/10"
+    x-show="pages > 1"
+  >
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page - 1)"
+      x-bind:disabled="page <= 1"
+      aria-label="&amp;laquo; Previous"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+
+    <template
+      x-for="(link, index) in pageLinks"
+      :key="index"
+    >
+      <div class="hidden @[40rem]:contents">
+        <template x-if="link === '...'">
+          <div
+            class="flex size-6 cursor-default items-center justify-center rounded-[6px] text-xs font-medium text-zinc-400 dark:text-zinc-400"
+          >
+            ...
+          </div>
+        </template>
+        <template x-if="link === page">
+          <div
+            aria-current="page"
+            class="flex h-6 cursor-default items-center justify-center rounded-[6px] px-2 text-xs font-medium text-zinc-800 dark:text-white"
+            x-text="link"
+          ></div>
+        </template>
+        <template x-if="link !== '...' && link !== page">
+          <button
+            type="button"
+            class="h-6 rounded-[6px] px-2 text-xs font-medium text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/20 dark:hover:text-white"
+            x-on:click="turn(link)"
+            x-text="link"
+          ></button>
+        </template>
+      </div>
+    </template>
+
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page + 1)"
+      x-bind:disabled="page >= pages"
+      aria-label="Next &amp;raquo;"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+    </div>
+
+  
+  <script src="../../../../../assets/static.js?v=be69322f0f"></script>
+</body>
+</html>

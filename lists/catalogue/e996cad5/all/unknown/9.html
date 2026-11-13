@@ -1,0 +1,719 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root="../../../../../"
+  data-section="items"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Resources</title>
+  <link
+    rel="icon"
+    href="../../../../../assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="../../../../../assets/static.css?v=be69322f0f"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="../../../../../assets/i18n.js?v=be69322f0f"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../../../assets/frame.js?v=be69322f0f"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section
+    class="w-full"
+    x-data="staticList({ kind: 'items' })"
+  >
+    <script
+      type="application/json"
+      data-rows
+    >
+      [{"id":247836,"href":"catalogue/2478/247836.html","cover":"catalogue/2478/247836.jpg","title":"تفريج الكروب شرح حديث دعوة أخي ذي النون لا إله إلا أنت سبحانك إني كنت من الظالمين مادعا بها مكروب إلا فرج الله كربته","titles":{"en":"Explanation of the Hadith \"The Supplication of My Brother Dhul-Nun: There is no deity but You, Glory be to You; indeed, I have been of the wrongdoers. No one calls upon it in distress except that Allah relieves their distress.\"","fr":"Tafrij al-kurub sharh hadith da'wat akhi dhi al-nun la ilaha illa anta subhanaka inni kuntu min al-zalimin ma da'a biha makrub illa farraj Allah kurbatahu (Soulager les afflictions : commentaire du hadith de l'invocation de mon frère Dhul-Nun : « Il n’y a de divinité que Toi, gloire à Toi ! J’étais vraiment du nombre des injustes » ; aucun affligé ne l’invoque sans qu’Allah ne le soulage)","es":"Tafrij al-kurub sharh hadith da'wat akhi dhi al-nun la ilaha illa anta subhanaka inni kuntu min al-zalimin ma da'a biha makrub illa farraj Allah kurbatahu [Alivio de las aflicciones: comentario del hadiz sobre la súplica de mi hermano Dhul-Nun: «No hay más dios que Tú. ¡Gloria a Ti! En verdad, he sido de los injustos»; nadie afligido la pronuncia sin que Allah alivie su aflicción]","ur":"تفريج الكروب شرح حديث دعوة أخي ذي النون لا إله إلا أنت سبحانك إني كنت من الظالمين مادعا بها مكروب إلا فرج الله كربته (غموں کا ازالہ: ذوالنون کے بھائی کی دعا والی حدیث کی شرح: تیرے سوا کوئی معبود نہیں، تو پاک ہے، بے شک میں ظالموں میں سے تھا؛ جو بھی غم زدہ اس دعا کے ذریعے فریاد کرتا ہے، اللہ اس کی تکلیف دور فرما دیتا ہے)","tr":"Gamların Giderilmesi: Zünnûn Kardeşimizin “Senden başka ilah yoktur; seni tenzih ederim. Ben zalimlerden oldum” duasına dair hadis şerhi; bu duayla dua eden her sıkıntılı kişinin Allah sıkıntısını giderir","sw":"Kuondoa huzuni: Ufafanuzi wa hadithi ya dua ya ndugu yangu Dhun-Nun: Hakuna mungu ila Wewe, umetakasika; hakika mimi ni miongoni mwa madhalimu. Hakuna mwenye dhiki aliyeomba kwa dua hii isipokuwa Allah humuondolea dhiki yake","id":"Tafrij Al-Kurub (Menghilangkan Kesusahan): Penjelasan Hadis Doa Saudaraku Dzun Nun: “Tidak ada Tuhan selain Engkau. Mahasuci Engkau, sungguh aku termasuk orang-orang zalim.” Tidaklah seorang yang ditimpa kesusahan berdoa dengannya, kecuali Allah menghilangkan kesusahannya","ja":"苦悩を取り除く――「ズンヌーンの兄弟の祈り」のハディース注釈。「あなたのほかに神はありません。あなたに称賛あれ。私は不義をなす者でした」と苦しむ者が祈れば、アッラーはその苦悩を取り除かれる","zh":"《消解忧患：阐释“吾兄佐农的祈祷”圣训——“除你之外，绝无应受崇拜者；赞颂你超绝万物，我确是不义者。”忧患之人只要如此祈祷，真主必为他消除忧患》","ru":"Избавление от печалей: комментарий к хадису о мольбе брата Зун-Нуна: «Нет божества, кроме Тебя. Пречист Ты! Поистине, я был из числа несправедливых» — всякий огорчённый, произносивший её, получал от Аллаха избавление от своей скорби","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"تقي الدين أحمد بن تيمية الحراني","names":{"en":"Taqi al-Din Ahmad ibn Taymiyyah al-Harrani","fr":"Taqi al-Din Ahmad ibn Taymiyyah al-Harrani","es":"Taqi al-Din Ahmad ibn Taymiyyah al-Harrani","ur":"تقي الدين أحمد بن تيمية الحراني","tr":"Takıyyüddin Ahmed b. Teymiyye el-Harrânî","sw":"Taqi al-Din Ahmad bin Taymiyyah al-Harrani","id":"Taqiyuddin Ahmad bin Taimiyah Al-Harrani","ja":"タキー・アッ＝ディーン・アフマド・イブン・タイミーヤ・アル＝ハッラーニー","zh":"塔基丁·艾哈迈德·本·泰米叶","ru":"Таки ад-Дин Ахмад ибн Таймийя аль-Харрани","bn":"তাকিউদ্দিন আহমাদ ইবনে তাইমিয়্যাহ আল-হাররানি","pt":"Taqi al-Din Ahmad ibn Taymiyyah al-Harrani","hi":"तक़ियुद्दीन अहमद इब्न तैमिय्या अल-हर्रानी"},"href":"authors/000/48.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1418هـ 1997م","publishedTranslations":{"en":"1418 AH / 1997 CE","fr":"1418 H 1997","es":"1418 H 1997","ur":"1418ھ 1997ء","tr":"1418 H 1997","sw":"1418H 1997","id":"1418 H 1997 M","ja":"ヒジュラ暦1418年／西暦1997年","zh":"伊历1418年／公元1997年","ru":"1418 г. х. / 1997 г.","bn":null,"pt":null,"hi":null},"pages":"184"},{"id":143970,"href":"catalogue/1439/143970.html","cover":"catalogue/1439/143970.jpg","title":"تفسير غريب الحديث مرتبًا على الحروف","titles":{"en":"Strange Interpretation of Hadith Organized by Letters","fr":"Explication des termes rares du hadith, classés par ordre alphabétique","es":"Explicación de los términos raros del hadiz, ordenados alfabéticamente","ur":"تفسير غريب الحديث مرتبًا على الحروف","tr":"Garîbü'l-hadîsin harf sırasına göre açıklaması","sw":"Tafsiri ya maneno magumu ya hadithi, yakiwa yamepangwa kwa herufi","id":"Penjelasan Kata-kata Asing dalam Hadis, Disusun Menurut Abjad","ja":"珍奇なハディース語彙の解説――アルファベット順","zh":"《按字母顺序编排的奇异圣训词语释义》","ru":"Толкование редких слов в хадисах, расположенное в алфавитном порядке","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"شروحات","subLabel":"شروحات","subLabels":{"en":"Commentaries","fr":"Commentaires","es":"Comentarios","ur":"شروحات","tr":"Şerhler","sw":"Sharh","id":"Syarah","ja":"注釈","zh":"注释","ru":"Комментарии","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"264"},{"id":145781,"href":"catalogue/1457/145781.html","cover":"catalogue/1457/145781.jpg","title":"تقريب البغية بترتيب أحاديث الحلية","titles":{"en":"The Approximation of the Desired by Organizing the Hadiths of Al-Hilya","fr":"Taqrib al-Bughya bi-Tartib Ahadith al-Hilya","es":"Aproximación a la obra de al-Hilya mediante la ordenación de sus hadices","ur":"تقريب البغية بترتيب أحاديث الحلية","tr":"Takrîbü'l-biğye bi-tertîbi ehâdîsi'l-hilye (Hilye hadislerinin tertibine dair amaç özeti)","sw":"Taqrib al-Bughya bi Tartib Ahadith al-Hilya (Kukaribisha kusudi kwa kupanga hadithi za Hilya)","id":"Taqrib Al-Bughya bi Tartib Ahadits Al-Hilya [Mendekatkan tujuan dengan menyusun hadis-hadis Al-Hilya]","ja":"ヒリヤの伝承を配列するタクリーブ・アル＝ブグヤ","zh":"《按〈光辉之饰〉圣训排列〈愿望之便〉》","ru":"«Такриб аль-бугья би-тартиб ахадис аль-хилья»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"},{"name":"نور الدين علي بن أبي بكر الهيثمي","names":{"en":"Nour al-Din Ali ibn Abi Bakr al-Haythami","fr":"Nur al-Din Ali ibn Abi Bakr al-Haythami","es":"Nur al-Din Ali ibn Abi Bakr al-Haythami","ur":"نور الدين علي بن أبي بكر الهيثمي","tr":"Nûreddin Ali b. Ebû Bekir el-Heysemî","sw":"Nur al-Din Ali bin Abi Bakr al-Haythami","id":"Nuruddin Ali bin Abi Bakr Al-Haitsami","ja":"ヌールッディーン・アリー・イブン・アビー・バクル・アル＝ハイサミー","zh":"努尔丁·阿里·本·阿比·伯克尔·海赛米","ru":"Нур ад-Дин Али ибн Аби Бакр аль-Хайсами","bn":"نور الدين علي بن أبي بكر الهيثمي","pt":"نور الدين علي بن أبي بكر الهيثمي","hi":"نور الدين علي بن أبي بكر الهيثمي"},"href":"authors/389/38912.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"تخريج","subLabel":"تخريج","subLabels":{"en":"Hadith Authentication","fr":"Takhrij","es":"Tajriy (documentación de fuentes)","ur":"تخریج","tr":"Tahric","sw":"Takhrij","id":"Takhrij","ja":"ハディースの出典調査","zh":"圣训出处考证","ru":"Тахридж","bn":null,"pt":null,"hi":null},"published":"1420هـ 1999م","publishedTranslations":{"en":"1420 AH / 1999 CE","fr":"1420 H 1999","es":"1420 H 1999","ur":"1420ھ 1999ء","tr":"1420 H 1999","sw":"1420H 1999","id":"1420 H 1999 M","ja":"ヒジュラ暦1420年／西暦1999年","zh":"伊历1420年／公元1999年","ru":"1420 г. х. / 1999 г.","bn":null,"pt":null,"hi":null},"pages":"1719"},{"id":139238,"href":"catalogue/1392/139238.html","cover":"catalogue/1392/139238.jpg","title":"تقريب التهذيب","titles":{"en":"The Approximation of Al-Tahdhib","fr":"Taqrib al-Tahdhib (Abrégé de l'évaluation des transmetteurs)","es":"Taqrib al-Tahdhib (Resumen de la depuración de los narradores)","ur":"تقريب التهذيب (تقریب التہذیب)","tr":"Takrîbü’t-Tehzîb (Tehzîbü’t-Tehzîb’in Özeti)","sw":"Taqrib al-Tahdhib (Muhtasari wa Tahdhib)","id":"Taqrib at-Tahdzib [Ringkasan Tahdzib]","ja":"タクリーブ・アッ＝タフズィーブ","zh":"《圣训传述人考订撮要》","ru":"Такриб ат-тахзиб (Сокращение «Тахзиб ат-тахзиб»)","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1426هـ 2005م","publishedTranslations":{"en":"1426 AH / 2005 CE","fr":"1426 H 2005","es":"1426 H 2005","ur":"1426ھ 2005ء","tr":"1426 H 2005","sw":"1426 H 2005","id":"1426 H 2005 M","ja":"ヒジュラ暦1426年／西暦2005年","zh":"伊历1426年／公元2005年","ru":"1426 г. х. / 2005 г.","bn":null,"pt":null,"hi":null},"pages":"784"},{"id":148432,"href":"catalogue/1484/148432.html","cover":null,"title":"تقريب التهذيب","titles":{"en":"Abridgment of Al-Tahdhib","fr":"Taqrib al-Tahdhib (Abrégé de Tahdhib al-Tahdhib)","es":"Taqrib al-Tahdhib (Resumen de la evaluación de narradores)","ur":"تقريب التهذيب (تہذیب کا خلاصہ)","tr":"Takrîbü’t-Tehzîb (Tehzîb’e Yakınlaştırma)","sw":"Taqrib al-Tahdhib (Muhtasari wa Tahdhib)","id":"Taqrib At-Tahdzib [Ringkasan Tahdzib]","ja":"タクリーブ・アッ＝タフズィーブ","zh":"《塔赫迪卜摘要》","ru":"Такриб ат-тахзиб (Сокращение книги «Тахзиб ат-тахзиб»)","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"تراجم","subLabel":"تراجم","subLabels":{"en":"Biographies","fr":"Notices biographiques","es":"Biografías","ur":"تراجم","tr":"Biyografiler","sw":"Wasifu","id":"Biografi","ja":"人物伝","zh":"传记","ru":"Биографии","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"855"},{"id":138496,"href":"catalogue/1384/138496.html","cover":"catalogue/1384/138496.jpg","title":"تقريب التهذيب - دار الرشيد","titles":{"en":"The Approximation of Al-Tahdhib - Dar Al-Rasheed","fr":"Taqrib al-Tahdhib (Rapprochement du Tahdhib) - Dar al-Rashid","es":"Taqrib al-Tahdhib (Aproximación a la depuración) - Dar al-Rashid","ur":"تقريب التهذيب - دار الرشيد","tr":"Takrîbü't-Tehzîb – Dar al-Rashid","sw":"Taqrib al-Tahdhib (Muhtasari wa Tahdhib) — Dar al-Rashid","id":"Taqrib at-Tahdzib (Ringkasan at-Tahdzib) — Dar ar-Rasyid","ja":"タクリーブ・アッ＝タフズィーブ―ダール・アッ＝ラシード版","zh":"《精简《 تهذيب》的提要——拉希德出版社版》","ru":"Такриб ат-Тахзиб — Дар ар-Рашид","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الجرح والتعديل","subLabel":"الجرح والتعديل","subLabels":{"en":"Narrator Criticism","fr":"Critique et évaluation des transmetteurs","es":"Crítica y rectificación de narradores","ur":"جرح و تعدیل","tr":"Cerh ve ta'dîl","sw":"Jarh na ta'dil","id":"Jarh dan ta'dil","ja":"ジャルフ・ワ・タアディール","zh":"圣训传述者批评与褒扬","ru":"Критика и оценка передатчиков хадисов","bn":null,"pt":null,"hi":null},"published":"1411هـ 1991م","publishedTranslations":{"en":"1411 AH / 1991 CE","fr":"1411 H 1991","es":"1411 H 1991","ur":"1411ھ 1991ء","tr":"1411 H 1991","sw":"1411 H 1991","id":"1411 H 1991 M","ja":"ヒジュラ暦1411年／西暦1991年","zh":"伊历1411年／公元1991年","ru":"1411 г. х. / 1991 г.","bn":null,"pt":null,"hi":null},"pages":"798"},{"id":138743,"href":"catalogue/1387/138743.html","cover":"catalogue/1387/138743.jpg","title":"تقريب التهذيب - دار العاصمة","titles":{"en":"The Approximation of Tahdhib - Dar Al-Asimah","fr":"Taqrib al-Tahdhib (Résumé de Tahdhib al-Tahdhib) - Dar al-Asima","es":"Taqrib al-Tahdhib (resumen de Tahdhib al-Tahdhib) - Dar al-Asima","ur":"تقريب التهذيب - دار العاصمة","tr":"Takrîbü’t-Tehzîb (Tehzîbü’t-Tehzîb’in Özeti) - Dar al-Asima","sw":"Taqrib al-Tahdhib (Muhtasari wa Tahdhib) - Dar al-Asima","id":"Taqrib at-Tahdzib [Ringkasan Tahdzib] — Dar al-'Ashimah","ja":"『タクリーブ・アッ＝タフズィーブ』—ダール・アル＝アースィマ版","zh":"《〈人物传记精要〉——首都出版社版》","ru":"Такриб ат-Тахзиб — Дар аль-Асима","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الجرح والتعديل","subLabel":"الجرح والتعديل","subLabels":{"en":"Narrator Criticism","fr":"Critique et évaluation des transmetteurs","es":"Crítica y rectificación de narradores","ur":"جرح و تعدیل","tr":"Cerh ve ta'dîl","sw":"Jarh na ta'dil","id":"Jarh dan ta'dil","ja":"ジャルフ・ワ・タアディール","zh":"圣训传述者批评与褒扬","ru":"Критика и оценка передатчиков хадисов","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"1412"},{"id":138495,"href":"catalogue/1384/138495.html","cover":"catalogue/1384/138495.jpg","title":"تقريب التهذيب - دار المعرفة","titles":{"en":"The Approximation of Tahdhib - Dar Al-Ma'rifah","fr":"Taqrib al-Tahdhib (Rapprochement du Tahdhib) - Dar al-Ma'rifa","es":"Taqrib al-Tahdhib (Aproximación a la depuración) - Dar al-Marifa","ur":"تقريب التهذيب - دار المعرفة","tr":"Takrîbü't-Tehzîb – Dar al-Ma'rifa","sw":"Taqrib al-Tahdhib (Muhtasari wa Tahdhib) — Dar al-Ma'rifa","id":"Taqrib at-Tahdzib (Ringkasan at-Tahdzib) — Dar al-Ma'rifah","ja":"タクリーブ・アッ＝タフズィーブ―ダール・アル＝マアリファ版","zh":"《精简《 تهذيب》的提要——知识出版社版》","ru":"Такриб ат-Тахзиб — Дар аль-Ма‘рифа","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الجرح والتعديل","subLabel":"الجرح والتعديل","subLabels":{"en":"Narrator Criticism","fr":"Critique et évaluation des transmetteurs","es":"Crítica y rectificación de narradores","ur":"جرح و تعدیل","tr":"Cerh ve ta'dîl","sw":"Jarh na ta'dil","id":"Jarh dan ta'dil","ja":"ジャルフ・ワ・タアディール","zh":"圣训传述者批评与褒扬","ru":"Критика и оценка передатчиков хадисов","bn":null,"pt":null,"hi":null},"published":"1395هـ 1975م","publishedTranslations":{"en":"1395 AH / 1975 CE","fr":"1395 H 1975","es":"1395 H 1975","ur":"1395ھ 1975ء","tr":"1395 H 1975","sw":"1395 H 1975","id":"1395 H 1975 M","ja":"ヒジュラ暦1395年／西暦1975年","zh":"伊历1395年／公元1975年","ru":"1395 г. х. / 1975 г.","bn":null,"pt":null,"hi":null},"pages":"1115"},{"id":138497,"href":"catalogue/1384/138497.html","cover":"catalogue/1384/138497.jpg","title":"تقريب التهذيب في رجال الكتب الستة ومعه ضبط من غبر فيمن قيده ابن حجر","titles":{"en":"Abridgment of the Refinement in the Men of the Six Books, Along with Corrections from Others Mentioned by Ibn Hajar","fr":"Taqrib al-Tahdhib fi rijal al-kutub al-sitta wa-ma'ahu dabt man ghabara fiman qayyadahu Ibn Hajar","es":"Taqrib al-Tahdhib sobre los transmisores de los seis libros, junto con Dabt man ghabara de quienes Ibn Hajar registró","ur":"تقريب التهذيب في رجال الكتب الستة ومعه ضبط من غبر فيمن قيده ابن حجر","tr":"Kütüb-i Sitte râvileri hakkında Takrîbü't-Tehzîb ve İbn Hacer'in kaydettiği adlara dair zapt","sw":"Taqrib al-Tahdhib katika wapokezi wa vitabu sita vya Hadithi, pamoja na Dabtu man Ghabara fi-man Qayyadahu Ibn Hajar (Utambulisho wa waliobaki ambao Ibn Hajar aliwatambua)","id":"Taqrib at-Tahdzib fi Rijal al-Kutub as-Sittah ma'ahu Dhabth man Ghabar fiman Qayyadahu Ibnu Hajar (Ringkasan at-Tahdzib tentang Para Perawi Kutubus Sittah, Disertai Penjelasan Tokoh-Tokoh yang Dicatat Ibnu Hajar)","ja":"六書の伝承者に関するタクリーブ・アッ＝タフズィーブ、およびイブン・ハジャルが記録した残余の人物の表記確定","zh":"《六部圣训集传述者《精简《 تهذيب》》及伊本·哈杰尔所列余者考订》","ru":"Такриб ат-Тахзиб о передатчиках шести книг, с дополнением «Забт ман габара» о тех, кого упомянул Ибн Хаджар","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الجرح والتعديل","subLabel":"الجرح والتعديل","subLabels":{"en":"Narrator Criticism","fr":"Critique et évaluation des transmetteurs","es":"Crítica y rectificación de narradores","ur":"جرح و تعدیل","tr":"Cerh ve ta'dîl","sw":"Jarh na ta'dil","id":"Jarh dan ta'dil","ja":"ジャルフ・ワ・タアディール","zh":"圣训传述者批评与褒扬","ru":"Критика и оценка передатчиков хадисов","bn":null,"pt":null,"hi":null},"published":"1431هـ 2010م","publishedTranslations":{"en":"1431 AH / 2010 CE","fr":"1431 H 2010","es":"1431 H 2010","ur":"1431ھ 2010ء","tr":"1431 H 2010","sw":"1431 H 2010","id":"1431 H 2010 M","ja":"ヒジュラ暦1431年／西暦2010年","zh":"伊历1431年／公元2010年","ru":"1431 г. х. / 2010 г.","bn":null,"pt":null,"hi":null},"pages":"1488"},{"id":138745,"href":"catalogue/1387/138745.html","cover":"catalogue/1387/138745.jpg","title":"تقريب التهذيب ومعه حاشيتا البصري ومحمد أمين ميرغني- ط ابن حزم","titles":{"en":"The Approximation of Tahdhib with the Commentaries of Al-Basri and Muhammad Amin Mirghani - Published by Ibn Hazm","fr":"Taqrib al-Tahdhib, avec les deux annotations d'al-Basri et de Muhammad Amin Mirghani - éd. Ibn Hazm","es":"Taqrib al-Tahdhib (resumen de Tahdhib al-Tahdhib), con las glosas de al-Basri y Muhammad Amin Mirghani - edición de Dar Ibn Hazm","ur":"تقريب التهذيب ومعه حاشيتا البصري ومحمد أمين ميرغني- ط ابن حزم","tr":"Takrîbü’t-Tehzîb ve el-Basrî ile Muhammed Emîn Mîrganî’nin Hâşiyeleri - İbn Hazm baskısı","sw":"Taqrib al-Tahdhib pamoja na tanbihi mbili za al-Basri na Muhammad Amin Mirghani - Toleo la Ibn Hazm","id":"Taqrib at-Tahdzib [Ringkasan Tahdzib] beserta dua hasyiah Al-Bashri dan Muhammad Amin Mirghani — edisi Ibnu Hazm","ja":"『タクリーブ・アッ＝タフズィーブ』—アル＝バスリーとムハンマド・アミーン・ミルガニーの注釈付き、イブン・ハズム版","zh":"《〈人物传记精要〉及巴士里与穆罕默德·阿敏·米尔加尼两部眉批——伊本·哈兹姆版》","ru":"Такриб ат-Тахзиб с примечаниями аль-Басри и Мухаммада Амина Миргани — издание Ибн Хазма","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الجرح والتعديل","subLabel":"الجرح والتعديل","subLabels":{"en":"Narrator Criticism","fr":"Critique et évaluation des transmetteurs","es":"Crítica y rectificación de narradores","ur":"جرح و تعدیل","tr":"Cerh ve ta'dîl","sw":"Jarh na ta'dil","id":"Jarh dan ta'dil","ja":"ジャルフ・ワ・タアディール","zh":"圣训传述者批评与褒扬","ru":"Критика и оценка передатчиков хадисов","bn":null,"pt":null,"hi":null},"published":"1420هـ 1999م","publishedTranslations":{"en":"1420 AH / 1999 CE","fr":"1420H 1999","es":"1420 H 1999","ur":"1420ھ 1999ء","tr":"1420H 1999","sw":"1420H 1999","id":"1420 H 1999 M","ja":"ヒジュラ暦1420年／西暦1999年","zh":"伊历1420年／公元1999年","ru":"1420 г. х. / 1999 г.","bn":null,"pt":null,"hi":null},"pages":"893"},{"id":138746,"href":"catalogue/1387/138746.html","cover":"catalogue/1387/138746.jpg","title":"تقريب التهذيب ومعه حاشيتا البصري ومحمد أمين ميرغني- ط. المنهاج","titles":{"en":"The Approximation of Tahdhib with the Commentaries of Al-Basri and Muhammad Amin Mirghani - Al-Minhaj Edition","fr":"Taqrib al-Tahdhib, avec les deux annotations d'al-Basri et de Muhammad Amin Mirghani - éd. al-Minhaj","es":"Taqrib al-Tahdhib (resumen de Tahdhib al-Tahdhib), con las glosas de al-Basri y Muhammad Amin Mirghani - edición de al-Minhaj","ur":"تقريب التهذيب ومعه حاشيتا البصري ومحمد أمين ميرغني- ط. المنهاج","tr":"Takrîbü’t-Tehzîb ve el-Basrî ile Muhammed Emîn Mîrganî’nin Hâşiyeleri - el-Minhâc baskısı","sw":"Taqrib al-Tahdhib pamoja na tanbihi mbili za al-Basri na Muhammad Amin Mirghani - Toleo la al-Minhaj","id":"Taqrib at-Tahdzib [Ringkasan Tahdzib] beserta dua hasyiah Al-Bashri dan Muhammad Amin Mirghani — edisi Al-Minhaj","ja":"『タクリーブ・アッ＝タフズィーブ』—アル＝バスリーとムハンマド・アミーン・ミルガニーの注釈付き、アル＝ミンハージュ版","zh":"《〈人物传记精要〉及巴士里与穆罕默德·阿敏·米尔加尼两部眉批——明哈吉出版社版》","ru":"Такриб ат-Тахзиб с примечаниями аль-Басри и Мухаммада Амина Миргани — издание «аль-Минхадж»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الجرح والتعديل","subLabel":"الجرح والتعديل","subLabels":{"en":"Narrator Criticism","fr":"Critique et évaluation des transmetteurs","es":"Crítica y rectificación de narradores","ur":"جرح و تعدیل","tr":"Cerh ve ta'dîl","sw":"Jarh na ta'dil","id":"Jarh dan ta'dil","ja":"ジャルフ・ワ・タアディール","zh":"圣训传述者批评与褒扬","ru":"Критика и оценка передатчиков хадисов","bn":null,"pt":null,"hi":null},"published":"1430هـ 2009م","publishedTranslations":{"en":"1430 AH / 2009 CE","fr":"1430H 2009","es":"1430 H 2009","ur":"1430ھ 2009ء","tr":"1430H 2009","sw":"1430H 2009","id":"1430 H 2009 M","ja":"ヒジュラ暦1430年／西暦2009年","zh":"伊历1430年／公元2009年","ru":"1430 г. х. / 2009 г.","bn":null,"pt":null,"hi":null},"pages":"807"},{"id":138744,"href":"catalogue/1387/138744.html","cover":"catalogue/1387/138744.jpg","title":"تقريب التهذيب- ط. الرسالة","titles":{"en":"The Approximation of Tahdhib - Al-Risalah Edition","fr":"Taqrib al-Tahdhib (Résumé de Tahdhib al-Tahdhib) - éd. al-Risala","es":"Taqrib al-Tahdhib (resumen de Tahdhib al-Tahdhib) - edición de Mu'assasat al-Risala","ur":"تقريب التهذيب- ط. الرسالة","tr":"Takrîbü’t-Tehzîb - er-Risâle baskısı","sw":"Taqrib al-Tahdhib (Muhtasari wa Tahdhib) - Toleo la al-Risala","id":"Taqrib at-Tahdzib [Ringkasan Tahdzib] — edisi ar-Risalah","ja":"『タクリーブ・アッ＝タフズィーブ』—アッ＝リサーラ版","zh":"《〈人物传记精要〉——里萨莱出版社版》","ru":"Такриб ат-Тахзиб — издание «ар-Рисаля»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الجرح والتعديل","subLabel":"الجرح والتعديل","subLabels":{"en":"Narrator Criticism","fr":"Critique et évaluation des transmetteurs","es":"Crítica y rectificación de narradores","ur":"جرح و تعدیل","tr":"Cerh ve ta'dîl","sw":"Jarh na ta'dil","id":"Jarh dan ta'dil","ja":"ジャルフ・ワ・タアディール","zh":"圣训传述者批评与褒扬","ru":"Критика и оценка передатчиков хадисов","bn":null,"pt":null,"hi":null},"published":"1416هـ 1995م","publishedTranslations":{"en":"1416 AH / 1995 CE","fr":"1416H 1995","es":"1416 H 1995","ur":"1416ھ 1995ء","tr":"1416H 1995","sw":"1416H 1995","id":"1416 H 1995 M","ja":"ヒジュラ暦1416年／西暦1995年","zh":"伊历1416年／公元1995年","ru":"1416 г. х. / 1995 г.","bn":null,"pt":null,"hi":null},"pages":"684"},{"id":140358,"href":"catalogue/1403/140358.html","cover":"catalogue/1403/140358.jpg","title":"تلخيص الحبير في تخريج أحاديث الرافعي الكبير","titles":{"en":"Summary of Al-Habeer in the Extraction of the Hadiths of Al-Rafi'i Al-Kabir","fr":"Talkhis al-habir fi takhrij ahadith al-Rafii al-kabir (Synthèse détaillée du référencement des hadiths de l’ouvrage majeur de al-Rafii)","es":"Talkhis al-Habir fi Takhrij Ahadith al-Rafii al-Kabir (Resumen conciso sobre la documentación de los hadices de la gran obra de al-Rafii)","ur":"تلخيص الحبير في تخريج أحاديث الرافعي الكبير","tr":"Telhîsü’l-Habîr fî Tahrîci Ehâdîsi’r-Râfiî el-Kebîr (Râfiî’nin el-Kebîr’inde Geçen Hadislerin Tahricinin Özeti)","sw":"Talkhis al-Habir fi Takhrij Ahadith al-Rafi'i al-Kabir (Muhtasari wa kina wa kutoa rejea za hadith za al-Rafi'i al-Kabir)","id":"Talkhish Al-Habir fi Takhrij Ahadits Ar-Rafi'i Al-Kabir (Ringkasan Lengkap dalam Penelusuran Sumber Hadis-Hadis Ar-Rafi'i Al-Kabir)","ja":"タルヒース・アル＝ハビール・フィー・タフリージュ・アハーディース・アッ＝ラーフィイー・アル＝カビール（アッ＝ラーフィイー大著の伝承の出典検証）","zh":"《精要之鉴：考证拉菲仪大著中的圣训》","ru":"Тальхис аль-хабир фи тахридж ахадис ар-Рафи аль-кабир (Сокращенный свод о тахридже хадисов «Большого свода» ар-Рафи)","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1384هـ 1964م","publishedTranslations":{"en":"1384 AH / 1964 CE","fr":"1384 H 1964","es":"1384 H 1964","ur":"1384ھ 1964ء","tr":"1384 H 1964","sw":"1384H 1964","id":"1384 H 1964 M","ja":"ヒジュラ暦1384年／西暦1964年","zh":"伊历1384年／公元1964年","ru":"1384 г. х. / 1964 г.","bn":null,"pt":null,"hi":null},"pages":"1110"},{"id":142441,"href":"catalogue/1424/142441.html","cover":"catalogue/1424/142441.jpg","title":"تلخيص الحبير في تخريج أحاديث الرافعي الكبير","titles":{"en":"Summary of Al-Habeer in the Extraction of the Hadiths of Al-Rafi'i Al-Kabir","fr":"Talkhis al-Habir fi Takhrij Ahadith al-Rafii al-Kabir (Résumé détaillé du référencement des hadiths du grand ouvrage d’al-Rafii)","es":"Talkhis al-Habir fi Takhrij Ahadith al-Rafii al-Kabir (Resumen conciso: documentación de los hadices de la gran obra de al-Rafii)","ur":"تلخيص الحبير في تخريج أحاديث الرافعي الكبير","tr":"Telhîsü’l-habîr fî tahrîci ehâdîsi’r-Râfiî el-kebîr","sw":"Talkhis al-Habir fi Takhrij Ahadith al-Rafii al-Kabir (Muhtasari wa Mtaalamu wa Takhrij ya Hadithi za al-Rafii Mkubwa)","id":"Talkhis al-Habir fi Takhrij Ahadits ar-Rafi'i al-Kabir (Ringkasan al-Habir dalam Takhrij Hadis-Hadis Ar-Rafi'i al-Kabir)","ja":"アッ＝ラーフィイー大著のハディースの出典確認に関する『タルヒース・アル＝ハビール』","zh":"《精要汇编：拉菲仪大典圣训考证》","ru":"«Талхис аль-хабир фи тахридж ахадис ар-Рафи‘и аль-кабир»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"تخريج","subLabel":"تخريج","subLabels":{"en":"Hadith Authentication","fr":"Takhrij","es":"Tajriy (documentación de fuentes)","ur":"تخریج","tr":"Tahric","sw":"Takhrij","id":"Takhrij","ja":"ハディースの出典調査","zh":"圣训出处考证","ru":"Тахридж","bn":null,"pt":null,"hi":null},"published":"1419هـ 1998م","publishedTranslations":{"en":"1419 AH / 1998 CE","fr":"1419 H 1998","es":"1419 H 1998","ur":"1419ھ 1998ء","tr":"1419 H 1998","sw":"1419H 1998","id":"1419 H 1998 M","ja":"ヒジュラ暦1419年／西暦1998年","zh":"伊历1419年／公元1998年","ru":"1419 г. х. / 1998 г.","bn":null,"pt":null,"hi":null},"pages":"2144"},{"id":142475,"href":"catalogue/1424/142475.html","cover":null,"title":"تلخيص الحبير في تخريج أحاديث الرافعي الكبير","titles":{"en":"Summary of Al-Habeer in the Extraction of the Hadiths of Al-Rafi'i Al-Kabir","fr":"Résumé de l’ouvrage Al-Talkhis al-Habir sur la vérification des hadiths d’Al-Rafi‘i al-Kabir (Le Grand ouvrage d’Al-Rafi‘i)","es":"Resumen de al-Talkhis al-Habir (Verificación de las cadenas de transmisión de los hadices de al-Rafii al-Kabir)","ur":"تلخيص الحبير في تخريج أحاديث الرافعي الكبير","tr":"Telhîsü’l-habîr fî tahrîci ehâdîsi’r-Râfiî el-kebîr (Râfiî’nin el-Kebîr’indeki hadislerin tahrici)","sw":"Talkhis al-Habir katika kutoa asili ya hadithi za al-Rafii al-Kabir (Muhtasari wa al-Habir katika kubainisha asili ya hadithi za al-Rafii al-Kabir)","id":"Talkhis Al-Habir fi Takhrij Ahadits Ar-Rafi‘i Al-Kabir (Ringkasan Al-Habir dalam Takhrij Hadis-Hadis Ar-Rafi‘i Al-Kabir)","ja":"タルヒース・アル＝ハビール・フィー・タフリージ・アハーディース・アル＝ラーフィイー・アル＝カビール","zh":"《精要汇编：拉菲仪大典圣训的考证》","ru":"Талхис аль-хабир фи тахридж ахадис ар-Рафи‘и аль-кабир (Краткое изложение «Аль-хабира» о тахридже хадисов «Аль-Рафи‘и аль-кабир»)","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"تخريج","subLabel":"تخريج","subLabels":{"en":"Hadith Authentication","fr":"Takhrij","es":"Tajriy (documentación de fuentes)","ur":"تخریج","tr":"Tahric","sw":"Takhrij","id":"Takhrij","ja":"ハディースの出典調査","zh":"圣训出处考证","ru":"Тахридж","bn":null,"pt":null,"hi":null},"published":"1419هـ 1989م","publishedTranslations":{"en":"1419 AH / 1989 CE","fr":"1419 H 1989","es":"1419 H 1989","ur":"1419ھ 1989ء","tr":"1419 H 1989","sw":"1419H 1989","id":"1419 H 1989 M","ja":"ヒジュラ暦1419年／西暦1989年","zh":"伊历1419年／公元1989年","ru":"1419 г. х. 1989 г.","bn":null,"pt":null,"hi":null},"pages":"2015"},{"id":138225,"href":"catalogue/1382/138225.html","cover":"catalogue/1382/138225.jpg","title":"تلخيص الحبير في تخريج أحاديث الرافعي الكبير- ط. الباز","titles":{"en":"Summary of Al-Habeer in the Extraction of the Hadiths of Al-Rafi'i Al-Kabir - Al-Baz Edition","fr":"Talkhis al-Habir fi Takhrij Ahadith al-Rafi'i al-Kabir (Résumé de la vérification des chaînes des hadiths d'al-Rafi'i al-Kabir) — éd. al-Baz","es":"Talkhis al-Habir fi takhrij ahadith al-Rafi'i al-Kabir (Síntesis de al-Habir sobre la localización de los hadices de al-Rafi'i al-Kabir) — ed. al-Baz","ur":"تلخيص الحبير في تخريج أحاديث الرافعي الكبير (باز ایڈیشن)","tr":"Telhîsü'l-habîr fî tahrîci ehâdîsi'r-Râfiî'l-kebîr (Râfiî'nin el-Kebîr'inde geçen hadislerin tahrici) - el-Bâz neşri","sw":"Talkhis al-Habir fi Takhrij Ahadith al-Rafii al-Kabir (ufafanuzi wa uainishaji wa hadithi za kitabu kikubwa cha Al-Rafii) – chapa ya Al-Baz","id":"Talkhis Al-Habir fi Takhrij Ahadits Ar-Rafi'i Al-Kabir (edisi Al-Baz)","ja":"タルヒース・アル＝ハビール・フィー・タフリージュ・アハーディース・アッ＝ラーフィイー・アル＝カビール（バース版）","zh":"《精要汇编：拉菲仪大典圣训的考证》—巴兹版","ru":"Сокращённый аль-Хабир: источниковедческая проверка хадисов из «аль-Рафи аль-Кабир» — издание аль-Баз","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"باقي مجموعات الحديث","subLabel":"باقي مجموعات الحديث","subLabels":{"en":"Other Hadith Collections","fr":"Autres recueils de hadiths","es":"Otros grupos de hadices","ur":"حدیث کے دیگر مجموعے","tr":"Diğer hadis mecmuaları","sw":"Makundi mengine ya hadithi","id":"Kumpulan hadis lainnya","ja":"その他のハディース集","zh":"其他圣训集","ru":"Другие сборники хадисов","bn":null,"pt":null,"hi":null},"published":"1417هـ 1996م","publishedTranslations":{"en":"1417 AH / 1996 CE","fr":"1417 H 1996","es":"1417 H 1996","ur":"1417ھ 1996ء","tr":"1417H 1996","sw":"1417H 1996","id":"1417 H 1996 M","ja":"ヒジュラ暦1417年／西暦1996年","zh":"伊历1417年／公元1996年","ru":"1417 г. х. / 1996 г.","bn":null,"pt":null,"hi":null},"pages":"1612"},{"id":143418,"href":"catalogue/1434/143418.html","cover":"catalogue/1434/143418.jpg","title":"تلخيص الحبير في تخريج أحاديث الرافعي الكبير- ط. دهلي","titles":{"en":"Summary of Al-Habeer in the Extraction of the Hadiths of Al-Rafi'i Al-Kabir - 1st Edition","fr":"Talkhis al-Habir fi Takhrij Ahadith al-Rafi'i al-Kabir (Recensement des hadiths d’al-Rafi‘i al-Kabir) — édition de Delhi","es":"Talkhis al-Habir fi Takhrij Ahadith al-Rafii al-Kabir (Resumen del perspicaz sobre la verificación de los hadices de al-Rafii al-Kabir), edición de Delhi","ur":"تلخيص الحبير في تخريج أحاديث الرافعي الكبير- ط. دهلي","tr":"Telhîsü’l-habîr fî tahrîci ehâdîsi’r-Râfiî el-kebîr (Râfiî el-kebîr’in hadislerinin tahrici) – Delhi baskısı","sw":"Talkhis al-Habir fi Takhrij Ahadith al-Rafi'i al-Kabir (Muhtasari wa habari kuhusu kubainisha hadithi za al-Rafi'i al-Kabir) – chapa ya Delhi","id":"Talkhis al-Habir fi Takhrij Ahadits ar-Rafi'i al-Kabir (Ringkasan Al-Habir dalam Takhrij Hadis-hadis Ar-Rafi'i al-Kabir) — edisi Delhi","ja":"タルヒース・アル＝ハビール――アッ＝ラーフィイー・アル＝カビールのハディース出典調査（デリー版）","zh":"《〈大拉菲圣训〉考证：精要》—德里版","ru":"Талхис аль-хабир фи тахридж ахадис ар-Рафи‘и аль-кабир (Сокращённое изложение «аль-Хабир» с такхриджем хадисов «аль-Рафи‘и аль-кабир») — издание Дели","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"تخريج","subLabel":"تخريج","subLabels":{"en":"Hadith Authentication","fr":"Takhrij","es":"Tajriy (documentación de fuentes)","ur":"تخریج","tr":"Tahric","sw":"Takhrij","id":"Takhrij","ja":"ハディースの出典調査","zh":"圣训出处考证","ru":"Тахридж","bn":null,"pt":null,"hi":null},"published":"1187هـ 1916م","publishedTranslations":{"en":"1187 AH / 1916 CE","fr":"1187 H 1916","es":"1187 H 1916","ur":"1187ھ 1916ء","tr":"1187H 1916","sw":"1187H 1916","id":"1187 H 1916 M","ja":"ヒジュラ暦1187年／西暦1916年","zh":"伊历1187年 公元1916年","ru":"1187 г. х. 1916 г.","bn":null,"pt":null,"hi":null},"pages":"420"},{"id":145539,"href":"catalogue/1455/145539.html","cover":"catalogue/1455/145539.jpg","title":"تلخيص الحبير في تخريج أحاديث الرافعي الكبير- مؤسسة قرطبة","titles":{"en":"Summary of Al-Habeer in the Extraction of Hadiths from Al-Rafi'i Al-Kabir - Qurtuba Foundation","fr":"Talkhis al-habir fi takhrij ahadith al-Rafii al-kabir (Le Résumé concis sur le référencement des hadiths d'al-Rafii al-Kabir) – Mu'assasat Qurtuba","es":"Talkhis al-habir fi takhrij ahadith al-Rafi'i al-kabir (Compendio del experto en la referenciación de los hadices de al-Rafi'i al-Kabir) - Mu'assasat Qurtuba","ur":"تلخيص الحبير في تخريج أحاديث الرافعي الكبير- مؤسسة قرطبة (تلخيص الحبير في تخريج أحاديث الرافعي الكبير—مؤسسة قرطبة)","tr":"Telhîsü'l-habîr fî tahrîci ehâdîsi'r-Râfiî el-kebîr (Râfiî'nin el-Kebîr'indeki hadislerin tahrici) - Müessesetü Kurtuba baskısı","sw":"Talkhis al-Habir fi Takhrij Ahadith al-Rafi'i al-Kabir (Muhtasari wa kina katika kubainisha chimbuko la hadithi za kitabu kikubwa cha al-Rafi'i) - Mu'assasat Qurtuba","id":"Talkhis al-Habir fi Takhrij Ahadits ar-Rafi'i al-Kabir [Ringkasan al-Habir tentang Takhrij Hadis-Hadis al-Rafi'i al-Kabir] — Mu'assasat Qurtubah","ja":"タルヒース・アル＝ハビール（アッ＝ラーフィイー大著のハディース出典調査）―クルトゥバ財団版","zh":"《精炼的摘要：考证拉菲仪大典中的圣训》——科尔多瓦机构版","ru":"«Тальхис аль-хабир» в тахридже хадисов «Аль-Рафи аль-кабир» (Фонд Кордовы)","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"تخريج","subLabel":"تخريج","subLabels":{"en":"Hadith Authentication","fr":"Takhrij","es":"Tajriy (documentación de fuentes)","ur":"تخریج","tr":"Tahric","sw":"Takhrij","id":"Takhrij","ja":"ハディースの出典調査","zh":"圣训出处考证","ru":"Тахридж","bn":null,"pt":null,"hi":null},"published":"1416هــ 1995م","publishedTranslations":{"en":"1416 AH / 1995 CE","fr":"1416 H 1995","es":"1416 H 1995 m","ur":"1416ھ / 1995ء","tr":"1416H 1995","sw":"1416H 1995م","id":"1416 H 1995 M","ja":"ヒジュラ暦1416年／西暦1995年","zh":"伊历1416年／公元1995年","ru":"1416 г. х. / 1995 г.","bn":null,"pt":null,"hi":null},"pages":"2144"},{"id":138198,"href":"catalogue/1381/138198.html","cover":"catalogue/1381/138198.jpg","title":"تهذيب الترغيب والترهيب من الأحاديث الصحاح- الدرويش","titles":{"en":"The Refinement of Encouragement and Warning from Authentic Hadiths - Al-Darwish","fr":"Élagage d'Encouragement et avertissement d'après les hadiths authentiques - al-Darwish","es":"Tahdhib al-Targhib wa-l-Tarhib min al-Ahadith al-Sihah (Depuración de la exhortación y la advertencia a partir de hadices auténticos) - al-Darwish","ur":"تهذيب الترغيب والترهيب من الأحاديث الصحاح- الدرويش","tr":"Tehzîbü’t-terğîb ve’t-terhîb mine’l-ehâdîsi’s-sıhâh (Sahih Hadislerden Terğîb ve Terhîb’in Özeti) – ed-Dervîş","sw":"Tahdhib al-Targhib wal-Tarhib min al-Ahadith al-Sihah (Uteuzi wa kuhimiza na kuonya kutoka Hadithi sahihi) — al-Darwish","id":"Tahdzib at-Targhib wa at-Tarhib min al-Ahadits ash-Shahihah (Ad-Darwish)","ja":"真正ハディースに基づく『アッ＝タルギーブ・ワッタルヒーブ』の要約―アッ＝ダルウィーシュ版","zh":"《〈劝勉与警戒〉可靠圣训节选》——德尔维什版","ru":"Тахзиб ат-таргиб ва-т-тархиб из достоверных хадисов — ад-Дарвиш","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"المسانيد الأخرى والجوامع","subLabel":"المسانيد الأخرى والجوامع","subLabels":{"en":"Other Musnads and Compilations","fr":"Autres musnads et recueils généraux","es":"Otros musnads y compilaciones","ur":"دیگر مسندیں اور جوامع","tr":"Diğer müsnedler ve câmi eserleri","sw":"Musnad nyingine na majami","id":"Musnad lainnya dan kitab jami'","ja":"その他のムスナド集と総合ハディース集","zh":"其他圣训集与汇编","ru":"Другие муснады и сборники хадисов","bn":null,"pt":null,"hi":null},"published":"1427هـ 2006م","publishedTranslations":{"en":"1427 AH / 2006 CE","fr":"1427 H 2006","es":"1427 H 2006","ur":"1427ھ 2006ء","tr":"1427 H 2006","sw":"1427 H 2006","id":"1427 H 2006 M","ja":"ヒジュラ暦1427年／西暦2006年","zh":"伊历1427年／公元2006年","ru":"1427 г. х. / 2006 г.","bn":null,"pt":null,"hi":null},"pages":"399"},{"id":138501,"href":"catalogue/1385/138501.html","cover":"catalogue/1385/138501.jpg","title":"تهذيب التهذيب في رجال الحديث","titles":{"en":"The Refinement of Refinement in the Men of Hadith","fr":"Tahdhib al-Tahdhib fi rijal al-hadith (Évaluation des transmetteurs du hadith)","es":"Tahdhib al-Tahdhib (Depuración de la depuración) sobre los transmisores de hadiz","ur":"تهذيب التهذيب في رجال الحديث","tr":"Hadis râvileri hakkında Tehzîbü't-Tehzîb","sw":"Tahdhib al-Tahdhib fi Rijal al-Hadith (Ufafanuzi wa Tahdhib kuhusu wapokezi wa Hadithi)","id":"Tahdzib at-Tahdzib fi Rijal al-Hadits (Penyempurnaan at-Tahdzib tentang Para Perawi Hadis)","ja":"ハディース伝承者に関するタフズィーブ・アッ＝タフズィーブ","zh":"《圣训传述者名录《提炼《 تهذيب》》》","ru":"Тахзиб ат-Тахзиб о передатчиках хадисов","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الجرح والتعديل","subLabel":"الجرح والتعديل","subLabels":{"en":"Narrator Criticism","fr":"Critique et évaluation des transmetteurs","es":"Crítica y rectificación de narradores","ur":"جرح و تعدیل","tr":"Cerh ve ta'dîl","sw":"Jarh na ta'dil","id":"Jarh dan ta'dil","ja":"ジャルフ・ワ・タアディール","zh":"圣训传述者批评与褒扬","ru":"Критика и оценка передатчиков хадисов","bn":null,"pt":null,"hi":null},"published":"1425هـ 2004م","publishedTranslations":{"en":"1425 AH / 2004 CE","fr":"1425 H 2004","es":"1425 H 2004","ur":"1425ھ 2004ء","tr":"1425 H 2004","sw":"1425 H 2004","id":"1425 H 2004 M","ja":"ヒジュラ暦1425年／西暦2004年","zh":"伊历1425年／公元2004年","ru":"1425 г. х. / 2004 г.","bn":null,"pt":null,"hi":null},"pages":null},{"id":138499,"href":"catalogue/1384/138499.html","cover":"catalogue/1384/138499.jpg","title":"تهذيب التهذيب- ت. الزيبق","titles":{"en":"Refinement of Refinement - T. Al-Zaybaq","fr":"Tahdhib al-Tahdhib - éd. al-Zaybaq","es":"Tahdhib al-Tahdhib (Depuración de la depuración) - ed. al-Zaybaq","ur":"تهذيب التهذيب- ت. الزيبق","tr":"Tehzîbü't-Tehzîb – tahkik: ez-Zeybak","sw":"Tahdhib al-Tahdhib — tahakiki ya al-Zaybaq","id":"Tahdzib at-Tahdzib (Penyempurnaan at-Tahdzib) — tahkik az-Zaiybak","ja":"タフズィーブ・アッ＝タフズィーブ―校訂：アッ＝ズィブク、アーディル・ムルシド","zh":"《提炼《 تهذيب》——泽伊卜格校订》","ru":"Тахзиб ат-Тахзиб — редакция аз-Зайбака","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الجرح والتعديل","subLabel":"الجرح والتعديل","subLabels":{"en":"Narrator Criticism","fr":"Critique et évaluation des transmetteurs","es":"Crítica y rectificación de narradores","ur":"جرح و تعدیل","tr":"Cerh ve ta'dîl","sw":"Jarh na ta'dil","id":"Jarh dan ta'dil","ja":"ジャルフ・ワ・タアディール","zh":"圣训传述者批评与褒扬","ru":"Критика и оценка передатчиков хадисов","bn":null,"pt":null,"hi":null},"published":"1416هـ 1995م","publishedTranslations":{"en":"1416 AH / 1995 CE","fr":"1416 H 1995","es":"1416 H 1995","ur":"1416ھ 1995ء","tr":"1416 H 1995","sw":"1416 H 1995","id":"1416 H 1995 M","ja":"ヒジュラ暦1416年／西暦1995年","zh":"伊历1416年／公元1995年","ru":"1416 г. х. / 1995 г.","bn":null,"pt":null,"hi":null},"pages":null},{"id":138500,"href":"catalogue/1385/138500.html","cover":"catalogue/1385/138500.jpg","title":"تهذيب التهذيب- ط الهند","titles":{"en":"The Refinement of Refinement - India","fr":"Tahdhib al-Tahdhib - édition indienne","es":"Tahdhib al-Tahdhib (Depuración de la depuración) - edición de India","ur":"تهذيب التهذيب- ط الهند","tr":"Tehzîbü't-Tehzîb – Hindistan baskısı","sw":"Tahdhib al-Tahdhib — chapa ya India","id":"Tahdzib at-Tahdzib (Penyempurnaan at-Tahdzib) — edisi India","ja":"タフズィーブ・アッ＝タフズィーブ―インド版","zh":"《提炼《 تهذيب》——印度版》","ru":"Тахзиб ат-Тахзиб — индийское издание","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الجرح والتعديل","subLabel":"الجرح والتعديل","subLabels":{"en":"Narrator Criticism","fr":"Critique et évaluation des transmetteurs","es":"Crítica y rectificación de narradores","ur":"جرح و تعدیل","tr":"Cerh ve ta'dîl","sw":"Jarh na ta'dil","id":"Jarh dan ta'dil","ja":"ジャルフ・ワ・タアディール","zh":"圣训传述者批评与褒扬","ru":"Критика и оценка передатчиков хадисов","bn":null,"pt":null,"hi":null},"published":"1425هـ","publishedTranslations":{"en":"1425 AH","fr":"1425 H","es":"1425 H","ur":"1425ھ","tr":"1425 H","sw":"1425 H","id":"1425 H","ja":"ヒジュラ暦1425年","zh":"伊历1425年","ru":"1425 г. х.","bn":null,"pt":null,"hi":null},"pages":null},{"id":142805,"href":"catalogue/1428/142805.html","cover":"catalogue/1428/142805.jpg","title":"تهذيب تخريجات بلوغ المرام من أدلة الأحكام","titles":{"en":"Refinement of the Narrations of Bulugh al-Maram from the Evidence of the Rulings","fr":"Révision des références de Bulugh al-Maram min Adillat al-Ahkam (L’Aboutissement des aspirations d’après les preuves des règles juridiques)","es":"Resumen de los takhrij de Bulugh al-Maram min Adillat al-Ahkam (El logro de las metas a partir de las pruebas de las normas)","ur":"تهذيب تخريجات بلوغ المرام من أدلة الأحكام (بلوغ المرام از ادلۂ احکام کی تخریجات کی تہذیب)","tr":"Bülûğü’l-merâm min edilleti’l-ahkâm’ın tahriclerinin özeti","sw":"Tahdhib Takhrijat Bulugh al-Maram min Adillat al-Ahkam (Uhariri wa takhrij za Kufikia Lengo kwa Dalili za Hukumu)","id":"Ringkasan Takhrij Bulughul Maram min Adillatil Ahkam","ja":"法規定の根拠から見た『ブルーグ・アル＝マラーム』の出典検証の改訂","zh":"《〈通达愿望：教法判例证据〉出处考证修订》","ru":"Сокращённый такхридж «Булуг аль-марам» из доказательств правовых положений","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"تخريج","subLabel":"تخريج","subLabels":{"en":"Hadith Authentication","fr":"Takhrij","es":"Tajriy (documentación de fuentes)","ur":"تخریج","tr":"Tahric","sw":"Takhrij","id":"Takhrij","ja":"ハディースの出典調査","zh":"圣训出处考证","ru":"Тахридж","bn":null,"pt":null,"hi":null},"published":"1428هـ 2007م","publishedTranslations":{"en":"1428 AH / 2007 CE","fr":"1428 H 2007","es":"1428 H 2007","ur":"1428ھ 2007ء","tr":"1428 H 2007","sw":"1428H 2007","id":"1428 H 2007 M","ja":"ヒジュラ暦1428年／西暦2007年","zh":"伊历1428年／公元2007年","ru":"1428 г. х. / 2007 г.","bn":null,"pt":null,"hi":null},"pages":"290"},{"id":145514,"href":"catalogue/1455/145514.html","cover":"catalogue/1455/145514.jpg","title":"توالي التأسيس لمعالي محمد بن إدريس","titles":{"en":"The Continuation of the Foundation by His Excellency Muhammad ibn Idris","fr":"La succession des fondations en l'honneur de Muhammad ibn Idris","es":"Tawali al-tasis li-maali Muhammad ibn Idris (Sucesión de los cimientos para la gloria de Muhammad ibn Idris)","ur":"توالي التأسيس لمعالي محمد بن إدريس (محمد بن ادریس کے بلند اوصاف کے بیان میں توالی التأسيس)","tr":"Tevâli’t-Te’sîs li-Meâlî Muhammed b. İdrîs (Muhammed b. İdrîs’in Yüce Makamlarına Dair)","sw":"Tawali al-Ta'sis li-Ma'ali Muhammad bin Idris (Mfululizo wa ujenzi wa heshima ya Muhammad bin Idris)","id":"Tawali at-Ta'sis li Ma'ali Muhammad bin Idris [Jejak Pendirian tentang Keutamaan Muhammad bin Idris]","ja":"タワーリー・アッ＝タアスィース・リ・マアーリー・ムハンマド・イブン・イドリース","zh":"《为穆罕默德·本·伊德里斯的崇高品格续立基础》","ru":"Последовательное изложение основоположений: о достоинствах Мухаммада ибн Идриса","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الأجزاء","subLabel":"الأجزاء","subLabels":{"en":"Hadith Fascicles","fr":"Fascicules","es":"Fascículos","ur":"اجزاء","tr":"Cüzler","sw":"Juzuu","id":"Juz","ja":"小冊子","zh":"分册","ru":"Части","bn":null,"pt":null,"hi":null},"published":"1406هــ 1986م","publishedTranslations":{"en":"1406 AH / 1986 CE","fr":"1406 H 1986","es":"1406 H 1986","ur":"1406ھ 1986ء","tr":"1406 H 1986","sw":"1406 H 1986","id":"1406 H 1986 M","ja":"ヒジュラ暦1406年／西暦1986年","zh":"伊历1406年／公元1986年","ru":"1406 г. х. / 1986 г.","bn":null,"pt":null,"hi":null},"pages":"272"},{"id":145376,"href":"catalogue/1453/145376.html","cover":"catalogue/1453/145376.jpg","title":"جامع الترمذي شرح أبواب الصلاة","titles":{"en":"Explanation of the Chapters of Prayer in Jami' at-Tirmidhi","fr":"Jami al-Tirmidhi : commentaire des chapitres sur la prière","es":"Jami al-Tirmidhi: comentario de los capítulos sobre la oración","ur":"جامع الترمذي شرح أبواب الصلاة","tr":"Câmi‘u’t-Tirmizî: Namaz Bölümleri Şerhi","sw":"Jami' al-Tirmidhi: Sharh Abwab al-Salat (Mkusanyiko wa al-Tirmidhi: ufafanuzi wa milango ya sala)","id":"Jami' at-Tirmidzi: Syarah Bab-Bab Salat","ja":"ジャーミウ・アッ＝ティルミズィー：礼拝の章の注解","zh":"《铁尔密济圣训集：礼拜篇注释》","ru":"Джами ат-Тирмизи: комментарий к разделам о молитве","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"عبد الكريم عبد الله الخضير","names":{"en":"Abdul Karim Abdullah Al-Khudair","fr":"Abd al-Karim Abd Allah al-Khudair","es":"Abdul Karim Abdullah al-Khudair","ur":"عبد الكريم عبد الله الخضير","tr":"Abdülkerîm Abdullah el-Hudayr","sw":"Abdul Karim Abdullah Al-Khudair","id":"Abdul Karim Abdullah Al-Khudair","ja":"アブドゥルカリーム・アブドゥッラー・アル＝フダイル","zh":"阿卜杜勒·卡里姆·阿卜杜拉·胡代尔","ru":"Абд аль-Карим Абдуллах аль-Худайр","bn":"عبد الكريم عبد الله الخضير","pt":"عبد الكريم عبد الله الخضير","hi":"عبد الكريم عبد الله الخضير"},"href":"authors/040/4027.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"سنن","subLabel":"سنن","subLabels":{"en":"Sunan Collections","fr":"Sunan","es":"Sunna","ur":"سنن","tr":"Sünenler","sw":"Sunna","id":"Sunan","ja":"スンナ諸集","zh":"圣训集","ru":"Сунаны","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"156"}]
+    </script>
+    <script
+      type="application/json"
+      data-list
+    >
+      {"list":"catalogue","category":"e996cad5","sub":null,"era":"unknown","page":9,"pages":21,"total":507,"perPage":25,"eraCounts":{"all":706,"salaf":1,"mutaqaddimun":7,"mutaakhkhirun":87,"muasirun":104,"unknown":507},"categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"subLabel":null,"subLabels":null}
+    </script>
+
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Resources</div>
+        <div class="mt-2 flex flex-wrap items-center gap-2">
+          <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-text="count(':count result|:count results', total)" data-flux-subheading>
+    
+</div>
+
+          <template x-if="category !== ''">
+            <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-category">
+        <svg class="shrink-0 [:where(&amp;)]:size-4 size-3" data-flux-badge-icon="data-flux-badge-icon" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v2.879a2.5 2.5 0 0 0 .732 1.767l4.5 4.5a2.5 2.5 0 0 0 3.536 0l2.878-2.878a2.5 2.5 0 0 0 0-3.536l-4.5-4.5A2.5 2.5 0 0 0 7.38 2H4.5ZM5 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
+</svg>
+
+            
+    <span x-text="categoryLabel"></span>
+              <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('category', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+          </template>
+
+          <template x-if="category !== '' && sub !== ''">
+            <span class="flex items-center gap-2">
+              <svg class="shrink-0 [:where(&amp;)]:size-4 text-zinc-400 rtl:rotate-180" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-sub-category">
+        <span x-text="subLabel"></span>
+                <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('sub', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+            </span>
+          </template>
+        </div>
+      </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white" data-flux-button="data-flux-button" x-show="hasFilters" x-cloak="x-cloak" x-on:click="clearFilters()">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Clear filters</span>
+    </button>
+    </div>
+
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+      <div
+  class="inline-flex max-w-full overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-700 dark:bg-zinc-800/80"
+  role="radiogroup"
+  aria-label="Era"
+  data-test="era-filter"
+>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === ''"
+      x-on:click="choose('era', '')"
+      x-bind:disabled="era !== '' && eraCounts['all'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === ''          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-all"
+    >
+      All
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === '' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['all'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'salaf'"
+      x-on:click="choose('era', 'salaf')"
+      x-bind:disabled="era !== 'salaf' && eraCounts['salaf'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'salaf'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-salaf"
+    >
+      Salaf
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'salaf' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t="to :year AH" data-r="{&quot;year&quot;:300}">to 300 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['salaf'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaqaddimun'"
+      x-on:click="choose('era', 'mutaqaddimun')"
+      x-bind:disabled="era !== 'mutaqaddimun' && eraCounts['mutaqaddimun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaqaddimun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaqaddimun"
+    >
+      Mutaqaddimun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaqaddimun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:301,&quot;to&quot;:656}">301–656 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaqaddimun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaakhkhirun'"
+      x-on:click="choose('era', 'mutaakhkhirun')"
+      x-bind:disabled="era !== 'mutaakhkhirun' && eraCounts['mutaakhkhirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaakhkhirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaakhkhirun"
+    >
+      Muta&#039;akhkhirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaakhkhirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:657,&quot;to&quot;:1265}">657–1265 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaakhkhirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'muasirun'"
+      x-on:click="choose('era', 'muasirun')"
+      x-bind:disabled="era !== 'muasirun' && eraCounts['muasirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'muasirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-muasirun"
+    >
+      Mu&#039;asirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'muasirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":year AH on, or living" data-r="{&quot;year&quot;:1266}">1266 AH on, or living</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['muasirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'unknown'"
+      x-on:click="choose('era', 'unknown')"
+      x-bind:disabled="era !== 'unknown' && eraCounts['unknown'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'unknown'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-unknown"
+    >
+      Unknown
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'unknown' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline">no year ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['unknown'])"
+        ></span>
+      </span>
+    </button>
+  </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-show="category !== ''" x-cloak="x-cloak" x-on:click="showSubs = !showSubs" x-bind:aria-pressed="showSubs" data-test="toggle-sub-categories">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M3 4.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6.25 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 7.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 11.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM4 12.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/>
+</svg>
+
+                
+                    
+            
+            <span><span x-show="!showSubs">Show sub-categories</span>
+        <span
+          x-show="showSubs"
+          x-cloak
+        >
+          Hide sub-categories
+        </span></span>
+    </button>
+    </div>
+
+    <div class="flex flex-col gap-6 lg:flex-row">
+      <aside
+        class="lg:w-72 lg:shrink-0"
+        x-show="category !== '' && showSubs"
+        x-cloak
+        data-test="sub-categories"
+      >
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" data-flux-heading>Sub-categories</div>
+
+        <div class="w-full relative block group/input mb-2" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd"/>
+</svg>
+
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="subFilter" placeholder="Filter sub-categories..."
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="subCategories.length === 0" data-flux-text >No sub-categories.</p>
+        <nav class="flex max-h-[70vh] flex-col overflow-y-auto">
+          <template
+            x-for="entry in subCategories"
+            :key="entry.value"
+          >
+            <button
+              type="button"
+              class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-lg px-3 text-start text-sm font-medium lg:h-8"
+              x-bind:class="
+                sub === entry.value
+                  ? 'bg-white text-zinc-800 shadow-xs dark:bg-white/[7%] dark:text-white'
+                  : 'text-zinc-500 hover:bg-zinc-800/5 hover:text-zinc-800 dark:text-white/80 dark:hover:bg-white/[7%] dark:hover:text-white'
+              "
+              x-on:click="choose('sub', sub === entry.value ? '' : entry.value)"
+            >
+              <span
+                class="flex-1 truncate"
+                dir="auto"
+                x-text="entry.label"
+              ></span>
+              <span
+                class="rounded-sm bg-zinc-400/15 px-1.5 py-0.5 text-xs tabular-nums dark:bg-white/10"
+                x-text="format(entry.count)"
+              ></span>
+            </button>
+          </template>
+        </nav>
+      </aside>
+
+      <div class="min-w-0 flex-1">
+        <div
+          class="rounded-xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700"
+          x-show="total === 0"
+          x-cloak
+        >
+          <svg class="shrink-0 [:where(&amp;)]:size-6 mx-auto mb-3 size-8 text-zinc-400" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+</svg>
+
+                  <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>No resources found</div>
+        </div>
+
+        <div x-show="total > 0">
+          <div class="flex flex-col  " >
+    
+
+    <ui-table-scroll-area class="overflow-auto">
+        <table class="[:where(&amp;)]:min-w-full table-fixed border-separate border-spacing-0 isolate text-zinc-800 whitespace-nowrap [&amp;_dialog]:whitespace-normal [&amp;_[popover]]:whitespace-normal" data-flux-table>
+            <thead class="" data-flux-columns>
+    <tr >
+        <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Title</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Author</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Category</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Death year</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Published</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Pages</div>
+    </th>
+    </tr>
+</thead>
+
+            <tbody  data-flux-rows>
+    <template
+                x-for="row in shown"
+                :key="row.id"
+              >
+                <tr  class="" data-flux-row>
+    <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 relative max-w-md align-top whitespace-normal" data-flux-cell>
+    <div class="flex items-start gap-3">
+                      <div class="flex w-14 shrink-0 flex-col items-center gap-1 lg:w-10">
+                        <a
+                          x-bind:href="row.href"
+                          class="relative shrink-0"
+                          tabindex="-1"
+                          aria-hidden="true"
+                        >
+                          <template x-if="row.cover">
+                            <img
+                              x-bind:src="row.cover"
+                              alt=""
+                              loading="lazy"
+                              class="h-14 w-10 rounded border border-zinc-200 bg-white object-cover object-top shadow-sm dark:border-zinc-700"
+                            />
+                          </template>
+                          <template x-if="!row.cover">
+                            <div
+                              class="flex h-14 w-10 flex-col items-center justify-center gap-0.5 rounded border border-zinc-200 bg-zinc-50 font-semibold tracking-wide text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+                            >
+                              <svg class="shrink-0 [:where(&amp;)]:size-6 size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+                                    </div>
+                          </template>
+                        </a>
+                      </div>
+
+                      <div class="min-w-0">
+                        <a
+                          x-bind:href="row.href"
+                          class="font-medium text-zinc-800 hover:underline dark:text-white"
+                          dir="auto"
+                          x-text="tx(row.title, row.titles)"
+                        ></a>
+                        <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50 ms-2" x-show="row.type">
+        <span x-text="tx(row.type, row.types)"></span>
+    </div>
+                        <div
+                          class="text-sm text-zinc-500 dark:text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(row.title, row.titles) !== row.title"
+                          x-text="row.title"
+                        ></div>
+                        <span
+                          class="mt-1 block text-sm text-zinc-500 lg:hidden dark:text-zinc-400"
+                          x-show="row.categoryLabel"
+                          x-text="tx(row.categoryLabel, row.categoryLabels)"
+                        ></span>
+                      </div>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 max-w-56 align-top whitespace-normal" data-flux-cell>
+    <template
+                      x-for="(author, index) in row.authors"
+                      :key="index"
+                    >
+                      <div>
+                        <a
+                          class="hover:underline"
+                          x-bind:href="author.href"
+                          dir="auto"
+                          x-text="tx(author.name, author.names)"
+                        ></a>
+                        <div
+                          class="text-sm text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(author.name, author.names) !== author.name"
+                          x-text="author.name"
+                        ></div>
+                      </div>
+                    </template>
+                    <div class="mt-1 text-sm text-zinc-500 lg:hidden dark:text-zinc-400">
+                      <span
+                        class="block"
+                        x-show="row.died"
+                        x-text="died(row)"
+                      ></span>
+                      <span
+                        class="block"
+                        dir="auto"
+                        x-show="row.published"
+                        x-text="tx(row.published, row.publishedTranslations)"
+                      ></span>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden max-w-56 align-top whitespace-normal lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.categoryLabel, row.categoryLabels)"
+                    ></span>
+                    <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" dir="auto" x-show="row.sub" x-text="tx(row.subLabel, row.subLabels)" data-flux-text ></p>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium"
+                      x-bind:class="
+                        row.living
+                          ? 'bg-emerald-400/15 text-emerald-700 dark:bg-emerald-400/40 dark:text-emerald-200'
+                          : 'bg-zinc-400/15 text-zinc-700 dark:bg-zinc-400/40 dark:text-zinc-200'
+                      "
+                      x-show="row.died"
+                      x-text="died(row)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.published, row.publishedTranslations)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top lg:table-cell" data-flux-cell>
+    <span x-text="row.pages ?? ''"></span>
+</td>
+</tr>
+              </template>
+</tbody>
+        </table>
+    </ui-table-scroll-area>
+
+    
+
+    </div>
+
+          <div
+  class="@container flex items-center justify-between gap-3 border-t border-zinc-100 pt-3 dark:border-zinc-700"
+  x-show="total > 0"
+  data-flux-pagination
+>
+  <div class="text-xs font-medium whitespace-nowrap text-zinc-500 dark:text-zinc-400">
+    Showing
+    <span x-text="(page - 1) * perPage + 1"></span>
+    to
+    <span x-text="Math.min(page * perPage, total)"></span>
+    of
+    <span x-text="total"></span>
+    results
+  </div>
+
+  <div
+    class="flex items-center rounded-[8px] border border-zinc-200 bg-white p-[1px] dark:border-white/10 dark:bg-white/10"
+    x-show="pages > 1"
+  >
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page - 1)"
+      x-bind:disabled="page <= 1"
+      aria-label="&amp;laquo; Previous"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+
+    <template
+      x-for="(link, index) in pageLinks"
+      :key="index"
+    >
+      <div class="hidden @[40rem]:contents">
+        <template x-if="link === '...'">
+          <div
+            class="flex size-6 cursor-default items-center justify-center rounded-[6px] text-xs font-medium text-zinc-400 dark:text-zinc-400"
+          >
+            ...
+          </div>
+        </template>
+        <template x-if="link === page">
+          <div
+            aria-current="page"
+            class="flex h-6 cursor-default items-center justify-center rounded-[6px] px-2 text-xs font-medium text-zinc-800 dark:text-white"
+            x-text="link"
+          ></div>
+        </template>
+        <template x-if="link !== '...' && link !== page">
+          <button
+            type="button"
+            class="h-6 rounded-[6px] px-2 text-xs font-medium text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/20 dark:hover:text-white"
+            x-on:click="turn(link)"
+            x-text="link"
+          ></button>
+        </template>
+      </div>
+    </template>
+
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page + 1)"
+      x-bind:disabled="page >= pages"
+      aria-label="Next &amp;raquo;"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+    </div>
+
+  
+  <script src="../../../../../assets/static.js?v=be69322f0f"></script>
+</body>
+</html>

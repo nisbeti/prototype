@@ -1,0 +1,719 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root="../../../../../"
+  data-section="items"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Resources</title>
+  <link
+    rel="icon"
+    href="../../../../../assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="../../../../../assets/static.css?v=be69322f0f"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="../../../../../assets/i18n.js?v=be69322f0f"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../../../assets/frame.js?v=be69322f0f"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section
+    class="w-full"
+    x-data="staticList({ kind: 'items' })"
+  >
+    <script
+      type="application/json"
+      data-rows
+    >
+      [{"id":108445,"href":"catalogue/1084/108445.html","cover":"catalogue/1084/108445.jpg","title":"أسماء الله وصفاته وموقف أهل السنة منها","titles":{"en":"The Names and Attributes of Allah and the Position of Ahl al-Sunnah Regarding Them","fr":"Les noms et attributs d'Allah et la position des gens de la Sunna à leur égard","es":"Los nombres y atributos de Allah y la postura de la Gente de la Sunna al respecto","ur":"أسماء الله وصفاته وموقف أهل السنة منها","tr":"Esmâullâh ve sıfâtühû ve mevḳıfü ehli's-sünne minhâ (Allah'ın isimleri ve sıfatları, Ehl-i sünnetin bunlara yaklaşımı)","sw":"Majina na sifa za Allah na msimamo wa Ahl al-Sunna kuzihusu","id":"Nama dan Sifat Allah serta Sikap Ahlusunah terhadapnya","ja":"アッラーの御名と属性、およびそれらに対するスンナ派の立場","zh":"《真主的尊名与属性及逊尼派对此的立场》","ru":"Имена и атрибуты Аллаха и позиция приверженцев Сунны по этому вопросу","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"59"},{"id":110883,"href":"catalogue/1108/110883.html","cover":null,"title":"أسماء الله وصفاته وموقف أهل السنة والجماعة","titles":{"en":"Names of Allah and His Attributes and the Position of Ahl al-Sunnah wa al-Jama'ah","fr":"Les noms et attributs d’Allah et la position des gens de la Sunna et de la communauté","es":"Los nombres y atributos de Allah y la postura de la gente de la Sunna y la comunidad","ur":"أسماء الله وصفاته وموقف أهل السنة والجماعة (الله کے اسماء و صفات اور اہل سنت و جماعت کا موقف)","tr":"Allah'ın İsimleri ve Sıfatları ve Ehl-i Sünnet ve'l-Cemaat'in Tutumu","sw":"Majina na Sifa za Allah na msimamo wa Ahl al-Sunna wa al-Jama'a","id":"Nama dan Sifat Allah serta Sikap Ahlusunah wal Jamaah","ja":"アッラーの御名と属性、およびスンナと共同体の人々の立場","zh":"《真主的尊名与属性及逊尼派大众的立场》","ru":"Имена и атрибуты Аллаха и позиция приверженцев Сунны и общины","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"13"},{"id":108485,"href":"catalogue/1084/108485.html","cover":"catalogue/1084/108485.jpg","title":"الدرة العثيمينية بشرح فتح رب البرية بتلخيص الحموية","titles":{"en":"The Precious Pearl with the Explanation of the Opening of the Lord of the Worlds, Summarized from Al-Hamawiyyah","fr":"Al-Durra al-Uthayminiyya, commentaire de Fath Rabb al-bariyya par le résumé d’al-Hamawiyya","es":"Al-Durra al-Uthayminiyya [La perla de Uthaymin]: comentario de Fath Rabb al-Bariyya [La apertura del Señor de la creación] mediante el resumen de Al-Hamawiyya","ur":"الدرة العثيمينية بشرح فتح رب البرية بتلخيص الحموية","tr":"ed-Dürretü'l-Useymîniyye: İbn Useymîn'in Telhîsü'l-Hameviyye Açıklaması","sw":"Al-Durra al-Uthayminiyya: Ufafanuzi wa Fath Rabb al-Bariyya kwa kufupisha al-Hamawiyya","id":"Permata Utsaimini: Ulasan atas Fath Rabb al-Bariyyah dengan Ringkasan Al-Hamawiyyah","ja":"『ハマウィーヤの要約』を解説する『主の啓示の開示』の注解――ウサイミーン版","zh":"《奥赛敏明珠：以〈哈马维论著节编〉阐释〈开启至仁主〉》","ru":"Жемчужина аль-Усаймина: комментарий «Фатх Рабб аль-барийя» с сокращением «аль-Хамавийя»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1433هـ 2012م","publishedTranslations":{"en":"1433 AH / 2012 CE","fr":"1433H 2012 CE","es":"1433 H 2012","ur":"1433ھ 2012ء","tr":"1433H 2012","sw":"1433H 2012","id":"1433 H 2012 M","ja":"ヒジュラ暦1433年／西暦2012年","zh":"伊历1433年／公元2012年","ru":"1433 г. х. / 2012 г.","bn":null,"pt":null,"hi":null},"pages":"557"},{"id":108542,"href":"catalogue/1085/108542.html","cover":"catalogue/1085/108542.jpg","title":"الغنية في مسألة الرؤية","titles":{"en":"The Richness in the Issue of Vision","fr":"Al-Ghuniya fi masalat al-ruya (L’essentiel sur la question de la vision)","es":"Al-Ghunya fi mas'alat al-ru'ya (La suficiencia sobre la cuestión de la visión de Allah)","ur":"الغنية في مسألة الرؤية","tr":"Rü'yet Meselesi Hakkında el-Gunye","sw":"Al-Ghunya fi Mas'alat al-Ru'ya (Utoshelevu kuhusu suala la kuona Allah)","id":"Al-Ghunyah fi Mas'alat al-Ru'yah (Pembahasan tentang Masalah Melihat Allah)","ja":"見ることの問題に関する『アル＝グニヤ』","zh":"《关于见主问题的充足论述》","ru":"Достаточное наставление о вопросе видения","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1412هـ 1992م","publishedTranslations":{"en":"1412 AH / 1992 CE","fr":"1412 H 1992","es":"1412 H 1992","ur":"1412ھ 1992ء","tr":"1412H 1992","sw":"1412H 1992","id":"1412 H 1992 M","ja":"ヒジュラ暦1412年／西暦1992年","zh":"伊历1412年／公元1992年","ru":"1412 г. х. / 1992 г.","bn":null,"pt":null,"hi":null},"pages":"36"},{"id":109972,"href":"catalogue/1099/109972.html","cover":"catalogue/1099/109972.jpg","title":"الغنية في مسألة الرؤية","titles":{"en":"The Richness in the Issue of Vision","fr":"Al-Ghunya (L'essentiel) sur la question de la vision divine","es":"La suficiencia sobre la cuestión de la visión","ur":"الغنية في مسألة الرؤية (رویت کے مسئلے میں کفایت)","tr":"el-Gunye fî mes'eleti'r-ru'ye (Rüyetullah Meselesi Hakkında Yeterli Bilgi)","sw":"Al-Ghunya kuhusu Suala la Kuonekana (kwa Allah)","id":"Al-Ghunyah (Kecukupan) tentang Persoalan Melihat Allah","ja":"視覚の問題に関する充足","zh":"《关于目视真主问题的充分论述》","ru":"Достаточность в вопросе видения Аллаха","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1429هـ 2008م","publishedTranslations":{"en":"1429 AH / 2008 CE","fr":"1429 H 2008","es":"1429 H 2008","ur":"1429ھ 2008ء","tr":"1429 H 2008","sw":"1429 H 2008","id":"1429 H 2008","ja":"ヒジュラ暦1429年／西暦2008年","zh":"伊历1429年／公元2008年","ru":"1429 г. х. / 2008 г.","bn":null,"pt":null,"hi":null},"pages":"50"},{"id":111824,"href":"catalogue/1118/111824.html","cover":"catalogue/1118/111824.jpg","title":"القواعد الطيبات في الأسماء والصفات","titles":{"en":"The Good Rules on Names and Attributes","fr":"Les excellentes règles concernant les noms et les attributs","es":"Las reglas excelentes sobre los nombres y atributos","ur":"القواعد الطيبات في الأسماء والصفات (اسماء و صفات کے عمدہ قواعد)","tr":"İsimler ve Sıfatlar Hakkında Güzel Kaideler","sw":"Kanuni bora kuhusu majina na sifa za Allah","id":"Kaidah-kaidah Terbaik tentang Nama-nama dan Sifat-sifat Allah","ja":"神の諸名と属性に関する優れた規則","zh":"《关于尊名与属性的美善准则》","ru":"Прекрасные правила об именах и атрибутах","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"},{"name":"محمد بن أبي بكر ابن قيم الجوزية","names":{"en":"Muhammad ibn Abi Bakr al-Jawziyyah","fr":"Muhammad ibn Abi Bakr Ibn Qayyim al-Jawziyya","es":"Muhammad ibn Abi Bakr Ibn Qayyim al-Jawziyya","ur":"محمد بن أبي بكر ابن قيم الجوزية","tr":"Muhammed b. Ebî Bekir İbn Kayyim el-Cevziyye","sw":"Muhammad ibn Abi Bakr Ibn Qayyim al-Jawziyyah","id":"Muhammad bin Abi Bakr Ibnu Qayyim Al-Jauziyah","ja":"ムハンマド・イブン・アビー・バクル・アル＝ジャウズィーヤ","zh":"穆罕默德·本·阿比·伯克尔·伊本·盖伊姆·焦齐耶","ru":"Мухаммад ибн Аби Бакр аль-Джаузийя","bn":"محمد بن أبي بكر ابن قيم الجوزية","pt":"محمد بن أبي بكر ابن قيم الجوزية","hi":"محمد بن أبي بكر ابن قيم الجوزية"},"href":"authors/008/800.html"},{"name":"محمد الأمين الشنقيطي","names":{"en":"Muhammad Amin al-Shanqiti","fr":"Muhammad Amin al-Shanqiti","es":"Muhammad Amin al-Shanqiti","ur":"محمد الأمين الشنقيطي","tr":"Muhammed el-Emîn eş-Şinkītî","sw":"Muhammad Amin Al-Shanqiti","id":"Muhammad Amin Asy-Syinqiti","ja":"ムハンマド・アミーン・アッシャンキーティー","zh":"穆罕默德·阿明·尚基提","ru":"Мухаммад аль-Амин аш-Шанкити","bn":"محمد الأمين الشنقيطي","pt":"محمد الأمين الشنقيطي","hi":"محمد الأمين الشنقيطي"},"href":"authors/009/971.html"}],"died":"1393 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1416 هـ 1995 م","publishedTranslations":{"en":"1416 AH / 1995 CE","fr":"1416 H 1995","es":"1416 H 1995","ur":"1416 ھ 1995 م","tr":"1416 H 1995","sw":"1416 H 1995","id":"1416 H 1995 M","ja":"ヒジュラ暦1416年 西暦1995年","zh":"伊历1416年 公元1995年","ru":"1416 г. х. 1995 г.","bn":null,"pt":null,"hi":null},"pages":"222"},{"id":111825,"href":"catalogue/1118/111825.html","cover":"catalogue/1118/111825.jpg","title":"القواعد المثلى في صفات الله تعالى وأسمائه الحسنى المتن","titles":{"en":"The Optimal Principles in the Attributes of Allah and His Beautiful Names","fr":"Les règles excellentes concernant les attributs d’Allah le Très-Haut et Ses plus beaux noms : le texte","es":"Las reglas óptimas sobre los atributos de Allah y Sus nombres más bellos: el texto","ur":"القواعد المثلى في صفات الله تعالى وأسمائه الحسنى المتن (اللہ تعالیٰ کی صفات اور اس کے بہترین ناموں کے باب میں مثالی قواعد: متن)","tr":"Allah'ın Sıfatları ve En Güzel İsimleri Hakkında En Güzel Kaideler: Metin","sw":"Kanuni bora kuhusu sifa za Allah na majina Yake mazuri: Matini","id":"Kaidah-kaidah Terbaik tentang Sifat-sifat Allah dan Nama-nama-Nya yang Indah: Teks","ja":"神の諸属性と最も美しい御名に関する最良の規則（本文）","zh":"《真主尊名与至美尊名属性的最佳准则：正文》","ru":"Наилучшие правила об атрибутах Аллаха Всевышнего и Его прекрасных именах: основной текст","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1429 هـ","publishedTranslations":{"en":"1429 AH","fr":"1429 H","es":"1429 H","ur":"1429 ھ","tr":"1429 H","sw":"1429 H","id":"1429 H","ja":"ヒジュラ暦1429年","zh":"伊历1429年","ru":"1429 г. х.","bn":null,"pt":null,"hi":null},"pages":"144"},{"id":111290,"href":"catalogue/1112/111290.html","cover":"catalogue/1112/111290.jpg","title":"القواعد المثلى في صفات الله وأسمائه الحسنى","titles":{"en":"The Optimal Principles in the Attributes of God and His Beautiful Names","fr":"Les règles optimales concernant les attributs d'Allah et Ses plus beaux noms","es":"Las reglas óptimas sobre los atributos y los nombres más bellos de Allah","ur":"القواعد المثلى في صفات الله وأسمائه الحسنى","tr":"Allah'ın Sıfatları ve En Güzel İsimleri Hakkında En Güzel Kaideler","sw":"Kanuni bora kuhusu sifa na majina mazuri ya Allah","id":"Kaidah-Kaidah Terbaik tentang Sifat-Sifat dan Nama-Nama Allah yang Indah","ja":"アッラーの諸属性と最も美しい御名に関する最善の規則","zh":"《论真主的属性与尊名的最佳准则》","ru":"Наилучшие правила в отношении качеств Аллаха и Его прекрасных имён","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1414","publishedTranslations":{"en":"1414 AH","fr":"1414","es":"1414","ur":"1414","tr":"1414","sw":"1414","id":"1414","ja":"1414","zh":"1414","ru":"1414","bn":null,"pt":null,"hi":null},"pages":"112"},{"id":105221,"href":"catalogue/1052/105221.html","cover":"catalogue/1052/105221.jpg","title":"تقريب التدمرية- دار ابن الجوزي","titles":{"en":"Clarification of the Tadmuriyyah - Dar Ibn al-Jawzi","fr":"Approche simplifiée de la Tadmuriyya","es":"Aproximación a al-Tadmuriyya - Dar Ibn al-Jawzi","ur":"تقريب التدمرية- دار ابن الجوزي (التدمرية کی تلخیص — دار ابن الجوزي)","tr":"Tedmûriyye'nin Özeti - Dar İbnü'l-Cevzî","sw":"Muhtasari wa al-Tadmuriyya - Dar Ibn al-Jawzi","id":"Ringkasan At-Tadmuriyah – Dar Ibnu al-Jauzi","ja":"『タドムリーヤ』入門――ダール・イブン・アル＝ジャウズィー版","zh":"《提德米叶论纲》概要——伊本·焦齐出版社版","ru":"Краткое изложение «Тадмурийи» — Дар Ибн аль-Джаузи","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1419هـ 1998م","publishedTranslations":{"en":"1419 AH / 1998 CE","fr":"1419H 1998","es":"1419 H 1998","ur":"1419ھ 1998ء","tr":"1419H 1998","sw":"1419H 1998","id":"1419 H 1998 M","ja":"ヒジュラ暦1419年／西暦1998年","zh":"伊历1419年／公元1998年","ru":"1419 г. х. / 1998 г.","bn":null,"pt":null,"hi":null},"pages":"144"},{"id":110310,"href":"catalogue/1103/110310.html","cover":"catalogue/1103/110310.jpg","title":"تقريب التدمرية- مدار الوطن","titles":{"en":"The Clarification of the Tadmuriyyah - Madar Al-Watan","fr":"Résumé de la Tadmuriyya – Madar al-Watan","es":"Resumen de al-Tadmuriyya - Madar al-Watan","ur":"تقريب التدمرية- مدار الوطن","tr":"et-Tedmüriyye’nin Sadeleştirilmesi - Medârü’l-Vatan","sw":"Taqrib al-Tadmuriyya (Muhtasari wa Tadmuriyya) — Madar al-Watan","id":"Ringkasan Tadmuriyah – Madar al-Watan","ja":"『タドムリーヤ』の要約—マダール・アル＝ワタン","zh":"《泰德穆里论著浅释》—祖国之光出版社","ru":"Краткое изложение «ат-Тадмурийи» — Мадар аль-Ватан","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1433هـ","publishedTranslations":{"en":"1433 AH","fr":"1433 H","es":"1433 H","ur":"1433ھ","tr":"1433 H","sw":"1433 H","id":"1433 H","ja":"ヒジュラ暦1433年","zh":"伊历1433年","ru":"1433 г. х.","bn":null,"pt":null,"hi":null},"pages":"164"},{"id":105268,"href":"catalogue/1052/105268.html","cover":"catalogue/1052/105268.jpg","title":"جزء فيه ذكر اعتقاد السلف في الحروف والأصوات","titles":{"en":"A Part Discussing the Belief of the Salaf in Letters and Sounds","fr":"Épître sur la croyance des pieux prédécesseurs concernant les lettres et les sons","es":"Fascículo sobre la creencia de los piadosos antecesores en las letras y los sonidos","ur":"جزء فيه ذكر اعتقاد السلف في الحروف والأصوات","tr":"Selefin Harfler ve Sesler Konusundaki İnancının Anlatıldığı Bir Cüz","sw":"Juzuu kuhusu itikadi ya wema waliotangulia kuhusu herufi na sauti","id":"Juz tentang Akidah Salaf mengenai Huruf dan Suara","ja":"サラフの文字と音声に関する信条を記した一巻","zh":"一篇论述先贤对字母与声音之信念的著作","ru":"Книга о вероубеждениях праведных предшественников относительно букв и звуков","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"يحيى بن شرف النووي","names":{"en":"Yahya ibn Sharaf al-Nawawi","fr":"Yahya ibn Sharaf al-Nawawi","es":"Yahya ibn Sharaf al-Nawawi","ur":"يحيى بن شرف النووي","tr":"Yahyâ b. Şeref en-Nevevî","sw":"Yahya bin Sharaf al-Nawawi","id":"Yahya bin Syaraf An-Nawawi","ja":"ヤフヤー・イブン・シャラフ・アン＝ナワウィー","zh":"叶海亚·本·谢拉夫·脑威","ru":"Яхья ибн Шараф ан-Навави","bn":"يحيى بن شرف النووي","pt":"يحيى بن شرف النووي","hi":"يحيى بن شرف النووي"},"href":"authors/002/271.html"}],"died":null,"living":false,"era":"unknown","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1429هـ 2008م","publishedTranslations":{"en":"1429 AH / 2008 CE","fr":"1429H 2008","es":"1429 H 2008","ur":"1429هـ 2008م","tr":"1429 H 2008","sw":"1429H 2008","id":"1429 H 2008 M","ja":"ヒジュラ暦1429年／西暦2008年","zh":"伊历1429年／公元2008年","ru":"1429 г. х. / 2008 г.","bn":null,"pt":null,"hi":null},"pages":"94"},{"id":111785,"href":"catalogue/1117/111785.html","cover":null,"title":"شرح التدمرية للعلامة العثيمين","titles":{"en":"Explanation of the Tadmuriyyah by the Scholar Al-Uthaymeen","fr":"Commentaire de la Tadmuriyya par le savant al-Uthaymin","es":"Comentario de al-Tadmuriyya del erudito al-Uthaymin","ur":"شرح التدمرية للعلامة العثيمين","tr":"İbn Useymîn’in el-Akîdetü’t-Tedmüriyye Şerhi","sw":"Sharh al-Tadmuriyya ya mwanazuoni mkubwa Al-Uthaymin","id":"Syarah Tadmiriyah karya Al-Allamah Al-Utsaimin","ja":"アッ＝タドムリーヤの解説―高名なウサイミーンによる","zh":"伊本·欧赛敏权威注释《泰德穆里论》","ru":"Комментарий к «Ат-Тадмурийе» шейха аль-Усаймина","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"241"},{"id":110502,"href":"catalogue/1105/110502.html","cover":"catalogue/1105/110502.jpg","title":"شرح العقيدة التدمرية","titles":{"en":"Explanation of the Tadmuriyyah Creed","fr":"Sharh al-aqida al-Tadmuriyya (Commentaire de la Profession de foi de Tadmur)","es":"Comentario de la doctrina al-Tadmuriyya","ur":"شرح العقيدة التدمرية (تدمرية عقیدہ کی شرح)","tr":"Şerhu'l-Akîdeti't-Tedmuriyye (Tedmuriyye Akaidinin Şerhi)","sw":"Sharh al-Aqida al-Tadmuriyya (Ufafanuzi wa Aqida ya Tadmuriyya)","id":"Penjelasan Akidah At-Tadmuriyyah","ja":"タドムリーヤ信条の解説","zh":"《泰德米里耶信仰纲要》注释","ru":"Шарх «Ат-Тадмурийское вероубеждение»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1437هـ","publishedTranslations":{"en":"1437 AH","fr":"1437 H","es":"1437 H","ur":"1437ھ","tr":"1437 H","sw":"1437H","id":"1437 H","ja":"ヒジュラ暦1437年","zh":"伊历1437年","ru":"1437 г. х.","bn":null,"pt":null,"hi":null},"pages":"592"},{"id":103100,"href":"catalogue/1031/103100.html","cover":"catalogue/1031/103100.jpg","title":"شرح القواعد المثلى في صفات الله وأسمائه الحسنى- دار التيسير","titles":{"en":"Explanation of the Optimal Principles in the Attributes of God and His Beautiful Names - Dar Al-Tayseer","fr":"Commentaire des règles exemplaires concernant les attributs et les plus beaux noms d'Allah – Dar al-Taysir","es":"Explicación de las reglas óptimas sobre los atributos de Allah y Sus nombres más bellos, Dar al-Taysir","ur":"شرح القواعد المثلى في صفات الله وأسمائه الحسنى (اللہ کی صفات اور بہترین ناموں کے عمدہ قواعد کی شرح) — دار التيسير","tr":"Şerhu’l-Kavâidi’l-Müs̱lâ fî Sıfâtillâhi ve Esmâihi’l-Hüsnâ – Dar al-Taysir","sw":"Sharh al-Qawa'id al-Muthla fi Sifat Allah wa Asma'ihi al-Husna (Ufafanuzi wa kanuni bora kuhusu sifa za Allah na majina Yake mazuri) — Dar al-Taysir","id":"Syarah al-Qawa'id al-Mutsla fi Sifat Allah wa Asma'ihi al-Husna (Penjelasan Kaidah Terbaik tentang Sifat dan Nama-Nama Allah yang Indah) – Dar at-Taisir","ja":"アッラーの属性と至高の御名に関する最善の諸原則の解説（ダール・アッ＝タイスィール版）","zh":"《讲解真主属性与至美尊名的典范准则》（泰西尔出版社版）","ru":"Комментарий к «Наилучшим правилам» об атрибутах и прекрасных именах Аллаха — Дар ат-Тайсир","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1426-2005","publishedTranslations":{"en":"1426 AH / 2005 CE","fr":"1426-2005","es":"1426-2005","ur":"1426-2005","tr":"1426-2005","sw":"1426-2005","id":"1426-2005","ja":"1426-2005","zh":"伊历1426年-2005年","ru":"1426-2005","bn":null,"pt":null,"hi":null},"pages":"400"},{"id":111664,"href":"catalogue/1116/111664.html","cover":"catalogue/1116/111664.jpg","title":"شرح القواعد المثلى في صفات الله وأسمائه الحسنى- مؤسسة الشيخ","titles":{"en":"Explanation of the Optimal Rules Regarding the Attributes of God and His Beautiful Names - Sheikh Foundation","fr":"Commentaire des règles excellentes concernant les attributs d’Allah et Ses plus beaux noms - Fondation du cheikh","es":"Comentario de Las reglas óptimas sobre los atributos y los nombres más bellos de Allah - Fundación del Jeque","ur":"شرح القواعد المثلى في صفات الله وأسمائه الحسنى- مؤسسة الشيخ (صفاتِ الٰہی اور اسمائے حسنیٰ کے بہترین اصول کی شرح—شیخ فاؤنڈیشن)","tr":"Allah'ın Sıfatları ve En Güzel İsimleri Hakkında el-Kavâidü'l-Müslâ'nın Şerhi - Şeyh Vakfı","sw":"Sharh al-Qawa'id al-Muthla (Maelezo ya kanuni bora kuhusu sifa na majina mazuri ya Allah) - taasisi ya Sheikh","id":"Penjelasan Al-Qawa'id Al-Mutsla tentang Sifat dan Nama-nama Allah yang Terindah - Yayasan Syekh","ja":"神の諸属性と最も美しい御名に関する最良の規則の解説―シェイフ財団版","zh":"《真主的属性与至美尊名之最佳准则》注释——谢赫基金会版","ru":"Комментарий к «аль-Каваид аль-мусля» об атрибутах Аллаха и Его прекрасных именах — Фонд шейха","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1436هـ","publishedTranslations":{"en":"1436 AH","fr":"1436 H","es":"1436H","ur":"1436ھ","tr":"1436H","sw":"1436H","id":"1436 H","ja":"ヒジュラ暦1436年","zh":"伊历1436年","ru":"1436 г. х.","bn":null,"pt":null,"hi":null},"pages":"578"},{"id":110477,"href":"catalogue/1104/110477.html","cover":"catalogue/1104/110477.jpg","title":"شرح تقريب التدمرية","titles":{"en":"Explanation of the Tadmuriyyah","fr":"Sharh Taqrib al-Tadmuriyya (Commentaire de l’Introduction à al-Tadmuriyya)","es":"Comentario de Aproximación a al-Tadmuriyya","ur":"شرح تقريب التدمرية (تقریبِ تدمرية کی شرح)","tr":"Şerhu Takrîbi't-Tedmuriyye (Tedmuriyye'nin Özlü Açıklamasının Şerhi)","sw":"Sharh Taqrib al-Tadmuriyya (Ufafanuzi wa Muhtasari wa Tadmuriyya)","id":"Penjelasan Pengantar Al-Tadmuriyyah","ja":"タドムリーヤ入門の解説","zh":"《泰德米里耶概要注释》","ru":"Шарх «Краткое изложение ат-Тадмурийи»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1437هـ","publishedTranslations":{"en":"1437 AH","fr":"1437 H","es":"1437 H","ur":"1437ھ","tr":"1437 H","sw":"1437H","id":"1437 H","ja":"ヒジュラ暦1437年","zh":"伊历1437年","ru":"1437 г. х.","bn":null,"pt":null,"hi":null},"pages":"675"},{"id":110413,"href":"catalogue/1104/110413.html","cover":null,"title":"صفات الله وأسماؤه الحسنى","titles":{"en":"The Attributes of God and His Beautiful Names","fr":"Les attributs d’Allah et Ses plus beaux noms","es":"Los atributos de Allah y Sus bellos nombres","ur":"صفات الله وأسماؤه الحسنى","tr":"Allah’ın Sıfatları ve En Güzel İsimleri","sw":"Sifa za Allah na majina Yake mazuri","id":"Sifat-Sifat Allah dan Nama-Nama-Nya yang Indah","ja":"アッラーの諸属性と美しき御名","zh":"《真主的属性与尊名》","ru":"Атрибуты Аллаха и Его прекрасные имена","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"52"},{"id":107918,"href":"catalogue/1079/107918.html","cover":null,"title":"فتح رب البرية بتخليص الحموية","titles":{"en":"The Opening of the Lord of Creation: A Summary of the Hamawiyyah","fr":"La victoire du Seigneur des créatures par le résumé d'al-Hamawiyya","es":"La victoria del Señor de la creación al resumir al-Hamawiyya","ur":"فتح رب البرية بتخليص الحموية (ربِّ بریہ کی فتح: الحَمَویہ کا خلاصہ)","tr":"el-Hameviyye’nin Özetiyle Feth Rabb el-Beriyye","sw":"Ushindi wa Mola wa viumbe kwa kufupisha al-Hamawiyya","id":"Fath Rabb al-Bariyyah bi Talkhis al-Hamawiyyah (Penjelasan Ringkas Al-Hamawiyyah)","ja":"『ハマウィーヤ』を簡潔に解説した『創造世界の主による勝利』","zh":"《主的恩典：精要讲解《哈马维信条》》","ru":"Избавление Раббом миров от «Хамавийи»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"53"},{"id":103074,"href":"catalogue/1030/103074.html","cover":"catalogue/1030/103074.jpg","title":"فتح رب البرية بتلخيص الحموية","titles":{"en":"Opening of the Lord of the Worlds: A Summary of the Hamawiyyah","fr":"Fath Rabb al-Bariyya bi-talkhis al-Hamawiyya [L'ouverture du Seigneur de toute créature par le résumé d'Al-Hamawiyya]","es":"Fath Rabb al-Bariyya (La apertura del Señor de la creación): resumen de Al-Hamawiyya","ur":"فتح رب البرية بتلخيص الحموية (ربِ بریہ کی فتح: الحموية کا خلاصہ)","tr":"Hameviyye'nin Özetiyle el-Berriyye Rabbinin Fethi","sw":"Fat'h Rabb al-Bariyya kwa Kufupisha Al-Hamawiyya","id":"Fath Rabb al-Bariyyah bi-Talkhis al-Hamawiyyah (Ringkasan Al-Hamawiyyah)","ja":"被造物の主の恩寵―『アル＝ハマウィーヤ』の要約","zh":"《化民之主的恩赐：〈哈马维书简〉节选》","ru":"Откровение Господа миров: краткое изложение «аль-Хамавийи»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"139"},{"id":109751,"href":"catalogue/1097/109751.html","cover":"catalogue/1097/109751.jpg","title":"فتح رب البرية بتلخيص الحموية","titles":{"en":"Opening of the Lord of the Worlds: A Summary of the Hamawiyyah","fr":"Fath Rabb al-Bariyya bi-talkhis al-Hamawiyya (La victoire du Seigneur de la création, résumé de l'Hamawiyya)","es":"Fath Rabb al-Bariyya bi-Talkhis al-Hamawiyya [La apertura del Señor de la creación mediante el compendio de al-Hamawiyya]","ur":"فتح رب البرية بتلخيص الحموية (حموية کا خلاصہ کرکے ربِ بریہ کی فتح)","tr":"Fethu Rabbi'l-beriyye bi-telhîsi'l-Hameviyye (Hameviyye'nin özetiyle mahlûkatın Rabbinin fetih ve yardımı)","sw":"Fath Rabb al-Bariyya bi-Talkhis al-Hamawiyya (Ufafanuzi mfupi wa al-Hamawiyya)","id":"Fath Rabb Al-Bariyyah bi Talkhish Al-Hamawiyyah (Anugerah Tuhan Seluruh Makhluk dengan Meringkas Al-Hamawiyyah)","ja":"ハマウィーヤ要約による創造主の慈愛の顕現","zh":"《至仁主的恩典：〈哈马维论〉节要》","ru":"Фатх Рабб аль-Барийя (Пояснение «аль-Хамавийи» в сокращенном изложении)","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"الأسماء والصفات","subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null},"published":"1424هـ","publishedTranslations":{"en":"1424 AH","fr":"1424 H","es":"1424 H","ur":"1424ھ","tr":"1424 H","sw":"1424 H","id":"1424 H","ja":"ヒジュラ暦1424年","zh":"伊历1424年","ru":"1424 г. х.","bn":null,"pt":null,"hi":null},"pages":"113"}]
+    </script>
+    <script
+      type="application/json"
+      data-list
+    >
+      {"list":"catalogue","category":"3d1161ae","sub":"3ba800e5","era":null,"page":1,"pages":1,"total":20,"perPage":25,"eraCounts":{"all":20,"salaf":0,"mutaqaddimun":0,"mutaakhkhirun":0,"muasirun":17,"unknown":3},"categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"subLabel":"الأسماء والصفات","subLabels":{"en":"Names and Attributes","fr":"Noms et attributs divins","es":"Nombres y atributos de Allah","ur":"اسماء و صفات","tr":"İsimler ve sıfatlar","sw":"Majina na sifa","id":"Nama-nama dan sifat-sifat Allah","ja":"神の諸名と属性","zh":"名称与属性","ru":"Имена и атрибуты Аллаха","bn":null,"pt":null,"hi":null}}
+    </script>
+
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Resources</div>
+        <div class="mt-2 flex flex-wrap items-center gap-2">
+          <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-text="count(':count result|:count results', total)" data-flux-subheading>
+    
+</div>
+
+          <template x-if="category !== ''">
+            <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-category">
+        <svg class="shrink-0 [:where(&amp;)]:size-4 size-3" data-flux-badge-icon="data-flux-badge-icon" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v2.879a2.5 2.5 0 0 0 .732 1.767l4.5 4.5a2.5 2.5 0 0 0 3.536 0l2.878-2.878a2.5 2.5 0 0 0 0-3.536l-4.5-4.5A2.5 2.5 0 0 0 7.38 2H4.5ZM5 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
+</svg>
+
+            
+    <span x-text="categoryLabel"></span>
+              <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('category', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+          </template>
+
+          <template x-if="category !== '' && sub !== ''">
+            <span class="flex items-center gap-2">
+              <svg class="shrink-0 [:where(&amp;)]:size-4 text-zinc-400 rtl:rotate-180" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-sub-category">
+        <span x-text="subLabel"></span>
+                <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('sub', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+            </span>
+          </template>
+        </div>
+      </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white" data-flux-button="data-flux-button" x-show="hasFilters" x-cloak="x-cloak" x-on:click="clearFilters()">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Clear filters</span>
+    </button>
+    </div>
+
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+      <div
+  class="inline-flex max-w-full overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-700 dark:bg-zinc-800/80"
+  role="radiogroup"
+  aria-label="Era"
+  data-test="era-filter"
+>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === ''"
+      x-on:click="choose('era', '')"
+      x-bind:disabled="era !== '' && eraCounts['all'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === ''          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-all"
+    >
+      All
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === '' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['all'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'salaf'"
+      x-on:click="choose('era', 'salaf')"
+      x-bind:disabled="era !== 'salaf' && eraCounts['salaf'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'salaf'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-salaf"
+    >
+      Salaf
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'salaf' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t="to :year AH" data-r="{&quot;year&quot;:300}">to 300 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['salaf'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaqaddimun'"
+      x-on:click="choose('era', 'mutaqaddimun')"
+      x-bind:disabled="era !== 'mutaqaddimun' && eraCounts['mutaqaddimun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaqaddimun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaqaddimun"
+    >
+      Mutaqaddimun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaqaddimun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:301,&quot;to&quot;:656}">301–656 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaqaddimun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaakhkhirun'"
+      x-on:click="choose('era', 'mutaakhkhirun')"
+      x-bind:disabled="era !== 'mutaakhkhirun' && eraCounts['mutaakhkhirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaakhkhirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaakhkhirun"
+    >
+      Muta&#039;akhkhirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaakhkhirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:657,&quot;to&quot;:1265}">657–1265 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaakhkhirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'muasirun'"
+      x-on:click="choose('era', 'muasirun')"
+      x-bind:disabled="era !== 'muasirun' && eraCounts['muasirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'muasirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-muasirun"
+    >
+      Mu&#039;asirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'muasirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":year AH on, or living" data-r="{&quot;year&quot;:1266}">1266 AH on, or living</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['muasirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'unknown'"
+      x-on:click="choose('era', 'unknown')"
+      x-bind:disabled="era !== 'unknown' && eraCounts['unknown'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'unknown'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-unknown"
+    >
+      Unknown
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'unknown' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline">no year ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['unknown'])"
+        ></span>
+      </span>
+    </button>
+  </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-show="category !== ''" x-cloak="x-cloak" x-on:click="showSubs = !showSubs" x-bind:aria-pressed="showSubs" data-test="toggle-sub-categories">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M3 4.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6.25 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 7.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 11.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM4 12.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/>
+</svg>
+
+                
+                    
+            
+            <span><span x-show="!showSubs">Show sub-categories</span>
+        <span
+          x-show="showSubs"
+          x-cloak
+        >
+          Hide sub-categories
+        </span></span>
+    </button>
+    </div>
+
+    <div class="flex flex-col gap-6 lg:flex-row">
+      <aside
+        class="lg:w-72 lg:shrink-0"
+        x-show="category !== '' && showSubs"
+        x-cloak
+        data-test="sub-categories"
+      >
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" data-flux-heading>Sub-categories</div>
+
+        <div class="w-full relative block group/input mb-2" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd"/>
+</svg>
+
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="subFilter" placeholder="Filter sub-categories..."
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="subCategories.length === 0" data-flux-text >No sub-categories.</p>
+        <nav class="flex max-h-[70vh] flex-col overflow-y-auto">
+          <template
+            x-for="entry in subCategories"
+            :key="entry.value"
+          >
+            <button
+              type="button"
+              class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-lg px-3 text-start text-sm font-medium lg:h-8"
+              x-bind:class="
+                sub === entry.value
+                  ? 'bg-white text-zinc-800 shadow-xs dark:bg-white/[7%] dark:text-white'
+                  : 'text-zinc-500 hover:bg-zinc-800/5 hover:text-zinc-800 dark:text-white/80 dark:hover:bg-white/[7%] dark:hover:text-white'
+              "
+              x-on:click="choose('sub', sub === entry.value ? '' : entry.value)"
+            >
+              <span
+                class="flex-1 truncate"
+                dir="auto"
+                x-text="entry.label"
+              ></span>
+              <span
+                class="rounded-sm bg-zinc-400/15 px-1.5 py-0.5 text-xs tabular-nums dark:bg-white/10"
+                x-text="format(entry.count)"
+              ></span>
+            </button>
+          </template>
+        </nav>
+      </aside>
+
+      <div class="min-w-0 flex-1">
+        <div
+          class="rounded-xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700"
+          x-show="total === 0"
+          x-cloak
+        >
+          <svg class="shrink-0 [:where(&amp;)]:size-6 mx-auto mb-3 size-8 text-zinc-400" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+</svg>
+
+                  <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>No resources found</div>
+        </div>
+
+        <div x-show="total > 0">
+          <div class="flex flex-col  " >
+    
+
+    <ui-table-scroll-area class="overflow-auto">
+        <table class="[:where(&amp;)]:min-w-full table-fixed border-separate border-spacing-0 isolate text-zinc-800 whitespace-nowrap [&amp;_dialog]:whitespace-normal [&amp;_[popover]]:whitespace-normal" data-flux-table>
+            <thead class="" data-flux-columns>
+    <tr >
+        <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Title</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Author</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Category</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Death year</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Published</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Pages</div>
+    </th>
+    </tr>
+</thead>
+
+            <tbody  data-flux-rows>
+    <template
+                x-for="row in shown"
+                :key="row.id"
+              >
+                <tr  class="" data-flux-row>
+    <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 relative max-w-md align-top whitespace-normal" data-flux-cell>
+    <div class="flex items-start gap-3">
+                      <div class="flex w-14 shrink-0 flex-col items-center gap-1 lg:w-10">
+                        <a
+                          x-bind:href="row.href"
+                          class="relative shrink-0"
+                          tabindex="-1"
+                          aria-hidden="true"
+                        >
+                          <template x-if="row.cover">
+                            <img
+                              x-bind:src="row.cover"
+                              alt=""
+                              loading="lazy"
+                              class="h-14 w-10 rounded border border-zinc-200 bg-white object-cover object-top shadow-sm dark:border-zinc-700"
+                            />
+                          </template>
+                          <template x-if="!row.cover">
+                            <div
+                              class="flex h-14 w-10 flex-col items-center justify-center gap-0.5 rounded border border-zinc-200 bg-zinc-50 font-semibold tracking-wide text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+                            >
+                              <svg class="shrink-0 [:where(&amp;)]:size-6 size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+                                    </div>
+                          </template>
+                        </a>
+                      </div>
+
+                      <div class="min-w-0">
+                        <a
+                          x-bind:href="row.href"
+                          class="font-medium text-zinc-800 hover:underline dark:text-white"
+                          dir="auto"
+                          x-text="tx(row.title, row.titles)"
+                        ></a>
+                        <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50 ms-2" x-show="row.type">
+        <span x-text="tx(row.type, row.types)"></span>
+    </div>
+                        <div
+                          class="text-sm text-zinc-500 dark:text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(row.title, row.titles) !== row.title"
+                          x-text="row.title"
+                        ></div>
+                        <span
+                          class="mt-1 block text-sm text-zinc-500 lg:hidden dark:text-zinc-400"
+                          x-show="row.categoryLabel"
+                          x-text="tx(row.categoryLabel, row.categoryLabels)"
+                        ></span>
+                      </div>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 max-w-56 align-top whitespace-normal" data-flux-cell>
+    <template
+                      x-for="(author, index) in row.authors"
+                      :key="index"
+                    >
+                      <div>
+                        <a
+                          class="hover:underline"
+                          x-bind:href="author.href"
+                          dir="auto"
+                          x-text="tx(author.name, author.names)"
+                        ></a>
+                        <div
+                          class="text-sm text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(author.name, author.names) !== author.name"
+                          x-text="author.name"
+                        ></div>
+                      </div>
+                    </template>
+                    <div class="mt-1 text-sm text-zinc-500 lg:hidden dark:text-zinc-400">
+                      <span
+                        class="block"
+                        x-show="row.died"
+                        x-text="died(row)"
+                      ></span>
+                      <span
+                        class="block"
+                        dir="auto"
+                        x-show="row.published"
+                        x-text="tx(row.published, row.publishedTranslations)"
+                      ></span>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden max-w-56 align-top whitespace-normal lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.categoryLabel, row.categoryLabels)"
+                    ></span>
+                    <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" dir="auto" x-show="row.sub" x-text="tx(row.subLabel, row.subLabels)" data-flux-text ></p>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium"
+                      x-bind:class="
+                        row.living
+                          ? 'bg-emerald-400/15 text-emerald-700 dark:bg-emerald-400/40 dark:text-emerald-200'
+                          : 'bg-zinc-400/15 text-zinc-700 dark:bg-zinc-400/40 dark:text-zinc-200'
+                      "
+                      x-show="row.died"
+                      x-text="died(row)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.published, row.publishedTranslations)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top lg:table-cell" data-flux-cell>
+    <span x-text="row.pages ?? ''"></span>
+</td>
+</tr>
+              </template>
+</tbody>
+        </table>
+    </ui-table-scroll-area>
+
+    
+
+    </div>
+
+          <div
+  class="@container flex items-center justify-between gap-3 border-t border-zinc-100 pt-3 dark:border-zinc-700"
+  x-show="total > 0"
+  data-flux-pagination
+>
+  <div class="text-xs font-medium whitespace-nowrap text-zinc-500 dark:text-zinc-400">
+    Showing
+    <span x-text="(page - 1) * perPage + 1"></span>
+    to
+    <span x-text="Math.min(page * perPage, total)"></span>
+    of
+    <span x-text="total"></span>
+    results
+  </div>
+
+  <div
+    class="flex items-center rounded-[8px] border border-zinc-200 bg-white p-[1px] dark:border-white/10 dark:bg-white/10"
+    x-show="pages > 1"
+  >
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page - 1)"
+      x-bind:disabled="page <= 1"
+      aria-label="&amp;laquo; Previous"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+
+    <template
+      x-for="(link, index) in pageLinks"
+      :key="index"
+    >
+      <div class="hidden @[40rem]:contents">
+        <template x-if="link === '...'">
+          <div
+            class="flex size-6 cursor-default items-center justify-center rounded-[6px] text-xs font-medium text-zinc-400 dark:text-zinc-400"
+          >
+            ...
+          </div>
+        </template>
+        <template x-if="link === page">
+          <div
+            aria-current="page"
+            class="flex h-6 cursor-default items-center justify-center rounded-[6px] px-2 text-xs font-medium text-zinc-800 dark:text-white"
+            x-text="link"
+          ></div>
+        </template>
+        <template x-if="link !== '...' && link !== page">
+          <button
+            type="button"
+            class="h-6 rounded-[6px] px-2 text-xs font-medium text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/20 dark:hover:text-white"
+            x-on:click="turn(link)"
+            x-text="link"
+          ></button>
+        </template>
+      </div>
+    </template>
+
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page + 1)"
+      x-bind:disabled="page >= pages"
+      aria-label="Next &amp;raquo;"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+    </div>
+
+  
+  <script src="../../../../../assets/static.js?v=be69322f0f"></script>
+</body>
+</html>

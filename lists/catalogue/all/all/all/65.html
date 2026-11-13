@@ -1,0 +1,719 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root="../../../../../"
+  data-section="items"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Resources</title>
+  <link
+    rel="icon"
+    href="../../../../../assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="../../../../../assets/static.css?v=be69322f0f"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="../../../../../assets/i18n.js?v=be69322f0f"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../../../assets/frame.js?v=be69322f0f"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section
+    class="w-full"
+    x-data="staticList({ kind: 'items' })"
+  >
+    <script
+      type="application/json"
+      data-rows
+    >
+      [{"id":248197,"href":"catalogue/2481/248197.html","cover":"catalogue/2481/248197.jpg","title":"كراسة الأصول من علم الأصول","titles":{"en":"The Fundamentals Notebook of Usul al-Fiqh","fr":"Cahier des principes de la jurisprudence islamique","es":"Cuaderno de los fundamentos de la ciencia de los fundamentos del derecho","ur":"كراسة الأصول من علم الأصول","tr":"Usûlü'l-usûl'den bir risale","sw":"Kijitabu cha Misingi ya Usul al-Fiqh","id":"Risalah Ringkas tentang Ushul Fikih","ja":"ウスール学の小冊子","zh":"《教法学原理概要》","ru":"Краткий конспект по основам фикха","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"133"},{"id":248093,"href":"catalogue/2480/248093.html","cover":"catalogue/2480/248093.jpg","title":"كراسة دورة الأربعين النووية، أربعون حديثا في مباني الإسلام وقواعد الأحكام مع زيادات الحافظ ابن رجب","titles":{"en":"The Booklet of the Forty Nawawi Hadiths, Forty Narrations on the Foundations of Islam and Principles of Jurisprudence with Additions by Hafiz Ibn Rajab","fr":"Cahier du cours des Quarante hadiths d’al-Nawawi : quarante hadiths sur les fondements de l’islam et les règles juridiques, avec les ajouts du hafiz Ibn Rajab","es":"Cuaderno del curso de los Cuarenta hadices de al-Nawawi: cuarenta hadices sobre los fundamentos del islam y los principios de la jurisprudencia, con añadidos de al-Hafiz Ibn Rajab","ur":"كراسة دورة الأربعين النووية، أربعون حديثا في مباني الإسلام وقواعد الأحكام مع زيادات الحافظ ابن رجب (اربعین نووی کے کورس کی کاپی: اسلام کے بنیادی اصولوں اور احکام کے قواعد پر چالیس احادیث، حافظ ابن رجب کے اضافوں سمیت)","tr":"Nevevî'nin Kırk Hadis Kursu Defteri: İslam'ın Esasları ve Ahkâmın İlkeleri Hakkında Kırk Hadis ve Hâfız İbn Receb'in İlâveleri","sw":"Kijitabu cha kozi ya Arba'in al-Nawawiyya (Hadithi arobaini za al-Nawawi): Hadithi arobaini kuhusu misingi ya Uislamu na kanuni za hukumu, pamoja na nyongeza za al-Hafiz Ibn Rajab","id":"Buku Kerja Kursus Al-Arba'in An-Nawawiyyah: Empat Puluh Hadis tentang Pokok-Pokok Islam dan Kaidah Hukum, dengan Tambahan dari Al-Hafizh Ibnu Rajab","ja":"『アル＝アルバイーン・アン＝ナワウィーヤ』講座ノート――イスラームの基礎と諸規定の原則に関する四十のハディース、ハーフィズ・イブン・ラジャブによる増補付き","zh":"《脑威四十段圣训研修班讲义：伊斯兰的根基与律例准则四十段圣训，附伊本·拉杰布圣训学家的增补》","ru":"Тетрадь учебного курса «Сорок хадисов ан-Навави»: сорок хадисов об основах ислама и правилах религии с дополнениями хафиза Ибн Раджаба","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"يحيى بن شرف النووي","names":{"en":"Yahya ibn Sharaf al-Nawawi","fr":"Yahya ibn Sharaf al-Nawawi","es":"Yahya ibn Sharaf al-Nawawi","ur":"يحيى بن شرف النووي","tr":"Yahyâ b. Şeref en-Nevevî","sw":"Yahya bin Sharaf al-Nawawi","id":"Yahya bin Syaraf An-Nawawi","ja":"ヤフヤー・イブン・シャラフ・アン＝ナワウィー","zh":"叶海亚·本·谢拉夫·脑威","ru":"Яхья ибн Шараф ан-Навави","bn":"يحيى بن شرف النووي","pt":"يحيى بن شرف النووي","hi":"يحيى بن شرف النووي"},"href":"authors/002/271.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"55"},{"id":251699,"href":"catalogue/2516/251699.html","cover":"catalogue/2516/251699.jpg","title":"كراسة نخبة الفكر في مصطلح أهل الأثر","titles":{"en":"The Notebook of the Elite Thought in the Terminology of the People of Narration","fr":"Fascicule de Nukhbat al-Fikar fi Mustalah Ahl al-Athar (L'élite de la pensée sur la terminologie des gens de la tradition)","es":"Cuaderno de Nukhbat al-Fikar fi Mustalah Ahl al-Athar (Selección del pensamiento sobre la terminología de los transmisores)","ur":"كراسة نخبة الفكر في مصطلح أهل الأثر","tr":"Nuhbetü’l-Fiker (Eser Ehlinin Terimleri Hakkında Seçkin Görüşler) Risalesi","sw":"Kijitabu cha Nukhbat al-Fikr kuhusu istilahi za wanazuoni wa athari","id":"Risalah Ringkas Nukhbat al-Fikar fi Musthalah Ahl al-Atsar (Pilihan Pemikiran tentang Istilah Ahli Atsar)","ja":"『ヌフバト・アル＝フィカル』—伝承学用語論の小冊子","zh":"《〈思想精华〉术语手册》","ru":"Тетрадь «Избранное размышлений» по терминологии знатоков преданий","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1446هـ 2024م","publishedTranslations":{"en":"1446 AH / 2024 CE","fr":"1446 H 2024","es":"1446 H 2024","ur":"1446ھ 2024ء","tr":"1446 H 2024","sw":"1446 H 2024","id":"1446 H 2024 M","ja":"ヒジュラ暦1446年／西暦2024年","zh":"伊历1446年／公元2024年","ru":"1446 г. х. / 2024 г.","bn":null,"pt":null,"hi":null},"pages":"89"},{"id":143899,"href":"catalogue/1438/143899.html","cover":"catalogue/1438/143899.jpg","title":"كشاف متن الأربعين النووية في الأحاديث الصحيحة النبوية","titles":{"en":"A Guide to the Text of the Forty Hadiths of Al-Nawawi in Authentic Prophetic Narrations","fr":"Répertoire du texte des Quarante hadiths de Nawawi sur les hadiths prophétiques authentiques","es":"Índice de Al-Arba'in al-Nawawiyya (Los cuarenta hadices de Nawawi), colección de hadices proféticos auténticos","ur":"كشاف متن الأربعين النووية في الأحاديث الصحيحة النبوية","tr":"Sahîh Nebevî Hadislerden Nevevî’nin Kırk Hadis Metninin İndeksi","sw":"Kashafi ya Matn ya Arubaini za Nawawi kuhusu Hadithi Sahihi za Mtume","id":"Indeks Matan Al-Arba'in An-Nawawiyyah tentang Hadis-Hadis Nabi yang Sahih","ja":"真正の預言者伝承におけるナワウィーの四十ハディース本文索引","zh":"《纳沃维四十段圣训正文真确圣训索引》","ru":"Указатель к тексту «Сорока хадисов ан-Навави» из достоверных пророческих хадисов","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"يحيى بن شرف النووي","names":{"en":"Yahya ibn Sharaf al-Nawawi","fr":"Yahya ibn Sharaf al-Nawawi","es":"Yahya ibn Sharaf al-Nawawi","ur":"يحيى بن شرف النووي","tr":"Yahyâ b. Şeref en-Nevevî","sw":"Yahya bin Sharaf al-Nawawi","id":"Yahya bin Syaraf An-Nawawi","ja":"ヤフヤー・イブン・シャラフ・アン＝ナワウィー","zh":"叶海亚·本·谢拉夫·脑威","ru":"Яхья ибн Шараф ан-Навави","bn":"يحيى بن شرف النووي","pt":"يحيى بن شرف النووي","hi":"يحيى بن شرف النووي"},"href":"authors/002/271.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"مصطلح الحديث","subLabel":"مصطلح الحديث","subLabels":{"en":"Hadith Terminology","fr":"Terminologie du hadith","es":"Terminología del hadiz","ur":"اصطلاحِ حدیث","tr":"Hadis usulü terimleri","sw":"Istilahi ya hadithi","id":"Istilah Hadis","ja":"ハディース学用語","zh":"圣训学术语","ru":"Терминология хадиса","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"8"},{"id":46039,"href":"catalogue/460/46039.html","cover":"catalogue/460/46039.jpg","title":"كشف الستر عن حكم الصلاة بعد الوتر","titles":{"en":"Revealing the Veil on the Ruling of Prayer After the Witr","fr":"Kashf al-sitr an hukm al-salat ba'd al-witr (Lever le voile sur le statut de la prière après le witr)","es":"Kashf al-Sitr an Hukm al-Salat bad al-Witr [Desvelar la norma sobre la oración después del witr]","ur":"كشف الستر عن حكم الصلاة بعد الوتر (وتر کے بعد نماز کے حکم سے پردہ اٹھانا)","tr":"Keşfü's-sitr an hükmi's-salâti ba‘de'l-vitr (Vitir Namazından Sonra Namaz Kılmanın Hükmünün Açıklanması)","sw":"Kashf al-Sitr an Hukm al-Salat bad al-Witr (Kuondoa pazia kuhusu hukumu ya kuswali baada ya witri)","id":"Kasyf As-Sitr 'an Hukm Ash-Shalah ba'da Al-Witr [Menjelaskan Hukum Salat setelah Witir]","ja":"ウィトル礼拝後の礼拝規定を明らかにする","zh":"《揭开遮蔽：宵礼拜后礼拜的教法规制》","ru":"Кашф ас-Сатр: о положении молитвы после витра","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"فقه مقارن","subLabel":"فقه مقارن","subLabels":{"en":"Comparative Jurisprudence","fr":"Jurisprudence comparée","es":"Jurisprudencia comparada","ur":"تقابلی فقہ","tr":"Karşılaştırmalı fıkıh","sw":"Fiqhi linganishi","id":"Fikih perbandingan","ja":"比較法学","zh":"比较法学","ru":"Сравнительное исламское право","bn":null,"pt":null,"hi":null},"published":"1417هــ 1997 م","publishedTranslations":{"en":"1417 AH / 1997 CE","fr":"1417 H 1997","es":"1417 H 1997","ur":"1417ھ 1997ء","tr":"1417 H 1997","sw":"1417H 1997","id":"1417 H 1997 M","ja":"ヒジュラ暦1417年／西暦1997年","zh":"伊历1417年／公元1997年","ru":"1417 г. х. / 1997 г.","bn":null,"pt":null,"hi":null},"pages":"87"},{"id":97776,"href":"catalogue/977/97776.html","cover":"catalogue/977/97776.jpg","title":"كشف الكربة في وصف أهل الغربة","titles":{"en":"The Revelation of Distress in Describing the People of Alienation","fr":"Kashf al-Kurba fi Wasf Ahl al-Ghurba (Dissiper l'affliction : description des étrangers)","es":"Kashf al-Kurba fi Wasf Ahl al-Ghurba (Alivio de la aflicción: descripción de los forasteros)","ur":"كشف الكربة في وصف أهل الغربة (اجنبیت گزیدہ لوگوں کی کیفیت بیان کرنے سے غم کا ازالہ)","tr":"Keşfü’l-Kürbe fî Vasfi Ehli’l-Gurbe (Gurbet Ehlinin Tasviri)","sw":"Kashf al-Kurba fi Wasf Ahl al-Ghurba (Kuondoa Dhiki kwa Kueleza Hali ya Wageni)","id":"Kasyf al-Kurbah fi Washf Ahl al-Ghurbah (Menghilangkan Kesedihan dengan Menggambarkan Orang-Orang yang Terasing)","ja":"異郷の人々のありさまを描いた苦境の解消","zh":"《描述异乡人之苦的消解》","ru":"Устранение скорби: описание людей на чужбине","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الزهد والرقائق","categoryLabel":"الزهد والرقائق","categoryLabels":{"en":"Asceticism and Spirituality","fr":"Ascèse et exhortations spirituelles","es":"Ascetismo y exhortaciones espirituales","ur":"زہد و رقائق","tr":"Zühd ve Kalbi Yumuşatan Eserler","sw":"Kujinyima dunia na malezi ya moyo","id":"Zuhud dan Pelembut Hati","ja":"禁欲・心を柔らかくする教え","zh":"淡泊今世与心灵修养","ru":"Аскетизм и смягчение сердец","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"22"},{"id":97777,"href":"catalogue/977/97777.html","cover":"catalogue/977/97777.jpg","title":"كشف الكربة في وصف أهل الغربة","titles":{"en":"The Revelation of Distress in Describing the People of Alienation","fr":"Kashf al-Kurba fi Wasf Ahl al-Ghurba (Dissiper l'affliction : description des étrangers)","es":"Kashf al-Kurba fi Wasf Ahl al-Ghurba (Alivio de la aflicción: descripción de los forasteros)","ur":"كشف الكربة في وصف أهل الغربة (اجنبیت گزیدہ لوگوں کی کیفیت بیان کرنے سے غم کا ازالہ)","tr":"Keşfü’l-Kürbe fî Vasfi Ehli’l-Gurbe (Gurbet Ehlinin Tasviri)","sw":"Kashf al-Kurba fi Wasf Ahl al-Ghurba (Kuondoa Dhiki kwa Kueleza Hali ya Wageni)","id":"Kasyf al-Kurbah fi Washf Ahl al-Ghurbah (Menghilangkan Kesedihan dengan Menggambarkan Orang-Orang yang Terasing)","ja":"異郷の人々のありさまを描いた苦境の解消","zh":"《描述异乡人之苦的消解》","ru":"Устранение скорби: описание людей на чужбине","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الزهد والرقائق","categoryLabel":"الزهد والرقائق","categoryLabels":{"en":"Asceticism and Spirituality","fr":"Ascèse et exhortations spirituelles","es":"Ascetismo y exhortaciones espirituales","ur":"زہد و رقائق","tr":"Zühd ve Kalbi Yumuşatan Eserler","sw":"Kujinyima dunia na malezi ya moyo","id":"Zuhud dan Pelembut Hati","ja":"禁欲・心を柔らかくする教え","zh":"淡泊今世与心灵修养","ru":"Аскетизм и смягчение сердец","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1423 - 2002","publishedTranslations":{"en":"1423 AH / 2002 CE","fr":"1423 - 2002","es":"1423 - 2002","ur":"1423 - 2002","tr":"1423 - 2002","sw":"1423 - 2002","id":"1423 - 2002","ja":"1423 - 2002","zh":"1423 - 2002","ru":"1423 - 2002","bn":null,"pt":null,"hi":null},"pages":"60"},{"id":98437,"href":"catalogue/984/98437.html","cover":null,"title":"كشف الكربة في وصف أهل الغربة","titles":{"en":"The Revelation of Distress in Describing the People of Alienation","fr":"Dissiper l’affliction en décrivant les gens de l’exil (Kashf al-Kurba fi Wasf Ahl al-Ghurba)","es":"Desvelar la aflicción al describir a los forasteros","ur":"كشف الكربة في وصف أهل الغربة","tr":"Gurbet Ehlinin Tasviri Hakkında Sıkıntının Giderilmesi","sw":"Kashf al-kurba fi wasf ahl al-ghurba (Kuondoa dhiki kwa kueleza hali ya watu walio ugenini)","id":"Menghilangkan Kesusahan dengan Menggambarkan Keadaan Orang-Orang Terasing","ja":"異郷の民の描写における苦難の解消","zh":"《描写异乡人的解忧之作》","ru":"Избавление от беды: описание странников","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الزهد والرقائق","categoryLabel":"الزهد والرقائق","categoryLabels":{"en":"Asceticism and Spirituality","fr":"Ascèse et exhortations spirituelles","es":"Ascetismo y exhortaciones espirituales","ur":"زہد و رقائق","tr":"Zühd ve Kalbi Yumuşatan Eserler","sw":"Kujinyima dunia na malezi ya moyo","id":"Zuhud dan Pelembut Hati","ja":"禁欲・心を柔らかくする教え","zh":"淡泊今世与心灵修养","ru":"Аскетизм и смягчение сердец","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"11"},{"id":242158,"href":"catalogue/2421/242158.html","cover":"catalogue/2421/242158.jpg","title":"كشف الكربة في وصف أهل الغربة- ملون","titles":{"en":"The Revelation of Distress in Describing the People of Alienation - Illustrated","fr":"Dissiper l’affliction en décrivant les étrangers — édition couleur","es":"Disipar la aflicción al describir a los extranjeros","ur":"كشف الكربة في وصف أهل الغربة- ملون (اجنبیت کے لوگوں کے بیان میں مصیبت کا ازالہ — رنگین)","tr":"Gurbet ehlinin tasviri hakkında sıkıntıyı giderme - Renkli","sw":"Kuondoa dhiki katika kuelezea hali ya wageni","id":"Menghilangkan Kesusahan dalam Menggambarkan Orang-Orang Terasing – Berwarna","ja":"苦悩を晴らす―異郷の民の描写（カラー版）","zh":"《消除忧患：描写异乡人》——彩印本","ru":"Избавление от скорби: описание чужестранцев — цветное издание","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الزهد والرقائق","categoryLabel":"الزهد والرقائق","categoryLabels":{"en":"Asceticism and Spirituality","fr":"Ascèse et exhortations spirituelles","es":"Ascetismo y exhortaciones espirituales","ur":"زہد و رقائق","tr":"Zühd ve Kalbi Yumuşatan Eserler","sw":"Kujinyima dunia na malezi ya moyo","id":"Zuhud dan Pelembut Hati","ja":"禁欲・心を柔らかくする教え","zh":"淡泊今世与心灵修养","ru":"Аскетизм и смягчение сердец","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"32"},{"id":138637,"href":"catalogue/1386/138637.html","cover":"catalogue/1386/138637.jpg","title":"كشف المشكل لابن الجوزي على صحيح البخاري ومعه التنقيح لألفاظ الجامع الصحيح ومعه حواشي ابن حجر","titles":{"en":"The Resolution of Problems by Ibn al-Jawzi on Sahih al-Bukhari, along with the Refinement of the Words of the Authentic Compilation and the Marginal Notes of Ibn Hajar","fr":"Dévoilement des difficultés du Sahih al-Bukhari par Ibn al-Jawzi, avec la Révision des termes du Jami al-Sahih et les annotations d'Ibn Hajar","es":"Kashf al-Mushkil de Ibn al-Jawzi sobre Sahih al-Bujari, junto con al-Tanqih de las expresiones de al-Jami al-Sahih y las notas marginales de Ibn Hajar","ur":"كشف المشكل لابن الجوزي على صحيح البخاري ومعه التنقيح لألفاظ الجامع الصحيح ومعه حواشي ابن حجر","tr":"İbnü’l-Cevzî’nin Sahîh-i Buhârî üzerine Müşkilü’l-keşf’i; el-Câmiʿu’s-sahîh’in lafızları hakkında et-Tenkîh ve İbn Hacer’in hâşiyeleriyle","sw":"Kashf al-Mushkil cha Ibn al-Jawzi kuhusu Sahih al-Bukhari, pamoja na al-Tanqih ya maneno ya al-Jami al-Sahih na tanbihi za Ibn Hajar","id":"Mengungkap Kemusykilan dalam Shahih Al-Bukhari karya Ibnu Al-Jauzi, disertai At-Tanqih tentang Lafaz-Lafaz Al-Jami' Ash-Shahih dan catatan kaki Ibnu Hajar","ja":"イブン・アル＝ジャウズィー著『サヒーフ・アル＝ブハーリー』の難解箇所の解明――『アル＝ジャーミウ・アッ＝サヒーフ』の語句の校訂およびイブン・ハジャルの注釈付き","zh":"伊本·焦齐《布哈里圣训实录疑难释解》，附《圣训汇编用语校订》及伊本·哈杰尔眉批","ru":"Кашф аль-мушкил Ибн аль-Джаузи к «Сахиху» аль-Бухари, с «Танкихом» формулировок «аль-Джами ас-сахих» и примечаниями Ибн Хаджара","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"عبد الرحمن أبو الفرج ابن الجوزي","names":{"en":"Abdul Rahman Abu al-Faraj Ibn al-Jawzi","fr":"Abd al-Rahman Abu al-Faraj Ibn al-Jawzi","es":"Abd al-Rahman Abu al-Faraj Ibn al-Jawzi","ur":"عبد الرحمن أبو الفرج ابن الجوزي","tr":"Abdurrahman Ebü’l-Ferec İbnü’l-Cevzî","sw":"Abdulrahman Abu al-Faraj Ibn al-Jawzi","id":"Abdurrahman Abu Al-Faraj Ibnu Al-Jauzi","ja":"アブドゥッラフマーン・アブー・アル＝ファラジュ・イブン・アル＝ジャウズィー","zh":"阿卜杜·拉赫曼·阿布·法拉吉·伊本·焦兹","ru":"Абд ар-Рахман Абу аль-Фарадж Ибн аль-Джаузи","bn":"عبد الرحمن أبو الفرج ابن الجوزي","pt":"عبد الرحمن أبو الفرج ابن الجوزي","hi":"عبد الرحمن أبو الفرج ابن الجوزي"},"href":"authors/005/540.html"},{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"},{"name":"بدر الدين الزركشي","names":{"en":"Badr al-Din al-Zarkashi","fr":"Badr al-Din al-Zarkashi","es":"Badr al-Din al-Zarkashi","ur":"بدر الدين الزركشي","tr":"Bedreddin ez-Zerkeşî","sw":"Badr al-Din al-Zarkashi","id":"Badruddin Az-Zarkasyi","ja":"バドル・アッディーン・アッザルカシー","zh":"白德尔丁·扎尔卡希","ru":"Бадр ад-Дин аз-Заркаши","bn":"بدر الدين الزركشي","pt":"بدر الدين الزركشي","hi":"بدر الدين الزركشي"},"href":"authors/014/1446.html"}],"died":"794 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الكتب الستة","subLabel":"الكتب الستة","subLabels":{"en":"The Six Books","fr":"Les six recueils canoniques","es":"Los seis libros","ur":"کتبِ ستہ","tr":"Kütüb-i Sitte","sw":"Vitabu sita vya hadithi","id":"Enam Kitab Hadis","ja":"六大ハディース集","zh":"六大圣训集","ru":"Шесть книг хадисов","bn":null,"pt":null,"hi":null},"published":"1424هـ 2004م","publishedTranslations":{"en":"1424 AH / 2004 CE","fr":"1424 H 2004","es":"1424 H 2004","ur":"1424ھ 2004ء","tr":"1424 H 2004","sw":"1424 H 2004","id":"1424 H 2004 M","ja":"ヒジュラ暦1424年／西暦2004年","zh":"伊历1424年／公元2004年","ru":"1424 г. х. / 2004 г.","bn":null,"pt":null,"hi":null},"pages":"3820"},{"id":138636,"href":"catalogue/1386/138636.html","cover":"catalogue/1386/138636.jpg","title":"كشف المشكل لابن الجوزي على صحيح البخاري ومعه التنقيح لألفاظ الجامع الصحيح ومعه حواشي ابن حجر- ملون","titles":{"en":"The Clarification of Issues by Ibn al-Jawzi on Sahih al-Bukhari, along with the Refinement of the Words of the Authentic Compilation and the Marginal Notes of Ibn Hajar - Colored","fr":"Dévoilement des difficultés du Sahih al-Bukhari par Ibn al-Jawzi, avec la Révision des termes du Jami al-Sahih et les annotations d'Ibn Hajar — édition en couleur","es":"Kashf al-Mushkil de Ibn al-Jawzi sobre Sahih al-Bujari, junto con al-Tanqih de las expresiones de al-Jami al-Sahih y las notas marginales de Ibn Hajar (edición a color)","ur":"كشف المشكل لابن الجوزي على صحيح البخاري ومعه التنقيح لألفاظ الجامع الصحيح ومعه حواشي ابن حجر- ملون","tr":"İbnü’l-Cevzî’nin Sahîh-i Buhârî üzerine Müşkilü’l-keşf’i; el-Câmiʿu’s-sahîh’in lafızları hakkında et-Tenkîh ve İbn Hacer’in hâşiyeleriyle (renkli)","sw":"Kashf al-Mushkil cha Ibn al-Jawzi kuhusu Sahih al-Bukhari, pamoja na al-Tanqih ya maneno ya al-Jami al-Sahih na tanbihi za Ibn Hajar — chapa ya rangi","id":"Mengungkap Kemusykilan dalam Shahih Al-Bukhari karya Ibnu Al-Jauzi, disertai At-Tanqih tentang Lafaz-Lafaz Al-Jami' Ash-Shahih dan catatan kaki Ibnu Hajar (edisi berwarna)","ja":"イブン・アル＝ジャウズィー著『サヒーフ・アル＝ブハーリー』の難解箇所の解明――『アル＝ジャーミウ・アッ＝サヒーフ』の語句の校訂およびイブン・ハジャルの注釈付き（カラー版）","zh":"伊本·焦齐《布哈里圣训实录疑难释解》，附《圣训汇编用语校订》及伊本·哈杰尔眉批（彩印）","ru":"Кашф аль-мушкил Ибн аль-Джаузи к «Сахиху» аль-Бухари, с «Танкихом» формулировок «аль-Джами ас-сахих» и примечаниями Ибн Хаджара — цветное издание","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"عبد الرحمن أبو الفرج ابن الجوزي","names":{"en":"Abdul Rahman Abu al-Faraj Ibn al-Jawzi","fr":"Abd al-Rahman Abu al-Faraj Ibn al-Jawzi","es":"Abd al-Rahman Abu al-Faraj Ibn al-Jawzi","ur":"عبد الرحمن أبو الفرج ابن الجوزي","tr":"Abdurrahman Ebü’l-Ferec İbnü’l-Cevzî","sw":"Abdulrahman Abu al-Faraj Ibn al-Jawzi","id":"Abdurrahman Abu Al-Faraj Ibnu Al-Jauzi","ja":"アブドゥッラフマーン・アブー・アル＝ファラジュ・イブン・アル＝ジャウズィー","zh":"阿卜杜·拉赫曼·阿布·法拉吉·伊本·焦兹","ru":"Абд ар-Рахман Абу аль-Фарадж Ибн аль-Джаузи","bn":"عبد الرحمن أبو الفرج ابن الجوزي","pt":"عبد الرحمن أبو الفرج ابن الجوزي","hi":"عبد الرحمن أبو الفرج ابن الجوزي"},"href":"authors/005/540.html"},{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"},{"name":"بدر الدين الزركشي","names":{"en":"Badr al-Din al-Zarkashi","fr":"Badr al-Din al-Zarkashi","es":"Badr al-Din al-Zarkashi","ur":"بدر الدين الزركشي","tr":"Bedreddin ez-Zerkeşî","sw":"Badr al-Din al-Zarkashi","id":"Badruddin Az-Zarkasyi","ja":"バドル・アッディーン・アッザルカシー","zh":"白德尔丁·扎尔卡希","ru":"Бадр ад-Дин аз-Заркаши","bn":"بدر الدين الزركشي","pt":"بدر الدين الزركشي","hi":"بدر الدين الزركشي"},"href":"authors/014/1446.html"}],"died":"794 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الكتب الستة","subLabel":"الكتب الستة","subLabels":{"en":"The Six Books","fr":"Les six recueils canoniques","es":"Los seis libros","ur":"کتبِ ستہ","tr":"Kütüb-i Sitte","sw":"Vitabu sita vya hadithi","id":"Enam Kitab Hadis","ja":"六大ハディース集","zh":"六大圣训集","ru":"Шесть книг хадисов","bn":null,"pt":null,"hi":null},"published":"1424هـ 2004م","publishedTranslations":{"en":"1424 AH / 2004 CE","fr":"1424 H 2004","es":"1424 H 2004","ur":"1424ھ 2004ء","tr":"1424 H 2004","sw":"1424 H 2004","id":"1424 H 2004 M","ja":"ヒジュラ暦1424年／西暦2004年","zh":"伊历1424年／公元2004年","ru":"1424 г. х. / 2004 г.","bn":null,"pt":null,"hi":null},"pages":"3820"},{"id":127830,"href":"catalogue/1278/127830.html","cover":"catalogue/1278/127830.jpg","title":"كفاية القارئ","titles":{"en":"The Sufficiency of the Reader","fr":"Kifayat al-qari (Ce qui suffit au lecteur)","es":"Suficiencia para el recitador","ur":"كفاية القارئ (قاری کے لیے کافی)","tr":"Kifâyetü’l-kārî (Okuyucuya Yeterli Olan)","sw":"Kifayat al-Qari (Kinachomtosha msomaji)","id":"Kecukupan bagi Pembaca","ja":"キファーヤト・アル＝カーリー","zh":"《读者之资》","ru":"Кифаят аль-кари (Достаточное для чтеца)","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد هاشم بن عبد الغفور الحارثي","names":{"en":"Muhammad Hashim bin Abdul Ghafour Al-Harithi","fr":"Muhammad Hashim ibn Abd al-Ghafur al-Harithi","es":"Muhammad Hashim ibn Abd al-Ghafour al-Harithi","ur":"محمد هاشم بن عبد الغفور الحارثي","tr":"Muhammed Hâşim b. Abdülgaffûr el-Hârisî","sw":"Muhammad Hashim bin Abdulghafour Al-Harithi","id":"Muhammad Hasyim bin Abdul Ghafur Al-Haritsi","ja":"ムハンマド・ハーシム・ビン・アブドゥルガフール・アル＝ハーリスィー","zh":"穆罕默德·哈希姆·本·阿卜杜·加富尔·哈里西","ru":"Мухаммад Хашим ибн Абд аль-Гафур аль-Хариси","bn":"محمد هاشم بن عبد الغفور الحارثي","pt":"محمد هاشم بن عبد الغفور الحارثي","hi":"محمد هاشم بن عبد الغفور الحارثي"},"href":"authors/351/35186.html"}],"died":null,"living":false,"era":"unknown","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"2007م 1428هـ","publishedTranslations":{"en":"2007 CE / 1428 AH","fr":"2007 m. 1428 H","es":"2007 d. C. 1428 H","ur":"2007ء 1428ھ","tr":"2007 M 1428 H","sw":"2007 BK 1428 H","id":"2007 M 1428 H","ja":"西暦2007年 ヒジュラ暦1428年","zh":"公元2007年 伊历1428年","ru":"2007 г. / 1428 г. х.","bn":null,"pt":null,"hi":null},"pages":"208"},{"id":98434,"href":"catalogue/984/98434.html","cover":null,"title":"كلمة الإخلاص وتحقيق معناها","titles":{"en":"The Word of Sincerity and the Realization of Its Meaning","fr":"La parole de sincérité et l’élucidation de son sens","es":"La palabra de la sinceridad y la explicación de su significado","ur":"كلمة الإخلاص وتحقيق معناها","tr":"İhlâs Kelimesi ve Anlamının Tahkiki","sw":"Kalima ya Ikhlas na ufafanuzi wa maana yake","id":"Kalimat Ikhlas dan Penjelasan Maknanya","ja":"誠実さの言葉とその意味の確証","zh":"《忠诚信仰之言及其意义阐释》","ru":"Слово искренности и разъяснение его смысла","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الزهد والرقائق","categoryLabel":"الزهد والرقائق","categoryLabels":{"en":"Asceticism and Spirituality","fr":"Ascèse et exhortations spirituelles","es":"Ascetismo y exhortaciones espirituales","ur":"زہد و رقائق","tr":"Zühd ve Kalbi Yumuşatan Eserler","sw":"Kujinyima dunia na malezi ya moyo","id":"Zuhud dan Pelembut Hati","ja":"禁欲・心を柔らかくする教え","zh":"淡泊今世与心灵修养","ru":"Аскетизм и смягчение сердец","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1397","publishedTranslations":{"en":"1397 AH","fr":"1397","es":"1397","ur":"1397","tr":"1397","sw":"1397","id":"1397","ja":"ヒジュラ暦1397年","zh":"伊历1397年","ru":"1397","bn":null,"pt":null,"hi":null},"pages":"15"},{"id":174977,"href":"catalogue/1749/174977.html","cover":null,"title":"كلمة الإخلاص وتحقيق معناها","titles":{"en":"The Word of Sincerity and the Realization of Its Meaning","fr":"La parole de sincérité et l'explication de son sens","es":"La palabra de la sinceridad y la aclaración de su significado","ur":"كلمة الإخلاص وتحقيق معناها (کلمۂ اخلاص اور اس کے مفہوم کی تحقیق)","tr":"Kelime-i ihlâs ve anlamının tahkiki","sw":"Tamko la ikhlasi na ufafanuzi wa maana yake","id":"Kalimat Ikhlas dan Penjelasan Maknanya","ja":"誠実の言葉とその意味の解明","zh":"《纯正信仰之词及其含义阐释》","ru":"Слово искренности и разъяснение его смысла","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"العلماء والمفكرون","categoryLabel":"العلماء والمفكرون","categoryLabels":{"en":"Scholars and Thinkers","fr":"Savants et penseurs","es":"Ulemas e intelectuales","ur":"علماء اور مفکرین","tr":"Âlimler ve Düşünürler","sw":"Wanazuoni na wanafikra","id":"Ulama dan Pemikir","ja":"学者・思想家","zh":"学者与思想家","ru":"Учёные и мыслители","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"8"},{"id":115571,"href":"catalogue/1155/115571.html","cover":"catalogue/1155/115571.jpg","title":"كلمة الإخلاص وتحقيق معناها- المكتب الإسلامي","titles":{"en":"The Word of Sincerity and Its Meaning - Islamic Office","fr":"La formule de la sincérité et l'explication de son sens — al-Maktab al-Islami","es":"La declaración de la sinceridad y la clarificación de su significado — al-Maktab al-Islami","ur":"كلمة الإخلاص وتحقيق معناها- المكتب الإسلامي (کلمۂ اخلاص اور اس کے مفہوم کی تحقیق — المكتب الإسلامي)","tr":"İhlâs Kelimesi ve Anlamının Tahkiki - el-Mektebü’l-İslâmî","sw":"Tamko la ikhlasi na kuthibitisha maana yake — al-Maktab al-Islami","id":"Kalimat Ikhlas dan Penegasan Maknanya — Al-Maktab al-Islami","ja":"純粋な信仰告白の言葉とその意味の確立――アル＝マクタブ・アル＝イスラーミー版","zh":"《真诚信仰之言及其含义的确证》—伊斯兰书局版","ru":"Слово искренности и раскрытие его смысла — Исламское бюро","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"التوحيد","subLabel":"التوحيد","subLabels":{"en":"Monotheism","fr":"Tawhid","es":"Unicidad de Allah","ur":"توحید","tr":"Tevhid","sw":"Tawhidi","id":"Tauhid","ja":"タウヒード","zh":"认主独一","ru":"Единобожие","bn":null,"pt":null,"hi":null},"published":"1391هـ","publishedTranslations":{"en":"1391 AH","fr":"1391H","es":"1391 H","ur":"1391ھ","tr":"1391H","sw":"1391H","id":"1391 H","ja":"ヒジュラ暦1391年","zh":"伊历1391年","ru":"1391 г. х.","bn":null,"pt":null,"hi":null},"pages":"80"},{"id":115573,"href":"catalogue/1155/115573.html","cover":"catalogue/1155/115573.jpg","title":"كلمة الإخلاص وتحقيق معناها- ت. فرة","titles":{"en":"The Word of Sincerity and Its Meaning - T. Farrah","fr":"La formule de la sincérité et l'explication de son sens — éd. Farra","es":"La declaración de la sinceridad y la clarificación de su significado — edición de Farra","ur":"كلمة الإخلاص وتحقيق معناها- ت. فرة (کلمۂ اخلاص اور اس کے مفہوم کی تحقیق — تحقیق: فرة)","tr":"İhlâs Kelimesi ve Anlamının Tahkiki - Tahkik eden: Ferre","sw":"Tamko la ikhlasi na kuthibitisha maana yake — toleo lililohakikiwa na Farra","id":"Kalimat Ikhlas dan Penegasan Maknanya — Tahkik Furrah","ja":"純粋な信仰告白の言葉とその意味の確立――フッラ校訂","zh":"《真诚信仰之言及其含义的确证》—富拉校勘","ru":"Слово искренности и раскрытие его смысла — тахкик Фарры","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"التوحيد","subLabel":"التوحيد","subLabels":{"en":"Monotheism","fr":"Tawhid","es":"Unicidad de Allah","ur":"توحید","tr":"Tevhid","sw":"Tawhidi","id":"Tauhid","ja":"タウヒード","zh":"认主独一","ru":"Единобожие","bn":null,"pt":null,"hi":null},"published":"1408هـ 1988م","publishedTranslations":{"en":"1408 AH / 1988 CE","fr":"1408H 1988","es":"1408 H 1988","ur":"1408ھ 1988ء","tr":"1408H 1988","sw":"1408H 1988","id":"1408 H 1988","ja":"ヒジュラ暦1408年／西暦1988年","zh":"伊历1408年／公元1988年","ru":"1408 г. х. 1988 г.","bn":null,"pt":null,"hi":null},"pages":"96"},{"id":104818,"href":"catalogue/1048/104818.html","cover":"catalogue/1048/104818.jpg","title":"كلمة الإخلاص وتحقيق معناها- ط 4","titles":{"en":"The Word of Sincerity and Its Meaning - 4th Edition","fr":"Kalimat al-ikhlas wa-tahqiq ma'naha (La parole de la sincérité et l’explication de son sens) — 4e édition","es":"La palabra de la sinceridad y la aclaración de su significado, 4.ª ed.","ur":"کلمۂ اخلاص اور اس کے مفہوم کی تحقیق- طبع 4","tr":"İhlâs Kelimesi ve Anlamının Tahkiki - 4. Baskı","sw":"Tamko la ikhlasi na ufafanuzi wa maana yake - toleo la 4","id":"Kalimat Ikhlas dan Penjelasan Maknanya - Cetakan ke-4","ja":"純粋な信仰告白とその意味の解明―第4版","zh":"忠诚信仰之言及其含义阐释——第4版","ru":"Слово искреннего единобожия и разъяснение его смысла — 4-е изд.","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"التوحيد","subLabel":"التوحيد","subLabels":{"en":"Monotheism","fr":"Tawhid","es":"Unicidad de Allah","ur":"توحید","tr":"Tevhid","sw":"Tawhidi","id":"Tauhid","ja":"タウヒード","zh":"认主独一","ru":"Единобожие","bn":null,"pt":null,"hi":null},"published":"1397هـ","publishedTranslations":{"en":"1397 AH","fr":"1397 H","es":"1397H","ur":"1397ھ","tr":"1397H","sw":"1397H","id":"1397 H","ja":"ヒジュラ暦1397年","zh":"伊历1397年","ru":"1397 г. х.","bn":null,"pt":null,"hi":null},"pages":"78"},{"id":115572,"href":"catalogue/1155/115572.html","cover":"catalogue/1155/115572.jpg","title":"كلمة الإخلاص وتحقيق معناها- ط 5","titles":{"en":"The Word of Sincerity and Its Meaning - 5th Edition","fr":"La formule de la sincérité et l'explication de son sens — 5e édition","es":"La declaración de la sinceridad y la clarificación de su significado — edición 5","ur":"كلمة الإخلاص وتحقيق معناها- ط 5 (کلمۂ اخلاص اور اس کے مفہوم کی تحقیق — پانچواں ایڈیشن)","tr":"İhlâs Kelimesi ve Anlamının Tahkiki - 5. Baskı","sw":"Tamko la ikhlasi na kuthibitisha maana yake — toleo la 5","id":"Kalimat Ikhlas dan Penegasan Maknanya — Cetakan ke-5","ja":"純粋な信仰告白の言葉とその意味の確立――第5版","zh":"《真诚信仰之言及其含义的确证》—第五版","ru":"Слово искренности и раскрытие его смысла — 5-е издание","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"التوحيد","subLabel":"التوحيد","subLabels":{"en":"Monotheism","fr":"Tawhid","es":"Unicidad de Allah","ur":"توحید","tr":"Tevhid","sw":"Tawhidi","id":"Tauhid","ja":"タウヒード","zh":"认主独一","ru":"Единобожие","bn":null,"pt":null,"hi":null},"published":"1399هـ 1979م","publishedTranslations":{"en":"1399 AH / 1979 CE","fr":"1399H 1979","es":"1399 H 1979","ur":"1399ھ 1979ء","tr":"1399H 1979","sw":"1399H 1979","id":"1399 H 1979","ja":"ヒジュラ暦1399年／西暦1979年","zh":"伊历1399年／公元1979年","ru":"1399 г. х. 1979 г.","bn":null,"pt":null,"hi":null},"pages":"80"},{"id":104897,"href":"catalogue/1048/104897.html","cover":"catalogue/1048/104897.jpg","title":"كلمة الاخلاص وتحقيق معناها","titles":{"en":"The Word of Sincerity and Its Meaning","fr":"La parole de sincérité et l'explication de son sens","es":"La palabra de la sinceridad y la aclaración de su significado (Kalimat al-Ikhlas)","ur":"كلمة الاخلاص وتحقيق معناها","tr":"İhlâs Kelimesi ve Anlamının Tahkiki","sw":"Kalimat al-Ikhlas wa Tahqiq Ma'naha (Neno la Ikhlasi na ufafanuzi wa maana yake)","id":"Kalimat Ikhlas dan Penjelasan Maknanya","ja":"純粋な信仰告白とその意味の確定","zh":"《清真言及其含义考释》","ru":"Слово искренности и разъяснение его смысла","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"التوحيد","subLabel":"التوحيد","subLabels":{"en":"Monotheism","fr":"Tawhid","es":"Unicidad de Allah","ur":"توحید","tr":"Tevhid","sw":"Tawhidi","id":"Tauhid","ja":"タウヒード","zh":"认主独一","ru":"Единобожие","bn":null,"pt":null,"hi":null},"published":"1408ه","publishedTranslations":{"en":"1408 AH","fr":"1408 H","es":"1408 H","ur":"1408ھ","tr":"1408 H","sw":"1408H","id":"1408 H","ja":"ヒジュラ暦1408年","zh":"伊历1408年","ru":"1408 г. х.","bn":null,"pt":null,"hi":null},"pages":"100"},{"id":46656,"href":"catalogue/466/46656.html","cover":"catalogue/466/46656.jpg","title":"كنز الراغبين شرح منهاج الطالبين- ت عبد اللطيف","titles":{"en":"The Treasure of Seekers: Explanation of the Method of Students - By Abdul Latif","fr":"Kanz al-Raghibin (Le trésor des aspirants), commentaire de Minhaj al-Talibin (La voie des étudiants) — édition critique d’Abd al-Latif","es":"Kanz al-Raghibin (El tesoro de quienes anhelan), comentario de Minhaj al-Talibin (El camino de los estudiantes), edición de Abd al-Latif","ur":"كنز الراغبين شرح منهاج الطالبين- ت عبد اللطيف (منهاج الطالبين کی شرح كنز الراغبين — تحقیق: عبد اللطيف)","tr":"Kenzü'r-râgıbîn: Minhâcü't-tâlibîn şerhi — Abdüllatîf neşri","sw":"Kanz al-Raghibin: Sharh Minhaj al-Talibin (Maelezo ya njia ya wanafunzi) - tahkiki ya Abdul Latif","id":"Kanz ar-Raghibin: Syarah Minhaj ath-Thalibin — Tahkik Abdul Latif","ja":"『カンズ・アッ＝ラーギビーイン』：『ミンハージュ・アッ＝ターリビーイン』注解―アブドゥッラティーフ校訂","zh":"《求道者之宝：注释〈求道者指南〉》——阿卜杜·拉蒂夫校订","ru":"Канз ар-рагибин: комментарий к «Минхадж ат-талибин» — тахкик Абд аль-Латифа","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"يحيى بن شرف النووي","names":{"en":"Yahya ibn Sharaf al-Nawawi","fr":"Yahya ibn Sharaf al-Nawawi","es":"Yahya ibn Sharaf al-Nawawi","ur":"يحيى بن شرف النووي","tr":"Yahyâ b. Şeref en-Nevevî","sw":"Yahya bin Sharaf al-Nawawi","id":"Yahya bin Syaraf An-Nawawi","ja":"ヤフヤー・イブン・シャラフ・アン＝ナワウィー","zh":"叶海亚·本·谢拉夫·脑威","ru":"Яхья ибн Шараф ан-Навави","bn":"يحيى بن شرف النووي","pt":"يحيى بن شرف النووي","hi":"يحيى بن شرف النووي"},"href":"authors/002/271.html"},{"name":"جلال الدين محمد بن أحمد المحلي الشافعي","names":{"en":"Jalal al-Din Muhammad ibn Ahmad al-Mahalli al-Shafi'i","fr":"Jalal al-Din Muhammad ibn Ahmad al-Mahalli al-Shafi'i","es":"Jalal al-Din Muhammad ibn Ahmad al-Mahalli al-Shafi'i","ur":"جلال الدين محمد بن أحمد المحلي الشافعي","tr":"Celâleddin Muhammed b. Ahmed el-Mahallî eş-Şâfiî","sw":"Jalal al-Din Muhammad ibn Ahmad al-Mahalli al-Shafi'i","id":"Jalaluddin Muhammad bin Ahmad Al-Mahalli Asy-Syafi'i","ja":"ジャラールッディーン・ムハンマド・イブン・アフマド・アル＝マハッリー・アッ＝シャーフィイー","zh":"哲拉勒丁·穆罕默德·本·艾哈迈德·马哈利·沙斐仪","ru":"Джалал ад-Дин Мухаммад ибн Ахмад аль-Махалли аш-Шафии","bn":"جلال الدين محمد بن أحمد المحلي الشافعي","pt":"جلال الدين محمد بن أحمد المحلي الشافعي","hi":"جلال الدين محمد بن أحمد المحلي الشافعي"},"href":"authors/028/2815.html"}],"died":null,"living":false,"era":"unknown","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"الفقه فقه المذهب الشافعي","subLabel":"الفقه فقه المذهب الشافعي","subLabels":{"en":"Shafi'i Jurisprudence","fr":"Droit selon l'école chaféite","es":"Fiqh de la escuela shafií","ur":"فقہ، شافعی مذہب","tr":"Fıkıh – Şâfiî Mezhebi Fıkhı","sw":"Fiqhi ya madhehebu ya Shafii","id":"Fikih Mazhab Syafi'i","ja":"フィクフ：シャーフィイー派","zh":"教法：沙斐仪学派","ru":"Шафиитский мазхаб","bn":null,"pt":null,"hi":null},"published":"1422هــ 2001 م","publishedTranslations":{"en":"1422 AH / 2001 CE","fr":"1422 H 2001","es":"1422 H 2001","ur":"1422هــ 2001 م","tr":"1422 H 2001 m.","sw":"1422H 2001 CE","id":"1422 H 2001 M","ja":"ヒジュラ暦1422年 西暦2001年","zh":"伊历1422年 公元2001年","ru":"1422 г. х. 2001 г.","bn":null,"pt":null,"hi":null},"pages":"636"},{"id":209047,"href":"catalogue/2090/209047.html","cover":"catalogue/2090/209047.jpg","title":"كيف ننتفع بالقرآن الكريم خطوة نحو تدبر الأمثل","titles":{"en":"How to Benefit from the Holy Quran: A Step Towards Optimal Reflection","fr":"Comment tirer profit du Noble Quran: un premier pas vers une méditation exemplaire","es":"Cómo beneficiarnos del Noble Quran: un paso hacia una reflexión más profunda","ur":"كيف ننتفع بالقرآن الكريم خطوة نحو تدبر الأمثل","tr":"Yüce Kur’an’dan Nasıl Yararlanırız? En Güzel Tedebbüre Doğru Bir Adım","sw":"Jinsi ya kunufaika na Quran Tukufu: hatua kuelekea tafakuri bora","id":"Cara Mengambil Manfaat dari Al-Quran: Langkah Menuju Tadabur yang Lebih Baik","ja":"聖クルアーンからいかに益を得るか―より良い熟考への一歩","zh":"《如何从尊贵的古兰经中获益：迈向更深入参悟的一步》","ru":"Как извлечь пользу из Священного Корана: шаг к наиболее глубокому размышлению над ним","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد البراء الأميري","names":{"en":"Ahmad Al-Bara' Al-Amiri","fr":"Ahmad al-Bara' al-Amiri","es":"Ahmad al-Bara' al-Amiri","ur":"أحمد البراء الأميري","tr":"Ahmed el-Berâ el-Âmirî","sw":"Ahmad Al-Bara' Al-Amiri","id":"Ahmad Al-Bara' Al-Amiri","ja":"アフマド・アル＝バラー・アル＝アミーリー","zh":"艾哈迈德·巴拉·阿米里","ru":"Ахмад аль-Бара' аль-Амири","bn":"أحمد البراء الأميري","pt":"أحمد البراء الأميري","hi":"أحمد البراء الأميري"},"href":"authors/224/22456.html"}],"died":null,"living":false,"era":"unknown","category":"الزهد والرقائق","categoryLabel":"الزهد والرقائق","categoryLabels":{"en":"Asceticism and Spirituality","fr":"Ascèse et exhortations spirituelles","es":"Ascetismo y exhortaciones espirituales","ur":"زہد و رقائق","tr":"Zühd ve Kalbi Yumuşatan Eserler","sw":"Kujinyima dunia na malezi ya moyo","id":"Zuhud dan Pelembut Hati","ja":"禁欲・心を柔らかくする教え","zh":"淡泊今世与心灵修养","ru":"Аскетизм и смягчение сердец","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1422هـ 2002م","publishedTranslations":{"en":"1422 AH / 2002 CE","fr":"1422 H 2002","es":"1422 H 2002","ur":"1422ھ 2002ء","tr":"1422 H 2002","sw":"1422H 2002","id":"1422 H 2002 M","ja":"ヒジュラ暦1422年／西暦2002年","zh":"伊历1422年 公元2002年","ru":"1422 г. х. / 2002 г.","bn":null,"pt":null,"hi":null},"pages":"118"},{"id":200459,"href":"catalogue/2004/200459.html","cover":null,"title":"كيف يؤدي الحاج مناسك الحج","titles":{"en":"How the Pilgrim Performs the Hajj Rituals","fr":"Comment le pèlerin accomplit les rites du pèlerinage","es":"Cómo realiza el peregrino los ritos del Hayy","ur":"كيف يؤدي الحاج مناسك الحج (حاج حج کے مناسک کیسے ادا کرے)","tr":"Hacı Hac Menâsikini Nasıl Yerine Getirir?","sw":"Jinsi mwenye kuhiji anavyotekeleza ibada za Hija","id":"Bagaimana jemaah haji menunaikan manasik haji","ja":"巡礼者はハッジの儀礼をどのように行うか","zh":"朝觐者如何履行朝觐仪式","ru":"Как паломнику совершать обряды хаджа","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العلماء والمفكرون","categoryLabel":"العلماء والمفكرون","categoryLabels":{"en":"Scholars and Thinkers","fr":"Savants et penseurs","es":"Ulemas e intelectuales","ur":"علماء اور مفکرین","tr":"Âlimler ve Düşünürler","sw":"Wanazuoni na wanafikra","id":"Ulama dan Pemikir","ja":"学者・思想家","zh":"学者与思想家","ru":"Учёные и мыслители","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"4"},{"id":115563,"href":"catalogue/1155/115563.html","cover":"catalogue/1155/115563.jpg","title":"لا يصح أن يقال الإنسان خليفة عن الله في أرضه فهي مقولة باطلة","titles":{"en":"It is incorrect to say that man is God's vicegerent on Earth; this is a false statement.","fr":"Il est faux de dire que l'homme est le lieutenant d'Allah sur sa terre","es":"No es correcto decir que el ser humano es el representante de Allah en Su tierra: es una afirmación falsa","ur":"لا يصح أن يقال الإنسان خليفة عن الله في أرضه فهي مقولة باطلة (یہ کہنا درست نہیں کہ انسان زمین میں اللہ کا خلیفہ ہے؛ یہ ایک باطل قول ہے)","tr":"İnsanın Allah’ın Yeryüzündeki Halifesi Olduğunu Söylemek Doğru Değildir; Bu, Batıl Bir Sözdür","sw":"Si sahihi kusema kuwa mwanadamu ni khalifa wa Allah duniani; kauli hiyo ni batili","id":"Tidak Benar Mengatakan bahwa Manusia adalah Khalifah Allah di Bumi-Nya; Itu Pernyataan yang Batil","ja":"人間は地上におけるアッラーの代理人であると言うのは誤りであり、それは虚偽の言説である","zh":"《不应说人是大地上真主的继承者：这是错误的说法》","ru":"Неверно говорить, что человек — наместник Аллаха на земле: это ложное утверждение","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"عبد الرحمن حسن حبنكة الميداني","names":{"en":"Abdul Rahman Hassan Habnaka Al-Maidani","fr":"Abd al-Rahman Hassan Habnaka al-Maidani","es":"Abd al-Rahman Hassan Habnaka al-Maidani","ur":"عبد الرحمن حسن حبنكة الميداني","tr":"Abdurrahman Hasan Habenneke el-Meydânî","sw":"Abdulrahman Hassan Habnaka al-Maidani","id":"Abdurrahman Hasan Habnaka Al-Maidani","ja":"アブドゥッラフマーン・ハサン・ハブナカ・アル＝マイダーニー","zh":"阿卜杜·拉赫曼·哈桑·哈卜纳卡·迈达尼","ru":"Абд ар-Рахман Хасан Хабаннака аль-Майдани","bn":"عبد الرحمن حسن حبنكة الميداني","pt":"عبد الرحمن حسن حبنكة الميداني","hi":"عبد الرحمن حسن حبنكة الميداني"},"href":"authors/050/5088.html"}],"died":null,"living":false,"era":"unknown","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"التوحيد","subLabel":"التوحيد","subLabels":{"en":"Monotheism","fr":"Tawhid","es":"Unicidad de Allah","ur":"توحید","tr":"Tevhid","sw":"Tawhidi","id":"Tauhid","ja":"タウヒード","zh":"认主独一","ru":"Единобожие","bn":null,"pt":null,"hi":null},"published":"1416هـ 1996م","publishedTranslations":{"en":"1416 AH / 1996 CE","fr":"1416H 1996","es":"1416 H 1996","ur":"1416ھ 1996ء","tr":"1416H 1996","sw":"1416H 1996","id":"1416 H 1996","ja":"ヒジュラ暦1416年／西暦1996年","zh":"伊历1416年／公元1996年","ru":"1416 г. х. 1996 г.","bn":null,"pt":null,"hi":null},"pages":"112"},{"id":143023,"href":"catalogue/1430/143023.html","cover":"catalogue/1430/143023.jpg","title":"لذة العيش في طرق حديث الأئمة من قريش","titles":{"en":"The Delight of Living in the Ways of the Hadith of the Imams from Quraysh","fr":"La joie de vivre à travers les chaînes de transmission du hadith sur les imams de Quraysh","es":"El placer de vivir: las cadenas de transmisión del hadiz «Los imanes serán de Quraysh»","ur":"لذة العيش في طرق حديث الأئمة من قريش (قریش کے ائمہ کی حدیث کی سندوں میں لطفِ زندگی)","tr":"Kureyş’ten İmamların Hadis Yollarında Yaşamın Tadı","sw":"Utamu wa maisha katika njia za Hadithi kuhusu maimamu kutoka Quraysh","id":"Lezatnya Hidup dalam Berbagai Jalur Riwayat Hadis tentang Para Pemimpin dari Quraisy","ja":"クライシュ族の指導者たちに関する伝承の諸経路をめぐる楽しみ","zh":"《古莱氏伊玛目圣训传述链的乐趣》","ru":"Сладость жизни в путях хадиса о предводителях из курайшитов","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"تخريج","subLabel":"تخريج","subLabels":{"en":"Hadith Authentication","fr":"Takhrij","es":"Tajriy (documentación de fuentes)","ur":"تخریج","tr":"Tahric","sw":"Takhrij","id":"Takhrij","ja":"ハディースの出典調査","zh":"圣训出处考证","ru":"Тахридж","bn":null,"pt":null,"hi":null},"published":"1433هـ 2012م","publishedTranslations":{"en":"1433 AH / 2012 CE","fr":"1433 H 2012","es":"1433 H 2012","ur":"1433ھ 2012ء","tr":"1433H 2012","sw":"1433H 2012","id":"1433 H 2012 M","ja":"ヒジュラ暦1433年／西暦2012年","zh":"伊历1433年／公元2012年","ru":"1433 г. х. / 2012 г.","bn":null,"pt":null,"hi":null},"pages":"152"},{"id":65512,"href":"catalogue/655/65512.html","cover":"catalogue/655/65512.jpg","title":"لسان الميزان","titles":{"en":"The Tongue of the Balance","fr":"Lisan al-mizan (La langue de la balance)","es":"Lisan al-Mizan (La lengua de la balanza)","ur":"لسان الميزان (میزان کی زبان)","tr":"Lisânü'l-mîzân (Mizan’ın Dili)","sw":"Lisan al-Mizan (Ulimi wa mizani)","id":"Lisan al-Mizan [Lidah Timbangan]","ja":"リサーン・アル＝ミーザーン（天秤の舌）","zh":"《衡鉴之舌》","ru":"Лисан аль-мизан (Язык весов)","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"أحمد بن علي بن حجر العسقلاني","pt":"أحمد بن علي بن حجر العسقلاني","hi":"أحمد بن علي بن حجر العسقلاني"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1423هـ 2002م","publishedTranslations":{"en":"1423 AH / 2002 CE","fr":"1423 H 2002","es":"1423 H 2002","ur":"1423ھ 2002ء","tr":"1423 H 2002","sw":"1423 H 2002","id":"1423 H 2002 M","ja":"ヒジュラ暦1423年／西暦2002年","zh":"伊历1423年／公元2002年","ru":"1423 г. х. 2002 г.","bn":null,"pt":null,"hi":null},"pages":"6266"}]
+    </script>
+    <script
+      type="application/json"
+      data-list
+    >
+      {"list":"catalogue","category":null,"sub":null,"era":null,"page":65,"pages":77,"total":1909,"perPage":25,"eraCounts":{"all":1909,"salaf":2,"mutaqaddimun":9,"mutaakhkhirun":218,"muasirun":784,"unknown":896},"categoryLabel":null,"categoryLabels":null,"subLabel":null,"subLabels":null}
+    </script>
+
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Resources</div>
+        <div class="mt-2 flex flex-wrap items-center gap-2">
+          <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-text="count(':count result|:count results', total)" data-flux-subheading>
+    
+</div>
+
+          <template x-if="category !== ''">
+            <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-category">
+        <svg class="shrink-0 [:where(&amp;)]:size-4 size-3" data-flux-badge-icon="data-flux-badge-icon" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v2.879a2.5 2.5 0 0 0 .732 1.767l4.5 4.5a2.5 2.5 0 0 0 3.536 0l2.878-2.878a2.5 2.5 0 0 0 0-3.536l-4.5-4.5A2.5 2.5 0 0 0 7.38 2H4.5ZM5 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
+</svg>
+
+            
+    <span x-text="categoryLabel"></span>
+              <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('category', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+          </template>
+
+          <template x-if="category !== '' && sub !== ''">
+            <span class="flex items-center gap-2">
+              <svg class="shrink-0 [:where(&amp;)]:size-4 text-zinc-400 rtl:rotate-180" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-sub-category">
+        <span x-text="subLabel"></span>
+                <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('sub', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+            </span>
+          </template>
+        </div>
+      </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white" data-flux-button="data-flux-button" x-show="hasFilters" x-cloak="x-cloak" x-on:click="clearFilters()">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Clear filters</span>
+    </button>
+    </div>
+
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+      <div
+  class="inline-flex max-w-full overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-700 dark:bg-zinc-800/80"
+  role="radiogroup"
+  aria-label="Era"
+  data-test="era-filter"
+>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === ''"
+      x-on:click="choose('era', '')"
+      x-bind:disabled="era !== '' && eraCounts['all'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === ''          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-all"
+    >
+      All
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === '' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['all'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'salaf'"
+      x-on:click="choose('era', 'salaf')"
+      x-bind:disabled="era !== 'salaf' && eraCounts['salaf'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'salaf'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-salaf"
+    >
+      Salaf
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'salaf' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t="to :year AH" data-r="{&quot;year&quot;:300}">to 300 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['salaf'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaqaddimun'"
+      x-on:click="choose('era', 'mutaqaddimun')"
+      x-bind:disabled="era !== 'mutaqaddimun' && eraCounts['mutaqaddimun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaqaddimun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaqaddimun"
+    >
+      Mutaqaddimun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaqaddimun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:301,&quot;to&quot;:656}">301–656 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaqaddimun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaakhkhirun'"
+      x-on:click="choose('era', 'mutaakhkhirun')"
+      x-bind:disabled="era !== 'mutaakhkhirun' && eraCounts['mutaakhkhirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaakhkhirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaakhkhirun"
+    >
+      Muta&#039;akhkhirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaakhkhirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:657,&quot;to&quot;:1265}">657–1265 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaakhkhirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'muasirun'"
+      x-on:click="choose('era', 'muasirun')"
+      x-bind:disabled="era !== 'muasirun' && eraCounts['muasirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'muasirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-muasirun"
+    >
+      Mu&#039;asirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'muasirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":year AH on, or living" data-r="{&quot;year&quot;:1266}">1266 AH on, or living</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['muasirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'unknown'"
+      x-on:click="choose('era', 'unknown')"
+      x-bind:disabled="era !== 'unknown' && eraCounts['unknown'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'unknown'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-unknown"
+    >
+      Unknown
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'unknown' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline">no year ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['unknown'])"
+        ></span>
+      </span>
+    </button>
+  </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-show="category !== ''" x-cloak="x-cloak" x-on:click="showSubs = !showSubs" x-bind:aria-pressed="showSubs" data-test="toggle-sub-categories">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M3 4.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6.25 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 7.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 11.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM4 12.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/>
+</svg>
+
+                
+                    
+            
+            <span><span x-show="!showSubs">Show sub-categories</span>
+        <span
+          x-show="showSubs"
+          x-cloak
+        >
+          Hide sub-categories
+        </span></span>
+    </button>
+    </div>
+
+    <div class="flex flex-col gap-6 lg:flex-row">
+      <aside
+        class="lg:w-72 lg:shrink-0"
+        x-show="category !== '' && showSubs"
+        x-cloak
+        data-test="sub-categories"
+      >
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" data-flux-heading>Sub-categories</div>
+
+        <div class="w-full relative block group/input mb-2" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd"/>
+</svg>
+
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="subFilter" placeholder="Filter sub-categories..."
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="subCategories.length === 0" data-flux-text >No sub-categories.</p>
+        <nav class="flex max-h-[70vh] flex-col overflow-y-auto">
+          <template
+            x-for="entry in subCategories"
+            :key="entry.value"
+          >
+            <button
+              type="button"
+              class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-lg px-3 text-start text-sm font-medium lg:h-8"
+              x-bind:class="
+                sub === entry.value
+                  ? 'bg-white text-zinc-800 shadow-xs dark:bg-white/[7%] dark:text-white'
+                  : 'text-zinc-500 hover:bg-zinc-800/5 hover:text-zinc-800 dark:text-white/80 dark:hover:bg-white/[7%] dark:hover:text-white'
+              "
+              x-on:click="choose('sub', sub === entry.value ? '' : entry.value)"
+            >
+              <span
+                class="flex-1 truncate"
+                dir="auto"
+                x-text="entry.label"
+              ></span>
+              <span
+                class="rounded-sm bg-zinc-400/15 px-1.5 py-0.5 text-xs tabular-nums dark:bg-white/10"
+                x-text="format(entry.count)"
+              ></span>
+            </button>
+          </template>
+        </nav>
+      </aside>
+
+      <div class="min-w-0 flex-1">
+        <div
+          class="rounded-xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700"
+          x-show="total === 0"
+          x-cloak
+        >
+          <svg class="shrink-0 [:where(&amp;)]:size-6 mx-auto mb-3 size-8 text-zinc-400" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+</svg>
+
+                  <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>No resources found</div>
+        </div>
+
+        <div x-show="total > 0">
+          <div class="flex flex-col  " >
+    
+
+    <ui-table-scroll-area class="overflow-auto">
+        <table class="[:where(&amp;)]:min-w-full table-fixed border-separate border-spacing-0 isolate text-zinc-800 whitespace-nowrap [&amp;_dialog]:whitespace-normal [&amp;_[popover]]:whitespace-normal" data-flux-table>
+            <thead class="" data-flux-columns>
+    <tr >
+        <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Title</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Author</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Category</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Death year</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Published</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Pages</div>
+    </th>
+    </tr>
+</thead>
+
+            <tbody  data-flux-rows>
+    <template
+                x-for="row in shown"
+                :key="row.id"
+              >
+                <tr  class="" data-flux-row>
+    <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 relative max-w-md align-top whitespace-normal" data-flux-cell>
+    <div class="flex items-start gap-3">
+                      <div class="flex w-14 shrink-0 flex-col items-center gap-1 lg:w-10">
+                        <a
+                          x-bind:href="row.href"
+                          class="relative shrink-0"
+                          tabindex="-1"
+                          aria-hidden="true"
+                        >
+                          <template x-if="row.cover">
+                            <img
+                              x-bind:src="row.cover"
+                              alt=""
+                              loading="lazy"
+                              class="h-14 w-10 rounded border border-zinc-200 bg-white object-cover object-top shadow-sm dark:border-zinc-700"
+                            />
+                          </template>
+                          <template x-if="!row.cover">
+                            <div
+                              class="flex h-14 w-10 flex-col items-center justify-center gap-0.5 rounded border border-zinc-200 bg-zinc-50 font-semibold tracking-wide text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+                            >
+                              <svg class="shrink-0 [:where(&amp;)]:size-6 size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+                                    </div>
+                          </template>
+                        </a>
+                      </div>
+
+                      <div class="min-w-0">
+                        <a
+                          x-bind:href="row.href"
+                          class="font-medium text-zinc-800 hover:underline dark:text-white"
+                          dir="auto"
+                          x-text="tx(row.title, row.titles)"
+                        ></a>
+                        <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50 ms-2" x-show="row.type">
+        <span x-text="tx(row.type, row.types)"></span>
+    </div>
+                        <div
+                          class="text-sm text-zinc-500 dark:text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(row.title, row.titles) !== row.title"
+                          x-text="row.title"
+                        ></div>
+                        <span
+                          class="mt-1 block text-sm text-zinc-500 lg:hidden dark:text-zinc-400"
+                          x-show="row.categoryLabel"
+                          x-text="tx(row.categoryLabel, row.categoryLabels)"
+                        ></span>
+                      </div>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 max-w-56 align-top whitespace-normal" data-flux-cell>
+    <template
+                      x-for="(author, index) in row.authors"
+                      :key="index"
+                    >
+                      <div>
+                        <a
+                          class="hover:underline"
+                          x-bind:href="author.href"
+                          dir="auto"
+                          x-text="tx(author.name, author.names)"
+                        ></a>
+                        <div
+                          class="text-sm text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(author.name, author.names) !== author.name"
+                          x-text="author.name"
+                        ></div>
+                      </div>
+                    </template>
+                    <div class="mt-1 text-sm text-zinc-500 lg:hidden dark:text-zinc-400">
+                      <span
+                        class="block"
+                        x-show="row.died"
+                        x-text="died(row)"
+                      ></span>
+                      <span
+                        class="block"
+                        dir="auto"
+                        x-show="row.published"
+                        x-text="tx(row.published, row.publishedTranslations)"
+                      ></span>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden max-w-56 align-top whitespace-normal lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.categoryLabel, row.categoryLabels)"
+                    ></span>
+                    <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" dir="auto" x-show="row.sub" x-text="tx(row.subLabel, row.subLabels)" data-flux-text ></p>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium"
+                      x-bind:class="
+                        row.living
+                          ? 'bg-emerald-400/15 text-emerald-700 dark:bg-emerald-400/40 dark:text-emerald-200'
+                          : 'bg-zinc-400/15 text-zinc-700 dark:bg-zinc-400/40 dark:text-zinc-200'
+                      "
+                      x-show="row.died"
+                      x-text="died(row)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.published, row.publishedTranslations)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top lg:table-cell" data-flux-cell>
+    <span x-text="row.pages ?? ''"></span>
+</td>
+</tr>
+              </template>
+</tbody>
+        </table>
+    </ui-table-scroll-area>
+
+    
+
+    </div>
+
+          <div
+  class="@container flex items-center justify-between gap-3 border-t border-zinc-100 pt-3 dark:border-zinc-700"
+  x-show="total > 0"
+  data-flux-pagination
+>
+  <div class="text-xs font-medium whitespace-nowrap text-zinc-500 dark:text-zinc-400">
+    Showing
+    <span x-text="(page - 1) * perPage + 1"></span>
+    to
+    <span x-text="Math.min(page * perPage, total)"></span>
+    of
+    <span x-text="total"></span>
+    results
+  </div>
+
+  <div
+    class="flex items-center rounded-[8px] border border-zinc-200 bg-white p-[1px] dark:border-white/10 dark:bg-white/10"
+    x-show="pages > 1"
+  >
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page - 1)"
+      x-bind:disabled="page <= 1"
+      aria-label="&amp;laquo; Previous"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+
+    <template
+      x-for="(link, index) in pageLinks"
+      :key="index"
+    >
+      <div class="hidden @[40rem]:contents">
+        <template x-if="link === '...'">
+          <div
+            class="flex size-6 cursor-default items-center justify-center rounded-[6px] text-xs font-medium text-zinc-400 dark:text-zinc-400"
+          >
+            ...
+          </div>
+        </template>
+        <template x-if="link === page">
+          <div
+            aria-current="page"
+            class="flex h-6 cursor-default items-center justify-center rounded-[6px] px-2 text-xs font-medium text-zinc-800 dark:text-white"
+            x-text="link"
+          ></div>
+        </template>
+        <template x-if="link !== '...' && link !== page">
+          <button
+            type="button"
+            class="h-6 rounded-[6px] px-2 text-xs font-medium text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/20 dark:hover:text-white"
+            x-on:click="turn(link)"
+            x-text="link"
+          ></button>
+        </template>
+      </div>
+    </template>
+
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page + 1)"
+      x-bind:disabled="page >= pages"
+      aria-label="Next &amp;raquo;"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+    </div>
+
+  
+  <script src="../../../../../assets/static.js?v=be69322f0f"></script>
+</body>
+</html>

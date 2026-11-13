@@ -1,0 +1,719 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root="../../../../../"
+  data-section="items"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Resources</title>
+  <link
+    rel="icon"
+    href="../../../../../assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="../../../../../assets/static.css?v=be69322f0f"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="../../../../../assets/i18n.js?v=be69322f0f"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../../../assets/frame.js?v=be69322f0f"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section
+    class="w-full"
+    x-data="staticList({ kind: 'items' })"
+  >
+    <script
+      type="application/json"
+      data-rows
+    >
+      [{"id":138231,"href":"catalogue/1382/138231.html","cover":"catalogue/1382/138231.jpg","title":"شرح حديث عمار بن ياسر رضي الله عنه \"اللهم بعلمك الغيب\"","titles":{"en":"Explanation of the Hadith of Ammar ibn Yasir, may Allah be pleased with him, \"O Allah, by Your Knowledge of the Unseen\"","fr":"Commentaire du hadith de Ammar ibn Yasir, « Ô Allah, par Ta connaissance de l'invisible »","es":"Comentario del hadiz de Ammar ibn Yasir, que Allah esté complacido con él: «Allah, por Tu conocimiento de lo oculto»","ur":"شرح حديث عمار بن ياسر رضي الله عنه \"اللهم بعلمك الغيب\"","tr":"Ammâr b. Yâsir'in “Allah'ım, gaybı bilmen hakkı için” hadisinin şerhi","sw":"Ufafanuzi wa hadithi ya Ammar bin Yasir, Allah amridhie: “Ewe Allah, kwa elimu Yako ya ghaibu”","id":"Syarah Hadis Ammar bin Yasir, “Ya Allah, dengan pengetahuan-Mu tentang yang gaib”","ja":"アンマール・イブン・ヤースィルのハディース「アッラーよ、あなたの不可視の知識にかけて」についての解説","zh":"解说阿马尔·本·亚西尔圣训：“真主啊，凭借你对幽玄的全知……”","ru":"Комментарии к хадису Аммара ибн Ясира: «О Аллах, Тебе ведомо сокровенное»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"المسانيد الأخرى والجوامع","subLabel":"المسانيد الأخرى والجوامع","subLabels":{"en":"Other Musnads and Compilations","fr":"Autres musnads et recueils généraux","es":"Otros musnads y compilaciones","ur":"دیگر مسندیں اور جوامع","tr":"Diğer müsnedler ve câmi eserleri","sw":"Musnad nyingine na majami","id":"Musnad lainnya dan kitab jami'","ja":"その他のムスナド集と総合ハディース集","zh":"其他圣训集与汇编","ru":"Другие муснады и сборники хадисов","bn":null,"pt":null,"hi":null},"published":"1408هـ 1987م","publishedTranslations":{"en":"1408 AH / 1987 CE","fr":"1408 H 1987","es":"1408 H 1987","ur":"1408ھ 1987ء","tr":"1408H 1987","sw":"1408H 1987","id":"1408 H 1987 M","ja":"ヒジュラ暦1408年／西暦1987年","zh":"伊历1408年／公元1987年","ru":"1408 г. х. / 1987 г.","bn":null,"pt":null,"hi":null},"pages":"60"},{"id":142095,"href":"catalogue/1420/142095.html","cover":null,"title":"شرح حديث لبيك اللهم لبيك","titles":{"en":"Explanation of the Hadith \"Here I am, O Allah, here I am\"","fr":"Commentaire du hadith « Labbayka Allahumma labbayk »","es":"Comentario del hadiz «Labbaik, Allahumma labbaik»","ur":"شرح حديث لبيك اللهم لبيك","tr":"Lebbeyk Allahümme lebbeyk hadisinin şerhi","sw":"Sharh hadith Labbaika Allahumma labbaik (Maelezo ya hadithi: Nimeitika, Ewe Allah, nimeitika)","id":"Syarah Hadis Labbaik Allahumma Labbaik","ja":"「汝の御命令に従います、アッラーよ。汝の御命令に従います」というハディースの解説","zh":"《主啊，我应召而来》圣训注释","ru":"Комментарий к хадису «Вот я перед Тобой, о Аллах, вот я перед Тобой»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"شروحات","subLabel":"شروحات","subLabels":{"en":"Commentaries","fr":"Commentaires","es":"Comentarios","ur":"شروحات","tr":"Şerhler","sw":"Sharh","id":"Syarah","ja":"注釈","zh":"注释","ru":"Комментарии","bn":null,"pt":null,"hi":null},"published":"1417هـ 1996م","publishedTranslations":{"en":"1417 AH / 1996 CE","fr":"1417 H 1996","es":"1417 H 1996","ur":"1417ھ 1996ء","tr":"1417 H 1996","sw":"1417H 1996","id":"1417 H 1996 M","ja":"ヒジュラ暦1417年／西暦1996年","zh":"伊历1417年／公元1996年","ru":"1417 г. х. / 1996 г.","bn":null,"pt":null,"hi":null},"pages":"62"},{"id":146035,"href":"catalogue/1460/146035.html","cover":"catalogue/1460/146035.jpg","title":"شرح حديث لبيك اللهم لبيك","titles":{"en":"Explanation of the Hadith \"Here I am, O Allah, here I am\"","fr":"Commentaire du hadith « Labbayka Allahumma labbayk » (Me voici, ô Allah, me voici)","es":"Comentario del hadiz «Labbayka Allahumma labbayk»","ur":"شرح حديث لبيك اللهم لبيك","tr":"“Lebbeyk Allahümme lebbeyk” hadisinin şerhi","sw":"Sharh Hadith ya Labbaik Allahumma Labbaik (Ufafanuzi wa hadithi ya “Naitikia mwito Wako, ewe Allah, naitikia mwito Wako”)","id":"Syarah hadis Labbaik Allahumma labbaik","ja":"「ラッバイカ、アッラーフンマ、ラッバイカ」のハディース注釈","zh":"《“主啊，我响应你的召唤”圣训注释》","ru":"Шарх хадиса «Ляббайка, о Аллах, ляббайка»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"شروحات","subLabel":"شروحات","subLabels":{"en":"Commentaries","fr":"Commentaires","es":"Comentarios","ur":"شروحات","tr":"Şerhler","sw":"Sharh","id":"Syarah","ja":"注釈","zh":"注释","ru":"Комментарии","bn":null,"pt":null,"hi":null},"published":"1417هـ 1996م","publishedTranslations":{"en":"1417 AH / 1996 CE","fr":"1417 H 1996","es":"1417 H 1996","ur":"1417ھ 1996ء","tr":"1417H 1996","sw":"1417H 1996","id":"1417 H 1996 M","ja":"ヒジュラ暦1417年／西暦1996年","zh":"伊历1417年／公元1996年","ru":"1417 г. х. / 1996 г.","bn":null,"pt":null,"hi":null},"pages":"144"},{"id":142718,"href":"catalogue/1427/142718.html","cover":"catalogue/1427/142718.jpg","title":"شرح حديث لبيك اللهم لبيك- ملون","titles":{"en":"Explanation of the Hadith \"Here I am, O Allah, here I am\" - Colored","fr":"Commentaire du hadith « Me voici, ô Allah, me voici » – en couleurs","es":"Comentario del hadiz «Aquí estoy, Allah, aquí estoy» - ilustrado","ur":"شرح حديث لبيك اللهم لبيك- ملون","tr":"“Lebbeyk Allahümme lebbeyk” Hadisinin Şerhi - Renkli","sw":"Sharhi ya hadith: Nimeitika, ewe Allah, nimeitika — yenye rangi","id":"Syarah Hadis Labbaik Allahumma Labbaik — Berwarna","ja":"「ラッバイカ、アッラーフンマ・ラッバイク」というハディースの注釈（カラー版）","zh":"《〈响应您，主啊，响应您〉圣训注释（彩色版）》","ru":"Комментарий к хадису «Ляббайка, о Аллах, ляббайка» — цветное издание","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"شروحات","subLabel":"شروحات","subLabels":{"en":"Commentaries","fr":"Commentaires","es":"Comentarios","ur":"شروحات","tr":"Şerhler","sw":"Sharh","id":"Syarah","ja":"注釈","zh":"注释","ru":"Комментарии","bn":null,"pt":null,"hi":null},"published":"1417هـ 1996م","publishedTranslations":{"en":"1417 AH / 1996 CE","fr":"1417 H 1996","es":"1417 H 1996","ur":"1417ھ 1996ء","tr":"1417 H 1996","sw":"1417H 1996M","id":"1417 H 1996 M","ja":"ヒジュラ暦1417年／西暦1996年","zh":"伊历1417年／公元1996年","ru":"1417 г. х. / 1996 г.","bn":null,"pt":null,"hi":null},"pages":"62"},{"id":142717,"href":"catalogue/1427/142717.html","cover":"catalogue/1427/142717.jpg","title":"شرح حديث ما ذئبان جائعان","titles":{"en":"Explanation of the Hadith \"What Two Hungry Wolves\"","fr":"Commentaire du hadith « Deux loups affamés »","es":"Comentario del hadiz «Dos lobos hambrientos»","ur":"شرح حديث ما ذئبان جائعان","tr":"“Aç İki Kurt” Hadisinin Şerhi","sw":"Sharhi ya hadith: Mbwa mwitu wawili wenye njaa","id":"Syarah Hadis tentang Dua Serigala Lapar","ja":"「二匹の飢えた狼」というハディースの注釈","zh":"《〈两只饥饿的狼〉圣训注释》","ru":"Комментарий к хадису «Два голодных волка»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"شروحات","subLabel":"شروحات","subLabels":{"en":"Commentaries","fr":"Commentaires","es":"Comentarios","ur":"شروحات","tr":"Şerhler","sw":"Sharh","id":"Syarah","ja":"注釈","zh":"注释","ru":"Комментарии","bn":null,"pt":null,"hi":null},"published":"1414هـ 1994م","publishedTranslations":{"en":"1414 AH / 1994 CE","fr":"1414 H 1994","es":"1414 H 1994","ur":"1414ھ 1994ء","tr":"1414 H 1994","sw":"1414H 1994M","id":"1414 H 1994 M","ja":"ヒジュラ暦1414年／西暦1994年","zh":"伊历1414年／公元1994年","ru":"1414 г. х. / 1994 г.","bn":null,"pt":null,"hi":null},"pages":"71"},{"id":142716,"href":"catalogue/1427/142716.html","cover":"catalogue/1427/142716.jpg","title":"شرح حديث يتبع الميت ثلاث","titles":{"en":"Explanation of the Hadith \"Three Follow the Deceased\"","fr":"Commentaire du hadith « Trois choses suivent le défunt »","es":"Comentario del hadiz «Tres cosas siguen al difunto»","ur":"شرح حديث يتبع الميت ثلاث","tr":"“Ölüye Üç Şey Eşlik Eder” Hadisinin Şerhi","sw":"Sharhi ya hadith: Mfu hufuatwa na vitu vitatu","id":"Syarah Hadis tentang Tiga Hal yang Mengikuti Jenazah","ja":"「死者には三つのものが付き従う」というハディースの注釈","zh":"《〈亡者有三物随行〉圣训注释》","ru":"Комментарий к хадису «За умершим следуют три вещи»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"شروحات","subLabel":"شروحات","subLabels":{"en":"Commentaries","fr":"Commentaires","es":"Comentarios","ur":"شروحات","tr":"Şerhler","sw":"Sharh","id":"Syarah","ja":"注釈","zh":"注释","ru":"Комментарии","bn":null,"pt":null,"hi":null},"published":"1418هـ 1997م","publishedTranslations":{"en":"1418 AH / 1997 CE","fr":"1418 H 1997","es":"1418 H 1997","ur":"1418ھ 1997ء","tr":"1418 H 1997","sw":"1418H 1997M","id":"1418 H 1997 M","ja":"ヒジュラ暦1418年／西暦1997年","zh":"伊历1418年／公元1997年","ru":"1418 г. х. / 1997 г.","bn":null,"pt":null,"hi":null},"pages":"24"},{"id":138591,"href":"catalogue/1385/138591.html","cover":"catalogue/1385/138591.jpg","title":"شرح صحيح البخاري المسمى فتح الباري","titles":{"en":"Explanation of Sahih al-Bukhari titled Fath al-Bari","fr":"Commentaire du Sahih al-Bukhari intitulé Fath al-Bari (La victoire du Créateur)","es":"Comentario de Sahih al-Bujari (La recopilación auténtica de al-Bujari), titulado Fath al-Bari (La victoria del Creador)","ur":"شرح صحيح البخاري المسمى فتح الباري (صحیح بخاری کی شرح، جس کا نام فتح الباری ہے)","tr":"Fethu'l-Bârî adı verilen Sahîh-i Buhârî Şerhi","sw":"Maelezo ya Sahih al-Bukhari, yanayoitwa Fath al-Bari (Ushindi wa Muumba)","id":"Syarah Shahih Al-Bukhari yang berjudul Fath al-Bari (Kemenangan Sang Pencipta)","ja":"『ファトフ・アル＝バーリー』と題するサヒーフ・アル＝ブハーリー注釈","zh":"《布哈里圣训实录注释》，又名《开启造物主》","ru":"Комментарий к «Сахиху» аль-Бухари, известный как «Фатх аль-Бари»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الكتب الستة","subLabel":"الكتب الستة","subLabels":{"en":"The Six Books","fr":"Les six recueils canoniques","es":"Los seis libros","ur":"کتبِ ستہ","tr":"Kütüb-i Sitte","sw":"Vitabu sita vya hadithi","id":"Enam Kitab Hadis","ja":"六大ハディース集","zh":"六大圣训集","ru":"Шесть книг хадисов","bn":null,"pt":null,"hi":null},"published":"1427هـ 2006م","publishedTranslations":{"en":"1427 AH / 2006 CE","fr":"1427 H 2006","es":"1427 H 2006","ur":"1427ھ 2006ء","tr":"1427 H 2006","sw":"1427H 2006","id":"1427 H 2006 M","ja":"ヒジュラ暦1427年 西暦2006年","zh":"伊历1427年／公元2006年","ru":"1427 г. х. / 2006 г.","bn":null,"pt":null,"hi":null},"pages":"1873"},{"id":147455,"href":"catalogue/1474/147455.html","cover":null,"title":"شرح علل الترمذي","titles":{"en":"Explanation of the Causes of Al-Tirmidhi","fr":"Commentaire des défauts de transmission d’al-Tirmidhi","es":"Sharh Ilal al-Tirmidhi [Comentario sobre las causas ocultas de al-Tirmidhi]","ur":"شرح علل الترمذي (علل ترمذی کی شرح)","tr":"Tirmizî’nin İlel’inin Şerhi","sw":"Sharh Ilal al-Tirmidhi (Maelezo ya kasoro za hadithi za Al-Tirmidhi)","id":"Syarh 'Ilal At-Tirmidzi (Penjelasan tentang Cacat Hadis dalam Karya At-Tirmidzi)","ja":"ティルミズィーの『イラル』注解","zh":"《提尔米济圣训缺陷论注释》","ru":"Шарх ‘Иляль ат-Тирмизи (Комментарий к «Скрытым дефектам» ат-Тирмизи)","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"علل","subLabel":"علل","subLabels":{"en":"Hadith Defects","fr":"Défauts (du hadith)","es":"Defectos","ur":"علل","tr":"İlel","sw":"Kasoro","id":"Ilal","ja":"欠陥","zh":"圣训缺陷","ru":"Скрытые дефекты хадисов","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"184"},{"id":239937,"href":"catalogue/2399/239937.html","cover":"catalogue/2399/239937.jpg","title":"شرح علل الترمذي","titles":{"en":"Explanation of the Causes of Al-Tirmidhi","fr":"Commentaire des défauts de hadith selon al-Tirmidhi","es":"Comentario de las causas ocultas de al-Tirmidhi","ur":"شرح علل الترمذي","tr":"Şerhu İleli't-Tirmizî","sw":"Ufafanuzi wa Al-Ilal (Dosari) ya al-Tirmidhi","id":"Penjelasan Al-Ilal karya At-Tirmidzi","ja":"ティルミズィーの『アル＝イラル』解説","zh":"《注释提尔米济圣训缺陷论》","ru":"Комментарий к «Иляль ат-Тирмизи»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1437هـ 2016م","publishedTranslations":{"en":"1437 AH / 2016 CE","fr":"1437 H 2016","es":"1437 H 2016","ur":"1437ھ 2016ء","tr":"1437 H 2016","sw":"1437 H 2016","id":"1437 H 2016 M","ja":"ヒジュラ暦1437年／西暦2016年","zh":"伊历1437年／公元2016年","ru":"1437 г. х. 2016 г.","bn":null,"pt":null,"hi":null},"pages":"1026"},{"id":146026,"href":"catalogue/1460/146026.html","cover":"catalogue/1460/146026.jpg","title":"شرح علل الترمذي- ت نور الدين عتر","titles":{"en":"Explanation of the Ills of Al-Tirmidhi - By Noor Al-Din Ittar","fr":"Commentaire des défauts du hadith d'al-Tirmidhi — édité par Nur al-Din Itr","es":"Comentario de las anomalías de al-Tirmidhi, ed. Nur al-Din Itr","ur":"شرح علل الترمذي- ت نور الدين عتر","tr":"Tirmizî'nin İlelü'l-Hadis Şerhi – Tahkik eden: Nureddin Itr","sw":"Sharh Ilal al-Tirmidhi (Maelezo ya sababu fiche za dosari za al-Tirmidhi) — tahkiki ya Nur al-Din Itr","id":"Syarah Ilal at-Tirmidzi — tahkik Nuruddin Itr","ja":"アッ＝ティルミズィーの『イラル』注釈—ヌールッディーン・イトル校訂","zh":"《提尔密济圣训缺陷学注释》——努尔丁·伊特尔校勘本","ru":"Комментарий к скрытым дефектам ат-Тирмизи — тахкик Нур ад-Дина Иттра","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"علل","subLabel":"علل","subLabels":{"en":"Hadith Defects","fr":"Défauts (du hadith)","es":"Defectos","ur":"علل","tr":"İlel","sw":"Kasoro","id":"Ilal","ja":"欠陥","zh":"圣训缺陷","ru":"Скрытые дефекты хадисов","bn":null,"pt":null,"hi":null},"published":"1398هـ 1978م","publishedTranslations":{"en":"1398 AH / 1978 CE","fr":"1398 H 1978","es":"1398 H 1978","ur":"1398ھ 1978ء","tr":"1398H 1978","sw":"1398H 1978","id":"1398 H 1978","ja":"ヒジュラ暦1398年／西暦1978年","zh":"伊历1398年 公元1978年","ru":"1398 г. х. 1978 г.","bn":null,"pt":null,"hi":null},"pages":"1046"},{"id":145701,"href":"catalogue/1457/145701.html","cover":"catalogue/1457/145701.jpg","title":"شرح علل الترمذي- ت. همام سعيد","titles":{"en":"Explanation of the Causes of Al-Tirmidhi - T. Hamam Said","fr":"Commentaire des causes (Ilal) d'al-Tirmidhi — éd. Hammam Sa'id","es":"Comentario de las causas ocultas de al-Tirmidhi, edición de Hammam Said","ur":"شرح علل الترمذي- ت. همام سعيد","tr":"Tirmizî’nin İlelü’l-hadîs’inin şerhi — Tahkik: Hemmâm Saîd","sw":"Sharh Ilal al-Tirmidhi (Ufafanuzi wa Dosari za al-Tirmidhi) — hakiki ya Hammam Said","id":"Syarah Ilal At-Tirmidzi — tahkik Hammam Sa'id","ja":"アッ＝ティルミズィーの『イラル』注釈—ハンマーム・サイード校訂","zh":"《提尔米济圣训缺陷论注释》（哈马姆·赛义德校勘）","ru":"Комментарий к «Иляль ат-Тирмизи». Тахкик Хаммама Саида","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"علل","subLabel":"علل","subLabels":{"en":"Hadith Defects","fr":"Défauts (du hadith)","es":"Defectos","ur":"علل","tr":"İlel","sw":"Kasoro","id":"Ilal","ja":"欠陥","zh":"圣训缺陷","ru":"Скрытые дефекты хадисов","bn":null,"pt":null,"hi":null},"published":"1421هـ 2001م","publishedTranslations":{"en":"1421 AH / 2001 CE","fr":"1421 H 2001","es":"1421H 2001","ur":"1421ھ 2001ء","tr":"1421H 2001","sw":"1421H 2001","id":"1421H 2001M","ja":"ヒジュラ暦1421年／西暦2001年","zh":"伊历1421年／公元2001年","ru":"1421 г. х. / 2001 г.","bn":null,"pt":null,"hi":null},"pages":"1024"},{"id":140552,"href":"catalogue/1405/140552.html","cover":"catalogue/1405/140552.jpg","title":"شرح علل الترمذي- مكتبة المنار","titles":{"en":"Explanation of the Causes of Al-Tirmidhi - Al-Manar Library","fr":"Sharh Ilal al-Tirmidhi (Commentaire des défauts du Tirmidhi) - Maktabat al-Manar","es":"Comentario de las causas ocultas de al-Tirmidhi — Biblioteca al-Manar","ur":"شرح علل الترمذي- مكتبة المنار (ترمذی کی علل کی شرح — مکتبہ المنار)","tr":"Tirmizî'nin İlelü'si Şerhi - Mektebetü'l-Menâr","sw":"Sharh Ilal al-Tirmidhi (Ufafanuzi wa dosari za hadithi za al-Tirmidhi) - Maktabat al-Manar","id":"Syarah 'Ilal At-Tirmidzi - Maktabat Al-Manar","ja":"ティルミズィーの『イラル』注釈―アル＝マナール図書館版","zh":"《提尔密济圣训缺陷论注释》—麦纳尔书店版","ru":"Комментарий к «Иляль ат-Тирмизи» — библиотека «аль-Манар»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1407هـ 1987م","publishedTranslations":{"en":"1407 AH / 1987 CE","fr":"1407 H 1987","es":"1407 H 1987","ur":"1407ھ 1987ء","tr":"1407 H 1987","sw":"1407H 1987","id":"1407 H 1987","ja":"ヒジュラ暦1407年／西暦1987年","zh":"伊历1407年／公元1987年","ru":"1407 г. х. 1987 г.","bn":null,"pt":null,"hi":null},"pages":"1018"},{"id":138948,"href":"catalogue/1389/138948.html","cover":"catalogue/1389/138948.jpg","title":"شرح كتاب الإيمان وهو قطعة من شرح الحافظ بن رجب الحنبلي","titles":{"en":"Explanation of the Book of Faith, which is a section from the explanation by the scholar Ibn Rajab Al-Hanbali","fr":"Commentaire du Livre de la foi, extrait du commentaire du hafiz Ibn Rajab al-Hanbali","es":"Comentario del Libro de la fe, fragmento del comentario de al-Hafiz Ibn Rajab al-Hanbali","ur":"شرح كتاب الإيمان وهو قطعة من شرح الحافظ بن رجب الحنبلي (کتاب الایمان کی شرح، جو حافظ ابن رجب حنبلی کی شرح کا ایک حصہ ہے)","tr":"Kitâbü'l-îmân'ın şerhi: Hâfız İbn Receb el-Hanbelî'nin şerhinden bir bölüm","sw":"Sharhi ya Kitabu cha Imani, sehemu ya sharhi ya Hafiz Ibn Rajab al-Hanbali","id":"Syarah Kitab al-Iman, Bagian dari Syarah Al-Hafiz Ibnu Rajab al-Hanbali","ja":"信仰の書の注解――ハーフィズ・イブン・ラジャブ・アル＝ハンバリーの注解の一部","zh":"《信仰篇注释：伊本·拉杰卜·罕百里哈菲兹注释节选》","ru":"Комментарий к «Книге веры» — фрагмент комментария хафиза Ибн Раджаба аль-Ханбали","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الكتب الستة","subLabel":"الكتب الستة","subLabels":{"en":"The Six Books","fr":"Les six recueils canoniques","es":"Los seis libros","ur":"کتبِ ستہ","tr":"Kütüb-i Sitte","sw":"Vitabu sita vya hadithi","id":"Enam Kitab Hadis","ja":"六大ハディース集","zh":"六大圣训集","ru":"Шесть книг хадисов","bn":null,"pt":null,"hi":null},"published":"1418هـ 1998م","publishedTranslations":{"en":"1418 AH / 1998 CE","fr":"1418H 1998","es":"1418H 1998","ur":"1418ھ 1998ء","tr":"1418H 1998","sw":"1418H 1998","id":"1418 H 1998 M","ja":"ヒジュラ暦1418年／西暦1998年","zh":"伊历1418年／公元1998年","ru":"1418 г. х. / 1998 г.","bn":null,"pt":null,"hi":null},"pages":"240"},{"id":138235,"href":"catalogue/1382/138235.html","cover":"catalogue/1382/138235.jpg","title":"شرح وبيان لحديث ماذئبان جائعان","titles":{"en":"Explanation and Clarification of the Hadith of Two Hungry Wolves","fr":"Explication et commentaire du hadith « Deux loups affamés »","es":"Explicación y comentario del hadiz de los dos lobos hambrientos","ur":"شرح وبيان لحديث ما ذئبان جائعان","tr":"“İki aç kurt” hadisinin şerhi ve açıklaması","sw":"Ufafanuzi na maelezo kuhusu hadithi ya mbwa-mwitu wawili wenye njaa","id":"Penjelasan Hadis tentang Dua Serigala Lapar","ja":"「二匹の飢えた狼」のハディースの解説と説明","zh":"关于“两只饥饿的狼……”圣训的注释与说明","ru":"Пояснение и разъяснение хадиса о двух голодных волках","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"المسانيد الأخرى والجوامع","subLabel":"المسانيد الأخرى والجوامع","subLabels":{"en":"Other Musnads and Compilations","fr":"Autres musnads et recueils généraux","es":"Otros musnads y compilaciones","ur":"دیگر مسندیں اور جوامع","tr":"Diğer müsnedler ve câmi eserleri","sw":"Musnad nyingine na majami","id":"Musnad lainnya dan kitab jami'","ja":"その他のムスナド集と総合ハディース集","zh":"其他圣训集与汇编","ru":"Другие муснады и сборники хадисов","bn":null,"pt":null,"hi":null},"published":"1413هـ 1992م","publishedTranslations":{"en":"1413 AH / 1992 CE","fr":"1413 H 1992","es":"1413 H 1992","ur":"1413ھ 1992ء","tr":"1413H 1992","sw":"1413H 1992","id":"1413 H 1992 M","ja":"ヒジュラ暦1413年／西暦1992年","zh":"伊历1413年／公元1992年","ru":"1413 г. х. / 1992 г.","bn":null,"pt":null,"hi":null},"pages":"88"},{"id":147473,"href":"catalogue/1474/147473.html","cover":"catalogue/1474/147473.jpg","title":"صحيح مسلم مع شرحه المنهاج للنووي- ط كراتشي ملونة","titles":{"en":"Sahih Muslim with the Commentary Al-Minhaj by Al-Nawawi - Karachi Colored Edition","fr":"Sahih Muslim avec le commentaire al-Minhaj d'al-Nawawi — édition colorisée de Karachi","es":"Sahih Muslim con el comentario al-Minhaj de al-Nawawi — edición en color de Karachi","ur":"صحيح مسلم مع شرحه المنهاج للنووي- ط كراتشي ملونة (صحیح مسلم مع نووی کی شرح المنہاج—کراچی کا رنگین ایڈیشن)","tr":"Sahîh-i Müslim, Nevevî’nin el-Minhâc şerhiyle – Karaçi renkli baskı","sw":"Sahih Muslim pamoja na Sharh yake Al-Minhaj ya al-Nawawi — chapa ya Karachi yenye rangi","id":"Shahih Muslim beserta Syarah al-Minhaj karya an-Nawawi – Edisi Karachi Berwarna","ja":"ムスリムの真正集—ナワウィーの『アル＝ミンハージュ』注釈付き（カラチ・カラー版）","zh":"《穆斯林圣训实录》及脑威《明道》注释——卡拉奇彩印版","ru":"«Сахих» Муслима с комментарием «аль-Минхадж» ан-Навави — цветное издание, Карачи","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"يحيى بن شرف النووي","names":{"en":"Yahya ibn Sharaf al-Nawawi","fr":"Yahya ibn Sharaf al-Nawawi","es":"Yahya ibn Sharaf al-Nawawi","ur":"يحيى بن شرف النووي","tr":"Yahyâ b. Şeref en-Nevevî","sw":"Yahya bin Sharaf al-Nawawi","id":"Yahya bin Syaraf An-Nawawi","ja":"ヤフヤー・イブン・シャラフ・アン＝ナワウィー","zh":"叶海亚·本·谢拉夫·脑威","ru":"Яхья ибн Шараф ан-Навави","bn":"يحيى بن شرف النووي","pt":"يحيى بن شرف النووي","hi":"يحيى بن شرف النووي"},"href":"authors/002/271.html"},{"name":"مسلم بن الحجاج بن مسلم القشيري النيسابوري","names":{"en":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","fr":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","es":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","ur":"مسلم بن الحجاج بن مسلم القشيري النيسابوري","tr":"Müslim b. Haccâc b. Müslim el-Kuşeyrî en-Nîsâbûrî","sw":"Muslim bin al-Hajjaj al-Qushayri al-Naysaburi","id":"Muslim bin Al-Hajjaj Al-Qusyairi An-Naisaburi","ja":"ムスリム・イブン・アル＝ハッジャージュ・アル＝クシャイリー・アン＝ナイサーブーリー","zh":"穆斯林·本·哈贾吉·库舍里·尼沙布里","ru":"Муслим ибн аль-Хаджжадж аль-Кушайри ан-Найсабури","bn":"مسلم بن الحجاج بن مسلم القشيري النيسابوري","pt":"مسلم بن الحجاج بن مسلم القشيري النيسابوري","hi":"مسلم بن الحجاج بن مسلم القشيري النيسابوري"},"href":"authors/393/39323.html"},{"name":"السندي","names":{"en":"Al-Sindi","fr":"al-Sindi","es":"al-Sindi","ur":"السندي","tr":"es-Sindî","sw":"Al-Sindi","id":"As-Sindi","ja":"アッ＝スィンディー","zh":"辛迪","ru":"ас-Синди","bn":"السندي","pt":"السندي","hi":"السندي"},"href":"authors/393/39336.html"},{"name":"شبير","names":{"en":"Shabeer","fr":"Shabeer","es":"Shabeer","ur":"شبير","tr":"Şebîr","sw":"Shabeer","id":"Syabir","ja":"シャビール","zh":"沙比尔","ru":"Шабир","bn":"شبير","pt":"شبير","hi":"شبير"},"href":"authors/433/43372.html"}],"died":"1138 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"شروحات","subLabel":"شروحات","subLabels":{"en":"Commentaries","fr":"Commentaires","es":"Comentarios","ur":"شروحات","tr":"Şerhler","sw":"Sharh","id":"Syarah","ja":"注釈","zh":"注释","ru":"Комментарии","bn":null,"pt":null,"hi":null},"published":"1432هـ 2011م","publishedTranslations":{"en":"1432 AH / 2011 CE","fr":"1432H 2011","es":"1432 H 2011","ur":"1432ھ 2011ء","tr":"1432H 2011","sw":"1432 H 2011","id":"1432 H 2011 M","ja":"ヒジュラ暦1432年／西暦2011年","zh":"伊历1432年／公元2011年","ru":"1432 г. х. 2011 г.","bn":null,"pt":null,"hi":null},"pages":"4223"},{"id":142133,"href":"catalogue/1421/142133.html","cover":"catalogue/1421/142133.jpg","title":"غاية النفع شرح حديث تمثل المؤمن بخامة الزرع ويليها المؤمن بين البلاء والصبر","titles":{"en":"The Purpose of Benefit: An Explanation of the Hadith \"The Believer is Like a Plant\" and How the Believer Faces Trials with Patience","fr":"Ghayat al-naf' (Le comble de l'utilité) : commentaire du hadith comparant le croyant à une jeune pousse, suivi de « Le croyant entre l'épreuve et la patience »","es":"Ghayat al-naf (El máximo provecho): comentario del hadiz sobre el creyente que se asemeja a un cultivo joven, seguido de El creyente entre la tribulación y la paciencia","ur":"غاية النفع شرح حديث تمثل المؤمن بخامة الزرع ويليها المؤمن بين البلاء والصبر","tr":"Gâyetü’n-nef‘ (Faydanın Zirvesi): Müminin Taze Bir Bitki Gibi Olması Hadisinin Şerhi ve Ardından Müminin Bela ve Sabır Karşısındaki Durumu","sw":"Faida kuu katika ufafanuzi wa Hadithi ya muumini kufananishwa na mmea mchanga, ikifuatiwa na Muumini kati ya mtihani na subira","id":"Ghayat An-Naf' [Puncak Manfaat]: Syarah Hadis tentang Perumpamaan Orang Mukmin seperti Tanaman Muda, diikuti Orang Mukmin antara Cobaan dan Kesabaran","ja":"信徒が若芽のように表されるハディースの解説『ガーヤト・アン＝ナフ』、ならびに「信徒、試練と忍耐の間」","zh":"《极大裨益》：信士如庄稼幼苗般的圣训注释，附《信士在磨难与忍耐之间》","ru":"Наибольшая польза: комментарий к хадису о том, что верующий подобен молодому посеву; далее — «Верующий между испытанием и терпением»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1416هـ 1995م","publishedTranslations":{"en":"1416 AH / 1995 CE","fr":"1416 H 1995","es":"1416 H 1995","ur":"1416ھ 1995ء","tr":"1416 H 1995","sw":"1416H 1995","id":"1416 H 1995 M","ja":"ヒジュラ暦1416年／西暦1995年","zh":"伊历1416年／公元1995年","ru":"1416 г. х. 1995 г.","bn":null,"pt":null,"hi":null},"pages":"248"},{"id":141908,"href":"catalogue/1419/141908.html","cover":"catalogue/1419/141908.jpg","title":"غاية النفع في شرح حديث تمثيل المؤمن بخامة الزرع","titles":{"en":"The Ultimate Benefit in Explaining the Hadith of the Believer's Comparison to the Crop","fr":"Le grand profit du commentaire du hadith comparant le croyant à la jeune pousse","es":"El máximo provecho en el comentario del hadiz que compara al creyente con un tallo de cultivo","ur":"غاية النفع في شرح حديث تمثيل المؤمن بخامة الزرع","tr":"Müminin Bitki Filizine Benzetildiği Hadisin Şerhinde En Faydalı Açıklama","sw":"Manufaa makubwa katika kufafanua Hadith inayomfananisha Muumini na mmea mchanga","id":"Ghayat an-Naf' fi Syarh Hadits Tamsil al-Mu'min bi Khamat az-Zar' (Manfaat Terbesar dalam Menjelaskan Hadis Perumpamaan Orang Mukmin dengan Tanaman Muda)","ja":"作物の若芽にたとえられた信徒のハディース注解における最大の益","zh":"《阐释信士如庄稼嫩茎般的圣训：最有益的论述》","ru":"Наибольшая польза в комментарии к хадису о сравнении верующего с молодым посевом","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1427هـ 2006م","publishedTranslations":{"en":"1427 AH / 2006 CE","fr":"1427 H 2006","es":"1427 H 2006","ur":"1427ھ 2006ء","tr":"1427 H 2006","sw":"1427H 2006","id":"1427 H 2006 M","ja":"ヒジュラ暦1427年／西暦2006年","zh":"伊历1427年／公元2006年","ru":"1427 г. х. / 2006 г.","bn":null,"pt":null,"hi":null},"pages":"44"},{"id":138625,"href":"catalogue/1386/138625.html","cover":"catalogue/1386/138625.jpg","title":"فتح الباري شرح صحيح البخاري -ط الغرباء- أجزاء","titles":{"en":"Fath al-Bari: Explanation of Sahih al-Bukhari - Al-Ghurabaa - Parts","fr":"Fath al-Bari (Commentaire du Sahih al-Bukhari) - édition al-Ghuraba - plusieurs volumes","es":"Fath al-Bari: comentario de Sahih al-Bujari — edición Dar al-Ghuraba, varios volúmenes","ur":"فتح الباري شرح صحيح البخاري -ط الغرباء- أجزاء","tr":"Fethu’l-Bârî şerhu Sahîhi’l-Buhârî (Buhârî’nin Sahîh’inin şerhi) - Garîbâ baskısı, ciltler","sw":"Fath al-Bari Sharh Sahih al-Bukhari (Ufunguzi wa Muumba, maelezo ya Sahih al-Bukhari) - Toleo la al-Ghuraba, juzuu","id":"Fath al-Bari: Syarah Shahih Al-Bukhari – edisi Al-Ghuraba', beberapa jilid","ja":"ファトフ・アル＝バーリー（サヒーフ・アル＝ブハーリー注解）―ガラバー版・分冊","zh":"《巴里之启示：〈布哈里圣训实录〉注释》—古拉巴版，分册","ru":"Фатх аль-Бари: комментарий к «Сахиху» аль-Бухари — издание Дар аль-Гураба, тома","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الكتب الستة","subLabel":"الكتب الستة","subLabels":{"en":"The Six Books","fr":"Les six recueils canoniques","es":"Los seis libros","ur":"کتبِ ستہ","tr":"Kütüb-i Sitte","sw":"Vitabu sita vya hadithi","id":"Enam Kitab Hadis","ja":"六大ハディース集","zh":"六大圣训集","ru":"Шесть книг хадисов","bn":null,"pt":null,"hi":null},"published":"1416هـ 1996م","publishedTranslations":{"en":"1416 AH / 1996 CE","fr":"1416 H 1996","es":"1416 H 1996","ur":"1416ھ 1996ء","tr":"1416 H 1996","sw":"1416 H 1996","id":"1416 H 1996","ja":"ヒジュラ暦1416年／西暦1996年","zh":"伊历1416年／公元1996年","ru":"1416 г. х. / 1996 г.","bn":null,"pt":null,"hi":null},"pages":"4584"},{"id":145834,"href":"catalogue/1458/145834.html","cover":"catalogue/1458/145834.jpg","title":"فتح الباري شرح صحيح البخاري -ط الغرباء- مدمجة","titles":{"en":"Fath al-Bari: Explanation of Sahih al-Bukhari - Al-Ghurabaa - Integrated","fr":"Fath al-Bari, commentaire du Sahih al-Bukhari — éd. al-Ghuraba, édition reliée","es":"Fath al-Bari (Comentario del Sahih de al-Bujari) - edición de al-Ghuraba, integrada","ur":"فتح الباري شرح صحيح البخاري (صحیح بخاری کی شرح فتح الباری) - غرباء ایڈیشن، مدغم","tr":"Fethu'l-Bârî Şerhu Sahîhi'l-Buhârî (Buhârî'nin Sahih'inin Şerhi) - Gurebâ baskısı - birleştirilmiş","sw":"Fath al-Bari (Ufafanuzi wa Sahih al-Bukhari) — chapa ya al-Ghuraba, toleo lililounganishwa","id":"Fath Al-Bari Syarh Sahih Al-Bukhari (Penjelasan atas Sahih Al-Bukhari) — edisi Al-Ghuraba', edisi gabungan","ja":"サヒーフ・ブハーリー注解『ファトフ・アル＝バーリー』（アル＝グラバー版・合冊版）","zh":"《布哈里圣训实录注释：巴里胜利》—古莱巴版，合订本","ru":"Фатх аль-Бари — комментарий к Сахих аль-Бухари, издание аль-Гураба, объединенное издание","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"شروحات","subLabel":"شروحات","subLabels":{"en":"Commentaries","fr":"Commentaires","es":"Comentarios","ur":"شروحات","tr":"Şerhler","sw":"Sharh","id":"Syarah","ja":"注釈","zh":"注释","ru":"Комментарии","bn":null,"pt":null,"hi":null},"published":"1417هـ 1996م","publishedTranslations":{"en":"1417 AH / 1996 CE","fr":"1417 H 1996","es":"1417 H 1996","ur":"1417ھ 1996ء","tr":"1417 H 1996","sw":"1417 H 1996","id":"1417 H 1996 M","ja":"ヒジュラ暦1417年／西暦1996年","zh":"伊历1417年／公元1996年","ru":"1417 г. х. / 1996 г.","bn":null,"pt":null,"hi":null},"pages":"4584"},{"id":146516,"href":"catalogue/1465/146516.html","cover":"catalogue/1465/146516.jpg","title":"فتح الباري شرح صحيح البخاري -ط الغرباء- مدمجة","titles":{"en":"Opening of Al-Bari: Explanation of Sahih Al-Bukhari - Al-Ghurabaa - Integrated","fr":"Fath al-Bari, commentaire du Sahih al-Bukhari – édition Dar al-Ghuraba, réunie en un seul volume","es":"Fath al-Bari: comentario de Sahih al-Bukhari — edición de al-Ghuraba, en volumen compacto","ur":"فتح الباري شرح صحيح البخاري (فتح الباری: صحیح بخاری کی شرح) - ط الغرباء - مدمجة","tr":"Fethu'l-bârî bi-şerhi Sahîhi'l-Buhârî - el-Gurabâ baskısı - birleştirilmiş","sw":"Fath al-Bari (Ufunguzi wa Muumba): sharhi ya Sahih al-Bukhari - toleo la Dar al-Ghuraba' - iliyokusanywa","id":"Fath Al-Bari Syarah Shahih Al-Bukhari - edisi Al-Ghuraba' - edisi gabungan","ja":"『ファトフ・アル＝バーリー』—『サヒーフ・アル＝ブハーリー』注解—ガリーバー版・合冊版","zh":"《布哈里圣训实录注释·胜利的创造者》—西方佚名出版社版（合订本）","ru":"Фатх аль-Бари: комментарий к «Сахиху» аль-Бухари — издание «аль-Гураба», объединённое издание","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"تخريج","subLabel":"تخريج","subLabels":{"en":"Hadith Authentication","fr":"Takhrij","es":"Tajriy (documentación de fuentes)","ur":"تخریج","tr":"Tahric","sw":"Takhrij","id":"Takhrij","ja":"ハディースの出典調査","zh":"圣训出处考证","ru":"Тахридж","bn":null,"pt":null,"hi":null},"published":"1416هـ 1996م","publishedTranslations":{"en":"1416 AH / 1996 CE","fr":"1416 H 1996","es":"1416 H 1996","ur":"1416ھ 1996ء","tr":"1416H 1996","sw":"1416 H 1996","id":"1416 H 1996 M","ja":"ヒジュラ暦1416年／西暦1996年","zh":"伊历1416年／公元1996年","ru":"1416 г. х. / 1996 г.","bn":null,"pt":null,"hi":null},"pages":"4584"},{"id":145644,"href":"catalogue/1456/145644.html","cover":"catalogue/1456/145644.jpg","title":"فتح الباري في شرح صحيح البخاري- ط. دار ابن الجوزي","titles":{"en":"Opening of Al-Bari in the Explanation of Sahih Al-Bukhari - Dar Ibn Al-Jawzi","fr":"Fath al-Bari fi sharh Sahih al-Bukhari (La conquête du Créateur, commentaire du Sahih d'al-Bukhari) — éd. Dar Ibn al-Jawzi","es":"Fath al-Bari: comentario de Sahih al-Bukhari - edición de Dar Ibn al-Jawzi","ur":"فتح الباري في شرح صحيح البخاري- ط. دار ابن الجوزي (صحیح بخاری کی شرح میں فتح الباری—دار ابن الجوزی کا ایڈیشن)","tr":"Fethu’l-Bârî fî Şerhi Sahîhi’l-Buhârî (Buhârî’nin Sahîh’inin şerhi) - Dar İbnü’l-Cevzî baskısı","sw":"Fath al-Bari fi-Sharh Sahih al-Bukhari (Ufafanuzi wa Sahih al-Bukhari) — chapa ya Dar Ibn al-Jawzi","id":"Fath al-Bari fi Syarh Shahih al-Bukhari (Kemenangan Sang Pencipta dalam Menjelaskan Shahih al-Bukhari) – edisi Dar Ibnu al-Jauzi","ja":"ファトフ・アル＝バーリー―サヒーフ・アル＝ブハーリー注解（イブン・アル＝ジャウズィー出版社版）","zh":"《布哈里圣训实录注释：造物主之胜利》—伊本·焦齐出版社版","ru":"Фатх аль-Бари: комментарий к «Сахиху» аль-Бухари — издательство «Дар Ибн аль-Джаузи»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"شروحات","subLabel":"شروحات","subLabels":{"en":"Commentaries","fr":"Commentaires","es":"Comentarios","ur":"شروحات","tr":"Şerhler","sw":"Sharh","id":"Syarah","ja":"注釈","zh":"注释","ru":"Комментарии","bn":null,"pt":null,"hi":null},"published":"1417هـ 1996م","publishedTranslations":{"en":"1417 AH / 1996 CE","fr":"1417 H 1996","es":"1417 H 1996","ur":"1417ھ 1996ء","tr":"1417 H 1996","sw":"1417H 1996","id":"1417 H 1996 M","ja":"ヒジュラ暦1417年／西暦1996年","zh":"伊历1417年／公元1996年","ru":"1417 г. х. / 1996 г.","bn":null,"pt":null,"hi":null},"pages":"4320"},{"id":138139,"href":"catalogue/1381/138139.html","cover":"catalogue/1381/138139.jpg","title":"كتاب أحكام الخواتيم وما يتعلق بها- العلمية","titles":{"en":"Book of the Rulings on Endings and Related Matters - Scientific","fr":"Kitab ahkam al-khawatim wa ma yataallaq biha (Les dispositions relatives aux conclusions et les questions qui s'y rapportent) – éd. al-Ilmiyya","es":"Kitab ahkam al-khawatim wa ma yata'allaq biha (Libro de las disposiciones sobre los finales y cuestiones relacionadas) — edición científica","ur":"كتاب أحكام الخواتيم وما يتعلق بها- العلمية (اختتام کے احکام اور ان سے متعلق امور کی کتاب — العلمیہ)","tr":"Kitâbü ahkâmi’l-havâtim ve mâ yeteallaku bihâ (Sonlar ve Bunlarla İlgili Hükümler) – el-İlmiyye baskısı","sw":"Kitab Ahkam al-Khawatim wa ma Yata'allaq biha (Kitabu cha Hukumu za Mwisho na Yanayohusiana Nazo) - Al-Ilmiyya","id":"Kitab Ahkam Al-Khawatim wa ma Yata'allaq biha (Kitab Hukum-Hukum Penutup dan Hal-Hal yang Berkaitan Dengannya) – Al-Ilmiyyah","ja":"結末に関する諸規定とその関連事項の書—アル＝イルミーヤ版","zh":"《〈结局的律例及相关事项〉——科学出版社版》","ru":"Книга о постановлениях, касающихся завершений, и связанных с ними вопросах, издание «Аль-Ильмийя»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"باقي مجموعات الحديث","subLabel":"باقي مجموعات الحديث","subLabels":{"en":"Other Hadith Collections","fr":"Autres recueils de hadiths","es":"Otros grupos de hadices","ur":"حدیث کے دیگر مجموعے","tr":"Diğer hadis mecmuaları","sw":"Makundi mengine ya hadithi","id":"Kumpulan hadis lainnya","ja":"その他のハディース集","zh":"其他圣训集","ru":"Другие сборники хадисов","bn":null,"pt":null,"hi":null},"published":"1905هـ 1985م","publishedTranslations":{"en":"1905 AH / 1985 CE","fr":"1905 H 1985","es":"1905 H 1985","ur":"1905ھ 1985ء","tr":"1905 H 1985","sw":"1905H 1985","id":"1905 H 1985 M","ja":"ヒジュラ暦1905年／西暦1985年","zh":"伊历1905年／公元1985年","ru":"1905 г. х. / 1985 г.","bn":null,"pt":null,"hi":null},"pages":"176"},{"id":138138,"href":"catalogue/1381/138138.html","cover":"catalogue/1381/138138.jpg","title":"كتاب أحكام الخواتيم وما يتعلق بها- المعارف","titles":{"en":"Book of the Rulings on Endings and Related Matters - Al-Ma'arif","fr":"Kitab ahkam al-khawatim wa ma yataallaq biha (Les dispositions relatives aux conclusions et les questions qui s'y rapportent) – éd. al-Maarif","es":"Kitab ahkam al-khawatim wa ma yata'allaq biha (Libro de las disposiciones sobre los finales y cuestiones relacionadas) — al-Maarif","ur":"كتاب أحكام الخواتيم وما يتعلق بها- المعارف (اختتام کے احکام اور ان سے متعلق امور کی کتاب — المعارف)","tr":"Kitâbü ahkâmi’l-havâtim ve mâ yeteallaku bihâ (Sonlar ve Bunlarla İlgili Hükümler) – el-Meârif baskısı","sw":"Kitab Ahkam al-Khawatim wa ma Yata'allaq biha (Kitabu cha Hukumu za Mwisho na Yanayohusiana Nazo) - Al-Ma'arif","id":"Kitab Ahkam Al-Khawatim wa ma Yata'allaq biha (Kitab Hukum-Hukum Penutup dan Hal-Hal yang Berkaitan Dengannya) – Al-Ma'arif","ja":"結末に関する諸規定とその関連事項の書—アル＝マアーリフ版","zh":"《〈结局的律例及相关事项〉——知识出版社版》","ru":"Книга о постановлениях, касающихся завершений, и связанных с ними вопросах, издание «Аль-Маариф»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"باقي مجموعات الحديث","subLabel":"باقي مجموعات الحديث","subLabels":{"en":"Other Hadith Collections","fr":"Autres recueils de hadiths","es":"Otros grupos de hadices","ur":"حدیث کے دیگر مجموعے","tr":"Diğer hadis mecmuaları","sw":"Makundi mengine ya hadithi","id":"Kumpulan hadis lainnya","ja":"その他のハディース集","zh":"其他圣训集","ru":"Другие сборники хадисов","bn":null,"pt":null,"hi":null},"published":"1412هـ 1991م","publishedTranslations":{"en":"1412 AH / 1991 CE","fr":"1412 H 1991","es":"1412 H 1991","ur":"1412ھ 1991ء","tr":"1412 H 1991","sw":"1412H 1991","id":"1412 H 1991 M","ja":"ヒジュラ暦1412年／西暦1991年","zh":"伊历1412年／公元1991年","ru":"1412 г. х. / 1991 г.","bn":null,"pt":null,"hi":null},"pages":"176"},{"id":138137,"href":"catalogue/1381/138137.html","cover":"catalogue/1381/138137.jpg","title":"كتاب أحكام الخواتيم وما يتعلق بها- ت. القاضي","titles":{"en":"Book of the Rulings on Seals and Related Matters - By Al-Qadi","fr":"Kitab ahkam al-khawatim wa ma yataallaq biha (Les dispositions relatives aux conclusions et les questions qui s'y rapportent) – éd. al-Qadi","es":"Kitab ahkam al-khawatim wa ma yata'allaq biha (Libro de las disposiciones sobre los finales y cuestiones relacionadas) — edición de al-Qadi","ur":"كتاب أحكام الخواتيم وما يتعلق بها- ت. القاضي (اختتام کے احکام اور ان سے متعلق امور کی کتاب — تحقیق: القاضي)","tr":"Kitâbü ahkâmi’l-havâtim ve mâ yeteallaku bihâ (Sonlar ve Bunlarla İlgili Hükümler) – Kâdî neşri","sw":"Kitab Ahkam al-Khawatim wa ma Yata'allaq biha (Kitabu cha Hukumu za Mwisho na Yanayohusiana Nazo) - Tahkiki ya al-Qadi","id":"Kitab Ahkam Al-Khawatim wa ma Yata'allaq biha (Kitab Hukum-Hukum Penutup dan Hal-Hal yang Berkaitan Dengannya) – Tahkik Al-Qadhi","ja":"結末に関する諸規定とその関連事項の書—カーディー校訂","zh":"《〈结局的律例及相关事项〉——卡迪校勘版》","ru":"Книга о постановлениях, касающихся завершений, и связанных с ними вопросах, издание аль-Кади","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"باقي مجموعات الحديث","subLabel":"باقي مجموعات الحديث","subLabels":{"en":"Other Hadith Collections","fr":"Autres recueils de hadiths","es":"Otros grupos de hadices","ur":"حدیث کے دیگر مجموعے","tr":"Diğer hadis mecmuaları","sw":"Makundi mengine ya hadithi","id":"Kumpulan hadis lainnya","ja":"その他のハディース集","zh":"其他圣训集","ru":"Другие сборники хадисов","bn":null,"pt":null,"hi":null},"published":"1907هـ 1987م","publishedTranslations":{"en":"1907 AH / 1987 CE","fr":"1907 H 1987","es":"1907 H 1987","ur":"1907ھ 1987ء","tr":"1907 H 1987","sw":"1907H 1987","id":"1907 H 1987 M","ja":"ヒジュラ暦1907年／西暦1987年","zh":"伊历1907年／公元1987年","ru":"1907 г. х. / 1987 г.","bn":null,"pt":null,"hi":null},"pages":"296"},{"id":141185,"href":"catalogue/1411/141185.html","cover":"catalogue/1411/141185.jpg","title":"كتاب أسباب المغفرة","titles":{"en":"Book of the Reasons for Forgiveness","fr":"Kitab asbab al-maghfira (Livre des causes du pardon)","es":"Libro sobre las causas del perdón","ur":"كتاب أسباب المغفرة","tr":"Kitâbü Esbâbi'l-mağfire (Bağışlanma sebepleri kitabı)","sw":"Kitabu cha sababu za msamaha","id":"Kitab Sebab-Sebab Ampunan","ja":"赦しをもたらす事柄の書","zh":"《赦宥的缘由》","ru":"Книга о причинах прощения","bn":null,"pt":null,"hi":null},"type":"بحث","types":{"en":"Research Paper","fr":"Recherche","es":"Investigación","ur":"تحقیق","tr":"Araştırma","sw":"Utafiti","id":"Penelitian","ja":"研究","zh":"研究","ru":"Исследование","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"بحوث حديثية","subLabel":"بحوث حديثية","subLabels":{"en":"Hadith Research","fr":"Études sur les hadiths","es":"Estudios sobre hadices","ur":"حدیثی تحقیقات","tr":"Hadis araştırmaları","sw":"Tafiti za hadithi","id":"Kajian hadis","ja":"ハディース研究","zh":"圣训研究","ru":"Исследования по хадисоведению","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"10"}]
+    </script>
+    <script
+      type="application/json"
+      data-list
+    >
+      {"list":"catalogue","category":"e996cad5","sub":null,"era":"mutaakhkhirun","page":3,"pages":4,"total":87,"perPage":25,"eraCounts":{"all":706,"salaf":1,"mutaqaddimun":7,"mutaakhkhirun":87,"muasirun":104,"unknown":507},"categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"subLabel":null,"subLabels":null}
+    </script>
+
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Resources</div>
+        <div class="mt-2 flex flex-wrap items-center gap-2">
+          <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-text="count(':count result|:count results', total)" data-flux-subheading>
+    
+</div>
+
+          <template x-if="category !== ''">
+            <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-category">
+        <svg class="shrink-0 [:where(&amp;)]:size-4 size-3" data-flux-badge-icon="data-flux-badge-icon" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v2.879a2.5 2.5 0 0 0 .732 1.767l4.5 4.5a2.5 2.5 0 0 0 3.536 0l2.878-2.878a2.5 2.5 0 0 0 0-3.536l-4.5-4.5A2.5 2.5 0 0 0 7.38 2H4.5ZM5 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
+</svg>
+
+            
+    <span x-text="categoryLabel"></span>
+              <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('category', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+          </template>
+
+          <template x-if="category !== '' && sub !== ''">
+            <span class="flex items-center gap-2">
+              <svg class="shrink-0 [:where(&amp;)]:size-4 text-zinc-400 rtl:rotate-180" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-sub-category">
+        <span x-text="subLabel"></span>
+                <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('sub', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+            </span>
+          </template>
+        </div>
+      </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white" data-flux-button="data-flux-button" x-show="hasFilters" x-cloak="x-cloak" x-on:click="clearFilters()">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Clear filters</span>
+    </button>
+    </div>
+
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+      <div
+  class="inline-flex max-w-full overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-700 dark:bg-zinc-800/80"
+  role="radiogroup"
+  aria-label="Era"
+  data-test="era-filter"
+>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === ''"
+      x-on:click="choose('era', '')"
+      x-bind:disabled="era !== '' && eraCounts['all'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === ''          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-all"
+    >
+      All
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === '' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['all'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'salaf'"
+      x-on:click="choose('era', 'salaf')"
+      x-bind:disabled="era !== 'salaf' && eraCounts['salaf'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'salaf'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-salaf"
+    >
+      Salaf
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'salaf' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t="to :year AH" data-r="{&quot;year&quot;:300}">to 300 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['salaf'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaqaddimun'"
+      x-on:click="choose('era', 'mutaqaddimun')"
+      x-bind:disabled="era !== 'mutaqaddimun' && eraCounts['mutaqaddimun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaqaddimun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaqaddimun"
+    >
+      Mutaqaddimun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaqaddimun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:301,&quot;to&quot;:656}">301–656 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaqaddimun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaakhkhirun'"
+      x-on:click="choose('era', 'mutaakhkhirun')"
+      x-bind:disabled="era !== 'mutaakhkhirun' && eraCounts['mutaakhkhirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaakhkhirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaakhkhirun"
+    >
+      Muta&#039;akhkhirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaakhkhirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:657,&quot;to&quot;:1265}">657–1265 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaakhkhirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'muasirun'"
+      x-on:click="choose('era', 'muasirun')"
+      x-bind:disabled="era !== 'muasirun' && eraCounts['muasirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'muasirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-muasirun"
+    >
+      Mu&#039;asirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'muasirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":year AH on, or living" data-r="{&quot;year&quot;:1266}">1266 AH on, or living</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['muasirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'unknown'"
+      x-on:click="choose('era', 'unknown')"
+      x-bind:disabled="era !== 'unknown' && eraCounts['unknown'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'unknown'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-unknown"
+    >
+      Unknown
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'unknown' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline">no year ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['unknown'])"
+        ></span>
+      </span>
+    </button>
+  </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-show="category !== ''" x-cloak="x-cloak" x-on:click="showSubs = !showSubs" x-bind:aria-pressed="showSubs" data-test="toggle-sub-categories">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M3 4.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6.25 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 7.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 11.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM4 12.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/>
+</svg>
+
+                
+                    
+            
+            <span><span x-show="!showSubs">Show sub-categories</span>
+        <span
+          x-show="showSubs"
+          x-cloak
+        >
+          Hide sub-categories
+        </span></span>
+    </button>
+    </div>
+
+    <div class="flex flex-col gap-6 lg:flex-row">
+      <aside
+        class="lg:w-72 lg:shrink-0"
+        x-show="category !== '' && showSubs"
+        x-cloak
+        data-test="sub-categories"
+      >
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" data-flux-heading>Sub-categories</div>
+
+        <div class="w-full relative block group/input mb-2" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd"/>
+</svg>
+
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="subFilter" placeholder="Filter sub-categories..."
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="subCategories.length === 0" data-flux-text >No sub-categories.</p>
+        <nav class="flex max-h-[70vh] flex-col overflow-y-auto">
+          <template
+            x-for="entry in subCategories"
+            :key="entry.value"
+          >
+            <button
+              type="button"
+              class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-lg px-3 text-start text-sm font-medium lg:h-8"
+              x-bind:class="
+                sub === entry.value
+                  ? 'bg-white text-zinc-800 shadow-xs dark:bg-white/[7%] dark:text-white'
+                  : 'text-zinc-500 hover:bg-zinc-800/5 hover:text-zinc-800 dark:text-white/80 dark:hover:bg-white/[7%] dark:hover:text-white'
+              "
+              x-on:click="choose('sub', sub === entry.value ? '' : entry.value)"
+            >
+              <span
+                class="flex-1 truncate"
+                dir="auto"
+                x-text="entry.label"
+              ></span>
+              <span
+                class="rounded-sm bg-zinc-400/15 px-1.5 py-0.5 text-xs tabular-nums dark:bg-white/10"
+                x-text="format(entry.count)"
+              ></span>
+            </button>
+          </template>
+        </nav>
+      </aside>
+
+      <div class="min-w-0 flex-1">
+        <div
+          class="rounded-xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700"
+          x-show="total === 0"
+          x-cloak
+        >
+          <svg class="shrink-0 [:where(&amp;)]:size-6 mx-auto mb-3 size-8 text-zinc-400" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+</svg>
+
+                  <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>No resources found</div>
+        </div>
+
+        <div x-show="total > 0">
+          <div class="flex flex-col  " >
+    
+
+    <ui-table-scroll-area class="overflow-auto">
+        <table class="[:where(&amp;)]:min-w-full table-fixed border-separate border-spacing-0 isolate text-zinc-800 whitespace-nowrap [&amp;_dialog]:whitespace-normal [&amp;_[popover]]:whitespace-normal" data-flux-table>
+            <thead class="" data-flux-columns>
+    <tr >
+        <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Title</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Author</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Category</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Death year</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Published</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Pages</div>
+    </th>
+    </tr>
+</thead>
+
+            <tbody  data-flux-rows>
+    <template
+                x-for="row in shown"
+                :key="row.id"
+              >
+                <tr  class="" data-flux-row>
+    <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 relative max-w-md align-top whitespace-normal" data-flux-cell>
+    <div class="flex items-start gap-3">
+                      <div class="flex w-14 shrink-0 flex-col items-center gap-1 lg:w-10">
+                        <a
+                          x-bind:href="row.href"
+                          class="relative shrink-0"
+                          tabindex="-1"
+                          aria-hidden="true"
+                        >
+                          <template x-if="row.cover">
+                            <img
+                              x-bind:src="row.cover"
+                              alt=""
+                              loading="lazy"
+                              class="h-14 w-10 rounded border border-zinc-200 bg-white object-cover object-top shadow-sm dark:border-zinc-700"
+                            />
+                          </template>
+                          <template x-if="!row.cover">
+                            <div
+                              class="flex h-14 w-10 flex-col items-center justify-center gap-0.5 rounded border border-zinc-200 bg-zinc-50 font-semibold tracking-wide text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+                            >
+                              <svg class="shrink-0 [:where(&amp;)]:size-6 size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+                                    </div>
+                          </template>
+                        </a>
+                      </div>
+
+                      <div class="min-w-0">
+                        <a
+                          x-bind:href="row.href"
+                          class="font-medium text-zinc-800 hover:underline dark:text-white"
+                          dir="auto"
+                          x-text="tx(row.title, row.titles)"
+                        ></a>
+                        <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50 ms-2" x-show="row.type">
+        <span x-text="tx(row.type, row.types)"></span>
+    </div>
+                        <div
+                          class="text-sm text-zinc-500 dark:text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(row.title, row.titles) !== row.title"
+                          x-text="row.title"
+                        ></div>
+                        <span
+                          class="mt-1 block text-sm text-zinc-500 lg:hidden dark:text-zinc-400"
+                          x-show="row.categoryLabel"
+                          x-text="tx(row.categoryLabel, row.categoryLabels)"
+                        ></span>
+                      </div>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 max-w-56 align-top whitespace-normal" data-flux-cell>
+    <template
+                      x-for="(author, index) in row.authors"
+                      :key="index"
+                    >
+                      <div>
+                        <a
+                          class="hover:underline"
+                          x-bind:href="author.href"
+                          dir="auto"
+                          x-text="tx(author.name, author.names)"
+                        ></a>
+                        <div
+                          class="text-sm text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(author.name, author.names) !== author.name"
+                          x-text="author.name"
+                        ></div>
+                      </div>
+                    </template>
+                    <div class="mt-1 text-sm text-zinc-500 lg:hidden dark:text-zinc-400">
+                      <span
+                        class="block"
+                        x-show="row.died"
+                        x-text="died(row)"
+                      ></span>
+                      <span
+                        class="block"
+                        dir="auto"
+                        x-show="row.published"
+                        x-text="tx(row.published, row.publishedTranslations)"
+                      ></span>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden max-w-56 align-top whitespace-normal lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.categoryLabel, row.categoryLabels)"
+                    ></span>
+                    <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" dir="auto" x-show="row.sub" x-text="tx(row.subLabel, row.subLabels)" data-flux-text ></p>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium"
+                      x-bind:class="
+                        row.living
+                          ? 'bg-emerald-400/15 text-emerald-700 dark:bg-emerald-400/40 dark:text-emerald-200'
+                          : 'bg-zinc-400/15 text-zinc-700 dark:bg-zinc-400/40 dark:text-zinc-200'
+                      "
+                      x-show="row.died"
+                      x-text="died(row)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.published, row.publishedTranslations)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top lg:table-cell" data-flux-cell>
+    <span x-text="row.pages ?? ''"></span>
+</td>
+</tr>
+              </template>
+</tbody>
+        </table>
+    </ui-table-scroll-area>
+
+    
+
+    </div>
+
+          <div
+  class="@container flex items-center justify-between gap-3 border-t border-zinc-100 pt-3 dark:border-zinc-700"
+  x-show="total > 0"
+  data-flux-pagination
+>
+  <div class="text-xs font-medium whitespace-nowrap text-zinc-500 dark:text-zinc-400">
+    Showing
+    <span x-text="(page - 1) * perPage + 1"></span>
+    to
+    <span x-text="Math.min(page * perPage, total)"></span>
+    of
+    <span x-text="total"></span>
+    results
+  </div>
+
+  <div
+    class="flex items-center rounded-[8px] border border-zinc-200 bg-white p-[1px] dark:border-white/10 dark:bg-white/10"
+    x-show="pages > 1"
+  >
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page - 1)"
+      x-bind:disabled="page <= 1"
+      aria-label="&amp;laquo; Previous"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+
+    <template
+      x-for="(link, index) in pageLinks"
+      :key="index"
+    >
+      <div class="hidden @[40rem]:contents">
+        <template x-if="link === '...'">
+          <div
+            class="flex size-6 cursor-default items-center justify-center rounded-[6px] text-xs font-medium text-zinc-400 dark:text-zinc-400"
+          >
+            ...
+          </div>
+        </template>
+        <template x-if="link === page">
+          <div
+            aria-current="page"
+            class="flex h-6 cursor-default items-center justify-center rounded-[6px] px-2 text-xs font-medium text-zinc-800 dark:text-white"
+            x-text="link"
+          ></div>
+        </template>
+        <template x-if="link !== '...' && link !== page">
+          <button
+            type="button"
+            class="h-6 rounded-[6px] px-2 text-xs font-medium text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/20 dark:hover:text-white"
+            x-on:click="turn(link)"
+            x-text="link"
+          ></button>
+        </template>
+      </div>
+    </template>
+
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page + 1)"
+      x-bind:disabled="page >= pages"
+      aria-label="Next &amp;raquo;"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+    </div>
+
+  
+  <script src="../../../../../assets/static.js?v=be69322f0f"></script>
+</body>
+</html>

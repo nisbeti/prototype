@@ -1,0 +1,719 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root="../../../../../"
+  data-section="items"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Resources</title>
+  <link
+    rel="icon"
+    href="../../../../../assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="../../../../../assets/static.css?v=be69322f0f"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="../../../../../assets/i18n.js?v=be69322f0f"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../../../assets/frame.js?v=be69322f0f"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section
+    class="w-full"
+    x-data="staticList({ kind: 'items' })"
+  >
+    <script
+      type="application/json"
+      data-rows
+    >
+      [{"id":138677,"href":"catalogue/1386/138677.html","cover":"catalogue/1386/138677.jpg","title":"شرح صحيح مسلم -العثيمين- أجزاء","titles":{"en":"Explanation of Sahih Muslim - Al-Uthaymeen - Parts","fr":"Commentaire du Sahih Muslim — al-Uthaymin — volumes","es":"Comentario del Sahih Muslim, de al-Uthaymin: varios volúmenes","ur":"شرح صحيح مسلم -العثيمين- أجزاء","tr":"Müslim’in Sahîh’inin şerhi — İbn Useymîn — ciltler","sw":"Ufafanuzi wa Sahih Muslim - al-Uthaymin (Juzuu)","id":"Syarh Shahih Muslim karya Al-Utsaimin (Penjelasan Shahih Muslim) – beberapa jilid","ja":"ムスリムの真正集注釈—ウサイミーン著、各巻","zh":"《穆斯林圣训实录》注释——欧赛敏著，分册","ru":"Комментарий к «Сахиху» Муслима — аль-Усаймин — тома","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1429هـ 2008م","publishedTranslations":{"en":"1429 AH / 2008 CE","fr":"1429H 2008","es":"1429 H 2008","ur":"1429ھ 2008ء","tr":"1429 H 2008","sw":"1429H 2008M","id":"1429 H 2008","ja":"ヒジュラ暦1429年／西暦2008年","zh":"伊历1429年／公元2008年","ru":"1429 г. х. / 2008 г.","bn":null,"pt":null,"hi":null},"pages":"5157"},{"id":141674,"href":"catalogue/1416/141674.html","cover":"catalogue/1416/141674.jpg","title":"شرح صحيح مسلم -العثيمين- مدمجة","titles":{"en":"Explanation of Sahih Muslim - Al-Othaymeen - Integrated","fr":"Commentaire du Sahih Muslim — al-Uthaymin — édition intégrée","es":"Comentario de Sahih Muslim, de al-Uthaymin, edición integrada","ur":"شرح صحيح مسلم (صحیح مسلم کی شرح) -العثيمين- مدمجة","tr":"Sahîh-i Müslim şerhi – Useymîn – birleştirilmiş","sw":"Ufafanuzi wa Sahih Muslim — al-Uthaymin — juzuu zilizounganishwa","id":"Penjelasan Sahih Muslim – Al-Utsaimin – Edisi Gabungan","ja":"『サヒーフ・ムスリム』注解（ウサイミーン版・合本）","zh":"《穆斯林圣训实录》注释——欧赛敏著，合订本","ru":"Комментарий к «Сахиху» Муслима — аль-Усаймин (объединённое издание)","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"شروحات","subLabel":"شروحات","subLabels":{"en":"Commentaries","fr":"Commentaires","es":"Comentarios","ur":"شروحات","tr":"Şerhler","sw":"Sharh","id":"Syarah","ja":"注釈","zh":"注释","ru":"Комментарии","bn":null,"pt":null,"hi":null},"published":"1429هـ 2008م","publishedTranslations":{"en":"1429 AH / 2008 CE","fr":"1429 H 2008","es":"1429 H 2008","ur":"1429ھ 2008ء","tr":"1429 H 2008","sw":"1429H 2008","id":"1429 H 2008 M","ja":"ヒジュラ暦1429年／西暦2008年","zh":"伊历1429年／公元2008年","ru":"1429 г. х. / 2008 г.","bn":null,"pt":null,"hi":null},"pages":"5157"},{"id":227256,"href":"catalogue/2272/227256.html","cover":"catalogue/2272/227256.jpg","title":"شرح صفة الحج","titles":{"en":"Explanation of the Rites of Hajj","fr":"Commentaire de la description du pèlerinage","es":"Comentario sobre los ritos del hajj","ur":"شرح صفة الحج","tr":"Haccın yapılış şeklinin açıklaması","sw":"Ufafanuzi wa namna ya kutekeleza Hija","id":"Penjelasan tata cara haji","ja":"ハッジの方法の解説","zh":"《朝觐仪式释义》","ru":"Разъяснение описания хаджа","bn":null,"pt":null,"hi":null},"type":"ماجستير","types":{"en":"Master's Thesis","fr":"Master","es":"Tesis de máster","ur":"ایم اے","tr":"Yüksek lisans","sw":"Shahada ya uzamili","id":"Magister","ja":"修士論文","zh":"硕士论文","ru":"Магистерская диссертация","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1443هـ 2022م","publishedTranslations":{"en":"1443 AH / 2022 CE","fr":"1443 H 2022","es":"1443 H 2022","ur":"1443ھ 2022ء","tr":"1443 H 2022","sw":"1443H 2022","id":"1443 H 2022 M","ja":"ヒジュラ暦1443年／西暦2022年","zh":"伊历1443年 公元2022年","ru":"1443 г. х. / 2022 г.","bn":null,"pt":null,"hi":null},"pages":"265"},{"id":110463,"href":"catalogue/1104/110463.html","cover":"catalogue/1104/110463.jpg","title":"شرح عقيدة أهل السنة والجماعة","titles":{"en":"Explanation of the Creed of Ahl al-Sunnah wa al-Jama'ah","fr":"Commentaire de la croyance des gens de la Sunna et de la communauté","es":"Comentario de la doctrina de la Gente de la Sunna y la Comunidad","ur":"شرح عقيدة أهل السنة والجماعة (اہل سنت والجماعت کے عقیدے کی شرح)","tr":"Ehl-i Sünnet ve'l-Cemaat Akidesi'nin Şerhi","sw":"Sharh Aqidat Ahl al-Sunna wa al-Jama'a (Ufafanuzi wa Itikadi ya Ahlu Sunna wal-Jamaa)","id":"Penjelasan Akidah Ahlusunah waljamaah","ja":"スンナとジャマーアの徒の信条の解説","zh":"《逊尼派与大众派信仰注释》","ru":"Толкование вероучения приверженцев Сунны и единой общины","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"عقيدة أهل السنة","subLabel":"عقيدة أهل السنة","subLabels":{"en":"Creed of Ahl al-Sunnah","fr":"Doctrine des gens de la Sunna","es":"Credo de la Gente de la Sunna","ur":"اہل سنت کا عقیدہ","tr":"Ehl-i sünnet akidesi","sw":"Aqida ya Ahl al-Sunna","id":"Akidah Ahlusunah","ja":"スンナ派の教義","zh":"逊尼派信仰","ru":"Вероубеждение Ахлю-с-Сунна","bn":null,"pt":null,"hi":null},"published":"1437هـ 2016م","publishedTranslations":{"en":"1437 AH / 2016 CE","fr":"1437 H 2016","es":"1437 H 2016","ur":"1437ھ 2016ء","tr":"1437 H 2016","sw":"1437 H 2016","id":"1437 H 2016 M","ja":"ヒジュラ暦1437年／西暦2016年","zh":"伊历1437年／公元2016年","ru":"1437 г. х. / 2016 г.","bn":null,"pt":null,"hi":null},"pages":"554"},{"id":147455,"href":"catalogue/1474/147455.html","cover":null,"title":"شرح علل الترمذي","titles":{"en":"Explanation of the Causes of Al-Tirmidhi","fr":"Commentaire des défauts de transmission d’al-Tirmidhi","es":"Sharh Ilal al-Tirmidhi [Comentario sobre las causas ocultas de al-Tirmidhi]","ur":"شرح علل الترمذي (علل ترمذی کی شرح)","tr":"Tirmizî’nin İlel’inin Şerhi","sw":"Sharh Ilal al-Tirmidhi (Maelezo ya kasoro za hadithi za Al-Tirmidhi)","id":"Syarh 'Ilal At-Tirmidzi (Penjelasan tentang Cacat Hadis dalam Karya At-Tirmidzi)","ja":"ティルミズィーの『イラル』注解","zh":"《提尔米济圣训缺陷论注释》","ru":"Шарх ‘Иляль ат-Тирмизи (Комментарий к «Скрытым дефектам» ат-Тирмизи)","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"علل","subLabel":"علل","subLabels":{"en":"Hadith Defects","fr":"Défauts (du hadith)","es":"Defectos","ur":"علل","tr":"İlel","sw":"Kasoro","id":"Ilal","ja":"欠陥","zh":"圣训缺陷","ru":"Скрытые дефекты хадисов","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"184"},{"id":239937,"href":"catalogue/2399/239937.html","cover":"catalogue/2399/239937.jpg","title":"شرح علل الترمذي","titles":{"en":"Explanation of the Causes of Al-Tirmidhi","fr":"Commentaire des défauts de hadith selon al-Tirmidhi","es":"Comentario de las causas ocultas de al-Tirmidhi","ur":"شرح علل الترمذي","tr":"Şerhu İleli't-Tirmizî","sw":"Ufafanuzi wa Al-Ilal (Dosari) ya al-Tirmidhi","id":"Penjelasan Al-Ilal karya At-Tirmidzi","ja":"ティルミズィーの『アル＝イラル』解説","zh":"《注释提尔米济圣训缺陷论》","ru":"Комментарий к «Иляль ат-Тирмизи»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1437هـ 2016م","publishedTranslations":{"en":"1437 AH / 2016 CE","fr":"1437 H 2016","es":"1437 H 2016","ur":"1437ھ 2016ء","tr":"1437 H 2016","sw":"1437 H 2016","id":"1437 H 2016 M","ja":"ヒジュラ暦1437年／西暦2016年","zh":"伊历1437年／公元2016年","ru":"1437 г. х. 2016 г.","bn":null,"pt":null,"hi":null},"pages":"1026"},{"id":146026,"href":"catalogue/1460/146026.html","cover":"catalogue/1460/146026.jpg","title":"شرح علل الترمذي- ت نور الدين عتر","titles":{"en":"Explanation of the Ills of Al-Tirmidhi - By Noor Al-Din Ittar","fr":"Commentaire des défauts du hadith d'al-Tirmidhi — édité par Nur al-Din Itr","es":"Comentario de las anomalías de al-Tirmidhi, ed. Nur al-Din Itr","ur":"شرح علل الترمذي- ت نور الدين عتر","tr":"Tirmizî'nin İlelü'l-Hadis Şerhi – Tahkik eden: Nureddin Itr","sw":"Sharh Ilal al-Tirmidhi (Maelezo ya sababu fiche za dosari za al-Tirmidhi) — tahkiki ya Nur al-Din Itr","id":"Syarah Ilal at-Tirmidzi — tahkik Nuruddin Itr","ja":"アッ＝ティルミズィーの『イラル』注釈—ヌールッディーン・イトル校訂","zh":"《提尔密济圣训缺陷学注释》——努尔丁·伊特尔校勘本","ru":"Комментарий к скрытым дефектам ат-Тирмизи — тахкик Нур ад-Дина Иттра","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"علل","subLabel":"علل","subLabels":{"en":"Hadith Defects","fr":"Défauts (du hadith)","es":"Defectos","ur":"علل","tr":"İlel","sw":"Kasoro","id":"Ilal","ja":"欠陥","zh":"圣训缺陷","ru":"Скрытые дефекты хадисов","bn":null,"pt":null,"hi":null},"published":"1398هـ 1978م","publishedTranslations":{"en":"1398 AH / 1978 CE","fr":"1398 H 1978","es":"1398 H 1978","ur":"1398ھ 1978ء","tr":"1398H 1978","sw":"1398H 1978","id":"1398 H 1978","ja":"ヒジュラ暦1398年／西暦1978年","zh":"伊历1398年 公元1978年","ru":"1398 г. х. 1978 г.","bn":null,"pt":null,"hi":null},"pages":"1046"},{"id":145701,"href":"catalogue/1457/145701.html","cover":"catalogue/1457/145701.jpg","title":"شرح علل الترمذي- ت. همام سعيد","titles":{"en":"Explanation of the Causes of Al-Tirmidhi - T. Hamam Said","fr":"Commentaire des causes (Ilal) d'al-Tirmidhi — éd. Hammam Sa'id","es":"Comentario de las causas ocultas de al-Tirmidhi, edición de Hammam Said","ur":"شرح علل الترمذي- ت. همام سعيد","tr":"Tirmizî’nin İlelü’l-hadîs’inin şerhi — Tahkik: Hemmâm Saîd","sw":"Sharh Ilal al-Tirmidhi (Ufafanuzi wa Dosari za al-Tirmidhi) — hakiki ya Hammam Said","id":"Syarah Ilal At-Tirmidzi — tahkik Hammam Sa'id","ja":"アッ＝ティルミズィーの『イラル』注釈—ハンマーム・サイード校訂","zh":"《提尔米济圣训缺陷论注释》（哈马姆·赛义德校勘）","ru":"Комментарий к «Иляль ат-Тирмизи». Тахкик Хаммама Саида","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"علل","subLabel":"علل","subLabels":{"en":"Hadith Defects","fr":"Défauts (du hadith)","es":"Defectos","ur":"علل","tr":"İlel","sw":"Kasoro","id":"Ilal","ja":"欠陥","zh":"圣训缺陷","ru":"Скрытые дефекты хадисов","bn":null,"pt":null,"hi":null},"published":"1421هـ 2001م","publishedTranslations":{"en":"1421 AH / 2001 CE","fr":"1421 H 2001","es":"1421H 2001","ur":"1421ھ 2001ء","tr":"1421H 2001","sw":"1421H 2001","id":"1421H 2001M","ja":"ヒジュラ暦1421年／西暦2001年","zh":"伊历1421年／公元2001年","ru":"1421 г. х. / 2001 г.","bn":null,"pt":null,"hi":null},"pages":"1024"},{"id":140552,"href":"catalogue/1405/140552.html","cover":"catalogue/1405/140552.jpg","title":"شرح علل الترمذي- مكتبة المنار","titles":{"en":"Explanation of the Causes of Al-Tirmidhi - Al-Manar Library","fr":"Sharh Ilal al-Tirmidhi (Commentaire des défauts du Tirmidhi) - Maktabat al-Manar","es":"Comentario de las causas ocultas de al-Tirmidhi — Biblioteca al-Manar","ur":"شرح علل الترمذي- مكتبة المنار (ترمذی کی علل کی شرح — مکتبہ المنار)","tr":"Tirmizî'nin İlelü'si Şerhi - Mektebetü'l-Menâr","sw":"Sharh Ilal al-Tirmidhi (Ufafanuzi wa dosari za hadithi za al-Tirmidhi) - Maktabat al-Manar","id":"Syarah 'Ilal At-Tirmidzi - Maktabat Al-Manar","ja":"ティルミズィーの『イラル』注釈―アル＝マナール図書館版","zh":"《提尔密济圣训缺陷论注释》—麦纳尔书店版","ru":"Комментарий к «Иляль ат-Тирмизи» — библиотека «аль-Манар»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1407هـ 1987م","publishedTranslations":{"en":"1407 AH / 1987 CE","fr":"1407 H 1987","es":"1407 H 1987","ur":"1407ھ 1987ء","tr":"1407 H 1987","sw":"1407H 1987","id":"1407 H 1987","ja":"ヒジュラ暦1407年／西暦1987年","zh":"伊历1407年／公元1987年","ru":"1407 г. х. 1987 г.","bn":null,"pt":null,"hi":null},"pages":"1018"},{"id":126180,"href":"catalogue/1261/126180.html","cover":null,"title":"شرح على رسالة في أصول التفسير للسيوطي","titles":{"en":"Explanation of the Message on the Principles of Interpretation by Al-Suyuti","fr":"Commentaire du traité sur les fondements de l'exégèse d'al-Suyuti","es":"Comentario al tratado de al-Suyuti sobre los fundamentos de la exégesis","ur":"شرح على رسالة في أصول التفسير للسيوطي (سیوطی کے رسالۂ اصولِ تفسیر کی شرح)","tr":"Süyûtî’nin Tefsir Usulüne Dair Risalesi Üzerine Şerh","sw":"Maelezo kuhusu risala ya al-Suyuti katika misingi ya tafsiri","id":"Syarah atas Risalah tentang Dasar-Dasar Tafsir karya As-Suyuthi","ja":"スユーティーの「クルアーン解釈学の原則に関する小論」注解","zh":"《苏尤提〈古兰经注释原理论著〉注释》","ru":"Комментарий к трактату ас-Суюти об основах тафсира","bn":null,"pt":null,"hi":null},"type":"بحث","types":{"en":"Research Paper","fr":"Recherche","es":"Investigación","ur":"تحقیق","tr":"Araştırma","sw":"Utafiti","id":"Penelitian","ja":"研究","zh":"研究","ru":"Исследование","bn":null,"pt":null,"hi":null},"authors":[{"name":"عبد الكريم عبد الله الخضير","names":{"en":"Abdul Karim Abdullah Al-Khudair","fr":"Abd al-Karim Abd Allah al-Khudair","es":"Abdul Karim Abdullah al-Khudair","ur":"عبد الكريم عبد الله الخضير","tr":"Abdülkerîm Abdullah el-Hudayr","sw":"Abdul Karim Abdullah Al-Khudair","id":"Abdul Karim Abdullah Al-Khudair","ja":"アブドゥルカリーム・アブドゥッラー・アル＝フダイル","zh":"阿卜杜勒·卡里姆·阿卜杜拉·胡代尔","ru":"Абд аль-Карим Абдуллах аль-Худайр","bn":"عبد الكريم عبد الله الخضير","pt":"عبد الكريم عبد الله الخضير","hi":"عبد الكريم عبد الله الخضير"},"href":"authors/040/4027.html"}],"died":null,"living":false,"era":"unknown","category":"التفسير وعلوم القرآن","categoryLabel":"التفسير وعلوم القرآن","categoryLabels":{"en":"Tafsir and Quranic Sciences","fr":"Exégèse et sciences coraniques","es":"Exégesis y ciencias del Quran","ur":"تفسیر اور علومِ قرآن","tr":"Tefsir ve Kur’an İlimleri","sw":"Tafsiri na elimu za Quran","id":"Tafsir dan Ilmu-Ilmu Al-Qur’an","ja":"クルアーン注釈・クルアーン学","zh":"古兰经注释与古兰经学","ru":"Тафсир и коранические науки","bn":null,"pt":null,"hi":null},"sub":"التفسير","subLabel":"التفسير","subLabels":{"en":"Tafsir","fr":"Exégèse coranique","es":"Exégesis coránica","ur":"تفسیر","tr":"Tefsir","sw":"Tafsiri ya Quran","id":"Tafsir","ja":"クルアーン注釈","zh":"古兰经注释学","ru":"Тафсир","bn":null,"pt":null,"hi":null},"published":"2003م 1424هـ","publishedTranslations":{"en":"2003 CE / 1424 AH","fr":"2003 1424 H","es":"2003 m 1424 H","ur":"2003ء 1424ھ","tr":"2003م 1424هـ","sw":"2003 1424H","id":"2003 M 1424 H","ja":"西暦2003年 ヒジュラ暦1424年","zh":"公元2003年 伊历1424年","ru":"2003 г. / 1424 г. х.","bn":null,"pt":null,"hi":null},"pages":"14"},{"id":238195,"href":"catalogue/2381/238195.html","cover":"catalogue/2381/238195.jpg","title":"شرح عمدة الأحكام","titles":{"en":"Explanation of the Essentials of Judgments","fr":"Commentaire de Umdat al-Ahkam (La référence des prescriptions)","es":"Explicación de Umdat al-Ahkam (El fundamento de las normas)","ur":"شرح عمدة الأحكام (عمدة الأحكام کی شرح)","tr":"Umdetü'l-Ahkâm Şerhi","sw":"Ufafanuzi wa Umdat al-Ahkam (Msingi wa hukumu)","id":"Syarah Umdat Al-Ahkam (Penjelasan Kitab Umdat Al-Ahkam)","ja":"『ウムダト・アル＝アフカーム』注解","zh":"《教法判例精要》注释","ru":"Комментарий к «Умдат аль-ахкам»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"أحمد بن عماد الأقفهسي","names":{"en":"Ahmad ibn Imad al-Aqfahsi","fr":"Ahmad ibn Imad al-Aqfahsi","es":"Ahmad ibn Imad al-Aqfahsi","ur":"أحمد بن عماد الأقفهسي","tr":"Ahmed b. İmâd el-Akfahsî","sw":"Ahmad bin Imad Al-Aqfahsi","id":"Ahmad bin Imad Al-Aqfahsi","ja":"アフマド・イブン・イマード・アル＝アクファフスィー","zh":"艾哈迈德·本·伊马德·阿克法赫西","ru":"Ахмад ибн Имад аль-Акфахси","bn":"أحمد بن عماد الأقفهسي","pt":"أحمد بن عماد الأقفهسي","hi":"أحمد بن عماد الأقفهسي"},"href":"authors/843/84330.html"}],"died":null,"living":false,"era":"unknown","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1441هـ 2020م","publishedTranslations":{"en":"1441 AH / 2020 CE","fr":"1441 H 2020","es":"1441 H 2020","ur":"1441ھ 2020ء","tr":"1441H 2020","sw":"1441H 2020","id":"1441 H 2020 M","ja":"ヒジュラ暦1441年／西暦2020年","zh":"伊历1441年／公元2020年","ru":"1441 г. х. / 2020 г.","bn":null,"pt":null,"hi":null},"pages":"1525"},{"id":145700,"href":"catalogue/1457/145700.html","cover":"catalogue/1457/145700.jpg","title":"شرح عمدة الأحكام - الخضير","titles":{"en":"Explanation of the Essentials of Rulings - Al-Khudair","fr":"Commentaire d'Umdat al-Ahkam (Le pilier des prescriptions) — al-Khudayr","es":"Comentario de Umdat al-Ahkam (La base de las normas), de al-Khudayr","ur":"شرح عمدة الأحكام - الخضير","tr":"Umdetü’l-ahkâm’ın şerhi — Hudayr","sw":"Sharh Umdat al-Ahkam (Ufafanuzi wa Nguzo ya Hukumu) — al-Khudayr","id":"Syarah Umdatul Ahkam — Al-Khudair","ja":"『ウムダト・アル＝アフカーム』注釈—アル＝フダイル","zh":"《裁决纲要注释》（胡代尔）","ru":"Комментарий к «Умдат аль-ахкам» — аль-Худайр","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"عبد الكريم عبد الله الخضير","names":{"en":"Abdul Karim Abdullah Al-Khudair","fr":"Abd al-Karim Abd Allah al-Khudair","es":"Abdul Karim Abdullah al-Khudair","ur":"عبد الكريم عبد الله الخضير","tr":"Abdülkerîm Abdullah el-Hudayr","sw":"Abdul Karim Abdullah Al-Khudair","id":"Abdul Karim Abdullah Al-Khudair","ja":"アブドゥルカリーム・アブドゥッラー・アル＝フダイル","zh":"阿卜杜勒·卡里姆·阿卜杜拉·胡代尔","ru":"Абд аль-Карим Абдуллах аль-Худайр","bn":"عبد الكريم عبد الله الخضير","pt":"عبد الكريم عبد الله الخضير","hi":"عبد الكريم عبد الله الخضير"},"href":"authors/040/4027.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"شروحات","subLabel":"شروحات","subLabels":{"en":"Commentaries","fr":"Commentaires","es":"Comentarios","ur":"شروحات","tr":"Şerhler","sw":"Sharh","id":"Syarah","ja":"注釈","zh":"注释","ru":"Комментарии","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"236"},{"id":240764,"href":"catalogue/2407/240764.html","cover":"catalogue/2407/240764.jpg","title":"شرح عمدة الأحكام من كلام خير الأنام ﷺ","titles":{"en":"Explanation of the Essentials of Judgments from the Words of the Best of Mankind ﷺ","fr":"Sharh Umdat al-ahkam min kalam khayr al-anam [Commentaire de La référence des règles, tirées des paroles du meilleur des hommes] ﷺ","es":"Comentario de Umdat al-ahkam min kalam khayr al-anam ﷺ [La guía de los preceptos basada en las palabras del mejor de la humanidad]","ur":"شرح عمدة الأحكام من كلام خير الأنام ﷺ","tr":"En Hayırlı İnsan’ın Sözlerinden Ahkâmın Özü ‘Umdetü’l-ahkâm’ın Şerhi","sw":"Sharh ‘Umdat al-Ahkam min Kalam Khayr al-Anam ﷺ (Ufafanuzi wa Msingi wa hukumu kutokana na maneno ya mbora wa viumbe)","id":"Syarh Umdat Al-Ahkam min Kalam Khair Al-Anam ﷺ (Penjelasan Umdat al-Ahkam berdasarkan sabda sebaik-baik manusia)","ja":"最良の人 ﷺ の言葉に基づく諸規定の要諦の注釈","zh":"《圣选者 ﷺ 语录中的〈教法判例精要〉注释》","ru":"Комментарий к «Умдат аль-ахкам» из слов лучшего из людей ﷺ","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"عبد الكريم عبد الله الخضير","names":{"en":"Abdul Karim Abdullah Al-Khudair","fr":"Abd al-Karim Abd Allah al-Khudair","es":"Abdul Karim Abdullah al-Khudair","ur":"عبد الكريم عبد الله الخضير","tr":"Abdülkerîm Abdullah el-Hudayr","sw":"Abdul Karim Abdullah Al-Khudair","id":"Abdul Karim Abdullah Al-Khudair","ja":"アブドゥルカリーム・アブドゥッラー・アル＝フダイル","zh":"阿卜杜勒·卡里姆·阿卜杜拉·胡代尔","ru":"Абд аль-Карим Абдуллах аль-Худайр","bn":"عبد الكريم عبد الله الخضير","pt":"عبد الكريم عبد الله الخضير","hi":"عبد الكريم عبد الله الخضير"},"href":"authors/040/4027.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1445هـ 2023م","publishedTranslations":{"en":"1445 AH / 2023 CE","fr":"1445 H 2023","es":"1445 H 2023 d. C.","ur":"1445ھ 2023ء","tr":"1445H 2023","sw":"1445H 2023","id":"1445 H 2023 M","ja":"ヒジュラ暦1445年／西暦2023年","zh":"伊历1445年 公元2023年","ru":"1445 г. х. / 2023 г.","bn":null,"pt":null,"hi":null},"pages":"1238"},{"id":57281,"href":"catalogue/572/57281.html","cover":"catalogue/572/57281.jpg","title":"شرح عمدة الفقه- الخضير","titles":{"en":"Explanation of the Essentials of Jurisprudence - Al-Khudair","fr":"Commentaire de Umdat al-Fiqh – al-Khudayr","es":"Comentario de Umdat al-Fiqh (El fundamento de la jurisprudencia): al-Khudayr","ur":"شرح عمدة الفقه- الخضير","tr":"Umdetü'l-Fıkh Şerhi – el-Hudayr","sw":"Maelezo ya Umdat al-Fiqh — al-Khudayr","id":"Syarah ‘Umdat al-Fiqh—Al-Khudair","ja":"『ウムダト・アル＝フィクフ』注釈――アル＝フダイル","zh":"《教法学纲要注释——胡德尔》","ru":"Комментарий к «Умдат аль-фикх» — аль-Худайр","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"عبد الكريم عبد الله الخضير","names":{"en":"Abdul Karim Abdullah Al-Khudair","fr":"Abd al-Karim Abd Allah al-Khudair","es":"Abdul Karim Abdullah al-Khudair","ur":"عبد الكريم عبد الله الخضير","tr":"Abdülkerîm Abdullah el-Hudayr","sw":"Abdul Karim Abdullah Al-Khudair","id":"Abdul Karim Abdullah Al-Khudair","ja":"アブドゥルカリーム・アブドゥッラー・アル＝フダイル","zh":"阿卜杜勒·卡里姆·阿卜杜拉·胡代尔","ru":"Абд аль-Карим Абдуллах аль-Худайр","bn":"عبد الكريم عبد الله الخضير","pt":"عبد الكريم عبد الله الخضير","hi":"عبد الكريم عبد الله الخضير"},"href":"authors/040/4027.html"}],"died":null,"living":false,"era":"unknown","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"فقه حنبلي","subLabel":"فقه حنبلي","subLabels":{"en":"Hanbali Jurisprudence","fr":"Jurisprudence hanbalite","es":"Jurisprudencia hanbalí","ur":"حنبلی فقہ","tr":"Hanbelî fıkhı","sw":"Fiqhi ya Hanbali","id":"Fikih mazhab Hanbali","ja":"ハンバリー派法学","zh":"罕百里派法学","ru":"Ханбалитское право","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"19"},{"id":223408,"href":"catalogue/2234/223408.html","cover":"catalogue/2234/223408.jpg","title":"شرح فتح رب البرية بتلخيص الحموية","titles":{"en":"Explanation of the Opening of the Lord of the Worlds with a Summary of the Hamawiyyah","fr":"Commentaire de Fath Rabb al-Bariyya (L'ouverture du Seigneur de la création) par le résumé d'al-Hamawiyya","es":"Comentario de Fath Rabb al-Bariyya bi-Talkhis al-Hamawiyya","ur":"شرح فتح رب البرية بتلخيص الحموية (تلخیص الحموية کے ذریعے فتح رب البرية کی شرح)","tr":"Hameviyye'nin Özeti Üzerine Fethu Rabbi'l-Beriyye Şerhi","sw":"Sharhi ya Fath Rabb al-Bariyya kwa ufupishaji wa al-Hamawiyya","id":"Syarah Fath Rabb al-Bariyyah bi Talkhish al-Hamawiyyah","ja":"『ハマウィーヤ抄』を解説する『主の慈しみによる成功』注解","zh":"《阐释哈马维论集》节编注释","ru":"Комментарий к «Фатх Рабб аль-барийя» посредством сокращения «аль-Хамавийи»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1436هـ 2015م","publishedTranslations":{"en":"1436 AH / 2015 CE","fr":"1436 H 2015","es":"1436 H 2015","ur":"1436ھ 2015ء","tr":"1436H 2015","sw":"1436 H 2015","id":"1436 H 2015 M","ja":"ヒジュラ暦1436年／西暦2015年","zh":"伊历1436年／公元2015年","ru":"1436 г. х. / 2015 г.","bn":null,"pt":null,"hi":null},"pages":"632"},{"id":239027,"href":"catalogue/2390/239027.html","cover":"catalogue/2390/239027.jpg","title":"شرح فتح رب البرية بتلخيص الحموية","titles":{"en":"Explanation of the Opening of the Lord of the Worlds with a Summary of the Hamawiyyah","fr":"Commentaire de Fath Rabb al-Bariyya bi-Talkhis al-Hamawiyya (L'ouverture du Seigneur des créatures par le résumé d'al-Hamawiyya)","es":"Comentario de La apertura del Señor de la creación mediante el resumen de al-Hamawiyya","ur":"شرح فتح رب البرية بتلخيص الحموية (فتح رب البریہ، تلخیص الحَمَویہ کی شرح)","tr":"el-Hameviyye’nin Özetlenmesiyle Rabbü’l-Beriyye’nin Fethi Şerhi","sw":"Maelezo ya Fath Rabb al-Bariyya kwa muhtasari wa al-Hamawiyya","id":"Syarah Fath Rabb al-Bariyya bi Talkhis al-Hamawiyya (Penjelasan Ringkasan al-Hamawiyya)","ja":"『アル＝ハマウィーヤ要約』に関する『創造主の勝利』の解説","zh":"《以〈哈马维论集〉提要阐释〈造物主对众生的启示〉》","ru":"Шарх Фатх Рабб аль-барийя би-тальхис аль-Хамавийя","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1444هـ 2023م","publishedTranslations":{"en":"1444 AH / 2023 CE","fr":"1444H 2023","es":"1444 H 2023","ur":"1444ھ 2023ء","tr":"1444 H 2023","sw":"1444H 2023M","id":"1444 H 2023","ja":"ヒジュラ暦1444年 西暦2023年","zh":"伊历1444年／公元2023年","ru":"1444 г. х. / 2023 г.","bn":null,"pt":null,"hi":null},"pages":"632"},{"id":195676,"href":"catalogue/1956/195676.html","cover":"catalogue/1956/195676.jpg","title":"شرح قواعد ابن رجب","titles":{"en":"Explanation of Ibn Rajab's Rules","fr":"Commentaire des règles d'Ibn Rajab","es":"Explicación de las máximas de Ibn Rajab","ur":"شرح قواعد ابن رجب","tr":"İbn Receb'in Kaidelerinin Şerhi","sw":"Ufafanuzi wa kanuni za Ibn Rajab","id":"Penjelasan Kaidah-Kaidah Ibnu Rajab","ja":"イブン・ラジャブの諸規則の解説","zh":"《伊本·拉杰卜〈法学原理规则〉注释》","ru":"Комментарий к правилам Ибн Раджаба","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"قواعد أصولية","subLabel":"قواعد أصولية","subLabels":{"en":"Principles of Jurisprudence Maxims","fr":"Principes de jurisprudence","es":"Principios jurídicos islámicos","ur":"اصولی قواعد","tr":"Usûl kaideleri","sw":"Kanuni za misingi ya fiqhi","id":"Kaidah usul fikih","ja":"法源学の原則","zh":"教法学原理规则","ru":"Правовые принципы усуль аль-фикха","bn":null,"pt":null,"hi":null},"published":"1437هـ 2016م","publishedTranslations":{"en":"1437 AH / 2016 CE","fr":"1437H 2016","es":"1437H 2016","ur":"1437ھ 2016ء","tr":"1437 H 2016","sw":"1437H 2016","id":"1437 H 2016 M","ja":"ヒジュラ暦1437年／西暦2016年","zh":"伊历1437年／公元2016年","ru":"1437 г. х. / 2016 г.","bn":null,"pt":null,"hi":null},"pages":"1371"},{"id":249115,"href":"catalogue/2491/249115.html","cover":"catalogue/2491/249115.jpg","title":"شرح قواعد ابن رجب- ط. ثانية","titles":{"en":"Explanation of Ibn Rajab's Rules - 2nd Edition","fr":"Commentaire des règles d'Ibn Rajab – deuxième édition","es":"Explicación de las reglas de Ibn Rajab - segunda edición","ur":"شرح قواعد ابن رجب- ط. ثانية (ابن رجب کے قواعد کی شرح — دوسرا ایڈیشن)","tr":"İbn Receb'in Kavaid'inin şerhi - ikinci baskı","sw":"Ufafanuzi wa Kanuni za Ibn Rajab — Toleo la pili","id":"Syarah Kaidah-Kaidah Ibnu Rajab — cetakan kedua","ja":"イブン・ラジャブの法学原則注解―第2版","zh":"《伊本·拉杰布教法规则注释》第二版","ru":"Комментарий к «Правилам Ибн Раджаба» — второе издание","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1438هـ 2017م","publishedTranslations":{"en":"1438 AH / 2017 CE","fr":"1438 H 2017","es":"1438 H 2017","ur":"1438ھ 2017ء","tr":"1438 H 2017","sw":"1438H 2017","id":"1438 H 2017 M","ja":"ヒジュラ暦1438年／西暦2017年","zh":"伊历1438年／公元2017年","ru":"1438 г. х. / 2017 г.","bn":null,"pt":null,"hi":null},"pages":"1373"},{"id":243190,"href":"catalogue/2431/243190.html","cover":"catalogue/2431/243190.jpg","title":"شرح قواعد الأصول ومعاقد الفصول","titles":{"en":"Explanation of the Principles of Usul and the Sections of Fiqh","fr":"Commentaire des Règles des fondements et des articulations des chapitres","es":"Explicación de las reglas de los fundamentos y los principios de los capítulos","ur":"شرح قواعد الأصول ومعاقد الفصول (اصول کے قواعد اور فصلوں کے مباحث کی شرح)","tr":"Kavâidü'l-Usûl ve Meâkıdü'l-Fusûl Şerhi (Usul Kaideleri ve Fasılların Temelleri)","sw":"Sharh Qawaid al-Usul wa Ma'aqid al-Fusul (Maelezo ya Kanuni za Misingi na Mihimili ya Sura)","id":"Penjelasan Kaidah-Kaidah Usul dan Pokok-Pokok Bab","ja":"『法源の諸規則と章節の要点』注釈","zh":"《教法原理规则与章节支柱》释义","ru":"Комментарий к «Правилам основ и узловым положениям разделов»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1436هـ 2015م","publishedTranslations":{"en":"1436 AH / 2015 CE","fr":"1436 H 2015","es":"1436 H 2015","ur":"1436ھ 2015ء","tr":"1436H 2015","sw":"1436H 2015","id":"1436 H 2015 M","ja":"ヒジュラ暦1436年／西暦2015年","zh":"伊历1436年／公元2015年","ru":"1436 г. х. / 2015 г.","bn":null,"pt":null,"hi":null},"pages":"457"},{"id":144290,"href":"catalogue/1442/144290.html","cover":"catalogue/1442/144290.jpg","title":"شرح كتاب اختصار علوم الحديث للحافظ ابن كثير","titles":{"en":"Explanation of the Book of the Summary of the Sciences of Hadith by Al-Hafiz Ibn Kathir","fr":"Commentaire de l'Abrégé des sciences du hadith de al-Hafiz Ibn Kathir","es":"Comentario del libro «Compendio de las ciencias del hadiz», del hafiz Ibn Kathir","ur":"شرح كتاب اختصار علوم الحديث للحافظ ابن كثير (حافظ ابن کثیر کی کتاب اختصار علوم الحديث کی شرح)","tr":"Hâfız İbn Kesîr’in Hadis İlimlerini İhtisar Kitabı’nın Şerhi","sw":"Sharh Kitab Ikhtisar Ulum al-Hadith li al-Hafiz Ibn Kathir (Ufafanuzi wa Kitabu cha Mukhtasari wa elimu ya hadithi cha Hafiz Ibn Kathir)","id":"Syarah Kitab Ikhtishar Ulum al-Hadits karya al-Hafizh Ibnu Katsir","ja":"ハーフィズ・イブン・カスィール著『ハディース学要論』の注釈","zh":"哈菲兹伊本·凯西尔《圣训学概要》注释","ru":"Комментарий к книге «Сокращение наук о хадисе» хафиза Ибн Касира","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"عبد الكريم عبد الله الخضير","names":{"en":"Abdul Karim Abdullah Al-Khudair","fr":"Abd al-Karim Abd Allah al-Khudair","es":"Abdul Karim Abdullah al-Khudair","ur":"عبد الكريم عبد الله الخضير","tr":"Abdülkerîm Abdullah el-Hudayr","sw":"Abdul Karim Abdullah Al-Khudair","id":"Abdul Karim Abdullah Al-Khudair","ja":"アブドゥルカリーム・アブドゥッラー・アル＝フダイル","zh":"阿卜杜勒·卡里姆·阿卜杜拉·胡代尔","ru":"Абд аль-Карим Абдуллах аль-Худайр","bn":"عبد الكريم عبد الله الخضير","pt":"عبد الكريم عبد الله الخضير","hi":"عبد الكريم عبد الله الخضير"},"href":"authors/040/4027.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"مصطلح الحديث","subLabel":"مصطلح الحديث","subLabels":{"en":"Hadith Terminology","fr":"Terminologie du hadith","es":"Terminología del hadiz","ur":"اصطلاحِ حدیث","tr":"Hadis usulü terimleri","sw":"Istilahi ya hadithi","id":"Istilah Hadis","ja":"ハディース学用語","zh":"圣训学术语","ru":"Терминология хадиса","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"329"},{"id":138948,"href":"catalogue/1389/138948.html","cover":"catalogue/1389/138948.jpg","title":"شرح كتاب الإيمان وهو قطعة من شرح الحافظ بن رجب الحنبلي","titles":{"en":"Explanation of the Book of Faith, which is a section from the explanation by the scholar Ibn Rajab Al-Hanbali","fr":"Commentaire du Livre de la foi, extrait du commentaire du hafiz Ibn Rajab al-Hanbali","es":"Comentario del Libro de la fe, fragmento del comentario de al-Hafiz Ibn Rajab al-Hanbali","ur":"شرح كتاب الإيمان وهو قطعة من شرح الحافظ بن رجب الحنبلي (کتاب الایمان کی شرح، جو حافظ ابن رجب حنبلی کی شرح کا ایک حصہ ہے)","tr":"Kitâbü'l-îmân'ın şerhi: Hâfız İbn Receb el-Hanbelî'nin şerhinden bir bölüm","sw":"Sharhi ya Kitabu cha Imani, sehemu ya sharhi ya Hafiz Ibn Rajab al-Hanbali","id":"Syarah Kitab al-Iman, Bagian dari Syarah Al-Hafiz Ibnu Rajab al-Hanbali","ja":"信仰の書の注解――ハーフィズ・イブン・ラジャブ・アル＝ハンバリーの注解の一部","zh":"《信仰篇注释：伊本·拉杰卜·罕百里哈菲兹注释节选》","ru":"Комментарий к «Книге веры» — фрагмент комментария хафиза Ибн Раджаба аль-Ханбали","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ابن رجب الحنبلي","pt":"ابن رجب الحنبلي","hi":"ابن رجب الحنبلي"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الكتب الستة","subLabel":"الكتب الستة","subLabels":{"en":"The Six Books","fr":"Les six recueils canoniques","es":"Los seis libros","ur":"کتبِ ستہ","tr":"Kütüb-i Sitte","sw":"Vitabu sita vya hadithi","id":"Enam Kitab Hadis","ja":"六大ハディース集","zh":"六大圣训集","ru":"Шесть книг хадисов","bn":null,"pt":null,"hi":null},"published":"1418هـ 1998م","publishedTranslations":{"en":"1418 AH / 1998 CE","fr":"1418H 1998","es":"1418H 1998","ur":"1418ھ 1998ء","tr":"1418H 1998","sw":"1418H 1998","id":"1418 H 1998 M","ja":"ヒジュラ暦1418年／西暦1998年","zh":"伊历1418年／公元1998年","ru":"1418 г. х. / 1998 г.","bn":null,"pt":null,"hi":null},"pages":"240"},{"id":148373,"href":"catalogue/1483/148373.html","cover":"catalogue/1483/148373.jpg","title":"شرح كتاب التجريد الصريح لأحاديث الجامع الصحيح - الخضير","titles":{"en":"Explanation of the Book of Explicit Abrogation of the Authentic Hadiths - Al-Khudair","fr":"Commentaire du livre Al-Tajrid al-Sarih des hadiths du recueil Al-Jami al-Sahih – al-Khudayr","es":"Comentario del libro Al-Tajrid al-sarih li-ahadith al-Jami al-Sahih — al-Khudayr","ur":"شرح كتاب التجريد الصريح لأحاديث الجامع الصحيح - الخضير","tr":"et-Tecrîdü’s-sarîh li-ehâdîsi’l-Câmiʿi’s-sahîh kitabının şerhi – Hudayr","sw":"Sharh Kitab al-Tajrid al-Sarih li-Ahadith al-Jami al-Sahih [Ufafanuzi wa Kitabu Muhtasari Wazi wa Hadithi za Al-Jami al-Sahih] — al-Khudayr","id":"Syarah Kitab At-Tajrid ash-Sharih li Ahadits Al-Jami' Ash-Shahih [Penjelasan Kitab At-Tajrid ash-Sharih atas hadis-hadis Al-Jami' Ash-Shahih] — Al-Khudair","ja":"『アル＝ジャーミウ・アッ＝サヒーフ』のハディースを抜粋した書『アッ＝タジュリード・アッ＝サリーフ』の注解—アル＝フダイル","zh":"《〈圣训汇编〉圣训精选》注释——胡代尔","ru":"Комментарий к книге «Краткое изложение хадисов „Аль-Джами ас-сахих“» — аль-Худайр","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"عبد الكريم عبد الله الخضير","names":{"en":"Abdul Karim Abdullah Al-Khudair","fr":"Abd al-Karim Abd Allah al-Khudair","es":"Abdul Karim Abdullah al-Khudair","ur":"عبد الكريم عبد الله الخضير","tr":"Abdülkerîm Abdullah el-Hudayr","sw":"Abdul Karim Abdullah Al-Khudair","id":"Abdul Karim Abdullah Al-Khudair","ja":"アブドゥルカリーム・アブドゥッラー・アル＝フダイル","zh":"阿卜杜勒·卡里姆·阿卜杜拉·胡代尔","ru":"Абд аль-Карим Абдуллах аль-Худайр","bn":"عبد الكريم عبد الله الخضير","pt":"عبد الكريم عبد الله الخضير","hi":"عبد الكريم عبد الله الخضير"},"href":"authors/040/4027.html"}],"died":null,"living":false,"era":"unknown","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"شروحات","subLabel":"شروحات","subLabels":{"en":"Commentaries","fr":"Commentaires","es":"Comentarios","ur":"شروحات","tr":"Şerhler","sw":"Sharh","id":"Syarah","ja":"注釈","zh":"注释","ru":"Комментарии","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"90"},{"id":115455,"href":"catalogue/1154/115455.html","cover":"catalogue/1154/115455.jpg","title":"شرح كتاب التوحيد من صحيح البخاري - العثيمين","titles":{"en":"Explanation of the Book of Monotheism from Sahih al-Bukhari - Al-Uthaymeen","fr":"Commentaire du Livre de l'unicité du Sahih al-Bukhari — al-Uthaymin","es":"Comentario del Libro del monoteísmo del Sahih al-Bujari - al-Uthaymin","ur":"شرح كتاب التوحيد من صحيح البخاري - العثيمين (صحیح بخاری کی کتاب التوحید کی شرح۔ عثیمین)","tr":"Buhârî’nin Sahih’inde Tevhid Kitabı Şerhi — Useymîn","sw":"Sharh Kitab al-Tawhid min Sahih al-Bukhari (Ufafanuzi wa Kitabu cha Tawhidi kutoka Sahih al-Bukhari) — al-Uthaymin","id":"Syarah Kitab At-Tauhid dari Shahih Al-Bukhari — Al-Utsaimin","ja":"サヒーフ・アル＝ブハーリー所収『タウヒードの書』注釈―アル＝ウサイミーン","zh":"《布哈里圣训实录·认主独一篇》注释——欧赛敏","ru":"Комментарий к главе о единобожии из «Сахих аль-Бухари» — аль-Усаймин","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"التوحيد","subLabel":"التوحيد","subLabels":{"en":"Monotheism","fr":"Tawhid","es":"Unicidad de Allah","ur":"توحید","tr":"Tevhid","sw":"Tawhidi","id":"Tauhid","ja":"タウヒード","zh":"认主独一","ru":"Единобожие","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"224"},{"id":110452,"href":"catalogue/1104/110452.html","cover":"catalogue/1104/110452.jpg","title":"شرح كتاب التوحيد من صحيح البخاري- العثيمين","titles":{"en":"Explanation of the Book of Monotheism from Sahih al-Bukhari - Al-Othaymeen","fr":"Commentaire du Kitab al-Tawhid (Livre de l'unicité divine) dans le Sahih al-Bukhari — al-Uthaymin","es":"Comentario del Kitab al-Tawhid de Sahih al-Bukhari - al-Uthaymin","ur":"شرح كتاب التوحيد من صحيح البخاري- العثيمين (صحیح بخاری کی کتاب التوحید کی شرح — العثيمين)","tr":"Sahîh-i Buhârî'deki Tevhid Kitabı'nın Şerhi – İbn Useymîn","sw":"Sharh Kitab al-Tawhid min Sahih al-Bukhari (Ufafanuzi wa Kitabu cha Tawhidi kutoka Sahih al-Bukhari) - al-Uthaymin","id":"Penjelasan Kitab Tauhid dalam Shahih Al-Bukhari – Al-Utsaimin","ja":"ブハーリーのサヒーフにおけるタウヒードの書の解説―アル＝ウサイミーン","zh":"《布哈里圣训实录〈认主独一篇〉注释——奥赛敏》","ru":"Толкование книги единобожия из «Сахиха» аль-Бухари — аль-Усаймин","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"التوحيد","subLabel":"التوحيد","subLabels":{"en":"Monotheism","fr":"Tawhid","es":"Unicidad de Allah","ur":"توحید","tr":"Tevhid","sw":"Tawhidi","id":"Tauhid","ja":"タウヒード","zh":"认主独一","ru":"Единобожие","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"836"},{"id":104370,"href":"catalogue/1043/104370.html","cover":"catalogue/1043/104370.jpg","title":"شرح كتاب التوحيد- الخضير","titles":{"en":"Explanation of the Book of Monotheism - Al-Khudair","fr":"Commentaire du Kitab al-Tawhid – al-Khudayr","es":"Explicación del Libro del monoteísmo — al-Khudayr","ur":"شرح كتاب التوحيد- الخضير (کتاب التوحید کی شرح—الخضیر)","tr":"Kitâbü’t-Tevhîd Şerhi – el-Hudayr","sw":"Ufafanuzi wa Kitabu cha Tawhid – al-Khudayr","id":"Syarh Kitab At-Tauhid [Penjelasan Kitab Tauhid] – Al-Khudhair","ja":"『タウヒードの書』注解—フダイル","zh":"《认主独一之书注释》—胡代尔","ru":"Комментарий к «Китаб ат-таухид», аль-Худайр","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"عبد الكريم عبد الله الخضير","names":{"en":"Abdul Karim Abdullah Al-Khudair","fr":"Abd al-Karim Abd Allah al-Khudair","es":"Abdul Karim Abdullah al-Khudair","ur":"عبد الكريم عبد الله الخضير","tr":"Abdülkerîm Abdullah el-Hudayr","sw":"Abdul Karim Abdullah Al-Khudair","id":"Abdul Karim Abdullah Al-Khudair","ja":"アブドゥルカリーム・アブドゥッラー・アル＝フダイル","zh":"阿卜杜勒·卡里姆·阿卜杜拉·胡代尔","ru":"Абд аль-Карим Абдуллах аль-Худайр","bn":"عبد الكريم عبد الله الخضير","pt":"عبد الكريم عبد الله الخضير","hi":"عبد الكريم عبد الله الخضير"},"href":"authors/040/4027.html"}],"died":null,"living":false,"era":"unknown","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"التوحيد","subLabel":"التوحيد","subLabels":{"en":"Monotheism","fr":"Tawhid","es":"Unicidad de Allah","ur":"توحید","tr":"Tevhid","sw":"Tawhidi","id":"Tauhid","ja":"タウヒード","zh":"认主独一","ru":"Единобожие","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"245"}]
+    </script>
+    <script
+      type="application/json"
+      data-list
+    >
+      {"list":"catalogue","category":null,"sub":null,"era":null,"page":49,"pages":77,"total":1909,"perPage":25,"eraCounts":{"all":1909,"salaf":2,"mutaqaddimun":9,"mutaakhkhirun":218,"muasirun":784,"unknown":896},"categoryLabel":null,"categoryLabels":null,"subLabel":null,"subLabels":null}
+    </script>
+
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Resources</div>
+        <div class="mt-2 flex flex-wrap items-center gap-2">
+          <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-text="count(':count result|:count results', total)" data-flux-subheading>
+    
+</div>
+
+          <template x-if="category !== ''">
+            <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-category">
+        <svg class="shrink-0 [:where(&amp;)]:size-4 size-3" data-flux-badge-icon="data-flux-badge-icon" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v2.879a2.5 2.5 0 0 0 .732 1.767l4.5 4.5a2.5 2.5 0 0 0 3.536 0l2.878-2.878a2.5 2.5 0 0 0 0-3.536l-4.5-4.5A2.5 2.5 0 0 0 7.38 2H4.5ZM5 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
+</svg>
+
+            
+    <span x-text="categoryLabel"></span>
+              <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('category', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+          </template>
+
+          <template x-if="category !== '' && sub !== ''">
+            <span class="flex items-center gap-2">
+              <svg class="shrink-0 [:where(&amp;)]:size-4 text-zinc-400 rtl:rotate-180" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-sub-category">
+        <span x-text="subLabel"></span>
+                <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('sub', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+            </span>
+          </template>
+        </div>
+      </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white" data-flux-button="data-flux-button" x-show="hasFilters" x-cloak="x-cloak" x-on:click="clearFilters()">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Clear filters</span>
+    </button>
+    </div>
+
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+      <div
+  class="inline-flex max-w-full overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-700 dark:bg-zinc-800/80"
+  role="radiogroup"
+  aria-label="Era"
+  data-test="era-filter"
+>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === ''"
+      x-on:click="choose('era', '')"
+      x-bind:disabled="era !== '' && eraCounts['all'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === ''          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-all"
+    >
+      All
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === '' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['all'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'salaf'"
+      x-on:click="choose('era', 'salaf')"
+      x-bind:disabled="era !== 'salaf' && eraCounts['salaf'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'salaf'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-salaf"
+    >
+      Salaf
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'salaf' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t="to :year AH" data-r="{&quot;year&quot;:300}">to 300 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['salaf'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaqaddimun'"
+      x-on:click="choose('era', 'mutaqaddimun')"
+      x-bind:disabled="era !== 'mutaqaddimun' && eraCounts['mutaqaddimun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaqaddimun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaqaddimun"
+    >
+      Mutaqaddimun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaqaddimun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:301,&quot;to&quot;:656}">301–656 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaqaddimun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaakhkhirun'"
+      x-on:click="choose('era', 'mutaakhkhirun')"
+      x-bind:disabled="era !== 'mutaakhkhirun' && eraCounts['mutaakhkhirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaakhkhirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaakhkhirun"
+    >
+      Muta&#039;akhkhirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaakhkhirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:657,&quot;to&quot;:1265}">657–1265 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaakhkhirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'muasirun'"
+      x-on:click="choose('era', 'muasirun')"
+      x-bind:disabled="era !== 'muasirun' && eraCounts['muasirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'muasirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-muasirun"
+    >
+      Mu&#039;asirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'muasirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":year AH on, or living" data-r="{&quot;year&quot;:1266}">1266 AH on, or living</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['muasirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'unknown'"
+      x-on:click="choose('era', 'unknown')"
+      x-bind:disabled="era !== 'unknown' && eraCounts['unknown'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'unknown'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-unknown"
+    >
+      Unknown
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'unknown' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline">no year ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['unknown'])"
+        ></span>
+      </span>
+    </button>
+  </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-show="category !== ''" x-cloak="x-cloak" x-on:click="showSubs = !showSubs" x-bind:aria-pressed="showSubs" data-test="toggle-sub-categories">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M3 4.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6.25 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 7.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 11.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM4 12.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/>
+</svg>
+
+                
+                    
+            
+            <span><span x-show="!showSubs">Show sub-categories</span>
+        <span
+          x-show="showSubs"
+          x-cloak
+        >
+          Hide sub-categories
+        </span></span>
+    </button>
+    </div>
+
+    <div class="flex flex-col gap-6 lg:flex-row">
+      <aside
+        class="lg:w-72 lg:shrink-0"
+        x-show="category !== '' && showSubs"
+        x-cloak
+        data-test="sub-categories"
+      >
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" data-flux-heading>Sub-categories</div>
+
+        <div class="w-full relative block group/input mb-2" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd"/>
+</svg>
+
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="subFilter" placeholder="Filter sub-categories..."
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="subCategories.length === 0" data-flux-text >No sub-categories.</p>
+        <nav class="flex max-h-[70vh] flex-col overflow-y-auto">
+          <template
+            x-for="entry in subCategories"
+            :key="entry.value"
+          >
+            <button
+              type="button"
+              class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-lg px-3 text-start text-sm font-medium lg:h-8"
+              x-bind:class="
+                sub === entry.value
+                  ? 'bg-white text-zinc-800 shadow-xs dark:bg-white/[7%] dark:text-white'
+                  : 'text-zinc-500 hover:bg-zinc-800/5 hover:text-zinc-800 dark:text-white/80 dark:hover:bg-white/[7%] dark:hover:text-white'
+              "
+              x-on:click="choose('sub', sub === entry.value ? '' : entry.value)"
+            >
+              <span
+                class="flex-1 truncate"
+                dir="auto"
+                x-text="entry.label"
+              ></span>
+              <span
+                class="rounded-sm bg-zinc-400/15 px-1.5 py-0.5 text-xs tabular-nums dark:bg-white/10"
+                x-text="format(entry.count)"
+              ></span>
+            </button>
+          </template>
+        </nav>
+      </aside>
+
+      <div class="min-w-0 flex-1">
+        <div
+          class="rounded-xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700"
+          x-show="total === 0"
+          x-cloak
+        >
+          <svg class="shrink-0 [:where(&amp;)]:size-6 mx-auto mb-3 size-8 text-zinc-400" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+</svg>
+
+                  <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>No resources found</div>
+        </div>
+
+        <div x-show="total > 0">
+          <div class="flex flex-col  " >
+    
+
+    <ui-table-scroll-area class="overflow-auto">
+        <table class="[:where(&amp;)]:min-w-full table-fixed border-separate border-spacing-0 isolate text-zinc-800 whitespace-nowrap [&amp;_dialog]:whitespace-normal [&amp;_[popover]]:whitespace-normal" data-flux-table>
+            <thead class="" data-flux-columns>
+    <tr >
+        <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Title</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Author</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Category</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Death year</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Published</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Pages</div>
+    </th>
+    </tr>
+</thead>
+
+            <tbody  data-flux-rows>
+    <template
+                x-for="row in shown"
+                :key="row.id"
+              >
+                <tr  class="" data-flux-row>
+    <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 relative max-w-md align-top whitespace-normal" data-flux-cell>
+    <div class="flex items-start gap-3">
+                      <div class="flex w-14 shrink-0 flex-col items-center gap-1 lg:w-10">
+                        <a
+                          x-bind:href="row.href"
+                          class="relative shrink-0"
+                          tabindex="-1"
+                          aria-hidden="true"
+                        >
+                          <template x-if="row.cover">
+                            <img
+                              x-bind:src="row.cover"
+                              alt=""
+                              loading="lazy"
+                              class="h-14 w-10 rounded border border-zinc-200 bg-white object-cover object-top shadow-sm dark:border-zinc-700"
+                            />
+                          </template>
+                          <template x-if="!row.cover">
+                            <div
+                              class="flex h-14 w-10 flex-col items-center justify-center gap-0.5 rounded border border-zinc-200 bg-zinc-50 font-semibold tracking-wide text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+                            >
+                              <svg class="shrink-0 [:where(&amp;)]:size-6 size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+                                    </div>
+                          </template>
+                        </a>
+                      </div>
+
+                      <div class="min-w-0">
+                        <a
+                          x-bind:href="row.href"
+                          class="font-medium text-zinc-800 hover:underline dark:text-white"
+                          dir="auto"
+                          x-text="tx(row.title, row.titles)"
+                        ></a>
+                        <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50 ms-2" x-show="row.type">
+        <span x-text="tx(row.type, row.types)"></span>
+    </div>
+                        <div
+                          class="text-sm text-zinc-500 dark:text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(row.title, row.titles) !== row.title"
+                          x-text="row.title"
+                        ></div>
+                        <span
+                          class="mt-1 block text-sm text-zinc-500 lg:hidden dark:text-zinc-400"
+                          x-show="row.categoryLabel"
+                          x-text="tx(row.categoryLabel, row.categoryLabels)"
+                        ></span>
+                      </div>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 max-w-56 align-top whitespace-normal" data-flux-cell>
+    <template
+                      x-for="(author, index) in row.authors"
+                      :key="index"
+                    >
+                      <div>
+                        <a
+                          class="hover:underline"
+                          x-bind:href="author.href"
+                          dir="auto"
+                          x-text="tx(author.name, author.names)"
+                        ></a>
+                        <div
+                          class="text-sm text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(author.name, author.names) !== author.name"
+                          x-text="author.name"
+                        ></div>
+                      </div>
+                    </template>
+                    <div class="mt-1 text-sm text-zinc-500 lg:hidden dark:text-zinc-400">
+                      <span
+                        class="block"
+                        x-show="row.died"
+                        x-text="died(row)"
+                      ></span>
+                      <span
+                        class="block"
+                        dir="auto"
+                        x-show="row.published"
+                        x-text="tx(row.published, row.publishedTranslations)"
+                      ></span>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden max-w-56 align-top whitespace-normal lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.categoryLabel, row.categoryLabels)"
+                    ></span>
+                    <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" dir="auto" x-show="row.sub" x-text="tx(row.subLabel, row.subLabels)" data-flux-text ></p>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium"
+                      x-bind:class="
+                        row.living
+                          ? 'bg-emerald-400/15 text-emerald-700 dark:bg-emerald-400/40 dark:text-emerald-200'
+                          : 'bg-zinc-400/15 text-zinc-700 dark:bg-zinc-400/40 dark:text-zinc-200'
+                      "
+                      x-show="row.died"
+                      x-text="died(row)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.published, row.publishedTranslations)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top lg:table-cell" data-flux-cell>
+    <span x-text="row.pages ?? ''"></span>
+</td>
+</tr>
+              </template>
+</tbody>
+        </table>
+    </ui-table-scroll-area>
+
+    
+
+    </div>
+
+          <div
+  class="@container flex items-center justify-between gap-3 border-t border-zinc-100 pt-3 dark:border-zinc-700"
+  x-show="total > 0"
+  data-flux-pagination
+>
+  <div class="text-xs font-medium whitespace-nowrap text-zinc-500 dark:text-zinc-400">
+    Showing
+    <span x-text="(page - 1) * perPage + 1"></span>
+    to
+    <span x-text="Math.min(page * perPage, total)"></span>
+    of
+    <span x-text="total"></span>
+    results
+  </div>
+
+  <div
+    class="flex items-center rounded-[8px] border border-zinc-200 bg-white p-[1px] dark:border-white/10 dark:bg-white/10"
+    x-show="pages > 1"
+  >
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page - 1)"
+      x-bind:disabled="page <= 1"
+      aria-label="&amp;laquo; Previous"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+
+    <template
+      x-for="(link, index) in pageLinks"
+      :key="index"
+    >
+      <div class="hidden @[40rem]:contents">
+        <template x-if="link === '...'">
+          <div
+            class="flex size-6 cursor-default items-center justify-center rounded-[6px] text-xs font-medium text-zinc-400 dark:text-zinc-400"
+          >
+            ...
+          </div>
+        </template>
+        <template x-if="link === page">
+          <div
+            aria-current="page"
+            class="flex h-6 cursor-default items-center justify-center rounded-[6px] px-2 text-xs font-medium text-zinc-800 dark:text-white"
+            x-text="link"
+          ></div>
+        </template>
+        <template x-if="link !== '...' && link !== page">
+          <button
+            type="button"
+            class="h-6 rounded-[6px] px-2 text-xs font-medium text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/20 dark:hover:text-white"
+            x-on:click="turn(link)"
+            x-text="link"
+          ></button>
+        </template>
+      </div>
+    </template>
+
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page + 1)"
+      x-bind:disabled="page >= pages"
+      aria-label="Next &amp;raquo;"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+    </div>
+
+  
+  <script src="../../../../../assets/static.js?v=be69322f0f"></script>
+</body>
+</html>

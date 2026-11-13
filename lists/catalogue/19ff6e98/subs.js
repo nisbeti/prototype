@@ -1,0 +1,2 @@
+window.bahithSubs = window.bahithSubs || {};
+window.bahithSubs["19ff6e98"] = [{"key":"5a5cb872","label":"مكتبات ومصادر للجميع","labels":{"en":"Libraries and Sources for Everyone","fr":"Bibliothèques et ressources pour tous","es":"Bibliotecas y fuentes para todos","ur":"سب کے لیے کتب خانے اور مآخذ","tr":"Herkese açık kütüphaneler ve kaynaklar","sw":"Maktaba na vyanzo kwa wote","id":"Perpustakaan dan sumber daya untuk semua","ja":"図書館と一般向け資料","zh":"面向所有人的图书馆与资料","ru":"Библиотеки и общедоступные источники","bn":null,"pt":null,"hi":null},"counts":{"all":1,"unknown":1}}];

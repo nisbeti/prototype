@@ -1,0 +1,719 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root="../../../../../"
+  data-section="items"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Resources</title>
+  <link
+    rel="icon"
+    href="../../../../../assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="../../../../../assets/static.css?v=be69322f0f"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="../../../../../assets/i18n.js?v=be69322f0f"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../../../assets/frame.js?v=be69322f0f"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section
+    class="w-full"
+    x-data="staticList({ kind: 'items' })"
+  >
+    <script
+      type="application/json"
+      data-rows
+    >
+      [{"id":158568,"href":"catalogue/1585/158568.html","cover":"catalogue/1585/158568.jpg","title":"مختصر مغني اللبيب عن كتب الأعاريب لابن هشام الأنصاري","titles":{"en":"A Summary of the Elucidation of the Lubb of the Books of Syntax by Ibn Hisham Al-Ansari","fr":"Abrégé de Mughni al-Labib an Kutub al-A'arib d'Ibn Hisham al-Ansari","es":"Resumen de Mughni al-Labib an Kutub al-A'arib de Ibn Hisham al-Ansari","ur":"مختصر مغني اللبيب عن كتب الأعاريب لابن هشام الأنصاري","tr":"İbn Hişâm el-Ensârî'nin Muğni'l-Lebîb an Kütübi'l-Eârîb'inin Muhtasarı","sw":"Muhtasari wa Mughni al-Labib an Kutub al-A'arib wa Ibn Hisham al-Ansari (Kinachomtosheleza mwenye akili kuhusu vitabu vya i'rab)","id":"Ringkasan Mughni Al-Labib 'an Kutub Al-A'arib karya Ibnu Hisyam Al-Anshari","ja":"イブン・ヒシャーム・アル＝アンサーリー『ムグニー・アル＝ラビー_b（文法書解説書からの不足を補うもの）』要約","zh":"《伊本·希沙姆·安萨里〈穆格尼·勒比卜〉简编》","ru":"Краткое изложение «Мугни аль-Лабиб» о книгах по и'рабу Ибн Хишама аль-Ансари","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"اللغة العربية","categoryLabel":"اللغة العربية","categoryLabels":{"en":"Arabic Language","fr":"Langue arabe","es":"Lengua árabe","ur":"عربی زبان","tr":"Arap Dili","sw":"Lugha ya Kiarabu","id":"Bahasa Arab","ja":"アラビア語","zh":"阿拉伯语","ru":"Арабский язык","bn":null,"pt":null,"hi":null},"sub":"نحو صرف","subLabel":"نحو صرف","subLabels":{"en":"Syntax and Morphology","fr":"Grammaire et morphologie","es":"Gramática y morfología árabes","ur":"نحو، صرف","tr":"Nahiv ve sarf","sw":"Sarufi na mofolojia","id":"Nahwu dan sharaf","ja":"文法・形態論","zh":"语法与词法","ru":"Грамматика и морфология","bn":null,"pt":null,"hi":null},"published":"1427هـ2006م","publishedTranslations":{"en":"1427 AH / 2006 CE","fr":"1427 H 2006","es":"1427 H 2006","ur":"1427ھ2006ء","tr":"1427 H 2006","sw":"1427H2006","id":"1427 H 2006","ja":"ヒジュラ暦1427年／西暦2006年","zh":"伊历1427年公元2006年","ru":"1427 г. х. 2006 г.","bn":null,"pt":null,"hi":null},"pages":"224"},{"id":166133,"href":"catalogue/1661/166133.html","cover":null,"title":"مختصر مغني اللبيب عن كتب الأعاريب لابن هشام الأنصاري","titles":{"en":"A Summary of the Elucidation of the Lubb by Ibn Hisham Al-Ansari","fr":"Abrégé de Mughni al-Labib an Kutub al-Aarib (Le suffisant pour l'homme perspicace au sujet des ouvrages de grammaire) d'Ibn Hisham al-Ansari","es":"Resumen de Mughni al-Labib an Kutub al-Aarib de Ibn Hisham al-Ansari","ur":"مختصر مغني اللبيب عن كتب الأعاريب لابن هشام الأنصاري (ابن ہشام انصاری کی کتاب مغني اللبيب عن كتب الأعاريب کا خلاصہ)","tr":"İbn Hişâm el-Ensârî'nin Muğni’l-lebîb’inin Muhtasarı","sw":"Muhtasari wa Mughni al-Labib an kutub al-A'arib wa Ibn Hisham al-Ansari","id":"Ringkasan Mughni al-Labib 'an Kutub al-A'arib karya Ibnu Hisyam Al-Anshari","ja":"イブン・ヒシャーム・アル＝アンサーリー『ムグニー・アル＝ラビーブ』の要約","zh":"《伊本·希沙姆·安萨里的〈使博学者免于语法书籍之惑〉节本》","ru":"Краткое изложение «Мугни аль-лабиб ан кутуб аль-а'ариб» Ибн Хишама аль-Ансари","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"اللغة العربية","categoryLabel":"اللغة العربية","categoryLabels":{"en":"Arabic Language","fr":"Langue arabe","es":"Lengua árabe","ur":"عربی زبان","tr":"Arap Dili","sw":"Lugha ya Kiarabu","id":"Bahasa Arab","ja":"アラビア語","zh":"阿拉伯语","ru":"Арабский язык","bn":null,"pt":null,"hi":null},"sub":"نحو","subLabel":"نحو","subLabels":{"en":"Syntax","fr":"Grammaire","es":"Gramática árabe","ur":"نحو","tr":"Arap nahvi","sw":"Sarufi","id":"Nahwu","ja":"文法","zh":"语法","ru":"Грамматика","bn":null,"pt":null,"hi":null},"published":"1417هـ 1996م","publishedTranslations":{"en":"1417 AH / 1996 CE","fr":"1417 H 1996","es":"1417 H 1996 m","ur":"1417ھ 1996ء","tr":"1417 H 1996 m","sw":"1417 H 1996 CE","id":"1417 H 1996 M","ja":"ヒジュラ暦1417年 西暦1996年","zh":"伊历1417年 公元1996年","ru":"1417 г. х. 1996 г.","bn":null,"pt":null,"hi":null},"pages":"118"},{"id":239051,"href":"catalogue/2390/239051.html","cover":"catalogue/2390/239051.jpg","title":"مختصر مغني اللبيب عن كتب الأعاريب لابن هشام الأنصاري","titles":{"en":"Summary of the Lubb of the Books of Grammar by Ibn Hisham Al-Ansari","fr":"Abrégé de Mughni al-Labib an kutub al-a'arib (Le secours du lecteur averti concernant les ouvrages des grammairiens) d'Ibn Hisham al-Ansari","es":"Epítome de Mughni al-Labib an Kutub al-Aarib (El suficiente para el inteligente acerca de los libros de gramática), de Ibn Hisham al-Ansari","ur":"مختصر مغني اللبيب عن كتب الأعاريب لابن هشام الأنصاري (ابن ہشام انصاری کی کتاب مغني اللبيب عن كتب الأعاريب کا خلاصہ)","tr":"İbn Hişâm el-Ensârî’nin Muğni’l-Lebîb an Kütübi’l-Eârîb Adlı Eserinin Muhtasarı","sw":"Muhtasari wa Mughni al-Labib kuhusu Vitabu vya Sarufi ya Kiarabu wa Ibn Hisham al-Ansari","id":"Ringkasan Mughni al-Labib tentang Kitab-Kitab I'rab karya Ibnu Hisyam al-Anshari","ja":"イブン・ヒシャーム・アンサーリー著『ムグニー・アル＝ラビーブ・アン・クトゥブ・アル＝アアーリーブ』要約","zh":"《伊本·希沙姆·安萨里的〈阿拉伯语语法书籍指南〉节选》","ru":"Краткое изложение книги «Мугни аль-лябиб ан кутуб аль-арабиб» Ибн Хишама аль-Ансари","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"اللغة العربية","categoryLabel":"اللغة العربية","categoryLabels":{"en":"Arabic Language","fr":"Langue arabe","es":"Lengua árabe","ur":"عربی زبان","tr":"Arap Dili","sw":"Lugha ya Kiarabu","id":"Bahasa Arab","ja":"アラビア語","zh":"阿拉伯语","ru":"Арабский язык","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1444هـ 2023م","publishedTranslations":{"en":"1444 AH / 2023 CE","fr":"1444 H 2023","es":"1444 H 2023","ur":"1444ھ 2023ء","tr":"1444 H 2023","sw":"1444 H 2023","id":"1444 H 2023 M","ja":"ヒジュラ暦1444年／西暦2023年","zh":"伊历1444年／公元2023年","ru":"1444 г. х. / 2023 г.","bn":null,"pt":null,"hi":null},"pages":"177"},{"id":104303,"href":"catalogue/1043/104303.html","cover":null,"title":"مذكرة على العقيدة الواسطية","titles":{"en":"A Commentary on the Al-Wasitiyyah Creed","fr":"Notes sur la croyance d'al-Wasitiyya","es":"Apuntes sobre la Aqida Wasitiyya","ur":"مذكرة على العقيدة الواسطية","tr":"el-Akîdetü’l-Vâsıtıyye Üzerine Notlar","sw":"Mudhakkira ala al-Aqida al-Wasitiyya (Maelezo ya masomo kuhusu Aqida ya Wasitiyya)","id":"Catatan tentang Akidah Wasithiyah","ja":"ワースィティーヤ信条に関する覚書","zh":"《瓦西提信条札记》","ru":"Записки к «аль-акыда аль-Васитыйя»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"عقيدة السلف","subLabel":"عقيدة السلف","subLabels":{"en":"Salafi Creed","fr":"Doctrine des pieux prédécesseurs","es":"Credo de los salaf","ur":"سلف کا عقیدہ","tr":"Selef akidesi","sw":"Aqida ya Salaf","id":"Akidah salaf","ja":"サラフの教義","zh":"先贤派信仰","ru":"Вероубеждение праведных предшественников","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"29"},{"id":111596,"href":"catalogue/1115/111596.html","cover":null,"title":"مذكرة على العقيدة الواسطية لشيخ الإسلام ابن تيمية","titles":{"en":"A Memoir on the Al-Aqidah Al-Wasitiyyah by Sheikh Al-Islam Ibn Taymiyyah","fr":"Notes sur al-Aqida al-Wasitiyya du cheikh de l'islam Ibn Taymiyya","es":"Apuntes sobre Al-Aqidah al-Wasitiyyah de Ibn Taymiyya, el jeque del islam","ur":"مذكرة على العقيدة الواسطية لشيخ الإسلام ابن تيمية","tr":"Şeyhülislâm İbn Teymiyye’nin el-Akîdetü’l-Vâsıtıyye’si üzerine notlar","sw":"Dokezo kuhusu al-Aqida al-Wasitiyya (Itikadi ya Wasit) la Ibn Taymiyya","id":"Catatan tentang Al-Aqidah Al-Wasithiyah karya Syaikhul Islam Ibnu Taimiyah","ja":"イスラームの権威イブン・タイミーヤの『ワースィティーヤ信条』についての覚書","zh":"伊本·泰米叶《瓦西提信条》注释讲义","ru":"Заметки к «Аль-Акида аль-Васитыйя» шейха ислама Ибн Таймийи","bn":null,"pt":null,"hi":null},"type":"بحث","types":{"en":"Research Paper","fr":"Recherche","es":"Investigación","ur":"تحقیق","tr":"Araştırma","sw":"Utafiti","id":"Penelitian","ja":"研究","zh":"研究","ru":"Исследование","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"عقيدة السلف","subLabel":"عقيدة السلف","subLabels":{"en":"Salafi Creed","fr":"Doctrine des pieux prédécesseurs","es":"Credo de los salaf","ur":"سلف کا عقیدہ","tr":"Selef akidesi","sw":"Aqida ya Salaf","id":"Akidah salaf","ja":"サラフの教義","zh":"先贤派信仰","ru":"Вероубеждение праведных предшественников","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"30"},{"id":242636,"href":"catalogue/2426/242636.html","cover":"catalogue/2426/242636.jpg","title":"مذكرة على العقيدة الواسطية لشيخ الإسلام ابن تيمية","titles":{"en":"Memorandum on the Al-Wasitiyyah Creed of Sheikh Al-Islam Ibn Taymiyyah","fr":"Notes sur al-Aqida al-Wasitiyya de Shaykh al-Islam Ibn Taymiyya","es":"Comentario sobre al-Aqida al-Wasitiyya de Ibn Taymiyya","ur":"مذكرة على العقيدة الواسطية لشيخ الإسلام ابن تيمية","tr":"Şeyhülislâm İbn Teymiyye’nin el-Akîdetü’l-Vâsıtıyye’si Üzerine Notlar","sw":"Mudhakkira kuhusu Al-Aqidah al-Wasitiyya ya Sheikh al-Islam Ibn Taymiyya","id":"Catatan tentang Akidah Wasithiyah karya Syaikhul Islam Ibnu Taimiyah","ja":"シャイフ・アル＝イスラーム、イブン・タイミーヤの『ワースィティーヤ信条』注解ノート","zh":"《伊斯兰教长伊本·泰米叶的《瓦西提信仰纲要》注释》","ru":"Заметки к «Акыде аль-Васитыйя» шейха ислама Ибн Таймийи","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1442هـ 2021م","publishedTranslations":{"en":"1442 AH / 2021 CE","fr":"1442 H 2021","es":"1442 H 2021","ur":"1442ھ 2021ء","tr":"1442 H 2021","sw":"1442H 2021","id":"1442 H 2021 M","ja":"ヒジュラ暦1442年／西暦2021年","zh":"伊历1442年／公元2021年","ru":"1442 г. х. / 2021 г.","bn":null,"pt":null,"hi":null},"pages":"88"},{"id":104304,"href":"catalogue/1043/104304.html","cover":"catalogue/1043/104304.jpg","title":"مذكرة على العقيدة الواسطية- ط مدار الوطن","titles":{"en":"Memorandum on the Al-Wasitiyyah Creed - Dar Al-Watan","fr":"Notes sur la croyance d'al-Wasitiyya — édition Madar al-Watan","es":"Apuntes sobre la Aqida Wasitiyya - ed. Madar al-Watan","ur":"مذكرة على العقيدة الواسطية- ط مدار الوطن","tr":"el-Akîdetü’l-Vâsıtıyye Üzerine Notlar – Madârü’l-Vatan Baskısı","sw":"Mudhakkira ala al-Aqida al-Wasitiyya (Maelezo ya masomo kuhusu Aqida ya Wasitiyya) - toleo la Madar al-Watan","id":"Catatan tentang Akidah Wasithiyah – Cetakan Madar al-Wathan","ja":"ワースィティーヤ信条に関する覚書―マダール・アル＝ワタン版","zh":"《瓦西提信条札记》—祖国轨道出版社版","ru":"Записки к «аль-акыда аль-Васитыйя» — издание Мадар аль-Ватан","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"عقيدة السلف","subLabel":"عقيدة السلف","subLabels":{"en":"Salafi Creed","fr":"Doctrine des pieux prédécesseurs","es":"Credo de los salaf","ur":"سلف کا عقیدہ","tr":"Selef akidesi","sw":"Aqida ya Salaf","id":"Akidah salaf","ja":"サラフの教義","zh":"先贤派信仰","ru":"Вероубеждение праведных предшественников","bn":null,"pt":null,"hi":null},"published":"1426","publishedTranslations":{"en":"1426 AH","fr":"1426","es":"1426","ur":"1426","tr":"1426","sw":"1426","id":"1426","ja":"ヒジュラ暦1426年","zh":"伊历1426年","ru":"1426","bn":null,"pt":null,"hi":null},"pages":"96"},{"id":200519,"href":"catalogue/2005/200519.html","cover":"catalogue/2005/200519.jpg","title":"مذكرة فقه","titles":{"en":"Memorandum of Jurisprudence","fr":"Mémoire de jurisprudence","es":"Apuntes de jurisprudencia islámica","ur":"مذكرة فقه","tr":"Fıkıh Notları","sw":"Dokezo la fiqhi","id":"Catatan Fikih","ja":"法学ノート","zh":"法学笔记","ru":"Записки по фикху","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العلماء والمفكرون","categoryLabel":"العلماء والمفكرون","categoryLabels":{"en":"Scholars and Thinkers","fr":"Savants et penseurs","es":"Ulemas e intelectuales","ur":"علماء اور مفکرین","tr":"Âlimler ve Düşünürler","sw":"Wanazuoni na wanafikra","id":"Ulama dan Pemikir","ja":"学者・思想家","zh":"学者与思想家","ru":"Учёные и мыслители","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1425هـ 2004م","publishedTranslations":{"en":"1425 AH / 2004 CE","fr":"1425 H 2004","es":"1425 H 2004","ur":"1425ھ 2004ء","tr":"1425 H 2004","sw":"1425H 2004M","id":"1425 H 2004 M","ja":"ヒジュラ暦1425年／西暦2004年","zh":"伊历1425年／公元2004年","ru":"1425 г. х. 2004 г.","bn":null,"pt":null,"hi":null},"pages":"1683"},{"id":46179,"href":"catalogue/461/46179.html","cover":"catalogue/461/46179.jpg","title":"مذكرة فقه- دار البصيرة","titles":{"en":"Memorandum on Jurisprudence - Dar Al-Basira","fr":"Notes de droit musulman — Dar al-Basira","es":"Apuntes de derecho islámico — Dar al-Basira","ur":"مذكرة فقه- دار البصيرة (فقہ کا نوٹس—دار البصيرة)","tr":"Fıkıh Notları - Dar al-Basira","sw":"Dokezo la fiqhi - Dar al-Basira","id":"Catatan Fikih - Dar al-Bashirah","ja":"フィクフ覚書―ダール・アル＝バスィーラ","zh":"《教法学讲义》—明证出版社","ru":"Записки по фикху — Дар аль-Басира","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"فقه عام","subLabel":"فقه عام","subLabels":{"en":"General Jurisprudence","fr":"Jurisprudence générale","es":"Jurisprudencia general","ur":"عمومی فقہ","tr":"Genel fıkıh","sw":"Fiqhi ya jumla","id":"Fikih umum","ja":"一般法学","zh":"一般法学","ru":"Общее исламское право","bn":null,"pt":null,"hi":null},"published":"1425هـ 2004 م","publishedTranslations":{"en":"1425 AH / 2004 CE","fr":"1425 H 2004","es":"1425 H 2004","ur":"1425ھ 2004ء","tr":"1425 H 2004","sw":"1425 H 2004","id":"1425 H 2004 M","ja":"ヒジュラ暦1425年／西暦2004年","zh":"伊历1425年／公元2004年","ru":"1425 г. х. / 2004 г.","bn":null,"pt":null,"hi":null},"pages":"1683"},{"id":183064,"href":"catalogue/1830/183064.html","cover":"catalogue/1830/183064.jpg","title":"مذكرة فقه- دار الغد","titles":{"en":"Memoir of Jurisprudence - Dar Al-Ghad","fr":"Notes de jurisprudence – Dar al-Ghad","es":"Apuntes de jurisprudencia — Dar al-Ghad","ur":"مذكرة فقه- دار الغد (فقہ کے نوٹس — دار الغد)","tr":"Fıkıh notları — Dar al-Ghad","sw":"Dokezo la Fiqhi – Dar al-Ghad","id":"Catatan Fikih — Dar al-Ghad","ja":"法学ノート―ダール・アル＝ガド","zh":"教法学讲义——明日出版社","ru":"Конспект по фикху — Дар аль-Гад","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"فقه عام","subLabel":"فقه عام","subLabels":{"en":"General Jurisprudence","fr":"Jurisprudence générale","es":"Jurisprudencia general","ur":"عمومی فقہ","tr":"Genel fıkıh","sw":"Fiqhi ya jumla","id":"Fikih umum","ja":"一般法学","zh":"一般法学","ru":"Общее исламское право","bn":null,"pt":null,"hi":null},"published":"1428هـ 2007 م","publishedTranslations":{"en":"1428 AH / 2007 CE","fr":"1428 H 2007","es":"1428 H 2007 m","ur":"1428ھ 2007 م","tr":"1428H 2007","sw":"1428H 2007","id":"1428 H 2007 M","ja":"ヒジュラ暦1428年／西暦2007年","zh":"伊历1428年／公元2007年","ru":"1428 г. х. / 2007 г.","bn":null,"pt":null,"hi":null},"pages":"903"},{"id":59620,"href":"catalogue/596/59620.html","cover":null,"title":"مسائل في المداينة","titles":{"en":"Issues in Debt Transactions","fr":"Questions relatives aux transactions de dette","es":"Cuestiones sobre las transacciones de deuda","ur":"مسائل في المداينة","tr":"Borçlanma işlemleriyle ilgili meseleler","sw":"Masuala kuhusu madeni","id":"Masalah-masalah tentang utang-piutang","ja":"債務取引に関する諸問題","zh":"债务交易问题","ru":"Вопросы о долговых сделках","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"معاملات","subLabel":"معاملات","subLabels":{"en":"Transactions","fr":"Transactions","es":"Transacciones","ur":"معاملات","tr":"Muameleler","sw":"Miamala","id":"Transaksi","ja":"取引","zh":"交易","ru":"Сделки","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"9"},{"id":61747,"href":"catalogue/617/61747.html","cover":"catalogue/617/61747.jpg","title":"مسائل في المداينة","titles":{"en":"Issues in Financial Transactions","fr":"Questions relatives aux dettes","es":"Cuestiones sobre el endeudamiento","ur":"مسائل في المداينة (قرض کے معاملات کے مسائل)","tr":"Borçlanmaya Dair Meseleler","sw":"Masuala kuhusu madeni","id":"Pembahasan tentang Utang-Piutang","ja":"債務取引に関する諸問題","zh":"债务交易问题","ru":"Вопросы, касающиеся долговых отношений","bn":null,"pt":null,"hi":null},"type":"بحث","types":{"en":"Research Paper","fr":"Recherche","es":"Investigación","ur":"تحقیق","tr":"Araştırma","sw":"Utafiti","id":"Penelitian","ja":"研究","zh":"研究","ru":"Исследование","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"10"},{"id":227659,"href":"catalogue/2276/227659.html","cover":"catalogue/2276/227659.jpg","title":"مصطلح الحديث","titles":{"en":"Terminology of Hadith","fr":"La terminologie du hadith","es":"Terminología del hadiz","ur":"مصطلح الحديث","tr":"Hadis usulü","sw":"Istilahi za hadithi","id":"Istilah Hadis","ja":"ハディース学の用語","zh":"圣训术语学","ru":"Терминология хадиса","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"بحوث حديثية","subLabel":"بحوث حديثية","subLabels":{"en":"Hadith Research","fr":"Études sur les hadiths","es":"Estudios sobre hadices","ur":"حدیثی تحقیقات","tr":"Hadis araştırmaları","sw":"Tafiti za hadithi","id":"Kajian hadis","ja":"ハディース研究","zh":"圣训研究","ru":"Исследования по хадисоведению","bn":null,"pt":null,"hi":null},"published":"1440هـ 2019م","publishedTranslations":{"en":"1440 AH / 2019 CE","fr":"1440 H 2019","es":"1440 H 2019","ur":"1440ھ 2019ء","tr":"1440H 2019","sw":"1440H 2019","id":"1440 H 2019","ja":"ヒジュラ暦1440年／西暦2019年","zh":"伊历1440年／公元2019年","ru":"1440 г. х. / 2019 г.","bn":null,"pt":null,"hi":null},"pages":"103"},{"id":247309,"href":"catalogue/2473/247309.html","cover":"catalogue/2473/247309.jpg","title":"مصطلح الحديث للسنة الثانية الثانوية","titles":{"en":"The Terminology of Hadith for the Second Year of Secondary School","fr":"Terminologie du hadith pour la deuxième année du secondaire","es":"Terminología del hadiz para el segundo curso de secundaria","ur":"مصطلح الحديث للسنة الثانية الثانوية (ثانویہ کے دوسرے سال کے لیے علمِ مصطلح الحدیث)","tr":"Lise İkinci Sınıf İçin Hadis Usulü","sw":"Istilahi za hadithi kwa kidato cha pili","id":"Mustalah Hadis untuk Kelas Dua Sekolah Menengah","ja":"高校2年生向けハディース学用語","zh":"高中二年级圣训术语学","ru":"Терминология хадиса для второго класса средней школы","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1441هـ 2020م","publishedTranslations":{"en":"1441 AH / 2020 CE","fr":"1441H 2020","es":"1441 H 2020","ur":"1441ھ 2020ء","tr":"1441 H 2020","sw":"1441H 2020","id":"1441 H 2020 M","ja":"ヒジュラ暦1441年／西暦2020年","zh":"伊历1441年／公元2020年","ru":"1441 г. х. / 2020 г.","bn":null,"pt":null,"hi":null},"pages":"106"},{"id":138977,"href":"catalogue/1389/138977.html","cover":"catalogue/1389/138977.jpg","title":"مصطلح الحديث- العثيمين","titles":{"en":"The Terminology of Hadith - Al-Othaymeen","fr":"Terminologie du hadith — al-Uthaymin","es":"Terminología del hadiz - al-Uthaymin","ur":"مصطلح الحديث (اصطلاحِ حدیث)- العثيمين","tr":"Hadis Usulü - el-Useymîn","sw":"Mustalah al-Hadith (Istilahi za Hadithi) - al-Uthaymin","id":"Musthalah Hadis—Al-Utsaimin","ja":"ハディース学用語—アル＝ウサイミーン","zh":"圣训学术语—欧赛敏","ru":"Терминология хадисов — аль-Усаймин","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"الكتب الستة","subLabel":"الكتب الستة","subLabels":{"en":"The Six Books","fr":"Les six recueils canoniques","es":"Los seis libros","ur":"کتبِ ستہ","tr":"Kütüb-i Sitte","sw":"Vitabu sita vya hadithi","id":"Enam Kitab Hadis","ja":"六大ハディース集","zh":"六大圣训集","ru":"Шесть книг хадисов","bn":null,"pt":null,"hi":null},"published":"1406هـ 1986م","publishedTranslations":{"en":"1406 AH / 1986 CE","fr":"1406 H 1986","es":"1406 H 1986","ur":"1406ھ 1986ء","tr":"1406 H 1986","sw":"1406H 1986","id":"1406 H 1986 M","ja":"ヒジュラ暦1406年／西暦1986年","zh":"伊历1406年 公元1986年","ru":"1406 г. х. / 1986 г.","bn":null,"pt":null,"hi":null},"pages":"72"},{"id":144963,"href":"catalogue/1449/144963.html","cover":"catalogue/1449/144963.jpg","title":"مصطلح الحديث- العثيمين","titles":{"en":"Terminology of Hadith - Al-Uthaymeen","fr":"Terminologie du hadith – al-Uthaymin","es":"Terminología del hadiz - al-Uthaymin","ur":"مصطلح الحديث (اصطلاحِ حدیث)- العثيمين","tr":"Hadis Usulü - Useymîn","sw":"Mustalah al-Hadith (Istilahi za Hadithi) – al-Uthaymin","id":"Mustalah Hadis – Al-Utsaimin","ja":"ハディース学用語――アル＝ウサイミーン","zh":"圣训学术语——欧赛敏版","ru":"Терминология хадиса — аль-Усаймин","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"مصطلح الحديث","subLabel":"مصطلح الحديث","subLabels":{"en":"Hadith Terminology","fr":"Terminologie du hadith","es":"Terminología del hadiz","ur":"اصطلاحِ حدیث","tr":"Hadis usulü terimleri","sw":"Istilahi ya hadithi","id":"Istilah Hadis","ja":"ハディース学用語","zh":"圣训学术语","ru":"Терминология хадиса","bn":null,"pt":null,"hi":null},"published":"1427هـ 2006م","publishedTranslations":{"en":"1427 AH / 2006 CE","fr":"1427 H 2006","es":"1427 H 2006","ur":"1427ھ 2006ء","tr":"1427H 2006","sw":"1427H 2006","id":"1427 H 2006 M","ja":"ヒジュラ暦1427年／西暦2006年","zh":"伊历1427年／公元2006年","ru":"1427 г. х. / 2006 г.","bn":null,"pt":null,"hi":null},"pages":"94"},{"id":144962,"href":"catalogue/1449/144962.html","cover":"catalogue/1449/144962.jpg","title":"مصطلح الحديث- مكتبة العلم","titles":{"en":"Terminology of Hadith - Library of Knowledge","fr":"Terminologie du hadith – Bibliothèque al-Ilm","es":"Terminología del hadiz - Biblioteca al-Ilm","ur":"مصطلح الحديث (اصطلاحِ حدیث)- مكتبة العلم","tr":"Hadis Usulü - Mektebetü’l-İlm","sw":"Mustalah al-Hadith (Istilahi za Hadithi) – Maktabat al-Ilm","id":"Mustalah Hadis – Maktabat al-Ilm","ja":"ハディース学用語――アル＝イルム書店","zh":"圣训学术语——知识图书馆版","ru":"Терминология хадиса — Библиотека аль-Ильм","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الحديث وعلومه","categoryLabel":"الحديث وعلومه","categoryLabels":{"en":"Hadith and Its Sciences","fr":"Hadith et sciences du hadith","es":"Hadiz y sus ciencias","ur":"حدیث اور علومِ حدیث","tr":"Hadis ve Hadis İlimleri","sw":"Hadithi na elimu zake","id":"Hadis dan Ilmu-Ilmunya","ja":"ハディース・ハディース学","zh":"圣训与圣训学","ru":"Хадис и хадисоведческие науки","bn":null,"pt":null,"hi":null},"sub":"مصطلح الحديث","subLabel":"مصطلح الحديث","subLabels":{"en":"Hadith Terminology","fr":"Terminologie du hadith","es":"Terminología del hadiz","ur":"اصطلاحِ حدیث","tr":"Hadis usulü terimleri","sw":"Istilahi ya hadithi","id":"Istilah Hadis","ja":"ハディース学用語","zh":"圣训学术语","ru":"Терминология хадиса","bn":null,"pt":null,"hi":null},"published":"1415هـ 1994م","publishedTranslations":{"en":"1415 AH / 1994 CE","fr":"1415 H 1994","es":"1415 H 1994","ur":"1415ھ 1994ء","tr":"1415H 1994","sw":"1415H 1994","id":"1415 H 1994 M","ja":"ヒジュラ暦1415年／西暦1994年","zh":"伊历1415年／公元1994年","ru":"1415 г. х. / 1994 г.","bn":null,"pt":null,"hi":null},"pages":"64"},{"id":200460,"href":"catalogue/2004/200460.html","cover":"catalogue/2004/200460.jpg","title":"مع رجال الحسبة توجيهات وفتاوى","titles":{"en":"With the Men of the Market: Guidance and Fatwas","fr":"Avec les agents de la hisba : conseils et fatwas","es":"Con los inspectores de la moral: orientaciones y dictámenes","ur":"مع رجال الحسبة توجيهات وفتاوى (حسبہ کے اہلکاروں کے ساتھ: رہنمائی اور فتاویٰ)","tr":"Hisbe Görevlileriyle: Yönlendirmeler ve Fetvalar","sw":"Pamoja na maafisa wa hisba: maelekezo na fatwa","id":"Bersama para petugas hisbah: arahan dan fatwa","ja":"ヒスバの担当者たちとともに――指針とファトワー","zh":"与劝善惩恶人员谈指引与教法判例","ru":"С представителями хисбы: наставления и фетвы","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العلماء والمفكرون","categoryLabel":"العلماء والمفكرون","categoryLabels":{"en":"Scholars and Thinkers","fr":"Savants et penseurs","es":"Ulemas e intelectuales","ur":"علماء اور مفکرین","tr":"Âlimler ve Düşünürler","sw":"Wanazuoni na wanafikra","id":"Ulama dan Pemikir","ja":"学者・思想家","zh":"学者与思想家","ru":"Учёные и мыслители","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1431هـ","publishedTranslations":{"en":"1431 AH","fr":"1431 H","es":"1431 H","ur":"1431ھ","tr":"1431 H","sw":"1431 H","id":"1431 H","ja":"ヒジュラ暦1431年","zh":"伊历1431年","ru":"1431 г. х.","bn":null,"pt":null,"hi":null},"pages":"266"},{"id":207245,"href":"catalogue/2072/207245.html","cover":"catalogue/2072/207245.jpg","title":"مع رجال الحسبة توجيهات وفتاوى","titles":{"en":"With the Men of Hisbah: Guidance and Fatwas","fr":"Avec les agents de la hisba : conseils et fatwas","es":"Con los agentes de la hisba: orientaciones y dictámenes jurídicos","ur":"مع رجال الحسبة توجيهات وفتاوى","tr":"Hisbe Görevlileriyle: Yönlendirmeler ve Fetvalar","sw":"Pamoja na watu wa Hisba: Mwongozo na fatwa","id":"Bersama Petugas Hisbah: Arahan dan Fatwa","ja":"ヒスバの担い手とともに――助言と法的見解","zh":"与劝善人员同行：指导与教法判例","ru":"С наставниками хисбы: наставления и фетвы","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الدعوة والاحتساب","categoryLabel":"الدعوة والاحتساب","categoryLabels":{"en":"Da'wah and Accountability","fr":"Prédication islamique et promotion du bien","es":"Predicación islámica y promoción del bien","ur":"دعوت اور احتساب","tr":"İslam’a Davet ve İyiliği Emretme","sw":"Daawa na kuhimiza mema","id":"Dakwah dan Amar Makruf Nahi Mungkar","ja":"イスラーム布教・勧善懲悪","zh":"宣教与劝善","ru":"Исламский призыв и поощрение к одобряемому","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"266"},{"id":238996,"href":"catalogue/2389/238996.html","cover":"catalogue/2389/238996.jpg","title":"مع رجال الحسبة توجيهات وفتاوى","titles":{"en":"With the Men of the Market: Guidance and Fatwas","fr":"Avec les responsables de la hisba : orientations et fatwas","es":"Con los encargados de promover el bien: orientaciones y dictámenes jurídicos","ur":"مع رجال الحسبة توجيهات وفتاوى","tr":"Hisbe Görevlileriyle Birlikte: Rehberlik ve Fetvalar","sw":"Pamoja na Watu wa Hisba: Maelekezo na Fatwa","id":"Bersama Para Petugas Hisbah: Arahan dan Fatwa","ja":"勧善懲悪を担う人々とともに：指針とファトワー","zh":"《与劝善惩恶人员共处：指导与教法判例》","ru":"С деятелями хисбы: наставления и фетвы","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الدعوة والاحتساب","categoryLabel":"الدعوة والاحتساب","categoryLabels":{"en":"Da'wah and Accountability","fr":"Prédication islamique et promotion du bien","es":"Predicación islámica y promoción del bien","ur":"دعوت اور احتساب","tr":"İslam’a Davet ve İyiliği Emretme","sw":"Daawa na kuhimiza mema","id":"Dakwah dan Amar Makruf Nahi Mungkar","ja":"イスラーム布教・勧善懲悪","zh":"宣教与劝善","ru":"Исламский призыв и поощрение к одобряемому","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1433هـ 2012م","publishedTranslations":{"en":"1433 AH / 2012 CE","fr":"1433 H 2012","es":"1433 H 2012","ur":"1433ھ 2012ء","tr":"1433 H 2012","sw":"1433 H 2012","id":"1433 H 2012 M","ja":"ヒジュラ暦1433年／西暦2012年","zh":"伊历1433年／公元2012年","ru":"1433 г. х. / 2012 г.","bn":null,"pt":null,"hi":null},"pages":"273"},{"id":115361,"href":"catalogue/1153/115361.html","cover":"catalogue/1153/115361.jpg","title":"مفتاح الوصول إلى شرح ثلاثة الأصول","titles":{"en":"Key to Understanding the Explanation of the Three Principles","fr":"Miftah al-Wusul ila Sharh Thalathat al-Usul (La clé pour accéder au commentaire des Trois fondements)","es":"La llave para llegar a la explicación de Los tres principios","ur":"مفتاح الوصول إلى شرح ثلاثة الأصول","tr":"Miftâhu’l-vusûl ilâ şerhi selâseti’l-usûl (Üç esasın şerhine ulaşmanın anahtarı)","sw":"Miftah al-Wusul ila Sharh Thalathat al-Usul (Ufunguo wa kufikia ufafanuzi wa Misingi Mitatu)","id":"Kunci untuk Memahami Syarah Tsalatsah al-Ushul (Tiga Prinsip Dasar)","ja":"三つの根本原則の解説への道しるべ","zh":"《通达〈三项根本原则〉注释之钥》","ru":"Ключ к достижению цели: комментарий к «Трем основам»","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"العقيدة والمذاهب والأديان","categoryLabel":"العقيدة والمذاهب والأديان","categoryLabels":{"en":"Theology, Sects, and Religions","fr":"Croyance, courants doctrinaux et religions","es":"Credo, escuelas y religiones","ur":"عقیدہ، مذاہب اور ادیان","tr":"İnanç, Mezhepler ve Dinler","sw":"Aqida, madhehebu na dini","id":"Akidah, Mazhab, dan Agama","ja":"信条・学派・宗教","zh":"信仰、教派与宗教","ru":"Вероубеждение, течения и религии","bn":null,"pt":null,"hi":null},"sub":"التوحيد","subLabel":"التوحيد","subLabels":{"en":"Monotheism","fr":"Tawhid","es":"Unicidad de Allah","ur":"توحید","tr":"Tevhid","sw":"Tawhidi","id":"Tauhid","ja":"タウヒード","zh":"认主独一","ru":"Единобожие","bn":null,"pt":null,"hi":null},"published":"1429هـ 2008م","publishedTranslations":{"en":"1429 AH / 2008 CE","fr":"1429H 2008","es":"1429 H 2008","ur":"1429ھ 2008ء","tr":"1429 H 2008","sw":"1429H 2008","id":"1429 H 2008 M","ja":"ヒジュラ暦1429年／西暦2008年","zh":"伊历1429年 公元2008年","ru":"1429 г. х. / 2008 г.","bn":null,"pt":null,"hi":null},"pages":"256"},{"id":97857,"href":"catalogue/978/97857.html","cover":"catalogue/978/97857.jpg","title":"مكارم الأخلاق","titles":{"en":"The Virtues of Good Character","fr":"Les nobles qualités morales","es":"Las nobles virtudes","ur":"مكارم الأخلاق (اخلاقِ کریمہ)","tr":"Güzel Ahlâk","sw":"Tabia njema","id":"Kemuliaan Akhlak","ja":"高貴な徳目","zh":"高尚品德","ru":"Благородные нравы","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الزهد والرقائق","categoryLabel":"الزهد والرقائق","categoryLabels":{"en":"Asceticism and Spirituality","fr":"Ascèse et exhortations spirituelles","es":"Ascetismo y exhortaciones espirituales","ur":"زہد و رقائق","tr":"Zühd ve Kalbi Yumuşatan Eserler","sw":"Kujinyima dunia na malezi ya moyo","id":"Zuhud dan Pelembut Hati","ja":"禁欲・心を柔らかくする教え","zh":"淡泊今世与心灵修养","ru":"Аскетизм и смягчение сердец","bn":null,"pt":null,"hi":null},"sub":"رمضانيات","subLabel":"رمضانيات","subLabels":{"en":"Ramadan Topics","fr":"Le Ramadan","es":"Ramadán","ur":"رمضانیات","tr":"Ramazan konuları","sw":"Masuala ya Ramadhani","id":"Bahasan Ramadan","ja":"ラマダーン関連","zh":"斋月专题","ru":"Рамаданская тематика","bn":null,"pt":null,"hi":null},"published":"2001","publishedTranslations":{"en":"2001","fr":"2001","es":"2001","ur":"2001","tr":"2001","sw":"2001","id":"2001","ja":"西暦2001年","zh":"公元2001年","ru":"2001 г.","bn":null,"pt":null,"hi":null},"pages":"64"},{"id":98065,"href":"catalogue/980/98065.html","cover":"catalogue/980/98065.jpg","title":"مكارم الأخلاق","titles":{"en":"The Virtues of Good Character","fr":"Les nobles caractères","es":"Las nobles virtudes","ur":"مكارم الأخلاق (اخلاقِ حسنہ)","tr":"Mekârimu'l-ahlâk (Güzel Ahlak)","sw":"Makarim al-Akhlaq (Tabia Njema)","id":"Kemuliaan Akhlak","ja":"マカーリム・アル＝アフラーク","zh":"《高尚的品德》","ru":"Благородные нравы","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الزهد والرقائق","categoryLabel":"الزهد والرقائق","categoryLabels":{"en":"Asceticism and Spirituality","fr":"Ascèse et exhortations spirituelles","es":"Ascetismo y exhortaciones espirituales","ur":"زہد و رقائق","tr":"Zühd ve Kalbi Yumuşatan Eserler","sw":"Kujinyima dunia na malezi ya moyo","id":"Zuhud dan Pelembut Hati","ja":"禁欲・心を柔らかくする教え","zh":"淡泊今世与心灵修养","ru":"Аскетизм и смягчение сердец","bn":null,"pt":null,"hi":null},"sub":"الأخلاق والتزكية","subLabel":"الأخلاق والتزكية","subLabels":{"en":"Ethics and Spiritual Purification","fr":"Morale et purification spirituelle","es":"Ética y purificación espiritual","ur":"اخلاق اور تزکیہ","tr":"Ahlâk ve tezkiye","sw":"Maadili na utakaso wa nafsi","id":"Akhlak dan penyucian jiwa","ja":"道徳と心の浄化","zh":"道德与灵性净化","ru":"Нравственность и духовное очищение","bn":null,"pt":null,"hi":null},"published":"1428","publishedTranslations":{"en":"1428 AH","fr":"1428","es":"1428","ur":"1428","tr":"1428","sw":"1428","id":"1428","ja":"ヒジュラ暦1428年","zh":"伊历1428年","ru":"1428","bn":null,"pt":null,"hi":null},"pages":"55"},{"id":242815,"href":"catalogue/2428/242815.html","cover":"catalogue/2428/242815.jpg","title":"مكارم الأخلاق","titles":{"en":"The Virtues of Good Character","fr":"Les nobles qualités morales","es":"Las nobles virtudes","ur":"مكارم الأخلاق (اخلاقِ کریمانہ)","tr":"Güzel ahlak","sw":"Fadhila tukufu za tabia njema","id":"Kemuliaan Akhlak","ja":"高貴な道徳","zh":"《高尚品德》","ru":"Высокие нравственные качества","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الزهد والرقائق","categoryLabel":"الزهد والرقائق","categoryLabels":{"en":"Asceticism and Spirituality","fr":"Ascèse et exhortations spirituelles","es":"Ascetismo y exhortaciones espirituales","ur":"زہد و رقائق","tr":"Zühd ve Kalbi Yumuşatan Eserler","sw":"Kujinyima dunia na malezi ya moyo","id":"Zuhud dan Pelembut Hati","ja":"禁欲・心を柔らかくする教え","zh":"淡泊今世与心灵修养","ru":"Аскетизм и смягчение сердец","bn":null,"pt":null,"hi":null},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1436هـ 2015م","publishedTranslations":{"en":"1436 AH / 2015 CE","fr":"1436 H 2015","es":"1436 H 2015","ur":"1436ھ 2015ء","tr":"1436 H 2015","sw":"1436H 2015","id":"1436 H 2015 M","ja":"ヒジュラ暦1436年／西暦2015年","zh":"伊历1436年／公元2015年","ru":"1436 г. х. / 2015 г.","bn":null,"pt":null,"hi":null},"pages":"55"},{"id":57754,"href":"catalogue/577/57754.html","cover":"catalogue/577/57754.jpg","title":"ملخص القواعد الفقهية","titles":{"en":"Summary of Jurisprudential Rules","fr":"Résumé des règles juridiques","es":"Resumen de las máximas jurídicas islámicas","ur":"ملخص القواعد الفقهية (فقہی قواعد کا خلاصہ)","tr":"Fıkıh Kaidelerinin Özeti","sw":"Muhtasari wa kanuni za fiqhi","id":"Ringkasan Kaidah-kaidah Fikih","ja":"法学的諸原則の要約","zh":"《教法规则概要》","ru":"Краткое изложение фикховых правил","bn":null,"pt":null,"hi":null},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":null,"pt":null,"hi":null},"authors":[{"name":"محمد بن صالح العثيمين","names":{"en":"Muhammad bin Saleh Al-Uthaymeen","fr":"Muhammad ibn Saleh al-Uthaymeen","es":"Muhammad ibn Saleh al-Uthaymeen","ur":"محمد بن صالح العثيمين","tr":"Muhammed b. Sâlih el-Useymîn","sw":"Muhammad bin Saleh al-Uthaymeen","id":"Muhammad bin Saleh Al-Utsaimin","ja":"ムハンマド・イブン・サーレハ・アル＝ウサイミーン","zh":"穆罕默德·本·萨利赫·欧赛敏","ru":"Мухаммад ибн Салих аль-Усаймин","bn":"মুহাম্মদ বিন সালেহ আল-উসাইমিন","pt":"Muhammad ibn Saleh al-Uthaymeen","hi":"मुहम्मद बिन सालेह अल-उसैमीन"},"href":"authors/001/193.html"}],"died":"1421 AH","living":false,"era":"muasirun","category":"الفقه وأصوله","categoryLabel":"الفقه وأصوله","categoryLabels":{"en":"Jurisprudence and Its Principles","fr":"Jurisprudence et ses fondements","es":"Jurisprudencia y sus fundamentos","ur":"فقہ اور اصولِ فقہ","tr":"Fıkıh ve Fıkıh Usulü","sw":"Fiqhi na misingi yake","id":"Fikih dan Ushul Fikih","ja":"法学・法源学","zh":"教法与教法原理","ru":"Фикх и его основы","bn":null,"pt":null,"hi":null},"sub":"القواعد الفقهية","subLabel":"القواعد الفقهية","subLabels":{"en":"Legal Maxims","fr":"Maximes juridiques islamiques","es":"Máximas jurídicas islámicas","ur":"فقہی قواعد","tr":"Fıkıh kaideleri","sw":"Kanuni za fiqhi","id":"Kaidah fikih","ja":"法学規則","zh":"教法原则","ru":"Правовые максимы фикха","bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"20"}]
+    </script>
+    <script
+      type="application/json"
+      data-list
+    >
+      {"list":"catalogue","category":null,"sub":null,"era":"muasirun","page":30,"pages":32,"total":784,"perPage":25,"eraCounts":{"all":1909,"salaf":2,"mutaqaddimun":9,"mutaakhkhirun":218,"muasirun":784,"unknown":896},"categoryLabel":null,"categoryLabels":null,"subLabel":null,"subLabels":null}
+    </script>
+
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Resources</div>
+        <div class="mt-2 flex flex-wrap items-center gap-2">
+          <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-text="count(':count result|:count results', total)" data-flux-subheading>
+    
+</div>
+
+          <template x-if="category !== ''">
+            <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-category">
+        <svg class="shrink-0 [:where(&amp;)]:size-4 size-3" data-flux-badge-icon="data-flux-badge-icon" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v2.879a2.5 2.5 0 0 0 .732 1.767l4.5 4.5a2.5 2.5 0 0 0 3.536 0l2.878-2.878a2.5 2.5 0 0 0 0-3.536l-4.5-4.5A2.5 2.5 0 0 0 7.38 2H4.5ZM5 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
+</svg>
+
+            
+    <span x-text="categoryLabel"></span>
+              <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('category', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+          </template>
+
+          <template x-if="category !== '' && sub !== ''">
+            <span class="flex items-center gap-2">
+              <svg class="shrink-0 [:where(&amp;)]:size-4 text-zinc-400 rtl:rotate-180" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-sub-category">
+        <span x-text="subLabel"></span>
+                <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('sub', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+            </span>
+          </template>
+        </div>
+      </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white" data-flux-button="data-flux-button" x-show="hasFilters" x-cloak="x-cloak" x-on:click="clearFilters()">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Clear filters</span>
+    </button>
+    </div>
+
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+      <div
+  class="inline-flex max-w-full overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-700 dark:bg-zinc-800/80"
+  role="radiogroup"
+  aria-label="Era"
+  data-test="era-filter"
+>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === ''"
+      x-on:click="choose('era', '')"
+      x-bind:disabled="era !== '' && eraCounts['all'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === ''          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-all"
+    >
+      All
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === '' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['all'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'salaf'"
+      x-on:click="choose('era', 'salaf')"
+      x-bind:disabled="era !== 'salaf' && eraCounts['salaf'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'salaf'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-salaf"
+    >
+      Salaf
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'salaf' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t="to :year AH" data-r="{&quot;year&quot;:300}">to 300 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['salaf'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaqaddimun'"
+      x-on:click="choose('era', 'mutaqaddimun')"
+      x-bind:disabled="era !== 'mutaqaddimun' && eraCounts['mutaqaddimun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaqaddimun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaqaddimun"
+    >
+      Mutaqaddimun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaqaddimun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:301,&quot;to&quot;:656}">301–656 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaqaddimun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaakhkhirun'"
+      x-on:click="choose('era', 'mutaakhkhirun')"
+      x-bind:disabled="era !== 'mutaakhkhirun' && eraCounts['mutaakhkhirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaakhkhirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaakhkhirun"
+    >
+      Muta&#039;akhkhirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaakhkhirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:657,&quot;to&quot;:1265}">657–1265 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaakhkhirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'muasirun'"
+      x-on:click="choose('era', 'muasirun')"
+      x-bind:disabled="era !== 'muasirun' && eraCounts['muasirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'muasirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-muasirun"
+    >
+      Mu&#039;asirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'muasirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":year AH on, or living" data-r="{&quot;year&quot;:1266}">1266 AH on, or living</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['muasirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'unknown'"
+      x-on:click="choose('era', 'unknown')"
+      x-bind:disabled="era !== 'unknown' && eraCounts['unknown'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'unknown'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-unknown"
+    >
+      Unknown
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'unknown' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline">no year ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['unknown'])"
+        ></span>
+      </span>
+    </button>
+  </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-show="category !== ''" x-cloak="x-cloak" x-on:click="showSubs = !showSubs" x-bind:aria-pressed="showSubs" data-test="toggle-sub-categories">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M3 4.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6.25 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 7.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 11.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM4 12.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/>
+</svg>
+
+                
+                    
+            
+            <span><span x-show="!showSubs">Show sub-categories</span>
+        <span
+          x-show="showSubs"
+          x-cloak
+        >
+          Hide sub-categories
+        </span></span>
+    </button>
+    </div>
+
+    <div class="flex flex-col gap-6 lg:flex-row">
+      <aside
+        class="lg:w-72 lg:shrink-0"
+        x-show="category !== '' && showSubs"
+        x-cloak
+        data-test="sub-categories"
+      >
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" data-flux-heading>Sub-categories</div>
+
+        <div class="w-full relative block group/input mb-2" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd"/>
+</svg>
+
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="subFilter" placeholder="Filter sub-categories..."
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="subCategories.length === 0" data-flux-text >No sub-categories.</p>
+        <nav class="flex max-h-[70vh] flex-col overflow-y-auto">
+          <template
+            x-for="entry in subCategories"
+            :key="entry.value"
+          >
+            <button
+              type="button"
+              class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-lg px-3 text-start text-sm font-medium lg:h-8"
+              x-bind:class="
+                sub === entry.value
+                  ? 'bg-white text-zinc-800 shadow-xs dark:bg-white/[7%] dark:text-white'
+                  : 'text-zinc-500 hover:bg-zinc-800/5 hover:text-zinc-800 dark:text-white/80 dark:hover:bg-white/[7%] dark:hover:text-white'
+              "
+              x-on:click="choose('sub', sub === entry.value ? '' : entry.value)"
+            >
+              <span
+                class="flex-1 truncate"
+                dir="auto"
+                x-text="entry.label"
+              ></span>
+              <span
+                class="rounded-sm bg-zinc-400/15 px-1.5 py-0.5 text-xs tabular-nums dark:bg-white/10"
+                x-text="format(entry.count)"
+              ></span>
+            </button>
+          </template>
+        </nav>
+      </aside>
+
+      <div class="min-w-0 flex-1">
+        <div
+          class="rounded-xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700"
+          x-show="total === 0"
+          x-cloak
+        >
+          <svg class="shrink-0 [:where(&amp;)]:size-6 mx-auto mb-3 size-8 text-zinc-400" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+</svg>
+
+                  <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>No resources found</div>
+        </div>
+
+        <div x-show="total > 0">
+          <div class="flex flex-col  " >
+    
+
+    <ui-table-scroll-area class="overflow-auto">
+        <table class="[:where(&amp;)]:min-w-full table-fixed border-separate border-spacing-0 isolate text-zinc-800 whitespace-nowrap [&amp;_dialog]:whitespace-normal [&amp;_[popover]]:whitespace-normal" data-flux-table>
+            <thead class="" data-flux-columns>
+    <tr >
+        <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Title</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Author</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Category</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Death year</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Published</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Pages</div>
+    </th>
+    </tr>
+</thead>
+
+            <tbody  data-flux-rows>
+    <template
+                x-for="row in shown"
+                :key="row.id"
+              >
+                <tr  class="" data-flux-row>
+    <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 relative max-w-md align-top whitespace-normal" data-flux-cell>
+    <div class="flex items-start gap-3">
+                      <div class="flex w-14 shrink-0 flex-col items-center gap-1 lg:w-10">
+                        <a
+                          x-bind:href="row.href"
+                          class="relative shrink-0"
+                          tabindex="-1"
+                          aria-hidden="true"
+                        >
+                          <template x-if="row.cover">
+                            <img
+                              x-bind:src="row.cover"
+                              alt=""
+                              loading="lazy"
+                              class="h-14 w-10 rounded border border-zinc-200 bg-white object-cover object-top shadow-sm dark:border-zinc-700"
+                            />
+                          </template>
+                          <template x-if="!row.cover">
+                            <div
+                              class="flex h-14 w-10 flex-col items-center justify-center gap-0.5 rounded border border-zinc-200 bg-zinc-50 font-semibold tracking-wide text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+                            >
+                              <svg class="shrink-0 [:where(&amp;)]:size-6 size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+                                    </div>
+                          </template>
+                        </a>
+                      </div>
+
+                      <div class="min-w-0">
+                        <a
+                          x-bind:href="row.href"
+                          class="font-medium text-zinc-800 hover:underline dark:text-white"
+                          dir="auto"
+                          x-text="tx(row.title, row.titles)"
+                        ></a>
+                        <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50 ms-2" x-show="row.type">
+        <span x-text="tx(row.type, row.types)"></span>
+    </div>
+                        <div
+                          class="text-sm text-zinc-500 dark:text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(row.title, row.titles) !== row.title"
+                          x-text="row.title"
+                        ></div>
+                        <span
+                          class="mt-1 block text-sm text-zinc-500 lg:hidden dark:text-zinc-400"
+                          x-show="row.categoryLabel"
+                          x-text="tx(row.categoryLabel, row.categoryLabels)"
+                        ></span>
+                      </div>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 max-w-56 align-top whitespace-normal" data-flux-cell>
+    <template
+                      x-for="(author, index) in row.authors"
+                      :key="index"
+                    >
+                      <div>
+                        <a
+                          class="hover:underline"
+                          x-bind:href="author.href"
+                          dir="auto"
+                          x-text="tx(author.name, author.names)"
+                        ></a>
+                        <div
+                          class="text-sm text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(author.name, author.names) !== author.name"
+                          x-text="author.name"
+                        ></div>
+                      </div>
+                    </template>
+                    <div class="mt-1 text-sm text-zinc-500 lg:hidden dark:text-zinc-400">
+                      <span
+                        class="block"
+                        x-show="row.died"
+                        x-text="died(row)"
+                      ></span>
+                      <span
+                        class="block"
+                        dir="auto"
+                        x-show="row.published"
+                        x-text="tx(row.published, row.publishedTranslations)"
+                      ></span>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden max-w-56 align-top whitespace-normal lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.categoryLabel, row.categoryLabels)"
+                    ></span>
+                    <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" dir="auto" x-show="row.sub" x-text="tx(row.subLabel, row.subLabels)" data-flux-text ></p>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium"
+                      x-bind:class="
+                        row.living
+                          ? 'bg-emerald-400/15 text-emerald-700 dark:bg-emerald-400/40 dark:text-emerald-200'
+                          : 'bg-zinc-400/15 text-zinc-700 dark:bg-zinc-400/40 dark:text-zinc-200'
+                      "
+                      x-show="row.died"
+                      x-text="died(row)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.published, row.publishedTranslations)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top lg:table-cell" data-flux-cell>
+    <span x-text="row.pages ?? ''"></span>
+</td>
+</tr>
+              </template>
+</tbody>
+        </table>
+    </ui-table-scroll-area>
+
+    
+
+    </div>
+
+          <div
+  class="@container flex items-center justify-between gap-3 border-t border-zinc-100 pt-3 dark:border-zinc-700"
+  x-show="total > 0"
+  data-flux-pagination
+>
+  <div class="text-xs font-medium whitespace-nowrap text-zinc-500 dark:text-zinc-400">
+    Showing
+    <span x-text="(page - 1) * perPage + 1"></span>
+    to
+    <span x-text="Math.min(page * perPage, total)"></span>
+    of
+    <span x-text="total"></span>
+    results
+  </div>
+
+  <div
+    class="flex items-center rounded-[8px] border border-zinc-200 bg-white p-[1px] dark:border-white/10 dark:bg-white/10"
+    x-show="pages > 1"
+  >
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page - 1)"
+      x-bind:disabled="page <= 1"
+      aria-label="&amp;laquo; Previous"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+
+    <template
+      x-for="(link, index) in pageLinks"
+      :key="index"
+    >
+      <div class="hidden @[40rem]:contents">
+        <template x-if="link === '...'">
+          <div
+            class="flex size-6 cursor-default items-center justify-center rounded-[6px] text-xs font-medium text-zinc-400 dark:text-zinc-400"
+          >
+            ...
+          </div>
+        </template>
+        <template x-if="link === page">
+          <div
+            aria-current="page"
+            class="flex h-6 cursor-default items-center justify-center rounded-[6px] px-2 text-xs font-medium text-zinc-800 dark:text-white"
+            x-text="link"
+          ></div>
+        </template>
+        <template x-if="link !== '...' && link !== page">
+          <button
+            type="button"
+            class="h-6 rounded-[6px] px-2 text-xs font-medium text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/20 dark:hover:text-white"
+            x-on:click="turn(link)"
+            x-text="link"
+          ></button>
+        </template>
+      </div>
+    </template>
+
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page + 1)"
+      x-bind:disabled="page >= pages"
+      aria-label="Next &amp;raquo;"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+    </div>
+
+  
+  <script src="../../../../../assets/static.js?v=be69322f0f"></script>
+</body>
+</html>

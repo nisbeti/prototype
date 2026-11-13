@@ -1,0 +1,298 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root="../../../../../"
+  data-section="publishers"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Publishers</title>
+  <link
+    rel="icon"
+    href="../../../../../assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="../../../../../assets/static.css?v=be69322f0f"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="../../../../../assets/i18n.js?v=be69322f0f"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../../../assets/frame.js?v=be69322f0f"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section
+    class="w-full"
+    x-data="staticList({ kind: 'publishers' })"
+  >
+    <script
+      type="application/json"
+      data-rows
+    >
+      [{"id":106160,"href":"publishers/1061/106160.html","name":"islamhouse","names":{"en":"Islamhouse","fr":"Islamhouse","es":"Islamhouse","ur":"islamhouse","tr":"İslamhouse","sw":"Islamhouse","id":"Islamhouse","ja":"イスラームハウス","zh":"伊斯兰之家","ru":"Исламхаус","bn":"islamhouse","pt":"islamhouse","hi":"islamhouse"},"sort":"islamhouse","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":92065,"href":"publishers/920/92065.html","name":"أشرطة مفرغة","names":{"en":"Transcribed Tapes","fr":"Enregistrements transcrits","es":"Grabaciones transcritas","ur":"أشرطة مفرغة","tr":"Eşritatün müferraga","sw":"Ashrita Mufarragha","id":"Rekaman yang Ditulis Ulang","ja":"書き起こし済み録音テープ","zh":"录音带文字稿","ru":"Расшифровки аудиозаписей","bn":"أشرطة مفرغة","pt":"أشرطة مفرغة","hi":"أشرطة مفرغة"},"sort":"أشرطة مفرغة","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":90210,"href":"publishers/902/90210.html","name":"أضواء السلف","names":{"en":"Lights of the Salaf","fr":"Lumières des salaf","es":"Adwa' al-Salaf","ur":"أضواء السلف","tr":"Selef'in Işıkları","sw":"Adwa' as-Salaf","id":"Cahaya Para Salaf","ja":"サラフの光","zh":"萨拉夫之光","ru":"Светочи саляфов","bn":"أضواء السلف","pt":"أضواء السلف","hi":"أضواء السلف"},"sort":"أضواء السلف","death":0,"died":null,"living":false,"era":"unknown","count":9},{"id":105186,"href":"publishers/1051/105186.html","name":"أضواء السلف، مكتبة دار طبرية","names":{"en":"Al-Du'aa Al-Salafi, Dar Tabari Library","fr":"Adwa' al-Salaf، Bibliothèque Dar Tabari","es":"Adwa' al-Salaf, Biblioteca Dar Tabari","ur":"أضواء السلف، مكتبة دار طبرية","tr":"Advâü's-Selef، Mektebetü Dâri Taberiyye","sw":"Adwa al-Salaf، Maktabat Dar Tabari","id":"Adhwa' As-Salafi، Maktabah Dar Thabari","ja":"アドワー・アッ＝サラフィー،ダーウ・タバリーヤ図書館","zh":"萨拉菲之光、达巴里耶图书馆","ru":"Адва’ ас-Саляфи، Библиотека Дар Табрия","bn":"أضواء السلف، مكتبة دار طبرية","pt":"أضواء السلف، مكتبة دار طبرية","hi":"أضواء السلف، مكتبة دار طبرية"},"sort":"أضواء السلف، مكتبة دار طبرية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":99717,"href":"publishers/997/99717.html","name":"أفضل المطابع دهلي","names":{"en":"Afdal al-Matabi' Delhi","fr":"Afdal al-Matabi', Delhi","es":"Afdal al-Matabi', Delhi","ur":"أفضل المطابع دهلي","tr":"Delhi Efdalü'l-Metâbi","sw":"Afdal al-Matabi', Delhi","id":"Afdhal Al-Mathabi', Delhi","ja":"アフダル印刷所、デリー","zh":"德里最佳印刷社","ru":"Лучшие типографии Дели","bn":"أفضل المطابع دهلي","pt":"أفضل المطابع دهلي","hi":"أفضل المطابع دهلي"},"sort":"أفضل المطابع دهلي","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":95647,"href":"publishers/956/95647.html","name":"ألفا","names":{"en":"Alpha","fr":"Alpha","es":"Alpha","ur":"ألفا","tr":"Alfa","sw":"Alpha","id":"Alfa","ja":"アルファ","zh":"阿尔法","ru":"Альфа","bn":"ألفا","pt":"ألفا","hi":"ألفا"},"sort":"ألفا","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":99045,"href":"publishers/990/99045.html","name":"إدارة إحياء المعارف","names":{"en":"Administration of Reviving Knowledge","fr":"Administration pour la renaissance du savoir","es":"Administración para la Revitalización del Conocimiento","ur":"إدارة إحياء المعارف","tr":"Bilgiyi İhya İdaresi","sw":"Administration of Reviving Knowledge","id":"Administrasi Revitalisasi Pengetahuan","ja":"知識復興管理局","zh":"知识复兴管理处","ru":"Управление возрождения знаний","bn":"إدارة إحياء المعارف","pt":"إدارة إحياء المعارف","hi":"إدارة إحياء المعارف"},"sort":"إدارة إحياء المعارف","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":98657,"href":"publishers/986/98657.html","name":"إدارة الشؤون الإسلامية","names":{"en":"Islamic Affairs Administration","fr":"Administration des affaires islamiques","es":"Administracion de Asuntos Islamicos","ur":"إدارة الشؤون الإسلامية","tr":"İslâmî İşler İdaresi","sw":"Idarat al-Shu'un al-Islamiyya","id":"Administrasi Urusan Islam","ja":"イスラーム問題局","zh":"伊斯兰事务管理局","ru":"Управление исламских дел","bn":"إدارة الشؤون الإسلامية","pt":"إدارة الشؤون الإسلامية","hi":"إدارة الشؤون الإسلامية"},"sort":"إدارة الشؤون الإسلامية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":89908,"href":"publishers/899/89908.html","name":"إدارة الطباعة المنيرية","names":{"en":"Al-Maniriyah Printing Administration","fr":"Administration de l'imprimerie al-Muniriyya","es":"Administración de Imprenta al-Muniriyya","ur":"إدارة الطباعة المنيرية","tr":"Münîriyye Matbaacılık İdaresi","sw":"Idarat al-Tiba'a al-Muniriyya","id":"Administrasi Percetakan Al-Muniriyah","ja":"イダーラト・アッティバーア・アル＝ムニリーヤ","zh":"穆尼里亚印刷管理处","ru":"Типографское управление аль-Мунирийя","bn":"إدارة الطباعة المنيرية","pt":"إدارة الطباعة المنيرية","hi":"إدارة الطباعة المنيرية"},"sort":"إدارة الطباعة المنيرية","death":0,"died":null,"living":false,"era":"unknown","count":3},{"id":89998,"href":"publishers/899/89998.html","name":"إدارة القرآن والعلوم الإسلامية","names":{"en":"Administration of the Quran and Islamic Sciences","fr":"Administration du Coran et des sciences islamiques","es":"Idarat al-Qur'an wa-l-Ulum al-Islamiyya","ur":"إدارة القرآن والعلوم الإسلامية","tr":"İdâretü'l-Kur'ân ve'l-Ulûmi'l-İslâmiyye","sw":"Idarat al-Qur'an wa al-Ulum al-Islamiyya","id":"Idarat Al-Qur'an wa Al-'Ulum Al-Islamiyyah","ja":"イダーラト・アル＝クルアーン・ワル＝ウルーム・アル＝イスラーミーヤ","zh":"《古兰经》与伊斯兰科学管理处","ru":"Управление Корана и исламских наук","bn":"إدارة القرآن والعلوم الإسلامية","pt":"إدارة القرآن والعلوم الإسلامية","hi":"إدارة القرآن والعلوم الإسلامية"},"sort":"إدارة القرآن والعلوم الإسلامية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":105624,"href":"publishers/1056/105624.html","name":"إدارة المجمع الفقهي","names":{"en":"Fiqh Academy Administration","fr":"Idarat al-Majma al-Fiqhi","es":"Administración de la Academia de Fiqh","ur":"إدارة المجمع الفقهي","tr":"Fıkıh Akademisi İdaresi","sw":"Idarat al-Majma al-Fiqhi","id":"Idarah Al-Majma' Al-Fiqhi","ja":"フィクフ・アカデミー管理部","zh":"教法学院管理处","ru":"Администрация Академии фикха","bn":"إدارة المجمع الفقهي","pt":"إدارة المجمع الفقهي","hi":"إدارة المجمع الفقهي"},"sort":"إدارة المجمع الفقهي","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":95796,"href":"publishers/957/95796.html","name":"إدارة ترجمان السنة","names":{"en":"Administration of the Translation of the Sunnah","fr":"Administration de la traduction de la Sunna","es":"Administracion de la traduccion de la Sunna","ur":"إدارة ترجمان السنة","tr":"Sünnet Tercümanı İdaresi","sw":"Idarat Tarjuman al-Sunna","id":"Administrasi Penerjemah Sunnah","ja":"スンナ翻訳局","zh":"圣训翻译管理处","ru":"Управление перевода Сунны","bn":"إدارة ترجمان السنة","pt":"إدارة ترجمان السنة","hi":"إدارة ترجمان السنة"},"sort":"إدارة ترجمان السنة","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":95365,"href":"publishers/953/95365.html","name":"إدارة شؤون القرآن الكريم","names":{"en":"Quran Affairs Administration","fr":"Administration des affaires du Noble Coran","es":"Administración de Asuntos del Noble Corán","ur":"إدارة شؤون القرآن الكريم","tr":"İdâretü şuûni’l-Kur’âni’l-Kerîm","sw":"Idara ya Masuala ya Qurani Tukufu","id":"Administrasi Urusan Al-Qur'an Al-Karim","ja":"クルアーン事務局","zh":"古兰经事务管理局","ru":"Идара шу'ун аль-Кур'ан аль-карим","bn":"إدارة شؤون القرآن الكريم","pt":"إدارة شؤون القرآن الكريم","hi":"إدارة شؤون القرآن الكريم"},"sort":"إدارة شؤون القرآن الكريم","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":98736,"href":"publishers/987/98736.html","name":"إدارة مساجد الأحمدي","names":{"en":"Administration of Mosques in Ahmadi","fr":"Administration des mosquées d'Ahmadi","es":"Administración de las mezquitas de Ahmadi","ur":"إدارة مساجد الأحمدي","tr":"Ahmedi Camileri İdaresi","sw":"Utawala wa Misikiti ya Ahmadi","id":"Administrasi Masjid Al-Ahmadi","ja":"アハマディー・モスク管理局","zh":"艾哈迈迪清真寺管理处","ru":"Управление мечетями Ахмади","bn":"إدارة مساجد الأحمدي","pt":"إدارة مساجد الأحمدي","hi":"إدارة مساجد الأحمدي"},"sort":"إدارة مساجد الأحمدي","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":103785,"href":"publishers/1037/103785.html","name":"إسماعيل بن عمر الجزائري","names":{"en":"Ismail bin Omar Al-Jazairi","fr":"Ismail ibn Omar al-Jazairi","es":"Ismail ibn Omar al-Jazairi","ur":"إسماعيل بن عمر الجزائري","tr":"İsmâil b. Ömer el-Cezâirî","sw":"Ismail bin Omar Al-Jazairi","id":"Ismail bin Umar Al-Jazairi","ja":"イスマーイール・イブン・ウマル・アル＝ジャザーイリー","zh":"伊斯玛仪·本·欧麦尔·杰扎伊里","ru":"Исмаил ибн Умар аль-Джазаири","bn":"إسماعيل بن عمر الجزائري","pt":"إسماعيل بن عمر الجزائري","hi":"إسماعيل بن عمر الجزائري"},"sort":"إسماعيل بن عمر الجزائري","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":101659,"href":"publishers/1016/101659.html","name":"إصدارات مؤسسة الشيخ ابن عثيمين الخيرية","names":{"en":"Publications of the Sheikh Ibn Uthaymeen Charity Foundation","fr":"Publications de la Fondation caritative du cheikh Ibn Uthaymeen","es":"Publicaciones de la Fundación Benéfica del jeque Ibn Uthaymeen","ur":"إصدارات مؤسسة الشيخ ابن عثيمين الخيرية","tr":"Şeyh İbn Useymîn Hayır Vakfı Yayınları","sw":"Machapisho ya Taasisi ya Hisani ya Sheikh Ibn Uthaymeen","id":"Terbitan Yayasan Amal Syekh Ibnu Utsaimin","ja":"シェイフ・イブン・ウサイミーン慈善財団刊行物","zh":"谢赫·伊本·欧赛敏慈善基金会出版物","ru":"Издания благотворительного фонда шейха Ибн Усаймина","bn":"إصدارات مؤسسة الشيخ ابن عثيمين الخيرية","pt":"إصدارات مؤسسة الشيخ ابن عثيمين الخيرية","hi":"إصدارات مؤسسة الشيخ ابن عثيمين الخيرية"},"sort":"إصدارات مؤسسة الشيخ ابن عثيمين الخيرية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":99646,"href":"publishers/996/99646.html","name":"اقرأ للطباعة والنشر","names":{"en":"Iqra for Printing and Publishing","fr":"Iqra pour l'impression et l'édition","es":"Iqra de impresion y publicaciones","ur":"اقرأ للطباعة والنشر","tr":"İkra Basım ve Yayın","sw":"Iqra ya Uchapishaji","id":"Iqra untuk Percetakan dan Penerbitan","ja":"イクラア・リッティバーア・ワ・アン＝ナシュル","zh":"诵读印刷与出版","ru":"«Икра» — печать и издательство","bn":"اقرأ للطباعة والنشر","pt":"اقرأ للطباعة والنشر","hi":"اقرأ للطباعة والنشر"},"sort":"اقرأ للطباعة والنشر","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":99099,"href":"publishers/990/99099.html","name":"الأفق للطباعة والنشر","names":{"en":"Al-Afaaq for Printing and Publishing","fr":"Al-Afaaq","es":"Al-Afaaq for Printing and Publishing","ur":"الأفق للطباعة والنشر","tr":"el-Ufuk Matbaa ve Neşriyat","sw":"Al-Afaaq ya Uchapishaji na Usambazaji","id":"Al-Afaq li ath-Thiba‘ah wa an-Nasyr","ja":"アル＝アーファーク印刷・出版社","zh":"地平线印刷出版社","ru":"Аль-Афак","bn":"الأفق للطباعة والنشر","pt":"الأفق للطباعة والنشر","hi":"الأفق للطباعة والنشر"},"sort":"الأفق للطباعة والنشر","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":93408,"href":"publishers/934/93408.html","name":"الأمانة العامة للاحتفال بمرور مائة عام على تأسيس المملكة","names":{"en":"The General Secretariat for the Celebration of the Centenary of the Establishment of the Kingdom","fr":"Secrétariat général de la célébration du centenaire de la fondation du royaume","es":"Secretaría General para la celebración del centenario de la fundación del Reino","ur":"الأمانة العامة للاحتفال بمرور مائة عام على تأسيس المملكة","tr":"Krallığın Kuruluşunun Yüzüncü Yılını Kutlama Genel Sekreterliği","sw":"Sekretarieti Kuu ya Sherehe za Miaka Mia Tangu Kuanzishwa kwa Ufalme","id":"Sekretariat Umum Perayaan Seratus Tahun Berdirinya Kerajaan","ja":"王国建国百周年記念事業総事務局","zh":"王国建国百年庆典总秘书处","ru":"Генеральный секретариат празднования столетия основания Королевства","bn":"الأمانة العامة للاحتفال بمرور مائة عام على تأسيس المملكة","pt":"الأمانة العامة للاحتفال بمرور مائة عام على تأسيس المملكة","hi":"الأمانة العامة للاحتفال بمرور مائة عام على تأسيس المملكة"},"sort":"الأمانة العامة للاحتفال بمرور مائة عام على تأسيس المملكة","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":105732,"href":"publishers/1057/105732.html","name":"الإدارة العامة لتطوير الخطط والمناهج","names":{"en":"General Administration for Developing Plans and Curricula","fr":"Direction générale du développement des plans et des programmes","es":"Dirección General para el Desarrollo de Planes y Currículos","ur":"الإدارة العامة لتطوير الخطط والمناهج","tr":"Plan ve Müfredat Geliştirme Genel İdaresi","sw":"Al-Idara al-Amma li-Tatwir al-Khutat wal-Manahij","id":"Administrasi Umum Pengembangan Rencana dan Kurikulum","ja":"計画・カリキュラム開発総局","zh":"规划与课程发展总管理局","ru":"Главное управление по разработке планов и учебных программ","bn":"الإدارة العامة لتطوير الخطط والمناهج","pt":"الإدارة العامة لتطوير الخطط والمناهج","hi":"الإدارة العامة لتطوير الخطط والمناهج"},"sort":"الإدارة العامة لتطوير الخطط والمناهج","death":0,"died":null,"living":false,"era":"unknown","count":4},{"id":99172,"href":"publishers/991/99172.html","name":"الاتحاد الإسلامي العالمي","names":{"en":"The World Islamic Union","fr":"Union islamique mondiale","es":"Unión Islámica Mundial","ur":"الاتحاد الإسلامي العالمي","tr":"Dünya İslâm Birliği","sw":"Umoja wa Kiislamu wa Dunia","id":"Persatuan Islam Dunia","ja":"アル＝イッティハード・アル＝イスラーミー・アル＝アーラミー","zh":"世界伊斯兰联盟","ru":"Всемирный исламский союз","bn":"الاتحاد الإسلامي العالمي","pt":"الاتحاد الإسلامي العالمي","hi":"الاتحاد الإسلامي العالمي"},"sort":"الاتحاد الإسلامي العالمي","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":90224,"href":"publishers/902/90224.html","name":"التضامن الأخوي","names":{"en":"Brotherhood Solidarity","fr":"Solidarité fraternelle","es":"Solidaridad fraternal","ur":"التضامن الأخوي","tr":"Kardeşlik Dayanışması","sw":"At-Tadamun al-Akhawi","id":"Solidaritas Persaudaraan","ja":"兄弟連帯","zh":"兄弟情谊团结社","ru":"Братская солидарность","bn":"التضامن الأخوي","pt":"التضامن الأخوي","hi":"التضامن الأخوي"},"sort":"التضامن الأخوي","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":98855,"href":"publishers/988/98855.html","name":"الثريا","names":{"en":"Al-Thuraya","fr":"Al-Thurayya","es":"Al-Thurayya","ur":"الثريا","tr":"Süreyyâ","sw":"Al-Thuraya","id":"Al-Tsurayya","ja":"アッ＝スラヤー","zh":"苏拉亚","ru":"ас-Сурайя","bn":"الثريا","pt":"الثريا","hi":"الثريا"},"sort":"الثريا","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":90005,"href":"publishers/900/90005.html","name":"الجامعة الإسلامية","names":{"en":"Islamic University","fr":"Université islamique","es":"Al-Yamia al-Islamiyya","ur":"الجامعة الإسلامية","tr":"İslâm Üniversitesi","sw":"Al-Jami'a al-Islamiyya","id":"Universitas Islam","ja":"イスラーム大学","zh":"伊斯兰大学","ru":"Исламский университет","bn":"الجامعة الإسلامية","pt":"الجامعة الإسلامية","hi":"الجامعة الإسلامية"},"sort":"الجامعة الإسلامية","death":0,"died":null,"living":false,"era":"unknown","count":7},{"id":92090,"href":"publishers/920/92090.html","name":"الجامعة الإسلامية مكتب شؤون الدعوة","names":{"en":"Islamic University, Office of Da'wah Affairs","fr":"Université islamique, bureau des affaires de la prédication","es":"Universidad Islámica, Oficina de Asuntos de la Da'wa","ur":"الجامعة الإسلامية مكتب شؤون الدعوة","tr":"el-Câmiatü'l-İslâmiyye, Mektebü şuûni'd-da‘ve","sw":"Al-Jamia al-Islamiyya, Maktab Shuun al-Dawa","id":"Universitas Islam, Kantor Urusan Dakwah","ja":"イスラーム大学・ダアワ事務局","zh":"伊斯兰大学宣教事务办公室","ru":"Исламский университет, отдел по делам да'вата","bn":"الجامعة الإسلامية مكتب شؤون الدعوة","pt":"الجامعة الإسلامية مكتب شؤون الدعوة","hi":"الجامعة الإسلامية مكتب شؤون الدعوة"},"sort":"الجامعة الإسلامية مكتب شؤون الدعوة","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":99056,"href":"publishers/990/99056.html","name":"الجامعة لإسلامية","names":{"en":"Islamic University","fr":"Université islamique","es":"Universidad Islámica","ur":"الجامعة لإسلامية","tr":"İslâm Üniversitesi","sw":"Chuo Kikuu cha Kiislamu","id":"Universitas Islam","ja":"イスラーム大学","zh":"伊斯兰大学","ru":"Исламский университет","bn":"الجامعة لإسلامية","pt":"الجامعة لإسلامية","hi":"الجامعة لإسلامية"},"sort":"الجامعة لإسلامية","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":89826,"href":"publishers/898/89826.html","name":"الدار الأثرية","names":{"en":"Al-Dar Al-Athariyah","fr":"al-Dar al-Athariyya","es":"Al-Dar al-Athariyyah","ur":"الدار الأثرية","tr":"ed-Dârü'l-eseriyye","sw":"Ad-Dar al-Athariyya","id":"Ad-Dar Al-Atsariyyah","ja":"アッ＝ダール・アル＝アサリーヤ","zh":"古迹出版社","ru":"Аль-дар аль-асария","bn":"الدار الأثرية","pt":"الدار الأثرية","hi":"الدار الأثرية"},"sort":"الدار الأثرية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":91955,"href":"publishers/919/91955.html","name":"الدار التونسية للنشر","names":{"en":"Tunisian Publishing House","fr":"Maison tunisienne d'édition","es":"Editorial Tunecina","ur":"الدار التونسية للنشر","tr":"Tunus Neşriyat Evi","sw":"Nyumba ya Uchapishaji ya Tunisia","id":"Ad-Dar At-Tunisiyah lin-Nasyr","ja":"チュニジア出版局","zh":"突尼斯出版之家","ru":"Тунисское издательство","bn":"الدار التونسية للنشر","pt":"الدار التونسية للنشر","hi":"الدار التونسية للنشر"},"sort":"الدار التونسية للنشر","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":90001,"href":"publishers/900/90001.html","name":"الدار السلفية","names":{"en":"Al-Dar Al-Salafiyya","fr":"Dar al-Salafiyya","es":"Al-Dar al-Salafiyya","ur":"الدار السلفية","tr":"ed-Dârü's-Selefiyye","sw":"Al-Dar al-Salafiyya","id":"Ad-Dar As-Salafiyyah","ja":"アッ＝ダール・アッ＝サラフィーヤ","zh":"萨拉菲出版社","ru":"Ас-Салафийя","bn":"الدار السلفية","pt":"الدار السلفية","hi":"الدار السلفية"},"sort":"الدار السلفية","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":3214598,"href":"publishers/32145/3214598.html","name":"الدار السلفية بالكويت","names":{"en":"al-Dar al-Salafiyya, Kuwait","fr":"al-Dar al-Salafiyya, Koweït","es":"al-Dar al-Salafiyya, Kuwait","ur":"الدار السلفية بالكويت","tr":"ed-Dârü's-Selefiyye, Kuveyt","sw":"al-Dar al-Salafiyya, Kuwait","id":"ad-Dar as-Salafiyyah, Kuwait","ja":"ダール・アル＝サラフィーヤ（クウェート）","zh":"科威特萨拉菲出版社","ru":"ад-Дар ас-Салафийя, Кувейт","bn":"الدار السلفية بالكويت","pt":"الدار السلفية بالكويت","hi":"الدار السلفية بالكويت"},"sort":"الدار السلفية بالكويت","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":103930,"href":"publishers/1039/103930.html","name":"الدار السلفية للعلوم الشرعية","names":{"en":"Al-Dar Al-Salafiyyah for Islamic Sciences","fr":"Dar al-Salafiyyah des sciences islamiques","es":"Al-Dar Al-Salafiyyah para las Ciencias Islámicas","ur":"الدار السلفية للعلوم الشرعية","tr":"es-Selefiyye Şer‘î İlimler Yayınevi","sw":"الدار السلفية للعلوم الشرعية","id":"Ad-Dar As-Salafiyah untuk Ilmu-Ilmu Syar'i","ja":"アル＝ダール・アッ＝サラフィーヤ、イスラーム諸学出版所","zh":"萨拉菲教法科学之家","ru":"Ад-дар ас-салафийя ли-ль-'улум аш-шар'ийя","bn":"الدار السلفية للعلوم الشرعية","pt":"الدار السلفية للعلوم الشرعية","hi":"الدار السلفية للعلوم الشرعية"},"sort":"الدار السلفية للعلوم الشرعية","death":0,"died":null,"living":false,"era":"unknown","count":3},{"id":91390,"href":"publishers/913/91390.html","name":"الدار العثمانية","names":{"en":"The Ottoman House","fr":"La maison ottomane","es":"Dar al-Uthmaniyya","ur":"الدار العثمانية","tr":"Dârü'l-Usmâniyye","sw":"Dar al-Uthmaniyah","id":"Dar Utsmaniyah","ja":"オスマンの家","zh":"奥斯曼之家","ru":"Османский дом","bn":"الدار العثمانية","pt":"الدار العثمانية","hi":"الدار العثمانية"},"sort":"الدار العثمانية","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":99704,"href":"publishers/997/99704.html","name":"الدار القيمة","names":{"en":"Al-Dar Al-Qayyimah","fr":"Al-Dar al-Qayyima","es":"Dar al-Qayyimah","ur":"الدار القيمة","tr":"ed-Dârü'l-Kayyime","sw":"Dar al-Qayyimah","id":"Dar Al-Qayyimah","ja":"アル＝ダール・アル＝カイイマ","zh":"奇玛出版社","ru":"Дар аль-Каййима","bn":"الدار القيمة","pt":"الدار القيمة","hi":"الدار القيمة"},"sort":"الدار القيمة","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":96914,"href":"publishers/969/96914.html","name":"الدار المصرية السعودية","names":{"en":"Egyptian Saudi House","fr":"al-Dar al-Misriyyah al-Su'udiyyah","es":"al-Dar al-Misriyya al-Su'udiyya","ur":"الدار المصرية السعودية","tr":"ed-Dârü'l-Mısriyye es-Suûdiyye","sw":"Egyptian Saudi House","id":"Dar Mesir-Saudi","ja":"アル＝ダール・アル＝ミスリーヤ・アル＝サウーディーヤ","zh":"埃及沙特出版社","ru":"Египетско-саудовское издательство","bn":"الدار المصرية السعودية","pt":"الدار المصرية السعودية","hi":"الدار المصرية السعودية"},"sort":"الدار المصرية السعودية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":90274,"href":"publishers/902/90274.html","name":"الدار المصرية اللبنانية","names":{"en":"Egyptian Lebanese House","fr":"al-Dar al-Misriyya al-Lubnaniyya","es":"Al-Dar al-Misriyya al-Lubnaniyya","ur":"الدار المصرية اللبنانية","tr":"ed-Dârü'l-Mısriyye el-Lübnâniyye","sw":"Nyumba ya Misri na Lebanon","id":"Dar Al-Mishriyah Al-Lubnaniyah","ja":"エジプト・レバノン書房","zh":"埃及黎巴嫩出版社","ru":"Ад-Дар аль-Мисрийя аль-Лубнанийя","bn":"الدار المصرية اللبنانية","pt":"الدار المصرية اللبنانية","hi":"الدار المصرية اللبنانية"},"sort":"الدار المصرية اللبنانية","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":91347,"href":"publishers/913/91347.html","name":"الدرر السنية","names":{"en":"Al-Durar Al-Sunniyah","fr":"Al-Durar al-Sunniyah","es":"al-Durar al-Sunniya","ur":"الدرر السنية","tr":"ed-Dürerü’s-seniyye","sw":"al-Durar al-Sunniyah","id":"Ad-Durar As-Saniyah","ja":"アル＝ドゥラル・アッ＝スンニーヤ","zh":"逊尼珍珠网","ru":"Ад-Дурар ас-Сания","bn":"الدرر السنية","pt":"الدرر السنية","hi":"الدرر السنية"},"sort":"الدرر السنية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":104255,"href":"publishers/1042/104255.html","name":"الذخائر لنشر التراث","names":{"en":"Al-Dhakha'ir for Heritage Publishing","fr":"Al-Dhakha'ir pour la publication du patrimoine","es":"Al-Dhakha'ir para la publicación del patrimonio","ur":"الذخائر لنشر التراث","tr":"ez-Zehâir li-Neşri't-Türâs","sw":"Al-Dhakha'ir ya Uchapishaji wa Turathi","id":"Adz-Dzakhair untuk Penerbitan Warisan","ja":"アッザハーイル・リンナシュル・アットゥラース","zh":"遗产出版珍藏社","ru":"аз-Заха'ир: публикация наследия","bn":"الذخائر لنشر التراث","pt":"الذخائر لنشر التراث","hi":"الذخائر لنشر التراث"},"sort":"الذخائر لنشر التراث","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":92286,"href":"publishers/922/92286.html","name":"الرئاسة العامة لشؤون المسجد الحرام والمسجد النبوي","names":{"en":"The General Presidency for the Affairs of the Grand Mosque and the Prophet's Mosque","fr":"Présidence générale des affaires de la Mosquée sacrée et de la Mosquée du Prophète","es":"Presidencia General de los Asuntos de la Mezquita Sagrada y de la Mezquita del Profeta","ur":"الرئاسة العامة لشؤون المسجد الحرام والمسجد النبوي","tr":"er-Riâsetü'l-Âmme li-Şuûni'l-Mescidi'l-Harâm ve'l-Mescidi'n-Nebevî","sw":"Urais Mkuu wa Masuala ya Msikiti Mtukufu na Msikiti wa Mtume","id":"Kepresidenan Umum Urusan Masjidil Haram dan Masjid Nabawi","ja":"聖モスクおよび預言者のモスク事務総局","zh":"两圣寺事务总局","ru":"Главное управление по делам Заповедной мечети и Мечети Пророка","bn":"الرئاسة العامة لشؤون المسجد الحرام والمسجد النبوي","pt":"الرئاسة العامة لشؤون المسجد الحرام والمسجد النبوي","hi":"الرئاسة العامة لشؤون المسجد الحرام والمسجد النبوي"},"sort":"الرئاسة العامة لشؤون المسجد الحرام والمسجد النبوي","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":90330,"href":"publishers/903/90330.html","name":"الزهراء للإعلام العربي","names":{"en":"Al-Zahra for Arab Media","fr":"al-Zahra lil-Ilam al-Arabi","es":"Al-Zahra lil-Ilam al-Arabi","ur":"الزهراء للإعلام العربي","tr":"ez-Zehrâ li'l-İ'lâmi'l-Arabî","sw":"al-Zahra kwa Vyombo vya Habari vya Kiarabu","id":"Az-Zahra untuk Media Arab","ja":"アラブメディアのためのアル＝ザフラー","zh":"扎赫拉阿拉伯媒体","ru":"Аз-Захра ли-ль-и'лам аль-араби","bn":"الزهراء للإعلام العربي","pt":"الزهراء للإعلام العربي","hi":"الزهراء للإعلام العربي"},"sort":"الزهراء للإعلام العربي","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":92453,"href":"publishers/924/92453.html","name":"الشبكة الإسلامية","names":{"en":"Islamic Network","fr":"Réseau islamique","es":"Red Islámica","ur":"الشبكة الإسلامية","tr":"İslâmî Şebeke","sw":"Shabaka al-Islamiyya","id":"Asy-Syabakah Al-Islamiyah","ja":"イスラーム・ネットワーク","zh":"伊斯兰网络","ru":"Исламская сеть","bn":"الشبكة الإسلامية","pt":"الشبكة الإسلامية","hi":"الشبكة الإسلامية"},"sort":"الشبكة الإسلامية","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":92412,"href":"publishers/924/92412.html","name":"الشكبة الإسلامية","names":{"en":"Islamic Network","fr":"Réseau islamique","es":"Red Islámica","ur":"الشكبة الإسلامية","tr":"eş-Şebeketü'l-İslâmiyye","sw":"Al-Shabaka al-Islamiyya","id":"Jaringan Islam","ja":"イスラーム・ネットワーク","zh":"伊斯兰网络","ru":"Исламская сеть","bn":"الشكبة الإسلامية","pt":"الشكبة الإسلامية","hi":"الشكبة الإسلامية"},"sort":"الشكبة الإسلامية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":96861,"href":"publishers/968/96861.html","name":"العلا","names":{"en":"Al-Ala","fr":"al-Ala","es":"Al-Ala","ur":"العلا","tr":"el-Alâ","sw":"Al-Ala","id":"Al-Ala","ja":"アル＝アラー","zh":"阿拉","ru":"аль-Аля","bn":"العلا","pt":"العلا","hi":"العلا"},"sort":"العلا","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":99418,"href":"publishers/994/99418.html","name":"الفاروق الحديثة للطباع والنشر","names":{"en":"Al-Faruq Modern for Printing and Publishing","fr":"Al-Faruq moderne pour l'impression et l'édition","es":"Al-Faruq Moderna para Impresión y Edición","ur":"الفاروق الحديثة للطباع والنشر","tr":"el-Fârûk el-Hadîse Matbaacılık ve Yayıncılık","sw":"Al-Faruq ya Kisasa kwa Uchapishaji na Usambazaji","id":"Al-Faruq Modern untuk Percetakan dan Penerbitan","ja":"アル＝ファールーク近代印刷・出版社","zh":"法鲁克现代印刷出版公司","ru":"Современная типография и издательство аль-Фарук","bn":"الفاروق الحديثة للطباع والنشر","pt":"الفاروق الحديثة للطباع والنشر","hi":"الفاروق الحديثة للطباع والنشر"},"sort":"الفاروق الحديثة للطباع والنشر","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":90019,"href":"publishers/900/90019.html","name":"الفاروق الحديثة للطباعة والنشر","names":{"en":"Al-Faruq Modern for Printing and Publishing","fr":"Al-Faruq al-Haditha pour l'impression et l'édition","es":"Al-Faruq al-Haditha li-l-Tibaa wa-l-Nashr","ur":"الفاروق الحديثة للطباعة والنشر","tr":"el-Fârûk el-Hadîse li't-Tıbâa ve'n-Neşr","sw":"Al-Faruq al-Haditha li al-Tiba'a wa al-Nashr","id":"Al-Faruq Al-Haditsah li Ath-Thiba'ah wa An-Nasyr","ja":"アル＝ファールーク・アル＝ハディース・リッティバーア・ワンナシュル","zh":"法鲁克现代印刷出版公司","ru":"Аль-Фарук аль-Хадиса","bn":"الفاروق الحديثة للطباعة والنشر","pt":"الفاروق الحديثة للطباعة والنشر","hi":"الفاروق الحديثة للطباعة والنشر"},"sort":"الفاروق الحديثة للطباعة والنشر","death":0,"died":null,"living":false,"era":"unknown","count":6},{"id":99726,"href":"publishers/997/99726.html","name":"الفيصلية","names":{"en":"Al-Faisaliah","fr":"Al-Faisaliah","es":"Al-Faisaliah","ur":"الفيصلية","tr":"el-Faysaliyye","sw":"Al-Faisaliah","id":"Al-Faisaliah","ja":"アル＝ファイサリーヤ","zh":"费萨利亚","ru":"Аль-Файсалия","bn":"الفيصلية","pt":"الفيصلية","hi":"الفيصلية"},"sort":"الفيصلية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":91502,"href":"publishers/915/91502.html","name":"الكتاب العالمي للنشر","names":{"en":"The Global Book Publishing","fr":"Al-Kitab al-Alami lil-Nashr","es":"The Global Book Publishing","ur":"الكتاب العالمي للنشر","tr":"el-Kitâbü'l-Âlemî li'n-Neşr","sw":"Al-Kitab al-Alami lil-Nashr","id":"Penerbitan Buku Global","ja":"グローバル・ブック出版","zh":"环球图书出版公司","ru":"Всемирное книгоиздательство","bn":"الكتاب العالمي للنشر","pt":"الكتاب العالمي للنشر","hi":"الكتاب العالمي للنشر"},"sort":"الكتاب العالمي للنشر","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":97079,"href":"publishers/970/97079.html","name":"اللجنة العلمية في مؤسسة الشيخ محمد بن صالح العثيمين","names":{"en":"Scientific Committee at the Sheikh Muhammad bin Saleh Al-Uthaymeen Foundation","fr":"Comité scientifique de la Fondation du cheikh Muhammad ibn Salih al-Uthaymin","es":"Comité científico de la Fundación del jeque Muhammad ibn Salih al-Uthaymin","ur":"اللجنة العلمية في مؤسسة الشيخ محمد بن صالح العثيمين","tr":"Şeyh Muhammed b. Sâlih el-Useymîn Vakfı Bilim Kurulu","sw":"Kamati ya Sayansi katika Taasisi ya Sheikh Muhammad bin Saleh Al-Uthaymeen","id":"Komite Ilmiah di Yayasan Syekh Muhammad bin Saleh Al-Utsaimin","ja":"シェイフ・ムハンマド・イブン・サーリフ・アル＝ウサイミーン財団科学委員会","zh":"谢赫·穆罕默德·本·萨利赫·欧赛敏基金会科学委员会","ru":"Научный комитет Фонда шейха Мухаммада ибн Салиха аль-Усаймина","bn":"اللجنة العلمية في مؤسسة الشيخ محمد بن صالح العثيمين","pt":"اللجنة العلمية في مؤسسة الشيخ محمد بن صالح العثيمين","hi":"اللجنة العلمية في مؤسسة الشيخ محمد بن صالح العثيمين"},"sort":"اللجنة العلمية في مؤسسة الشيخ محمد بن صالح العثيمين","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":95807,"href":"publishers/958/95807.html","name":"المؤتمن للتوزيع","names":{"en":"Al-Mu'taman Distribution","fr":"Distribution al-Mu'taman","es":"Distribucion al-Mu'taman","ur":"المؤتمن للتوزيع","tr":"el-Mü’temen Dağıtım","sw":"Al-Mu'taman ya Usambazaji","id":"Al-Mu'taman untuk Distribusi","ja":"アル＝ムウタマン流通社","zh":"穆阿塔曼发行社","ru":"Распространение аль-Му'таман","bn":"المؤتمن للتوزيع","pt":"المؤتمن للتوزيع","hi":"المؤتمن للتوزيع"},"sort":"المؤتمن للتوزيع","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":102772,"href":"publishers/1027/102772.html","name":"المؤسسة المصرية العامة للتأليف","names":{"en":"The Egyptian General Authority for Authorship","fr":"Autorité générale égyptienne de rédaction","es":"Autoridad General Egipcia de Autoría","ur":"المؤسسة المصرية العامة للتأليف","tr":"Mısır Genel Telif Kurumu","sw":"Mamlaka Kuu ya Misri ya Uandishi","id":"Lembaga Umum Mesir untuk Kepengarangan","ja":"エジプト著作総合機構","zh":"埃及著作总局","ru":"Египетское генеральное управление авторского дела","bn":"المؤسسة المصرية العامة للتأليف","pt":"المؤسسة المصرية العامة للتأليف","hi":"المؤسسة المصرية العامة للتأليف"},"sort":"المؤسسة المصرية العامة للتأليف","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":89824,"href":"publishers/898/89824.html","name":"المجلس الأعلى للشؤون الإسلامية","names":{"en":"The Supreme Council for Islamic Affairs","fr":"al-Majlis al-A'la lil-Shu'un al-Islamiyya","es":"Al-Majlis al-A'la li-l-Shu'un al-Islamiyyah","ur":"المجلس الأعلى للشؤون الإسلامية","tr":"el-Meclisü'l-a'lâ li'ş-şuûni'l-İslâmiyye","sw":"Al-Majlis al-A'la lil-Shu'un al-Islamiyya","id":"Al-Majlis Al-A'la li Asy-Syu'un Al-Islamiyyah","ja":"イスラーム問題最高評議会","zh":"伊斯兰事务最高理事会","ru":"Высший совет по исламским делам","bn":"المجلس الأعلى للشؤون الإسلامية","pt":"المجلس الأعلى للشؤون الإسلامية","hi":"المجلس الأعلى للشؤون الإسلامية"},"sort":"المجلس الأعلى للشؤون الإسلامية","death":0,"died":null,"living":false,"era":"unknown","count":1}]
+    </script>
+    <script
+      type="application/json"
+      data-list
+    >
+      {"list":"publishers","category":null,"sub":null,"era":"unknown","page":1,"pages":10,"total":456,"perPage":50,"eraCounts":{"all":456,"salaf":0,"mutaqaddimun":0,"mutaakhkhirun":0,"muasirun":0,"unknown":456},"categoryLabel":null,"categoryLabels":null,"subLabel":null,"subLabels":null}
+    </script>
+
+    <div class="mb-6">
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Publishers</div>
+      <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-text="count(':count name|:count names', total)" data-flux-subheading>
+    
+</div>
+    </div>
+
+    
+    <div
+      class="rounded-xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700"
+      x-show="total === 0"
+      x-cloak
+    >
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>No names found</div>
+    </div>
+
+    <div
+      class="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+      x-show="total > 0"
+    >
+      <template
+        x-for="row in shown"
+        :key="row.id"
+      >
+        <a
+          x-bind:href="row.href"
+          class="flex items-center justify-between gap-3 rounded-lg border border-zinc-200 px-4 py-3 transition hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:border-zinc-500 dark:hover:bg-zinc-800"
+          data-test="contributor-card"
+        >
+          <span class="min-w-0">
+            <span
+              class="block font-medium break-words text-zinc-800 dark:text-white"
+              dir="auto"
+              x-text="tx(row.name, row.names)"
+            ></span>
+            <span
+              class="block text-[0.8em] font-normal break-words text-zinc-500 dark:text-zinc-400"
+              x-show="tx(row.name, row.names) !== row.name"
+              data-arabic-original
+            >
+              <bdi
+                lang="ar"
+                dir="rtl"
+                x-text="row.name"
+              ></bdi>
+            </span>
+          </span>
+          <span class="flex shrink-0 flex-col items-end gap-1">
+                        <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 whitespace-nowrap" x-text="count('[0,1] :count item|[2,*] :count items', row.count)" data-flux-text ></p>          </span>
+        </a>
+      </template>
+    </div>
+
+    <div
+  class="@container flex items-center justify-between gap-3 border-t border-zinc-100 pt-3 dark:border-zinc-700"
+  x-show="total > 0"
+  data-flux-pagination
+>
+  <div class="text-xs font-medium whitespace-nowrap text-zinc-500 dark:text-zinc-400">
+    Showing
+    <span x-text="(page - 1) * perPage + 1"></span>
+    to
+    <span x-text="Math.min(page * perPage, total)"></span>
+    of
+    <span x-text="total"></span>
+    results
+  </div>
+
+  <div
+    class="flex items-center rounded-[8px] border border-zinc-200 bg-white p-[1px] dark:border-white/10 dark:bg-white/10"
+    x-show="pages > 1"
+  >
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page - 1)"
+      x-bind:disabled="page <= 1"
+      aria-label="&amp;laquo; Previous"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+
+    <template
+      x-for="(link, index) in pageLinks"
+      :key="index"
+    >
+      <div class="hidden @[40rem]:contents">
+        <template x-if="link === '...'">
+          <div
+            class="flex size-6 cursor-default items-center justify-center rounded-[6px] text-xs font-medium text-zinc-400 dark:text-zinc-400"
+          >
+            ...
+          </div>
+        </template>
+        <template x-if="link === page">
+          <div
+            aria-current="page"
+            class="flex h-6 cursor-default items-center justify-center rounded-[6px] px-2 text-xs font-medium text-zinc-800 dark:text-white"
+            x-text="link"
+          ></div>
+        </template>
+        <template x-if="link !== '...' && link !== page">
+          <button
+            type="button"
+            class="h-6 rounded-[6px] px-2 text-xs font-medium text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/20 dark:hover:text-white"
+            x-on:click="turn(link)"
+            x-text="link"
+          ></button>
+        </template>
+      </div>
+    </template>
+
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page + 1)"
+      x-bind:disabled="page >= pages"
+      aria-label="Next &amp;raquo;"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+  </div>
+</div>
+  </section>
+    </div>
+
+  
+  <script src="../../../../../assets/static.js?v=be69322f0f"></script>
+</body>
+</html>

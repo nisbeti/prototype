@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["难道我没有为你而开拓你的胸襟吗？",null],"2":["我卸下了你的重任，",null],"3":["即使你的背担负过重的，",null],"4":["而提高了你的声望，",null],"5":["与艰难相伴的，确是容易，",null],"6":["与艰难相伴的，确是容易，",null],"7":["当你的事务完毕时，",null],"8":["你应当勤劳，你应当向你的主恳求。",null]}});

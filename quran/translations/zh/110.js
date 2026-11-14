@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["当安拉的援助和胜利降临，",null],"2":["当你看见众人成群结队地崇奉安拉的宗教时，",null],"3":["你应当赞颂你的主超绝万物，并且向他求饶，他确是至宥的。",null]}});

@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["你说：“我求庇于曙光的主，",null],"2":["免遭他所创造者的毒害；",null],"3":["免遭黑夜笼罩时的毒害；",null],"4":["免遭吹破坚决的主意者的毒害；",null],"5":["免遭嫉妒者嫉妒时的毒害。”",null]}});

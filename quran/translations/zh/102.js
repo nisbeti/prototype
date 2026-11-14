@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["竞赛富庶, 已使你们疏忽，",null],"2":["直到你们去游坟地。",null],"3":["真的, 你们将来就知道了。",null],"4":["真的, 你们将来就知道了。",null],"5":["真的, 假若你们有真知灼见, (你们必不疏忽)，",null],"6":["你们必定看见火狱，",null],"7":["然后，你们必亲眼看见它。",null],"8":["在那日，你们必为恩泽而被审问。",null]}});

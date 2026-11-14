@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"tr","lang":"tr","dir":"ltr","title":"Turkish Translation - Dr. Ali Ozek and others","version":"1.0.0","ayat":{"1":["De ki : O, Allah birdir.",null],"2":["Allah sameddir.",null],"3":["O, doğurmamış ve doğmamıştır.",null],"4":["Onun hiçbir dengi yoktur.",null]}});

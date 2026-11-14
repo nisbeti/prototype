@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["奉至仁至慈的安拉之名",null],"2":["一切赞颂，全归安拉，养育众世界的主，",null],"3":["至仁至慈的主，",null],"4":["报应日的主。",null],"5":["我们只崇拜你，我们只求你祐助。",null],"6":["求你引领我们上正路，",null],"7":["你所祐助者的路，不是受谴怒者的路，也不是迷误者的路。",null]}});

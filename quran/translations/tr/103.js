@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"tr","lang":"tr","dir":"ltr","title":"Turkish Translation - Dr. Ali Ozek and others","version":"1.0.0","ayat":{"1":["Asra yemin ederim ki",null],"2":["insan gerçekten ziyan içindedir.",null],"3":["Bundan ancak iman edip iyi ameller işleyenler, birbirlerine hakkı tavsiye edenler ve sabrı tavsiye edenler müstesnadır.",null]}});

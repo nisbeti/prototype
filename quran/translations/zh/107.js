@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["你曾见否认报应日的人吗？",null],"2":["他就是那个呵斥孤儿，",null],"3":["且不勉励人赈济贫民的人。",null],"4":["伤哉！礼拜的人们，",null],"5":["他们是疏忽拜功的，",null],"6":["他们是沽名钓誉的，",null],"7":["他们是不肯借人什物的。",null]}});

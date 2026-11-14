@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["因为保护古来氏，",null],"2":["因为在冬季和夏季的旅行中保护他们，",null],"3":["故教他们崇敬这天房的主，",null],"4":["他曾为饥荒而赈济他们，曾为恐怖而保佑他们。",null]}});

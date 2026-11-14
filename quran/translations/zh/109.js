@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["你说：“不信道的人们啊！”",null],"2":["我不崇拜你们所崇拜的。",null],"3":["你们也不崇拜我所崇拜的；",null],"4":["我不会崇拜你们所崇拜的，",null],"5":["你们也不会崇拜我所崇拜的；",null],"6":["你们有你们的宗教，我有我的宗教。”",null]}});

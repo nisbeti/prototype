@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["我确赐你多福，",null],"2":["故你应当为你的主而礼拜，并宰牺牲。",null],"3":["怨恨你者, 确是绝后的。",null]}});

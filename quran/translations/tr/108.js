@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"tr","lang":"tr","dir":"ltr","title":"Turkish Translation - Dr. Ali Ozek and others","version":"1.0.0","ayat":{"1":["(Rasûlüm!) Kuşkusuz biz sana Kevser\u0027i verdik.",null],"2":["Şimdi sen Rabbin için namaz kıl ve kurban kes.",null],"3":["Asıl sonu kesik olan, şüphesiz sana hınç besleyendir.",null]}});

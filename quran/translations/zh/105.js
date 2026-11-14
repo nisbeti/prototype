@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["难道你不知道你的主怎样处治象的主人吗？",null],"2":["难道他没有使他们的计谋，变成无益的吗？",null],"3":["他曾派遣成群的鸟去伤他们，",null],"4":["以粘土石射击他们，",null],"5":["使他们变成吃剩的干草一样。",null]}});

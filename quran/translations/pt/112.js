@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"pt","lang":"pt","dir":"ltr","title":"Portuguese Translation - Helmi Nasr","version":"1.4.1","ayat":{"1":["Dize: \u0022Ele é Allah, Único.\u0022",null],"2":["\u0022Allah é O Solicitado.\u0022",null],"3":["\u0022Não gerou e não foi gerado.\u0022",null],"4":["\u0022E não há ninguém igual a Ele.\u0022",null]}});

@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["你说：“我求庇于世人的养主，",null],"2":["世人的君主，",null],"3":["世人的主宰，",null],"4":["免遭潜伏的教唆者的毒害，",null],"5":["他在世人的胸中教唆，",null],"6":["他是属于精灵和人类的。",null]}});

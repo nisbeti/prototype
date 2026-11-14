@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["我在那高贵的夜间确已降示它，",null],"2":["你怎能知道那高贵的夜间是什么？",null],"3":["那高贵的夜间，胜过一千个月，",null],"4":["众天使和精神，奉他们的主的命令，为一切事务而在那夜间降临",null],"5":["那夜间全是平安的，直到黎明显著的时候。",null]}});

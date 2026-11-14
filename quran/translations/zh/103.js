@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["以时光盟誓，",null],"2":["人确是在亏折之中，",null],"3":["惟信道而且行善，并以真理相劝，以坚忍相勉的人则不然。",null]}});

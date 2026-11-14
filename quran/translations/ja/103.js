@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"ja","lang":"ja","dir":"ltr","title":"Japanese Translation - Saeed Sato","version":"1.0.13","ayat":{"1":["時間にかけて（誓う）。[1]","[1]　アッラー*による、この誓いについては、整列者章1の訳注を参照。"],"2":["本当に人間は、まさしく損失の中にある。",null],"3":["信仰し、正しい行い*を行い、真理（の固守とアッラー*への服従）を勧め合い、忍耐*を勧め合う者たち以外は。",null]}});

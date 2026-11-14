@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["以无花果和橄榄果盟誓，",null],"2":["以西奈山盟誓，",null],"3":["以这个安宁的城市盟誓，",null],"4":["我确已把人造成具有最美的形态，",null],"5":["然后，我使他变成最卑劣的；",null],"6":["但信道而且行善者，将受不断的报酬",null],"7":["此后，你怎么还否认报应呢？",null],"8":["难道安拉不是最公道的判决者吗？",null]}});

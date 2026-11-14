@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["当大地猛烈地震动，",null],"2":["抛其重担，",null],"3":["人们说：“大地怎么啦？”",null],"4":["在那日，大地将报告它的消息。",null],"5":["因为你的主已启示了它；",null],"6":["在那日，人们将纷纷地离散，以便他们得见自己行为的报应。",null],"7":["行一个小蚂蚁重的善事者，将见其报酬；",null],"8":["作一个小蚂蚁重的恶事者，也将见其恶报。",null]}});

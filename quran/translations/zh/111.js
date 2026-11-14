@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["愿焰父两手受伤！他必定受伤，",null],"2":["他的财产，和他所获得的，将无裨于他，",null],"3":["他将入有焰的烈火，",null],"4":["他的担柴的妻子，也将入烈火，",null],"5":["她的颈上系着一条坚实的棕绳。",null]}});

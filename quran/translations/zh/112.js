@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"zh","lang":"zh-Hans","dir":"ltr","title":"Chinese Translation - Muhammad Makeen","version":"1.0.2","ayat":{"1":["你说：“他是安拉，是独一的主；",null],"2":["安拉是万物所仰赖的；",null],"3":["他未生育， 也未被生育。",null],"4":["没有任何物可以做他的匹敌。”",null]}});

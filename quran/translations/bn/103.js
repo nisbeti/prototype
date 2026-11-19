@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"bn","lang":"bn","dir":"ltr","title":"Muhiuddin Khan","version":"April 30, 2011","source":"tanzil","ayat":{"1":["কসম যুগের (সময়ের),",null],"2":["নিশ্চয় মানুষ ক্ষতিগ্রস্ত;",null],"3":["কিন্তু তারা নয়, যারা বিশ্বাস স্থাপন করে ও সৎকর্ম করে এবং পরস্পরকে তাকীদ করে সত্যের এবং তাকীদ করে সবরের।",null]}});

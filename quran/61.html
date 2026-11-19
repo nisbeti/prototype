@@ -1,0 +1,534 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root="../"
+  data-section="quran"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>الصف</title>
+  <link
+    rel="icon"
+    href="../assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="../assets/static.css?v=c61067d140"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="../assets/i18n.js?v=c61067d140"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      if (get('translation') === 'off') root.setAttribute('data-hide-translation', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../assets/frame.js?v=c61067d140"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <div class="mb-6 flex flex-wrap items-start justify-between gap-4">
+    <div class="flex min-w-0 items-center gap-3">
+      <a href="../quran/index.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Quran</span>
+    </a>
+      <div class="min-w-0">
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>As-Saf
+          <span
+            class="font-amiri ms-2"
+            lang="ar"
+            dir="rtl"
+          >
+            الصف
+          </span></div>
+        <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    <span data-t="Surah :number" data-r="{&quot;number&quot;:61}">Surah 61</span> · Medinan · <span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:14}" data-n="14">14 ayat</span>
+</div>
+      </div>
+    </div>
+    <div class="flex flex-wrap items-center gap-2">
+      
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 w-8 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" data-quran-listen="data-quran-listen" aria-pressed="false" aria-label="Listen" title="Listen" data-test="quran-listen">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-listen-icon="data-listen-icon" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M7.557 2.066A.75.75 0 0 1 8 2.75v10.5a.75.75 0 0 1-1.248.56L3.59 11H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.59l3.162-2.81a.75.75 0 0 1 .805-.124ZM12.95 3.05a.75.75 0 1 0-1.06 1.06 5.5 5.5 0 0 1 0 7.78.75.75 0 1 0 1.06 1.06 7 7 0 0 0 0-9.9Z"/>
+  <path d="M10.828 5.172a.75.75 0 1 0-1.06 1.06 2.5 2.5 0 0 1 0 3.536.75.75 0 1 0 1.06 1.06 4 4 0 0 0 0-5.656Z"/>
+</svg>
+
+                <svg class="shrink-0 [:where(&amp;)]:size-4" data-stop-icon="data-stop-icon" hidden="hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <rect width="10" height="10" x="3" y="3" rx="1.5"/>
+</svg>
+    </button>
+
+      
+              <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 w-8 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-data="" x-show="JSON.parse('[\u0022en\u0022,\u0022fr\u0022,\u0022es\u0022,\u0022ur\u0022,\u0022tr\u0022,\u0022sw\u0022,\u0022id\u0022,\u0022ja\u0022,\u0022zh\u0022,\u0022ru\u0022,\u0022bn\u0022,\u0022pt\u0022,\u0022hi\u0022]').includes($store.preferences.language)" x-cloak="x-cloak" x-on:click="$store.pageTranslation.toggle()" x-bind:aria-pressed="$store.pageTranslation.on" x-bind:title="$store.pageTranslation.on ? $t('Hide the translation') : $t('Show the translation')" aria-label="Hide the translation" data-test="translation-toggle">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" x-bind:class="$store.pageTranslation.on ? '' : 'opacity-40'" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M11 5a.75.75 0 0 1 .688.452l3.25 7.5a.75.75 0 1 1-1.376.596L12.89 12H9.109l-.67 1.548a.75.75 0 1 1-1.377-.596l3.25-7.5A.75.75 0 0 1 11 5Zm-1.24 5.5h2.48L11 7.636 9.76 10.5ZM5 1a.75.75 0 0 1 .75.75v1.261a25.27 25.27 0 0 1 2.598.211.75.75 0 1 1-.2 1.487c-.22-.03-.44-.056-.662-.08A12.939 12.939 0 0 1 5.92 8.058c.237.304.488.595.752.873a.75.75 0 0 1-1.086 1.035A13.075 13.075 0 0 1 5 9.307a13.068 13.068 0 0 1-2.841 2.546.75.75 0 0 1-.827-1.252A11.566 11.566 0 0 0 4.08 8.057a12.991 12.991 0 0 1-.554-.938.75.75 0 1 1 1.323-.707c.049.09.099.181.15.271.388-.68.708-1.405.952-2.164a23.941 23.941 0 0 0-4.1.19.75.75 0 0 1-.2-1.487c.853-.114 1.72-.185 2.598-.211V1.75A.75.75 0 0 1 5 1Z" clip-rule="evenodd"/>
+</svg>
+    </button>
+      
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-3 pe-3 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-data="quranFont" x-on:click="next()" title="Switch the Quran&#039;s font" data-test="quran-font-toggle">
+        <span x-text="label">Uthmani</span>
+    </button>
+    </div>
+  </div>
+
+  <div
+    class="quran-reader rounded-xl border border-zinc-200 p-6 dark:border-zinc-700 dark:bg-zinc-800"
+    lang="ar"
+    dir="rtl"
+    data-quran
+    data-surah="61"
+    data-basmalah="1"
+    data-translations="[&quot;en&quot;,&quot;fr&quot;,&quot;es&quot;,&quot;ur&quot;,&quot;tr&quot;,&quot;sw&quot;,&quot;id&quot;,&quot;ja&quot;,&quot;zh&quot;,&quot;ru&quot;,&quot;bn&quot;,&quot;pt&quot;,&quot;hi&quot;]"
+    data-translations-path="../quran/translations/"
+    data-reciters="{&quot;alafasy&quot;:&quot;https:\/\/everyayah.com\/data\/Alafasy_128kbps\/&quot;,&quot;husary&quot;:&quot;https:\/\/everyayah.com\/data\/Husary_128kbps\/&quot;,&quot;hudhaify&quot;:&quot;https:\/\/everyayah.com\/data\/Hudhaify_128kbps\/&quot;,&quot;muaiqly&quot;:&quot;https:\/\/everyayah.com\/data\/MaherAlMuaiqly128kbps\/&quot;,&quot;ayyoub&quot;:&quot;https:\/\/everyayah.com\/data\/Muhammad_Ayyoub_128kbps\/&quot;}"
+  >
+                <p class="quran-text mb-4 text-center text-3xl leading-loose">
+        <span class="when-uthmani">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ</span>
+        <span class="when-amiri">بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِیمِ</span>
+        <span class="when-indopak">بِسْمِ اللّٰهِ الرَّحْمٰنِ الرَّحِیْمِ ۟</span>
+      </p>
+    
+    
+    
+    <div
+  class="quran-pairs"
+    data-test="quran-pairs"
+>
+      <div class="quran-group">
+      <p
+        class="quran-group-arabic quran-text text-3xl leading-[2.4]"
+        lang="ar"
+        dir="rtl"
+      >
+                  <span id="ayah-1" class="quran-ayah" data-number="1"><span class="when-uthmani"><span class="ayah-text">سَبَّحَ لِلَّهِ مَا فِي ٱلسَّمَٰوَٰتِ وَمَا فِي ٱلۡأَرۡضِۖ وَهُوَ ٱلۡعَزِيزُ ٱلۡحَكِيمُ</span> <span class="ayah-mark ayah-mark-hafs" data-play="1" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">١</span></span></span><span class="when-amiri"><span class="ayah-text">سَبَّحَ لِلَّهِ مَا فِی ٱلسَّمَٰوَٰتِ وَمَا فِی ٱلۡأَرۡضِۖ وَهُوَ ٱلۡعَزِیزُ ٱلۡحَكِیمُ</span> <span class="ayah-mark" data-play="1" role="button" tabindex="0">&#x06DD;١</span></span><span class="when-indopak"><span class="ayah-text">سَبَّحَ لِلّٰهِ مَا فِی السَّمٰوٰتِ وَمَا فِی الْاَرْضِ ۚ وَهُوَ الْعَزِیْزُ الْحَكِیْمُ ۟</span><span class="ayah-mark" data-play="1" role="button" tabindex="0"></span></span></span>
+                  <span id="ayah-2" class="quran-ayah" data-number="2"><span class="when-uthmani"><span class="ayah-text ayah-linked" data-ayah-links="2" role="button" tabindex="0">يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُواْ لِمَ تَقُولُونَ مَا لَا تَفۡعَلُونَ</span> <span class="ayah-mark ayah-mark-hafs" data-play="2" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">٢</span></span></span><span class="when-amiri"><span class="ayah-text ayah-linked" data-ayah-links="2" role="button" tabindex="0">یَٰۤأَیُّهَا ٱلَّذِینَ ءَامَنُوا۟ لِمَ تَقُولُونَ مَا لَا تَفۡعَلُونَ</span> <span class="ayah-mark" data-play="2" role="button" tabindex="0">&#x06DD;٢</span></span><span class="when-indopak"><span class="ayah-text ayah-linked" data-ayah-links="2" role="button" tabindex="0">یٰۤاَیُّهَا الَّذِیْنَ اٰمَنُوْا لِمَ تَقُوْلُوْنَ مَا لَا تَفْعَلُوْنَ ۟</span><span class="ayah-mark" data-play="2" role="button" tabindex="0"></span></span></span>
+                  <span id="ayah-3" class="quran-ayah" data-number="3"><span class="when-uthmani"><span class="ayah-text ayah-linked" data-ayah-links="3" role="button" tabindex="0">كَبُرَ مَقۡتًا عِندَ ٱللَّهِ أَن تَقُولُواْ مَا لَا تَفۡعَلُونَ</span> <span class="ayah-mark ayah-mark-hafs" data-play="3" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">٣</span></span></span><span class="when-amiri"><span class="ayah-text ayah-linked" data-ayah-links="3" role="button" tabindex="0">كَبُرَ مَقۡتًا عِندَ ٱللَّهِ أَن تَقُولُوا۟ مَا لَا تَفۡعَلُونَ</span> <span class="ayah-mark" data-play="3" role="button" tabindex="0">&#x06DD;٣</span></span><span class="when-indopak"><span class="ayah-text ayah-linked" data-ayah-links="3" role="button" tabindex="0">كَبُرَ مَقْتًا عِنْدَ اللّٰهِ اَنْ تَقُوْلُوْا مَا لَا تَفْعَلُوْنَ ۟</span><span class="ayah-mark" data-play="3" role="button" tabindex="0"></span></span></span>
+                  <span id="ayah-4" class="quran-ayah" data-number="4"><span class="when-uthmani"><span class="ayah-text ayah-linked" data-ayah-links="4" role="button" tabindex="0">إِنَّ ٱللَّهَ يُحِبُّ ٱلَّذِينَ يُقَٰتِلُونَ فِي سَبِيلِهِۦ صَفّٗا كَأَنَّهُم بُنۡيَٰنٞ مَّرۡصُوصٞ</span> <span class="ayah-mark ayah-mark-hafs" data-play="4" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">٤</span></span></span><span class="when-amiri"><span class="ayah-text ayah-linked" data-ayah-links="4" role="button" tabindex="0">إِنَّ ٱللَّهَ یُحِبُّ ٱلَّذِینَ یُقَٰتِلُونَ فِی سَبِیلِهِۦ صَفࣰّا كَأَنَّهُم بُنۡیَٰنࣱ مَّرۡصُوصࣱ</span> <span class="ayah-mark" data-play="4" role="button" tabindex="0">&#x06DD;٤</span></span><span class="when-indopak"><span class="ayah-text ayah-linked" data-ayah-links="4" role="button" tabindex="0">اِنَّ اللّٰهَ یُحِبُّ الَّذِیْنَ یُقَاتِلُوْنَ فِیْ سَبِیْلِهٖ صَفًّا كَاَنَّهُمْ بُنْیَانٌ مَّرْصُوْصٌ ۟</span><span class="ayah-mark" data-play="4" role="button" tabindex="0"></span></span></span>
+                  <span id="ayah-5" class="quran-ayah" data-number="5"><span class="when-uthmani"><span class="ayah-text ayah-linked" data-ayah-links="5" role="button" tabindex="0">وَإِذۡ قَالَ مُوسَىٰ لِقَوۡمِهِۦ يَٰقَوۡمِ لِمَ تُؤۡذُونَنِي وَقَد تَّعۡلَمُونَ أَنِّي رَسُولُ ٱللَّهِ إِلَيۡكُمۡۖ فَلَمَّا زَاغُوٓاْ أَزَاغَ ٱللَّهُ قُلُوبَهُمۡۚ وَٱللَّهُ لَا يَهۡدِي ٱلۡقَوۡمَ ٱلۡفَٰسِقِينَ</span> <span class="ayah-mark ayah-mark-hafs" data-play="5" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">٥</span></span></span><span class="when-amiri"><span class="ayah-text ayah-linked" data-ayah-links="5" role="button" tabindex="0">وَإِذۡ قَالَ مُوسَىٰ لِقَوۡمِهِۦ یَٰقَوۡمِ لِمَ تُؤۡذُونَنِی وَقَد تَّعۡلَمُونَ أَنِّی رَسُولُ ٱللَّهِ إِلَیۡكُمۡۖ فَلَمَّا زَاغُوۤا۟ أَزَاغَ ٱللَّهُ قُلُوبَهُمۡۚ وَٱللَّهُ لَا یَهۡدِی ٱلۡقَوۡمَ ٱلۡفَٰسِقِینَ</span> <span class="ayah-mark" data-play="5" role="button" tabindex="0">&#x06DD;٥</span></span><span class="when-indopak"><span class="ayah-text ayah-linked" data-ayah-links="5" role="button" tabindex="0">وَاِذْ قَالَ مُوْسٰی لِقَوْمِهٖ یٰقَوْمِ لِمَ تُؤْذُوْنَنِیْ وَقَدْ تَّعْلَمُوْنَ اَنِّیْ رَسُوْلُ اللّٰهِ اِلَیْكُمْ ؕ فَلَمَّا زَاغُوْۤا اَزَاغَ اللّٰهُ قُلُوْبَهُمْ ؕ وَاللّٰهُ لَا یَهْدِی الْقَوْمَ الْفٰسِقِیْنَ ۟</span><span class="ayah-mark" data-play="5" role="button" tabindex="0"></span></span></span>
+              </p>
+
+      <div
+        class="quran-group-translation"
+        
+      >
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="1"
+          >
+                      </div>
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="2"
+          >
+                      </div>
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="3"
+          >
+                      </div>
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="4"
+          >
+                      </div>
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="5"
+          >
+                      </div>
+              </div>
+    </div>
+      <div class="quran-group">
+      <p
+        class="quran-group-arabic quran-text text-3xl leading-[2.4]"
+        lang="ar"
+        dir="rtl"
+      >
+                  <span id="ayah-6" class="quran-ayah" data-number="6"><span class="when-uthmani"><span class="ayah-text">وَإِذۡ قَالَ عِيسَى ٱبۡنُ مَرۡيَمَ يَٰبَنِيٓ إِسۡرَٰٓءِيلَ إِنِّي رَسُولُ ٱللَّهِ إِلَيۡكُم مُّصَدِّقٗا لِّمَا بَيۡنَ يَدَيَّ مِنَ ٱلتَّوۡرَىٰةِ وَمُبَشِّرَۢا بِرَسُولٖ يَأۡتِي مِنۢ بَعۡدِي ٱسۡمُهُۥٓ أَحۡمَدُۖ فَلَمَّا جَآءَهُم بِٱلۡبَيِّنَٰتِ قَالُواْ هَٰذَا سِحۡرٞ مُّبِينٞ</span> <span class="ayah-mark ayah-mark-hafs" data-play="6" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">٦</span></span></span><span class="when-amiri"><span class="ayah-text">وَإِذۡ قَالَ عِیسَى ٱبۡنُ مَرۡیَمَ یَٰبَنِیۤ إِسۡرَٰۤءِیلَ إِنِّی رَسُولُ ٱللَّهِ إِلَیۡكُم مُّصَدِّقࣰا لِّمَا بَیۡنَ یَدَیَّ مِنَ ٱلتَّوۡرَىٰةِ وَمُبَشِّرَۢا بِرَسُولࣲ یَأۡتِی مِنۢ بَعۡدِی ٱسۡمُهُۥۤ أَحۡمَدُۖ فَلَمَّا جَاۤءَهُم بِٱلۡبَیِّنَٰتِ قَالُوا۟ هَٰذَا سِحۡرࣱ مُّبِینࣱ</span> <span class="ayah-mark" data-play="6" role="button" tabindex="0">&#x06DD;٦</span></span><span class="when-indopak"><span class="ayah-text">وَاِذْ قَالَ عِیْسَی ابْنُ مَرْیَمَ یٰبَنِیْۤ اِسْرَآءِیْلَ اِنِّیْ رَسُوْلُ اللّٰهِ اِلَیْكُمْ مُّصَدِّقًا لِّمَا بَیْنَ یَدَیَّ مِنَ التَّوْرٰىةِ وَمُبَشِّرًا بِرَسُوْلٍ یَّاْتِیْ مِنْ بَعْدِی اسْمُهٗۤ اَحْمَدُ ؕ فَلَمَّا جَآءَهُمْ بِالْبَیِّنٰتِ قَالُوْا هٰذَا سِحْرٌ مُّبِیْنٌ ۟</span><span class="ayah-mark" data-play="6" role="button" tabindex="0"></span></span></span>
+                  <span id="ayah-7" class="quran-ayah" data-number="7"><span class="when-uthmani"><span class="ayah-text">وَمَنۡ أَظۡلَمُ مِمَّنِ ٱفۡتَرَىٰ عَلَى ٱللَّهِ ٱلۡكَذِبَ وَهُوَ يُدۡعَىٰٓ إِلَى ٱلۡإِسۡلَٰمِۚ وَٱللَّهُ لَا يَهۡدِي ٱلۡقَوۡمَ ٱلظَّٰلِمِينَ</span> <span class="ayah-mark ayah-mark-hafs" data-play="7" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">٧</span></span></span><span class="when-amiri"><span class="ayah-text">وَمَنۡ أَظۡلَمُ مِمَّنِ ٱفۡتَرَىٰ عَلَى ٱللَّهِ ٱلۡكَذِبَ وَهُوَ یُدۡعَىٰۤ إِلَى ٱلۡإِسۡلَٰمِۚ وَٱللَّهُ لَا یَهۡدِی ٱلۡقَوۡمَ ٱلظَّٰلِمِینَ</span> <span class="ayah-mark" data-play="7" role="button" tabindex="0">&#x06DD;٧</span></span><span class="when-indopak"><span class="ayah-text">وَمَنْ اَظْلَمُ مِمَّنِ افْتَرٰی عَلَی اللّٰهِ الْكَذِبَ وَهُوَ یُدْعٰۤی اِلَی الْاِسْلَامِ ؕ وَاللّٰهُ لَا یَهْدِی الْقَوْمَ الظّٰلِمِیْنَ ۟ۚ</span><span class="ayah-mark" data-play="7" role="button" tabindex="0"></span></span></span>
+                  <span id="ayah-8" class="quran-ayah" data-number="8"><span class="when-uthmani"><span class="ayah-text">يُرِيدُونَ لِيُطۡفِـُٔواْ نُورَ ٱللَّهِ بِأَفۡوَٰهِهِمۡ وَٱللَّهُ مُتِمُّ نُورِهِۦ وَلَوۡ كَرِهَ ٱلۡكَٰفِرُونَ</span> <span class="ayah-mark ayah-mark-hafs" data-play="8" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">٨</span></span></span><span class="when-amiri"><span class="ayah-text">یُرِیدُونَ لِیُطۡفِءُوا۟ نُورَ ٱللَّهِ بِأَفۡوَٰهِهِمۡ وَٱللَّهُ مُتِمُّ نُورِهِۦ وَلَوۡ كَرِهَ ٱلۡكَٰفِرُونَ</span> <span class="ayah-mark" data-play="8" role="button" tabindex="0">&#x06DD;٨</span></span><span class="when-indopak"><span class="ayah-text">یُرِیْدُوْنَ لِیُطْفِـُٔوْا نُوْرَ اللّٰهِ بِاَفْوَاهِهِمْ ؕ وَاللّٰهُ مُتِمُّ نُوْرِهٖ وَلَوْ كَرِهَ الْكٰفِرُوْنَ ۟</span><span class="ayah-mark" data-play="8" role="button" tabindex="0"></span></span></span>
+                  <span id="ayah-9" class="quran-ayah" data-number="9"><span class="when-uthmani"><span class="ayah-text">هُوَ ٱلَّذِيٓ أَرۡسَلَ رَسُولَهُۥ بِٱلۡهُدَىٰ وَدِينِ ٱلۡحَقِّ لِيُظۡهِرَهُۥ عَلَى ٱلدِّينِ كُلِّهِۦ وَلَوۡ كَرِهَ ٱلۡمُشۡرِكُونَ</span> <span class="ayah-mark ayah-mark-hafs" data-play="9" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">٩</span></span></span><span class="when-amiri"><span class="ayah-text">هُوَ ٱلَّذِیۤ أَرۡسَلَ رَسُولَهُۥ بِٱلۡهُدَىٰ وَدِینِ ٱلۡحَقِّ لِیُظۡهِرَهُۥ عَلَى ٱلدِّینِ كُلِّهِۦ وَلَوۡ كَرِهَ ٱلۡمُشۡرِكُونَ</span> <span class="ayah-mark" data-play="9" role="button" tabindex="0">&#x06DD;٩</span></span><span class="when-indopak"><span class="ayah-text">هُوَ الَّذِیْۤ اَرْسَلَ رَسُوْلَهٗ بِالْهُدٰی وَدِیْنِ الْحَقِّ لِیُظْهِرَهٗ عَلَی الدِّیْنِ كُلِّهٖ وَلَوْ كَرِهَ الْمُشْرِكُوْنَ ۟۠</span><span class="ayah-mark" data-play="9" role="button" tabindex="0"></span></span></span>
+                  <span id="ayah-10" class="quran-ayah" data-number="10"><span class="when-uthmani"><span class="ayah-text ayah-linked" data-ayah-links="10" role="button" tabindex="0">يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُواْ هَلۡ أَدُلُّكُمۡ عَلَىٰ تِجَٰرَةٖ تُنجِيكُم مِّنۡ عَذَابٍ أَلِيمٖ</span> <span class="ayah-mark ayah-mark-hafs" data-play="10" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">١٠</span></span></span><span class="when-amiri"><span class="ayah-text ayah-linked" data-ayah-links="10" role="button" tabindex="0">یَٰۤأَیُّهَا ٱلَّذِینَ ءَامَنُوا۟ هَلۡ أَدُلُّكُمۡ عَلَىٰ تِجَٰرَةࣲ تُنجِیكُم مِّنۡ عَذَابٍ أَلِیمࣲ</span> <span class="ayah-mark" data-play="10" role="button" tabindex="0">&#x06DD;١٠</span></span><span class="when-indopak"><span class="ayah-text ayah-linked" data-ayah-links="10" role="button" tabindex="0">یٰۤاَیُّهَا الَّذِیْنَ اٰمَنُوْا هَلْ اَدُلُّكُمْ عَلٰی تِجَارَةٍ تُنْجِیْكُمْ مِّنْ عَذَابٍ اَلِیْمٍ ۟</span><span class="ayah-mark" data-play="10" role="button" tabindex="0"></span></span></span>
+              </p>
+
+      <div
+        class="quran-group-translation"
+        
+      >
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="6"
+          >
+                      </div>
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="7"
+          >
+                      </div>
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="8"
+          >
+                      </div>
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="9"
+          >
+                      </div>
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="10"
+          >
+                      </div>
+              </div>
+    </div>
+      <div class="quran-group">
+      <p
+        class="quran-group-arabic quran-text text-3xl leading-[2.4]"
+        lang="ar"
+        dir="rtl"
+      >
+                  <span id="ayah-11" class="quran-ayah" data-number="11"><span class="when-uthmani"><span class="ayah-text ayah-linked" data-ayah-links="11" role="button" tabindex="0">تُؤۡمِنُونَ بِٱللَّهِ وَرَسُولِهِۦ وَتُجَٰهِدُونَ فِي سَبِيلِ ٱللَّهِ بِأَمۡوَٰلِكُمۡ وَأَنفُسِكُمۡۚ ذَٰلِكُمۡ خَيۡرٞ لَّكُمۡ إِن كُنتُمۡ تَعۡلَمُونَ</span> <span class="ayah-mark ayah-mark-hafs" data-play="11" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">١١</span></span></span><span class="when-amiri"><span class="ayah-text ayah-linked" data-ayah-links="11" role="button" tabindex="0">تُؤۡمِنُونَ بِٱللَّهِ وَرَسُولِهِۦ وَتُجَٰهِدُونَ فِی سَبِیلِ ٱللَّهِ بِأَمۡوَٰلِكُمۡ وَأَنفُسِكُمۡۚ ذَٰلِكُمۡ خَیۡرࣱ لَّكُمۡ إِن كُنتُمۡ تَعۡلَمُونَ</span> <span class="ayah-mark" data-play="11" role="button" tabindex="0">&#x06DD;١١</span></span><span class="when-indopak"><span class="ayah-text ayah-linked" data-ayah-links="11" role="button" tabindex="0">تُؤْمِنُوْنَ بِاللّٰهِ وَرَسُوْلِهٖ وَتُجَاهِدُوْنَ فِیْ سَبِیْلِ اللّٰهِ بِاَمْوَالِكُمْ وَاَنْفُسِكُمْ ؕ ذٰلِكُمْ خَیْرٌ لَّكُمْ اِنْ كُنْتُمْ تَعْلَمُوْنَ ۟ۙ</span><span class="ayah-mark" data-play="11" role="button" tabindex="0"></span></span></span>
+                  <span id="ayah-12" class="quran-ayah" data-number="12"><span class="when-uthmani"><span class="ayah-text ayah-linked" data-ayah-links="12" role="button" tabindex="0">يَغۡفِرۡ لَكُمۡ ذُنُوبَكُمۡ وَيُدۡخِلۡكُمۡ جَنَّٰتٖ تَجۡرِي مِن تَحۡتِهَا ٱلۡأَنۡهَٰرُ وَمَسَٰكِنَ طَيِّبَةٗ فِي جَنَّٰتِ عَدۡنٖۚ ذَٰلِكَ ٱلۡفَوۡزُ ٱلۡعَظِيمُ</span> <span class="ayah-mark ayah-mark-hafs" data-play="12" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">١٢</span></span></span><span class="when-amiri"><span class="ayah-text ayah-linked" data-ayah-links="12" role="button" tabindex="0">یَغۡفِرۡ لَكُمۡ ذُنُوبَكُمۡ وَیُدۡخِلۡكُمۡ جَنَّٰتࣲ تَجۡرِی مِن تَحۡتِهَا ٱلۡأَنۡهَٰرُ وَمَسَٰكِنَ طَیِّبَةࣰ فِی جَنَّٰتِ عَدۡنࣲۚ ذَٰلِكَ ٱلۡفَوۡزُ ٱلۡعَظِیمُ</span> <span class="ayah-mark" data-play="12" role="button" tabindex="0">&#x06DD;١٢</span></span><span class="when-indopak"><span class="ayah-text ayah-linked" data-ayah-links="12" role="button" tabindex="0">یَغْفِرْ لَكُمْ ذُنُوْبَكُمْ وَیُدْخِلْكُمْ جَنّٰتٍ تَجْرِیْ مِنْ تَحْتِهَا الْاَنْهٰرُ وَمَسٰكِنَ طَیِّبَةً فِیْ جَنّٰتِ عَدْنٍ ؕ ذٰلِكَ الْفَوْزُ الْعَظِیْمُ ۟ۙ</span><span class="ayah-mark" data-play="12" role="button" tabindex="0"></span></span></span>
+                  <span id="ayah-13" class="quran-ayah" data-number="13"><span class="when-uthmani"><span class="ayah-text ayah-linked" data-ayah-links="13" role="button" tabindex="0">وَأُخۡرَىٰ تُحِبُّونَهَاۖ نَصۡرٞ مِّنَ ٱللَّهِ وَفَتۡحٞ قَرِيبٞۗ وَبَشِّرِ ٱلۡمُؤۡمِنِينَ</span> <span class="ayah-mark ayah-mark-hafs" data-play="13" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">١٣</span></span></span><span class="when-amiri"><span class="ayah-text ayah-linked" data-ayah-links="13" role="button" tabindex="0">وَأُخۡرَىٰ تُحِبُّونَهَاۖ نَصۡرࣱ مِّنَ ٱللَّهِ وَفَتۡحࣱ قَرِیبࣱۗ وَبَشِّرِ ٱلۡمُؤۡمِنِینَ</span> <span class="ayah-mark" data-play="13" role="button" tabindex="0">&#x06DD;١٣</span></span><span class="when-indopak"><span class="ayah-text ayah-linked" data-ayah-links="13" role="button" tabindex="0">وَاُخْرٰی تُحِبُّوْنَهَا ؕ نَصْرٌ مِّنَ اللّٰهِ وَفَتْحٌ قَرِیْبٌ ؕ وَبَشِّرِ الْمُؤْمِنِیْنَ ۟</span><span class="ayah-mark" data-play="13" role="button" tabindex="0"></span></span></span>
+                  <span id="ayah-14" class="quran-ayah" data-number="14"><span class="when-uthmani"><span class="ayah-text">يَٰٓأَيُّهَا ٱلَّذِينَ ءَامَنُواْ كُونُوٓاْ أَنصَارَ ٱللَّهِ كَمَا قَالَ عِيسَى ٱبۡنُ مَرۡيَمَ لِلۡحَوَارِيِّـۧنَ مَنۡ أَنصَارِيٓ إِلَى ٱللَّهِۖ قَالَ ٱلۡحَوَارِيُّونَ نَحۡنُ أَنصَارُ ٱللَّهِۖ فَـَٔامَنَت طَّآئِفَةٞ مِّنۢ بَنِيٓ إِسۡرَٰٓءِيلَ وَكَفَرَت طَّآئِفَةٞۖ فَأَيَّدۡنَا ٱلَّذِينَ ءَامَنُواْ عَلَىٰ عَدُوِّهِمۡ فَأَصۡبَحُواْ ظَٰهِرِينَ</span> <span class="ayah-mark ayah-mark-hafs" data-play="14" role="button" tabindex="0">&#x06DD;<span class="ayah-digits">١٤</span></span></span><span class="when-amiri"><span class="ayah-text">یَٰۤأَیُّهَا ٱلَّذِینَ ءَامَنُوا۟ كُونُوۤا۟ أَنصَارَ ٱللَّهِ كَمَا قَالَ عِیسَى ٱبۡنُ مَرۡیَمَ لِلۡحَوَارِیِّۦنَ مَنۡ أَنصَارِیۤ إِلَى ٱللَّهِۖ قَالَ ٱلۡحَوَارِیُّونَ نَحۡنُ أَنصَارُ ٱللَّهِۖ فَءَامَنَت طَّاۤئِفَةࣱ مِّنۢ بَنِیۤ إِسۡرَٰۤءِیلَ وَكَفَرَت طَّاۤئِفَةࣱۖ فَأَیَّدۡنَا ٱلَّذِینَ ءَامَنُوا۟ عَلَىٰ عَدُوِّهِمۡ فَأَصۡبَحُوا۟ ظَٰهِرِینَ</span> <span class="ayah-mark" data-play="14" role="button" tabindex="0">&#x06DD;١٤</span></span><span class="when-indopak"><span class="ayah-text">یٰۤاَیُّهَا الَّذِیْنَ اٰمَنُوْا كُوْنُوْۤا اَنْصَارَ اللّٰهِ كَمَا قَالَ عِیْسَی ابْنُ مَرْیَمَ لِلْحَوَارِیّٖنَ مَنْ اَنْصَارِیْۤ اِلَی اللّٰهِ ؕ قَالَ الْحَوَارِیُّوْنَ نَحْنُ اَنْصَارُ اللّٰهِ فَاٰمَنَتْ طَّآىِٕفَةٌ مِّنْ بَنِیْۤ اِسْرَآءِیْلَ وَكَفَرَتْ طَّآىِٕفَةٌ ۚ فَاَیَّدْنَا الَّذِیْنَ اٰمَنُوْا عَلٰی عَدُوِّهِمْ فَاَصْبَحُوْا ظٰهِرِیْنَ ۟۠</span><span class="ayah-mark" data-play="14" role="button" tabindex="0"></span></span></span>
+              </p>
+
+      <div
+        class="quran-group-translation"
+        
+      >
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="11"
+          >
+                      </div>
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="12"
+          >
+                      </div>
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="13"
+          >
+                      </div>
+                  
+          <div
+            class="quran-translation"
+            data-translation-of="14"
+          >
+                      </div>
+              </div>
+    </div>
+  
+  <p
+    class="quran-credit"
+    
+    data-quran-credit
+  >
+      </p>
+</div>
+  </div>
+
+  <div class="mt-4 flex items-center justify-between gap-2">
+          <a href="../quran/60.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white       rtl:[&_svg]:rotate-180">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Previous</span>
+    </a>
+              <a href="../quran/62.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-3 pe-2 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-white       rtl:[&_svg]:rotate-180">
+        <span>Next</span>
+        
+        
+                    
+                        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+    </a>
+      </div>
+
+  
+  <ui-modal  data-flux-modal>
+    
+    <dialog
+        wire:ignore.self 
+        class="fixed m-0 p-8 min-w-[100%] overflow-y-auto mt-auto [--flux-flyout-translate:translateY(50px)] border-t bg-white dark:bg-zinc-800 border-transparent dark:border-zinc-700 max-h-[70vh] p-0!"
+         data-modal="ayah"          data-flux-flyout                         x-data="fluxModal('ayah', null)"
+                x-on:modal-show.document="handleShow($event)"
+        x-on:modal-close.document="handleClose($event)"
+    >
+                    <div class="mx-auto max-w-3xl" dir="rtl" lang="ar">
+    <div
+      class="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-zinc-200 bg-white px-6 py-3 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 min-w-0 truncate text-2xl!" data-flux-heading>Ayah</div>
+
+      <ui-close data-flux-modal-close >
+    <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]    shrink-0" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" data-test="ayah-close">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Close</span>
+    </button>
+</ui-close>
+    </div>
+
+    <div class="px-6 pt-4 pb-8"><div
+      x-data="staticAyahSheet"
+      x-on:ayah.window="show($event.detail.number)"
+      class="space-y-5"
+    >
+      <template
+        x-for="
+          [label, rows] in
+          [
+            [$t('Quoted in'), quotes],
+            [$t('Tafsir'), tafsirs],
+          ]
+        "
+        :key="label"
+      >
+        <div x-show="rows.length">
+          <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" x-text="label" data-flux-heading></div>
+          <ul class="divide-y divide-zinc-200 border-y border-zinc-200 dark:divide-zinc-700 dark:border-zinc-700">
+            <template
+              x-for="(row, index) in rows"
+              :key="index"
+            >
+              <li class="flex items-start justify-between gap-3 py-2">
+                <a
+                  class="min-w-0 flex-1"
+                  :class="row.url ? 'hover:underline' : 'pointer-events-none opacity-60'"
+                  :href="row.url"
+                  dir="auto"
+                >
+                  <span
+                    class="block text-lg font-semibold"
+                    x-text="row.title"
+                  ></span>
+                  <span
+                    class="block text-zinc-500 dark:text-zinc-400"
+                    x-text="row.author"
+                  ></span>
+                </a>
+                <bdi
+                  class="shrink-0 text-sm text-zinc-500 dark:text-zinc-400"
+                  x-text="row.died"
+                ></bdi>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </template>
+    </div></div>
+  </div>
+
+                        </dialog>
+</ui-modal>
+
+  <script
+    type="application/json"
+    data-ayah-sheets
+  >
+    {"2":{"quotes":[{"title":"صحيح مسلم - ت عبد الباقي","author":"مسلم","href":"books/003/353/2327.html#p2352"},{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/77.html#p94"}],"tafsirs":[]},"3":{"quotes":[{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/77.html#p94"}],"tafsirs":[]},"4":{"quotes":[{"title":"فتح الباري لابن رجب","author":"ابن رجب الحنبلي","href":"books/033/3315/2934.html#p2955"}],"tafsirs":[]},"5":{"quotes":[{"title":"فتح الباري لابن رجب","author":"ابن رجب الحنبلي","href":"books/033/3315/197.html#p223"}],"tafsirs":[]},"10":{"quotes":[{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/537.html#p540"},{"title":"فتح الباري لابن رجب","author":"ابن رجب الحنبلي","href":"books/033/3315/1779.html#p1798"}],"tafsirs":[]},"11":{"quotes":[{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/537.html#p540"},{"title":"فتح الباري لابن رجب","author":"ابن رجب الحنبلي","href":"books/033/3315/1779.html#p1798"}],"tafsirs":[]},"12":{"quotes":[{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/537.html#p540"}],"tafsirs":[]},"13":{"quotes":[{"title":"رياض الصالحين - ت الرسالة الثاني","author":"النووي","href":"books/026/2620/537.html#p540"}],"tafsirs":[]}}
+  </script>
+
+  
+  <div
+  class="pointer-events-none sticky bottom-6 z-20 flex h-0 items-end justify-center"
+  x-data="{
+    shown: false,
+    check() {
+      this.shown = this.$root.parentElement.getBoundingClientRect().bottom > window.innerHeight * 2;
+    },
+    go() {
+      this.$root.parentElement.scrollIntoView({ block: 'end', behavior: 'smooth' });
+    },
+  }"
+  x-init="check()"
+  x-on:scroll.window.passive="check()"
+  x-on:resize.window="check()"
+  data-test="scroll-to-end"
+>
+  <button
+    type="button"
+    x-show="shown"
+    x-cloak
+    x-transition.opacity
+    x-on:click="go()"
+    class="pointer-events-auto flex size-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 shadow-md hover:bg-zinc-50 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700"
+    title="Scroll to the bottom"
+    aria-label="Scroll to the bottom"
+  >
+    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M10 3a.75.75 0 0 1 .75.75v10.638l3.96-4.158a.75.75 0 1 1 1.08 1.04l-5.25 5.5a.75.75 0 0 1-1.08 0l-5.25-5.5a.75.75 0 1 1 1.08-1.04l3.96 4.158V3.75A.75.75 0 0 1 10 3Z" clip-rule="evenodd"/>
+</svg>
+
+          </button>
+</div>
+
+    <footer
+  class="mx-auto mt-12 max-w-4xl border-t border-zinc-200 pt-4 pb-2 text-center text-xs leading-relaxed text-zinc-500 dark:border-zinc-700 dark:text-zinc-400"
+  data-test="translation-notice"
+>
+  <p>
+    This English translation was machine-generated by OpenAI and may contain errors. The original Arabic text is authoritative.
+    <a
+      href="https://docs.google.com/forms/d/e/1FAIpQLSff-a0SHkwz3jpEkg0emW7-hK9oI0TMBmrBHRnermrLYWdu7g/viewform?usp=pp_url&amp;entry.1782009901="
+      target="_blank"
+      rel="noopener"
+      class="underline hover:text-zinc-700 dark:hover:text-zinc-200"
+      x-data
+      x-on:click="$el.href = 'https:\/\/docs.google.com\/forms\/d\/e\/1FAIpQLSff-a0SHkwz3jpEkg0emW7-hK9oI0TMBmrBHRnermrLYWdu7g\/viewform?usp=pp_url\u0026entry.1782009901=' + encodeURIComponent(location.href)"
+      data-test="suggest-correction"
+    >
+      Suggest a correction
+    </a>
+  </p>
+</footer>
+    </div>
+
+  
+  <script src="../assets/static.js?v=c61067d140"></script>
+</body>
+</html>

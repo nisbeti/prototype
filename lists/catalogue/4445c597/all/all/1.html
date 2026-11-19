@@ -1,0 +1,740 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root="../../../../../"
+  data-section="items"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Resources</title>
+  <link
+    rel="icon"
+    href="../../../../../assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="../../../../../assets/static.css?v=c61067d140"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="../../../../../assets/i18n.js?v=c61067d140"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      if (get('translation') === 'off') root.setAttribute('data-hide-translation', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../../../assets/frame.js?v=c61067d140"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section
+    class="w-full"
+    x-data="staticList({ kind: 'items' })"
+  >
+    <script
+      type="application/json"
+      data-rows
+    >
+      [{"id":66364,"href":"catalogue/663/66364.html","cover":"catalogue/663/66364.jpg","title":"الإصابة في تمييز الصحابة","titles":{"en":"The Injury in Distinguishing the Companions","fr":"Al-Isaba fi tamyiz al-sahaba (La distinction des Compagnons)","es":"Al-Isaba fi tamyiz al-Sahaba [Identificación de los Compañeros]","ur":"الإصابة في تمييز الصحابة","tr":"el-İsâbe fî temyîzi’s-sahâbe (Sahâbîleri Ayırt Etme)","sw":"Al-Isaba fi Tamyiz al-Sahaba (Kuwatambua Maswahaba)","id":"Al-Ishabah fi Tamyiz Ash-Shahabah (Membedakan Para Sahabat)","ja":"『アル＝イサーバ』――教友を識別する書","zh":"《在辨识圣门弟子方面的正确判定》","ru":"аль-Исаба фи тамйиз ас-сахаба (Различение сподвижников)","bn":"আল-ইসাবা ফি তাময়ীযিস সাহাবা (সাহাবিদের পার্থক্য নির্ণয়)","pt":"Al-Isaba fi tamyiz al-sahaba (Identificação dos Companheiros)","hi":"अल-इसाबा फ़ी तमयीज़ अस-सहाबा (सहाबा की पहचान में निर्णायक कथन)"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1415هـ 1995م","publishedTranslations":{"en":"1415 AH / 1995 CE","fr":"1415 H 1995","es":"1415 H 1995","ur":"1415ھ 1995ء","tr":"1415 H 1995","sw":"1415H 1995","id":"1415 H 1995 M","ja":"ヒジュラ暦1415年／西暦1995年","zh":"伊历1415年／公元1995年","ru":"1415 г. х. / 1995 г.","bn":"1415 হি. 1995 খ্রি.","pt":"1415H 1995","hi":"1415 हि. 1995 ई."},"pages":"5158"},{"id":66442,"href":"catalogue/664/66442.html","cover":"catalogue/664/66442.jpg","title":"الإصابة في تمييز الصحابة","titles":{"en":"The Injury in Distinguishing the Companions","fr":"Al-Isaba fi tamyiz al-sahaba (La précision dans la distinction des Compagnons)","es":"Al-Isaba fi tamyiz al-sahaba [La identificación precisa de los compañeros del Profeta]","ur":"الإصابة في تمييز الصحابة (صحابہ کی شناخت میں الإصابة)","tr":"el-İsâbe fî Temyîzi's-Sahâbe [Sahâbîlerin Ayırt Edilmesi]","sw":"Al-Isaba fi Tamyiz al-Sahaba (Kutambua Maswahaba)","id":"Al-Isabah fi Tamyiz ash-Shahabah (Mengenali Para Sahabat)","ja":"アル＝イサーバ・フィー・タミーズ・アッ＝サハーバ","zh":"《辨识圣门弟子》","ru":"Аль-Исаба фи тамйиз ас-сахаба (Книга о точном распознавании сподвижников)","bn":"আল-ইসাবা ফি তাময়িজিস সাহাবা (সাহাবিদের পৃথকভাবে শনাক্তকরণ)","pt":"al-Isaba fi tamyiz al-sahaba [A identificação dos Companheiros]","hi":"अल-इसाबा फ़ी तमीज़ अस-सहाबा (सहाबा की पहचान में सही निर्णय)"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"2845"},{"id":245883,"href":"catalogue/2458/245883.html","cover":"catalogue/2458/245883.jpg","title":"الدرر الكامنة في أعيان المائة الثامنة -المعارف العثمانية- أجزاء","titles":{"en":"The Hidden Pearls in the Notables of the Eighth Century - Ottoman Knowledge - Parts","fr":"Al-Durar al-kamina fi a'yan al-mi'a al-thamina (Les perles cachées parmi les notables du VIIIe siècle) — édition al-Ma'arif al-Uthmaniyya — volumes","es":"Al-Durar al-kamina fi a'yan al-mi'a al-thamina [Las perlas ocultas sobre las figuras del siglo VIII] — edición de al-Maarif al-Uthmaniyya — en varios volúmenes","ur":"الدرر الكامنة في أعيان المائة الثامنة -المعارف العثمانية- أجزاء (آٹھویں صدی کی نامور شخصیات کے پوشیدہ موتی — المعارف العثمانية — متعدد جلدیں)","tr":"Sekizinci Yüzyılın Önde Gelen İsimleri Hakkında Gizli İnciler (el-Meârifü'l-Osmaniyye) – Ciltler","sw":"Al-Durar al-Kamina fi A'yan al-Mi'a al-Thamina (Lulu Zilizofichika Kuhusu Watu Mashuhuri wa Karne ya Nane) – Toleo la Dar al-Ma'arif al-Uthmaniyya, Juzuu Tofauti","id":"Ad-Durar Al-Kaminah fi A'yan Al-Mi'ah Ats-Tsaminah (Mutiara Tersembunyi tentang Tokoh-Tokoh Abad Kedelapan) — Ensiklopedia Utsmaniyah — Beberapa Jilid","ja":"『八世紀の名士たち』――オスマン百科事典版、分冊","zh":"《八世纪名人中的隐珠》（奥斯曼百科全书版）分册本","ru":"Скрытые жемчужины среди знатных мужей восьмого столетия — Османская энциклопедия — тома","bn":"আদ-দুরারুল কামিনাহ ফি আয়ানিল মিআতিস সামিনাহ (অষ্টম শতকের বিশিষ্ট ব্যক্তিদের অন্তর্নিহিত মুক্তা)—উসমানীয় জ্ঞানকোষ সংস্করণ, খণ্ডসমূহ","pt":"Al-Durar al-Kamina fi a'yan al-mi'a al-thamina (As pérolas ocultas sobre as figuras eminentes do século VIII) — edição da Enciclopédia Otomana — volumes","hi":"अद-दुरर अल-कामिना फ़ी अयान अल-मिअह अस-सामिना (आठवीं सदी के प्रमुख व्यक्तित्वों के छिपे मोती)—उस्मानी विश्वकोश संस्करण—खंड"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"2446"},{"id":245884,"href":"catalogue/2458/245884.html","cover":"catalogue/2458/245884.jpg","title":"الدرر الكامنة في أعيان المائة الثامنة -المعارف العثمانية- مدمجة","titles":{"en":"The Hidden Pearls in the Notable Figures of the Eighth Century - Ottoman Knowledge - Integrated","fr":"Al-Durar al-kamina fi a'yan al-mi'a al-thamina (Les perles cachées parmi les notables du VIIIe siècle) — édition al-Ma'arif al-Uthmaniyya — intégrale","es":"Al-Durar al-kamina fi a'yan al-mi'a al-thamina [Las perlas ocultas sobre las figuras del siglo VIII] — edición de al-Maarif al-Uthmaniyya — edición integrada","ur":"الدرر الكامنة في أعيان المائة الثامنة -المعارف العثمانية- مدمجة (آٹھویں صدی کی نامور شخصیات کے پوشیدہ موتی — المعارف العثمانية — یکجا جلد)","tr":"Sekizinci Yüzyılın Önde Gelen İsimleri Hakkında Gizli İnciler (el-Meârifü'l-Osmaniyye) – Birleştirilmiş","sw":"Al-Durar al-Kamina fi A'yan al-Mi'a al-Thamina (Lulu Zilizofichika Kuhusu Watu Mashuhuri wa Karne ya Nane) – Toleo la Dar al-Ma'arif al-Uthmaniyya, juzuu zilizounganishwa","id":"Ad-Durar Al-Kaminah fi A'yan Al-Mi'ah Ats-Tsaminah (Mutiara Tersembunyi tentang Tokoh-Tokoh Abad Kedelapan) — Ensiklopedia Utsmaniyah — Edisi Gabungan","ja":"『八世紀の名士たち』――オスマン百科事典版、合本","zh":"《八世纪名人中的隐珠》（奥斯曼百科全书版）合订本","ru":"Скрытые жемчужины среди знатных мужей восьмого столетия — Османская энциклопедия — объединённое издание","bn":"আদ-দুরারুল কামিনাহ ফি আয়ানিল মিআতিস সামিনাহ (অষ্টম শতকের বিশিষ্ট ব্যক্তিদের অন্তর্নিহিত মুক্তা)—উসমানীয় জ্ঞানকোষ সংস্করণ, একত্রিত","pt":"Al-Durar al-Kamina fi a'yan al-mi'a al-thamina (As pérolas ocultas sobre as figuras eminentes do século VIII) — edição da Enciclopédia Otomana — integrada","hi":"अद-दुरर अल-कामिना फ़ी अयान अल-मिअह अस-सामिना (आठवीं सदी के प्रमुख व्यक्तित्वों के छिपे मोती)—उस्मानी विश्वकोश संस्करण—संयुक्त"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"2444"},{"id":66756,"href":"catalogue/667/66756.html","cover":"catalogue/667/66756.jpg","title":"الذيل على طبقات الحنابلة- مشكول","titles":{"en":"The Tail on the Classes of the Hanbalis - Vocalized","fr":"Al-Dhayl ala tabaqat al-Hanabila (Supplément aux générations des hanbalites) - vocalisé","es":"Al-dhayl ala tabaqat al-hanabila (Suplemento a las generaciones de los hanbalíes) — vocalizado","ur":"الذيل على طبقات الحنابلة (حنبلیوں کے طبقات کا ذیل) - مشكول","tr":"Zeyl alâ Tabakāti'l-Hanâbile (Hanbelî tabakalarına ek) - harekeli","sw":"Al-Dhayl 'ala Tabaqat al-Hanabila (Nyongeza ya tabaka za wanazuoni wa Hanbali) - yenye irabu","id":"Adz-Dzail 'ala Thabaqat al-Hanabilah [Suplemen atas Tingkatan Ulama Hanbali] – Berharakat","ja":"ハンバル派諸学者の階層に関する補遺―母音記号付き","zh":"《罕百里派人物世系补编》—加注元音符号版","ru":"Дополнение к «Поколениям ханбалитов» — с огласовками","bn":"তাবাকাতুল হাম্বালিয়্যাহর পরিশিষ্ট—হরকতযুক্ত","pt":"Al-dhayl ala tabaqat al-hanabila (Suplemento às gerações dos hanbalitas) - vocalizado","hi":"अज़-ज़ैल अला तबक़ात अल-हनाबिला (हनबली विद्वानों की पीढ़ियों का परिशिष्ट) - स्वरचिह्न सहित"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ইবনে রজব আল-হাম্বলী","pt":"Ibn Rajab al-Hanbali","hi":"इब्न रजब अल-हंबली"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1425هـ 2005م","publishedTranslations":{"en":"1425 AH / 2005 CE","fr":"1425 H 2005","es":"1425 H 2005","ur":"1425ھ 2005ء","tr":"1425H 2005","sw":"1425H 2005","id":"1425 H 2005","ja":"ヒジュラ暦1425年／西暦2005年","zh":"伊历1425年／公元2005年","ru":"1425 г. х. / 2005 г.","bn":"1425 হি. 2005 খ্রি.","pt":"1425 H 2005","hi":"1425 हि. 2005 ई."},"pages":"2784"},{"id":66697,"href":"catalogue/666/66697.html","cover":"catalogue/666/66697.jpg","title":"الكنى والأسماء- ت القشقري","titles":{"en":"The Kunyas and Names - Translated by Al-Qashqari","fr":"Al-Kuna wa al-Asma' — édition critique d'al-Qashqari","es":"Al-Kuna wa al-Asma, edición de al-Qashqari","ur":"الكنى والأسماء- ت القشقري (کنیتیں اور نام — تحقیق القشقري)","tr":"Künyeler ve İsimler — Tahkik: el-Kaşkarî","sw":"Al-Kuna wa al-Asma' - toleo la al-Qashqari","id":"Al-Kuna wa Al-Asma' — tahkik Al-Qashqari","ja":"クンヤと名前—アル＝カシュカリー校訂","zh":"《别名与姓名——卡什卡里校勘本》","ru":"Аль-Куна ва-ль-асма — редакция аль-Кашкари","bn":"কুনিয়া ও নামসমূহ—তাহকিক: আল-কশকারি","pt":"Al-Kuna wa-l-Asma' [Patronímicos e nomes] - edição crítica de al-Qashqari","hi":"कुन्या और नाम—तहक़ीक़: अल-क़श्क़री"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"مسلم بن الحجاج بن مسلم القشيري النيسابوري","names":{"en":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","fr":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","es":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","ur":"مسلم بن الحجاج بن مسلم القشيري النيسابوري","tr":"Müslim b. Haccâc b. Müslim el-Kuşeyrî en-Nîsâbûrî","sw":"Muslim bin al-Hajjaj al-Qushayri al-Naysaburi","id":"Muslim bin Al-Hajjaj Al-Qusyairi An-Naisaburi","ja":"ムスリム・イブン・アル＝ハッジャージュ・アル＝クシャイリー・アン＝ナイサーブーリー","zh":"穆斯林·本·哈贾吉·库舍里·尼沙布里","ru":"Муслим ибн аль-Хаджжадж аль-Кушайри ан-Найсабури","bn":"মুসলিম ইবনে হাজ্জাজ আল-কুশাইরি আন-নাইসাবুরি","pt":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","hi":"मुस्लिम बिन अल-हज्जाज अल-क़ुशैरी अन-नैसाबूरी"},"href":"authors/393/39323.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1404هـ 1984م","publishedTranslations":{"en":"1404 AH / 1984 CE","fr":"1404 H 1984","es":"1404 H 1984","ur":"1404ھ 1984ء","tr":"1404 H 1984","sw":"1404H 1984","id":"1404 H 1984 M","ja":"ヒジュラ暦1404年／西暦1984年","zh":"伊历1404年／公元1984年","ru":"1404 г. х. / 1984 г.","bn":"1404 হি. 1984 খ্রি.","pt":"1404 H 1984","hi":"1404 हि. 1984 ई."},"pages":"1043"},{"id":65401,"href":"catalogue/654/65401.html","cover":"catalogue/654/65401.jpg","title":"المجمع المؤسس للمعجم المفهرس","titles":{"en":"The Foundational Compendium for the Indexed Dictionary","fr":"Al-Majma al-Mu'assis li-l-Mu'jam al-Mufahras (Le répertoire fondateur du dictionnaire indexé)","es":"Al-Majma al-Mu'assas li-l-Mujam al-Mufahras (El compendio fundacional del diccionario indexado)","ur":"المجمع المؤسس للمعجم المفهرس (المعجم المفهرس کی بنیاد رکھنے والی تصنیف)","tr":"el-Mecma‘u'l-Mü'essis li'l-Mu‘cemi'l-Müfehres (Fihristli Sözlüğün Temeli)","sw":"Al-Majma' al-Mu'assas li al-Mu'jam al-Mufahras (Mkusanyo Ulioanzisha Kamusi Yenye Fahirisi)","id":"Al-Majma' al-Mu'assas lil-Mu'jam al-Mufahras [Kumpulan Dasar untuk Kamus Indeks]","ja":"索引付き辞典の基礎資料集","zh":"《索引辞典的奠基汇编》","ru":"Аль-Маджма‘ аль-муассас ли-ль-му‘джам аль-муфахрас (Сводный алфавитный указатель)","bn":"আল-মুজামুল মুফাহরাসের প্রতিষ্ঠিত সংকলন","pt":"Al-Majma al-Muassis li-l-Mujam al-Mufahras (Compilação fundamental do índice)","hi":"अल-मज्मअ अल-मुअस्सस लिल-मुअजम अल-मुफ़हरस (विषय-सूचीबद्ध शब्दकोश का संस्थापक संग्रह)"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1415هـ 1994م","publishedTranslations":{"en":"1415 AH / 1994 CE","fr":"1415 H 1994","es":"1415 H 1994","ur":"1415ھ 1994ء","tr":"1415 H 1994","sw":"1415H 1994","id":"1415 H 1994 M","ja":"ヒジュラ暦1415年／西暦1994年","zh":"伊历1415年／公元1994年","ru":"1415 г. х. / 1994 г.","bn":"1415 হি. 1994 খ্রি.","pt":"1415 H 1994","hi":"1415 हि. 1994 ई."},"pages":"1722"},{"id":65826,"href":"catalogue/658/65826.html","cover":"catalogue/658/65826.jpg","title":"المقدمة ذات النقاب في الألقاب","titles":{"en":"The Introduction with a Veil on Titles","fr":"Al-Muqaddima Dhat al-Niqab fi al-Alqab (Préface voilée sur les surnoms)","es":"Al-Muqaddima dhat al-niqab fi al-alqab (Introducción velada sobre los sobrenombres)","ur":"المقدمة ذات النقاب في الألقاب","tr":"Lakablar Hakkında Örtülü Mukaddime","sw":"Al-Muqaddima Dhat al-Niqab fi al-Alqab (Dibaji iliyofunikwa kuhusu lakabu)","id":"Al-Muqaddimah Dzatu an-Niqab fi al-Alqab","ja":"アル＝ムカッディマ・ザート・アン＝ニカーブ・フィー・アル＝アルカーブ（異名に関する覆面の序説）","zh":"《关于别号的面纱序论》","ru":"Предисловие под покрывалом: о прозвищах","bn":"উপাধিসমূহ নিয়ে পর্দাবৃত ভূমিকা","pt":"Al-Muqaddima dhat al-niqab fi al-alqab [Introdução velada sobre os epítetos]","hi":"उपनामों पर नक़ाब वाली भूमिका"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"شمس الدين محمد بن أحمد بن عثمان الذهبي","names":{"en":"Shams al-Din Muhammad ibn Ahmad ibn Osman al-Dhahabi","fr":"Shams al-Din Muhammad ibn Ahmad ibn Othman al-Dhahabi","es":"Shams al-Din Muhammad ibn Ahmad ibn Uthman al-Dhahabi","ur":"شمس الدين محمد بن أحمد بن عثمان الذهبي","tr":"Şemseddin Muhammed b. Ahmed b. Osman ez-Zehebî","sw":"Shams al-Din Muhammad bin Ahmad bin Uthman Al-Dhahabi","id":"Syamsuddin Muhammad bin Ahmad bin Usman Adz-Dzahabi","ja":"シャムスッディーン・ムハンマド・イブン・アフマド・イブン・ウスマーン・アッザハビー","zh":"沙姆斯丁·穆罕默德·本·艾哈迈德·本·奥斯曼·宰海比","ru":"Шамс ад-Дин Мухаммад ибн Ахмад ибн Усман аз-Захаби","bn":"শামসুদ্দিন মুহাম্মদ ইবনে আহমদ ইবনে উসমান আয-যাহাবি","pt":"Shams al-Din Muhammad ibn Ahmad ibn Uthman al-Dhahabi","hi":"शम्सुद्दीन मुहम्मद इब्न अहमद इब्न उसमान अज़-ज़हबी"},"href":"authors/005/541.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1416هـ 1996م","publishedTranslations":{"en":"1416 AH / 1996 CE","fr":"1416H 1996","es":"1416 H 1996","ur":"1416ھ 1996ء","tr":"1416 H 1996","sw":"1416 H 1996 BK","id":"1416 H 1996 M","ja":"ヒジュラ暦1416年 西暦1996年","zh":"伊历1416年 公元1996年","ru":"1416 г. х. 1996 г.","bn":"1416 হি. 1996 খ্রি.","pt":"1416 H 1996","hi":"1416 हि. 1996 ई."},"pages":"116"},{"id":65834,"href":"catalogue/658/65834.html","cover":"catalogue/658/65834.jpg","title":"المنتقي من معجم شيوخ شهاب الدين أبي العباس أحمد بن رجب الحنبلي","titles":{"en":"Selected from the Dictionary of the Scholars of Shihab al-Din Abu al-Abbas Ahmad ibn Rajab al-Hanbali","fr":"Al-Muntaqa min Mu'jam Shuyukh Shihab al-Din Abi al-Abbas Ahmad ibn Rajab al-Hanbali (Sélection du dictionnaire des maîtres d'Ibn Rajab)","es":"Selección del diccionario de maestros de Shihab al-Din Abu al-Abbas Ahmad ibn Rajab al-Hanbali","ur":"المنتقي من معجم شيوخ شهاب الدين أبي العباس أحمد بن رجب الحنبلي","tr":"Şihâbüddin Ebü'l-Abbas Ahmed b. Receb el-Hanbelî'nin Şeyhleri Mu'ceminden Seçmeler","sw":"Teule kutoka Al-Mu'jam ya walimu wa Shihab al-Din Abu al-Abbas Ahmad bin Rajab al-Hanbali","id":"Pilihan dari Mu'jam Syuyukh Syihabuddin Abu Al-Abbas Ahmad bin Rajab Al-Hanbali","ja":"シハーブッディーン・アブー・アル＝アッバース・アフマド・イブン・ラジャブ・アル＝ハンバリーの師匠録からの抜粋","zh":"《伊本·拉杰布·罕百里师长名录选编》","ru":"Избранное из словаря шейхов Шихаб ад-Дина Абу аль-Аббаса Ахмада ибн Раджаба аль-Ханбали","bn":"শিহাবুদ্দীন আবুল আব্বাস আহমদ ইবনে রজব আল-হাম্বলির শায়খদের পরিচিতি-গ্রন্থ থেকে নির্বাচিত অংশ","pt":"Seleção do repertório dos mestres de Shihab al-Din Abu al-Abbas Ahmad ibn Rajab al-Hanbali","hi":"शिहाबुद्दीन अबुल अब्बास अहमद बिन रजब अल-हंबली के शैख़ों के शब्दकोश से चुना हुआ"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ইবনে রজব আল-হাম্বলী","pt":"Ibn Rajab al-Hanbali","hi":"इब्न रजब अल-हंबली"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1426هـ 2006م","publishedTranslations":{"en":"1426 AH / 2006 CE","fr":"1426H 2006","es":"1426 H 2006","ur":"1426ھ 2006ء","tr":"1426 H 2006","sw":"1426 H 2006 BK","id":"1426 H 2006 M","ja":"ヒジュラ暦1426年 西暦2006年","zh":"伊历1426年 公元2006年","ru":"1426 г. х. 2006 г.","bn":"1426 হি. 2006 খ্রি.","pt":"1426 H 2006","hi":"1426 हि. 2006 ई."},"pages":"220"},{"id":66669,"href":"catalogue/666/66669.html","cover":"catalogue/666/66669.jpg","title":"المنفردات والوحدان","titles":{"en":"The Unique and the Singular","fr":"Al-Munfaridat wa al-Wuhdan (Les transmetteurs uniques)","es":"Al-Munfaridat wa-l-Wuhdan (Los narradores únicos y aislados)","ur":"المنفردات والوحدان (منفرد اور یکتا راوی)","tr":"el-Münferidât ve’l-Vuhdân [Tek Kalanlar ve Tekler]","sw":"Al-Munfaridat wa al-Wuhdan (Wapokezi wa Pekee na Wapokezi Waliojitenga)","id":"Al-Munfaridat wa al-Wuhdan (Para Perawi yang Sendirian dan Tunggal)","ja":"単独伝承者と唯一伝承者","zh":"《独传者与单传者》","ru":"«аль-Мунфаридат ва-ль-вухдан»","bn":"আল-মুনফারিদাত ওয়াল-উহদান","pt":"Al-Munfaridat wa al-Wuhdan (Os narradores singulares e únicos)","hi":"अल-मुनफ़रिदात वल-वुहदान (एकाकी और अकेले रावी)"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"مسلم بن الحجاج بن مسلم القشيري النيسابوري","names":{"en":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","fr":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","es":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","ur":"مسلم بن الحجاج بن مسلم القشيري النيسابوري","tr":"Müslim b. Haccâc b. Müslim el-Kuşeyrî en-Nîsâbûrî","sw":"Muslim bin al-Hajjaj al-Qushayri al-Naysaburi","id":"Muslim bin Al-Hajjaj Al-Qusyairi An-Naisaburi","ja":"ムスリム・イブン・アル＝ハッジャージュ・アル＝クシャイリー・アン＝ナイサーブーリー","zh":"穆斯林·本·哈贾吉·库舍里·尼沙布里","ru":"Муслим ибн аль-Хаджжадж аль-Кушайри ан-Найсабури","bn":"মুসলিম ইবনে হাজ্জাজ আল-কুশাইরি আন-নাইসাবুরি","pt":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","hi":"मुस्लिम बिन अल-हज्जाज अल-क़ुशैरी अन-नैसाबूरी"},"href":"authors/393/39323.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1408هـ 1988م","publishedTranslations":{"en":"1408 AH / 1988 CE","fr":"1408 H 1988","es":"1408 H 1988","ur":"1408ھ 1988ء","tr":"1408 H 1988","sw":"1408H 1988","id":"1408 H 1988 M","ja":"ヒジュラ暦1408年／西暦1988年","zh":"伊历1408年／公元1988年","ru":"1408 г. х. / 1988 г.","bn":"1408 হি. 1988 খ্রি.","pt":"1408 H 1988","hi":"1408 हि. 1988 ई."},"pages":"284"},{"id":66768,"href":"catalogue/667/66768.html","cover":null,"title":"المنفردات والوحدان","titles":{"en":"The Unique and the Singular","fr":"Al-Munfaridat wa-l-wuhdan (Les transmetteurs isolés et uniques)","es":"Al-Munfaridat wa-l-Wuhdan (Narradores únicos y aislados)","ur":"المنفردات والوحدان","tr":"Tekler ve biricikler","sw":"Al-Munfaridat wa al-Wuhdan (Watu wa pekee na wa kipekee)","id":"Al-Munfaridat wa Al-Wuhdan (Riwayat-Riwayat Tunggal)","ja":"単独伝承者と唯一の伝承者","zh":"《独见者与孤例者》","ru":"Отдельные имена и единственные передатчики","bn":"একক বর্ণনাকারী ও একক ব্যক্তি","pt":"Al-Munfaridat wa al-Wuhdan (Relatos únicos e narradores isolados)","hi":"अल-मुनफ़रिदात वल-वुहदान (अद्वितीय और अकेले रिवायत करने वाले)"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"مسلم بن الحجاج بن مسلم القشيري النيسابوري","names":{"en":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","fr":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","es":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","ur":"مسلم بن الحجاج بن مسلم القشيري النيسابوري","tr":"Müslim b. Haccâc b. Müslim el-Kuşeyrî en-Nîsâbûrî","sw":"Muslim bin al-Hajjaj al-Qushayri al-Naysaburi","id":"Muslim bin Al-Hajjaj Al-Qusyairi An-Naisaburi","ja":"ムスリム・イブン・アル＝ハッジャージュ・アル＝クシャイリー・アン＝ナイサーブーリー","zh":"穆斯林·本·哈贾吉·库舍里·尼沙布里","ru":"Муслим ибн аль-Хаджжадж аль-Кушайри ан-Найсабури","bn":"মুসলিম ইবনে হাজ্জাজ আল-কুশাইরি আন-নাইসাবুরি","pt":"Muslim ibn al-Hajjaj al-Qushayri al-Naysaburi","hi":"मुस्लिम बिन अल-हज्जाज अल-क़ुशैरी अन-नैसाबूरी"},"href":"authors/393/39323.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1408هـ 1988م","publishedTranslations":{"en":"1408 AH / 1988 CE","fr":"1408 H 1988","es":"1408 H 1988","ur":"1408ھ 1988ء","tr":"1408 H 1988","sw":"1408H 1988","id":"1408 H 1988 M","ja":"ヒジュラ暦1408年／西暦1988年","zh":"伊历1408年／公元1988年","ru":"1408 г. х. 1988 г.","bn":"1408 হি. 1988 খ্রি.","pt":"1408 H 1988","hi":"1408 हि. 1988 ई."},"pages":"284"},{"id":66458,"href":"catalogue/664/66458.html","cover":"catalogue/664/66458.jpg","title":"تبصير المنتبه بتحرير المشتبه","titles":{"en":"Clarification for the Alerted on the Resolution of the Doubtful","fr":"Tabsir al-muntabih bi-tahrir al-mushtabih (Éclaircissement des noms confondus)","es":"Tabṣir al-muntabih bi-tahrir al-mushtabih (Aclaración de los nombres confusos)","ur":"تبصير المنتبه بتحرير المشتبه","tr":"Müphem İsimleri Tashih Ederek Dikkatli Okuyucuyu Aydınlatmak","sw":"Tabṣir al-Muntabih bi-Tahrir al-Mushtabih (Kumwelekeza mwenye tahadhari kwa kufafanua yanayochanganya)","id":"Membuka Wawasan bagi Pembaca tentang Nama-Nama yang Rancu","ja":"タブスィール・アル＝ムンタビフ・ビタフリール・アル＝ムシュタビフ（紛らわしい人名を明らかにするための識別）","zh":"《校订疑难姓名，提醒疏忽者》","ru":"Табсир аль-мунтабих би-тахрир аль-муштабих (Разъяснение для внимательного читателя о различении сходных имен)","bn":"সন্দেহপূর্ণ নামগুলো সম্পাদনাসহ স্পষ্টকরণ","pt":"Tabṣir al-muntabih bi-tahrir al-mushtabih (Esclarecimento ao atento sobre a distinção dos nomes semelhantes)","hi":"तब्सीर अल-मुन्तबिह बि-तहरीर अल-मुश्तबह (संदिग्ध नामों का संपादन)"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"1721"},{"id":66557,"href":"catalogue/665/66557.html","cover":null,"title":"تبصير المنتبه بتحرير المشتبه","titles":{"en":"Clarification for the Alerted on the Resolution of the Doubtful","fr":"Tabsir al-Muntabih bi-Tahrir al-Mushtabih (Avertissement au lecteur attentif par la clarification des noms ambigus)","es":"Tabsir al-Muntabih bi-Tahrir al-Mushtabih (Advertencia al atento mediante la aclaración de lo confuso)","ur":"تبصير المنتبه بتحرير المشتبه (مشتبہ ناموں کی تحقیق سے آگاہ کرنے والی کتاب)","tr":"Tabsîrü'l-müntebih bi-tahrîri'l-müştebih (Benzer Adların Tashihine Dair Uyarı)","sw":"Tabsir al-Muntabih bi-Tahrir al-Mushtabih (Kumfahamisha msomaji kuhusu majina yanayofanana)","id":"Tabsir Al-Muntabih bi Tahrir Al-Musytabih [Memberi Peringatan kepada yang Lengah dengan Menjernihkan Nama-Nama yang Rancu]","ja":"紛らわしい名前を明確にする『注意深い者への啓示』","zh":"《辨识易混人物名录》","ru":"Табсир аль-мунтабих би-тахрир аль-муштабих","bn":"তাবসিরুল মুনতাবিহ বিতাহরিরিল মুশতাবিহ","pt":"Tabsir al-Muntabih bi-Tahrir al-Mushtabih (Esclarecimento ao atento sobre a distinção dos nomes semelhantes)","hi":"तबसीर अल-मुन्तबह बि-तहरीर अल-मुश्तबह (मिलते-जुलते नामों का स्पष्टीकरण)"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"690"},{"id":65931,"href":"catalogue/659/65931.html","cover":"catalogue/659/65931.jpg","title":"تهذيب التهذيب","titles":{"en":"Refinement of Refinement","fr":"Tahdhib al-Tahdhib (La révision de la révision)","es":"Tahdhib al-Tahdhib [Depuración de la depuración]","ur":"تهذيب التهذيب (تہذیب التہذیب)","tr":"Tehzîbü't-Tehzîb","sw":"Tahdhib al-Tahdhib (Usafishaji wa Usafishaji)","id":"Tahdzib at-Tahdzib [Penyempurnaan Penyempurnaan]","ja":"『タフズィーブ・アッ＝タフズィーブ』","zh":"《塔赫迪卜·塔赫迪卜》","ru":"Тахзиб ат-тахзиб (Усовершенствование исправления)","bn":"তাহযীবুত তাহযীব","pt":"Tahdhib al-Tahdhib (Aperfeiçoamento da depuração)","hi":"तहज़ीब अत-तहज़ीब"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1326هـ","publishedTranslations":{"en":"1326 AH","fr":"1326 H","es":"1326 H","ur":"1326ھ","tr":"1326H","sw":"1326H","id":"1326 H","ja":"ヒジュラ暦1326年","zh":"伊历1326年","ru":"1326 г. х.","bn":"1326 হি.","pt":"1326 H","hi":"1326 हि."},"pages":"511"},{"id":65468,"href":"catalogue/654/65468.html","cover":"catalogue/654/65468.jpg","title":"تهذيب التهذيب- ط الرسالة","titles":{"en":"Refinement of Refinement - Dar Al-Risalah","fr":"Tahdhib al-tahdhib (Épuration de l'Épuration) – édition de Mu'assasat al-Risala","es":"Tahdhib al-Tahdhib [Depuración de la depuración] — edición de al-Risala","ur":"تهذيب التهذيب- ط الرسالة (تہذیب التہذیب، الرسالہ طبع)","tr":"Tehzîbü’t-Tehzîb – er-Risâle Baskısı","sw":"Tahdhib al-Tahdhib (Usanifu wa Tahdhib) — toleo la al-Risala","id":"Tahdzib at-Tahdzib [Penyempurnaan Tahdzib] — edisi ar-Risala","ja":"タフズィーブ・アッ＝タフズィーブ――ムアッササト・アッ＝リサーラ版","zh":"《传记修订》—里萨莱出版社版","ru":"Тахзиб ат-Тахзиб — издание ар-Рисаля","bn":"তাহযিবুত তাহযীব — রিসালাহ সংস্করণ","pt":"Tahdhib al-Tahdhib (Revisão de Tahdhib) — edição da al-Risala","hi":"तहज़ीब अत-तहज़ीब — अर-रिसाला संस्करण"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"2792"},{"id":65465,"href":"catalogue/654/65465.html","cover":"catalogue/654/65465.jpg","title":"تهذيب التهذيب- ط هندية","titles":{"en":"The Refinement of Refinement - Indian Edition","fr":"Tahdhib al-tahdhib (Épuration de l'Épuration) – édition indienne","es":"Tahdhib al-Tahdhib [Depuración de la depuración] — edición india","ur":"تهذيب التهذيب- ط هندية (تہذیب التہذیب، ہندی طبع)","tr":"Tehzîbü’t-Tehzîb – Hindistan Baskısı","sw":"Tahdhib al-Tahdhib (Usanifu wa Tahdhib) — toleo la India","id":"Tahdzib at-Tahdzib [Penyempurnaan Tahdzib] — edisi India","ja":"タフズィーブ・アッ＝タフズィーブ――インド版","zh":"《传记修订》—印度版","ru":"Тахзиб ат-Тахзиб — индийское издание","bn":"তাহযিবুত তাহযীব — ভারতীয় মুদ্রণ","pt":"Tahdhib al-Tahdhib (Revisão de Tahdhib) — edição indiana","hi":"तहज़ीब अत-तहज़ीब (तहज़ीब का परिष्कार) — भारतीय संस्करण"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1325هـ","publishedTranslations":{"en":"1325 AH","fr":"1325 H","es":"1325 H","ur":"1325ھ","tr":"1325 H","sw":"1325H","id":"1325 H","ja":"ヒジュラ暦1325年","zh":"伊历1325年","ru":"1325 г. х.","bn":"1325 হি.","pt":"1325 H","hi":"1325 हि."},"pages":"5763"},{"id":182809,"href":"catalogue/1828/182809.html","cover":null,"title":"ذيل طبقات الحنابلة- ملون","titles":{"en":"Supplement to the Classes of the Hanbalis - Colored","fr":"Complément aux Classes des hanbalites — en couleur","es":"Suplemento de las generaciones de los hanbalíes (ilustrado)","ur":"ذيل طبقات الحنابلة- ملون (حنبلیوں کے طبقات کا ضمیمہ، رنگین)","tr":"Hanbelî Tabakalarının Zeyli - Renkli","sw":"Kiambatisho cha Tabaqat al-Hanabila [Tabaka za wanazuoni wa Hanbali] — chenye rangi","id":"Sisipan pada Thabaqat Al-Hanabilah – Berwarna","ja":"ハンバリー派法学者列伝補遺――カラー版","zh":"《罕百里派人物传记续编》（彩色版）","ru":"Дополнение к «Табакат аль-ханабиля» — цветное издание","bn":"হাম্বলী আলেমদের স্তরবিন্যাসের পরিশিষ্ট—রঙিন","pt":"Suplemento às camadas dos hanbalitas — colorido","hi":"हनबली विद्वानों की पीढ़ियों का परिशिष्ट — रंगीन"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ইবনে রজব আল-হাম্বলী","pt":"Ibn Rajab al-Hanbali","hi":"इब्न रजब अल-हंबली"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"612"},{"id":65485,"href":"catalogue/654/65485.html","cover":"catalogue/654/65485.jpg","title":"رفع الإصر عن قضاة مصر","titles":{"en":"Raising the Burden from the Judges of Egypt","fr":"Raf al-isr an qudat Misr [Lever le voile sur les juges d'Égypte]","es":"Aliviar la carga sobre los jueces de Egipto","ur":"رفع الإصر عن قضاة مصر (مصر کے قاضیوں کے حالات)","tr":"Ref'u'l-isr an kudâti Mısr (Mısır kadılarının biyografileri)","sw":"Raf al-isr an qudat Misr (Kuondoa ugumu kuhusu mahakimu wa Misri)","id":"Menghilangkan Kesulitan tentang Para Hakim Mesir","ja":"エジプトのカーディーたちについての苦難を解く書","zh":"《为埃及法官昭雪》","ru":"Снятие бремени с судей Египта","bn":"মিশরের বিচারকদের পরিচয়","pt":"Raf al-Isr an Qudat Misr (Alívio do fardo sobre os juízes do Egito)","hi":"मिस्र के क़ाज़ियों के बारे में संकोच दूर करना"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1418هـ 1988م","publishedTranslations":{"en":"1418 AH / 1988 CE","fr":"1418 H 1988","es":"1418 H 1988","ur":"1418ھ 1988ء","tr":"1418 H 1988","sw":"1418H 1988","id":"1418 H 1988 M","ja":"ヒジュラ暦1418年／西暦1988年","zh":"伊历1418年／公元1988年","ru":"1418 г. х. / 1988 г.","bn":"1418 হি. 1988 খ্রি.","pt":"1418 H 1988","hi":"1418 हि. 1988 ई."},"pages":"576"},{"id":191711,"href":"catalogue/1917/191711.html","cover":"catalogue/1917/191711.jpg","title":"رفع الإصر عن قضاة مصر","titles":{"en":"Raising the Burden from the Judges of Egypt","fr":"Raf' al-isr 'an qudat Misr (Relèvement du fardeau sur les juges d'Égypte)","es":"Raf' al-isr 'an qudat Misr [Despejar la carga sobre los jueces de Egipto]","ur":"رفع الإصر عن قضاة مصر","tr":"Ref'u'l-isr an kudâti Mısr (Mısır Kadılarının Biyografileri)","sw":"Kuondoa ugumu kuhusu mahakimu wa Misri","id":"Raf'u al-Isr 'an Qudhat Misr (Mengangkat Kesulitan tentang Para Hakim Mesir)","ja":"エジプトの裁判官たちについて","zh":"《解除疑难：埃及法官传记》","ru":"Снятие бремени: судьи Египта","bn":"মিসরের বিচারকদের পরিচিতি","pt":"Raf' al-Isr 'an Qudat Misr [Alívio do fardo sobre os juízes do Egito]","hi":"मिस्र के क़ाज़ियों के बारे में जानकारी"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"444"},{"id":191712,"href":"catalogue/1917/191712.html","cover":"catalogue/1917/191712.jpg","title":"رفع الإصر عن قضاة مصر- ط. الخانجي","titles":{"en":"Raising the Burden on the Judges of Egypt - Al-Khanji Edition","fr":"Raf' al-isr 'an qudat Misr (Relèvement du fardeau sur les juges d'Égypte) - éd. al-Khanji","es":"Raf' al-isr 'an qudat Misr [Despejar la carga sobre los jueces de Egipto] - ed. al-Khanji","ur":"رفع الإصر عن قضاة مصر- ط. الخانجي","tr":"Ref'u'l-isr an kudâti Mısr (Mısır Kadılarının Biyografileri) - el-Hâncî Baskısı","sw":"Kuondoa ugumu kuhusu mahakimu wa Misri - chapa ya al-Khanji","id":"Raf'u al-Isr 'an Qudhat Misr (Mengangkat Kesulitan tentang Para Hakim Mesir) – Cetakan Al-Khanji","ja":"エジプトの裁判官たちについて――アル＝ハーンジー版","zh":"《解除疑难：埃及法官传记》—汗吉版","ru":"Снятие бремени: судьи Египта — издание аль-Ханджи","bn":"মিসরের বিচারকদের পরিচিতি — খানজি সংস্করণ","pt":"Raf' al-Isr 'an Qudat Misr [Alívio do fardo sobre os juízes do Egito] - ed. al-Khanji","hi":"मिस्र के क़ाज़ियों के बारे में जानकारी - ख़ानजी संस्करण"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1418هـ 1998م","publishedTranslations":{"en":"1418 AH / 1998 CE","fr":"1418 H 1998","es":"1418 H 1998","ur":"1418ھ 1998ء","tr":"1418 H 1998","sw":"1418H 1998","id":"1418 H 1998 M","ja":"ヒジュラ暦1418年／西暦1998年","zh":"伊历1418年／公元1998年","ru":"1418 г. х. / 1998 г.","bn":"1418 হি. 1998 খ্রি.","pt":"1418 H 1998","hi":"1418 हि. 1998 ई."},"pages":"576"},{"id":190875,"href":"catalogue/1908/190875.html","cover":"catalogue/1908/190875.jpg","title":"سيرة عبد الملك بن عمر بن عبد العزيز","titles":{"en":"Biography of Abdul Malik ibn Umar ibn Abdul Aziz","fr":"Biographie d'Abd al-Malik ibn Umar ibn Abd al-Aziz","es":"Biografía de Abd al-Malik ibn Umar ibn Abd al-Aziz","ur":"سيرة عبد الملك بن عمر بن عبد العزيز (عبد الملک بن عمر بن عبد العزیز کی سیرت)","tr":"Abdülmelik b. Ömer b. Abdülaziz’in Hayatı","sw":"Wasifu wa Abdulmalik bin Umar bin Abdulaziz","id":"Riwayat hidup Abdul Malik bin Umar bin Abdul Aziz","ja":"アブドゥルマリク・イブン・ウマル・イブン・アブドゥルアズィーズ伝","zh":"阿卜杜·马利克·本·欧麦尔·本·阿卜杜·阿齐兹传","ru":"Жизнеописание Абд аль-Малика ибн Умара ибн Абд аль-Азиза","bn":"আবদুল মালিক ইবনে উমর ইবনে আবদুল আজিজের জীবনী","pt":"Biografia de Abd al-Malik ibn Umar ibn Abd al-Aziz","hi":"अब्दुल मलिक बिन उमर बिन अब्दुल अज़ीज़ की जीवनी"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ইবনে রজব আল-হাম্বলী","pt":"Ibn Rajab al-Hanbali","hi":"इब्न रजब अल-हंबली"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1413هـ 1993م","publishedTranslations":{"en":"1413 AH / 1993 CE","fr":"1413 H 1993","es":"1413 H 1993","ur":"1413ھ 1993ء","tr":"1413 H 1993","sw":"1413H 1993","id":"1413 H 1993 M","ja":"ヒジュラ暦1413年／西暦1993年","zh":"伊历1413年／公元1993年","ru":"1413 г. х. / 1993 г.","bn":"1413 হি. 1993 খ্রি.","pt":"1413 H 1993","hi":"1413 हि. 1993 ई."},"pages":"112"},{"id":182712,"href":"catalogue/1827/182712.html","cover":"catalogue/1827/182712.jpg","title":"شرح تراجم أبواب البخاري","titles":{"en":"Explanation of the Biographies of the Chapters of Al-Bukhari","fr":"Commentaire des intitulés de chapitres d'al-Bukhari","es":"Comentario a los títulos de los capítulos de al-Bujari","ur":"شرح تراجم أبواب البخاري (صحیح بخاری کے ابواب کے عنوانات کی شرح)","tr":"Buhârî'nin bâb başlıklarının açıklaması","sw":"Maelezo ya vichwa vya milango ya Sahih al-Bukhari","id":"Syarh Tarajim Abwab al-Bukhari [Penjelasan Biografi dalam Judul-judul Bab Al-Bukhari]","ja":"ブハーリーの章題解説","zh":"《布哈里圣训实录篇章标题释义》","ru":"Шарх тараджим абваб аль-Бухари (Комментарии к заголовкам глав «Сахих» аль-Бухари)","bn":"বুখারীর অধ্যায়-শিরোনামসমূহের ব্যাখ্যা","pt":"Sharh Tarajim Abwab al-Bukhari (Comentário sobre os títulos dos capítulos de al-Bukhari)","hi":"बुख़ारी के अध्यायों के शीर्षकों की व्याख्या"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"},{"name":"ولي الله الدهلوي","names":{"en":"Wali Allah Al-Dihlawi","fr":"Wali Allah al-Dihlawi","es":"Wali Allah al-Dihlawi","ur":"ولي الله الدهلوي","tr":"Veliyyullah ed-Dihlevî","sw":"Wali Allah al-Dihlawi","id":"Wali Allah Ad-Dihlawi","ja":"ワリー・アッラー・アッ＝ディフラウィー","zh":"瓦利·阿拉·迪赫拉维","ru":"Валиуллах ад-Дихляви","bn":"ওয়ালিউল্লাহ আদ-দেহলভি","pt":"Wali Allah al-Dihlawi","hi":"वलीउल्लाह अल-दिहलवी"},"href":"authors/279/27969.html"}],"died":"1176 AH","living":false,"era":"mutaakhkhirun","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"471"},{"id":65924,"href":"catalogue/659/65924.html","cover":"catalogue/659/65924.jpg","title":"طبقات المدلسين تعريف أهل التقديس بمراتب الموصوفين بالتدليس","titles":{"en":"The Classes of Those Who Are Deceptive: A Definition of the People of Sanctity Regarding the Ranks of Those Described as Deceptive","fr":"Les générations des narrateurs pratiquant le tadlis : présentation des degrés des narrateurs accusés de dissimulation","es":"Generaciones de quienes practicaron tadlis: presentación de los expertos en hadiz sobre sus grados","ur":"طبقات المدلسين تعريف أهل التقديس بمراتب الموصوفين بالتدليس (مدلس راویوں کے طبقات: تدلیس سے متصف راویوں کے مراتب کے بارے میں اہلِ تقدیس کو آگاہی)","tr":"Tedlîs Yapanların Tabakaları: Tedrîbü'r-Râvîlerin Mertebelerini Açıklayarak Ehl-i Takdîs'e Tanıtma","sw":"Viwango vya Wafanya Tadlis: Taarifu ya watu wa tahadhari kuhusu viwango vya waliotajwa kwa tadlis","id":"Tingkatan Para Perawi Mudallis: Mengenalkan Para Ahli Kesalehan tentang Tingkatan Perawi yang Dikenal Melakukan Tadlis","ja":"ムダッリスの諸階層――『タドリースを行うと評された伝承者の等級に関する聖化の人々への解説』","zh":"《受掩饰传述者诸等级：辨识受掩饰传述者的等级》","ru":"Поколения мудаллисунов: разъяснение для благочестивых о степенях тех, кого обвиняли в тадлисе","bn":"মুদাল্লিসদের স্তরসমূহ: তাদলিসের জন্য অভিযুক্ত বর্ণনাকারীদের স্তরসমূহ সম্পর্কে আহলুত তাকদিসের পরিচিতি","pt":"Camadas dos narradores acusados de tadlis: Apresentação dos graus dos narradores acusados de tadlis","hi":"तदलीस करने वाले रावियों के वर्ग: तदलीस से वर्णित लोगों के दर्जों के बारे में अहल अत-तक़दीस का परिचय"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"أحمد بن علي بن حجر العسقلاني","names":{"en":"Ahmad ibn Ali ibn Hajar Al-Asqalani","fr":"Ahmad ibn Ali ibn Hajar al-Asqalani","es":"Ahmad ibn Ali ibn Hajar al-Asqalani","ur":"أحمد بن علي بن حجر العسقلاني","tr":"Ahmed b. Ali b. Hacer el-Askalânî","sw":"Ahmad bin Ali bin Hajar Al-Asqalani","id":"Ahmad bin Ali bin Hajar Al-Asqalani","ja":"アフマド・イブン・アリー・イブン・ハジャル・アル＝アスカラーニー","zh":"艾哈迈德·本·阿里·本·哈杰尔·阿斯卡拉尼","ru":"Ахмад ибн Али ибн Хаджар аль-Аскаляни","bn":"আহমাদ ইবনে আলী ইবনে হাজার আল-আসকালানি","pt":"Ahmad ibn Ali ibn Hajar al-Asqalani","hi":"अहमद इब्न अली इब्न हजर अल-असक़लानी"},"href":"authors/009/921.html"}],"died":null,"living":false,"era":"unknown","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":null,"publishedTranslations":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"pages":"77"},{"id":192530,"href":"catalogue/1925/192530.html","cover":"catalogue/1925/192530.jpg","title":"كتاب الذيل على طبقات الحنابلة","titles":{"en":"The Supplement to the Classes of the Hanbalis","fr":"Livre complémentaire aux générations des hanbalites","es":"Libro del suplemento a las generaciones de los hanbalíes (al-Dhayl ala Tabaqat al-Hanabila)","ur":"كتاب الذيل على طبقات الحنابلة (حنبلیوں کے طبقات پر ذیل کی کتاب)","tr":"Hanbelî Tabakalarına Zeyl Kitabı","sw":"Kitabu cha Kiambatisho cha Tabaka za Hanbali","id":"Kitab Adz-Dzail 'ala Thabaqat al-Hanabilah (Suplemen Thabaqat Hanbali)","ja":"『ハンバル派法学者列伝』補遺","zh":"《汉百里派人物传记续编》","ru":"Книга-дополнение к «Табакат ханбалитов»","bn":"হাম্বলি তাবাকাতের পরিশিষ্ট গ্রন্থ","pt":"Livro do suplemento a Tabaqat al-Hanabila (Camadas dos hanbalitas)","hi":"किताब अध-ज़ैल अला तबक़ात अल-हनाबिला (हनबली विद्वानों की श्रेणियों का परिशिष्ट)"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ইবনে রজব আল-হাম্বলী","pt":"Ibn Rajab al-Hanbali","hi":"इब्न रजब अल-हंबली"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1987م","publishedTranslations":{"en":"1987 CE","fr":"1987","es":"1987","ur":"1987ء","tr":"1987","sw":"1987","id":"1987 M","ja":"西暦1987年","zh":"公元1987年","ru":"1987 г.","bn":"1987 খ্রি.","pt":"1987","hi":"1987 ई."},"pages":"932"},{"id":66548,"href":"catalogue/665/66548.html","cover":"catalogue/665/66548.jpg","title":"كتاب الذيل على طبقات الحنابلة لابن رجب","titles":{"en":"The Tail on the Classes of the Hanbalis by Ibn Rajab","fr":"Kitab al-Dhayl ala Tabaqat al-Hanabila li-Ibn Rajab (Le Supplément aux générations des hanbalites d’Ibn Rajab)","es":"Kitab al-Dhayl ala Tabaqat al-Hanabila li-Ibn Rajab (Suplemento a las generaciones de los hanbalíes, de Ibn Rajab)","ur":"كتاب الذيل على طبقات الحنابلة لابن رجب (ابن رجب کی حنبلیوں کے طبقات پر ذیل)","tr":"Kitâbü'z-Zeyl alâ Tabakâti'l-Hanâbile li-İbn Receb (İbn Receb'in Hanbelî Tabakalarına Zeyli)","sw":"Kitabu cha Al-Dhayl ala Tabaqat al-Hanabila cha Ibn Rajab (Nyongeza ya tabaka za wanazuoni wa Hanbali)","id":"Kitab Adz-Dzail ala Thabaqat Al-Hanabilah karya Ibnu Rajab [Suplemen Thabaqat Ulama Hanbali]","ja":"イブン・ラジャブ著『ハンバリー派学者列伝』補遺","zh":"《汉百里学派人物传记集续编》，伊本·拉杰卜著","ru":"Книга «Зейль табакат аль-ханабиля» Ибн Раджаба","bn":"ইবনে রজবের কিতাবুয যায়ল আলা তাবাকাতিল হামাবিলাহ","pt":"Kitab al-Dhayl ala Tabaqat al-Hanabila li-Ibn Rajab (Suplemento às camadas dos hanbalitas, de Ibn Rajab)","hi":"किताब अज़-ज़ैल अला तबक़ात अल-हनाबिला लि-इब्न रजब (इब्न रजब द्वारा हनबली विद्वानों की श्रेणियों का परिशिष्ट)"},"type":"كتاب","types":{"en":"Book","fr":"Livre","es":"Libro","ur":"کتاب","tr":"Kitap","sw":"Kitabu","id":"Buku","ja":"書籍","zh":"书籍","ru":"Книга","bn":"বই","pt":"Livro","hi":"पुस्तक"},"authors":[{"name":"ابن رجب الحنبلي","names":{"en":"Ibn Rajab Al-Hanbali","fr":"Ibn Rajab al-Hanbali","es":"Ibn Rajab al-Hanbali","ur":"ابن رجب الحنبلي","tr":"İbn Receb el-Hanbelî","sw":"Ibn Rajab al-Hanbali","id":"Ibnu Rajab Al-Hanbali","ja":"イブン・ラジャブ・アル＝ハンバリー","zh":"伊本·拉哲卜·罕百里","ru":"Ибн Раджаб аль-Ханбали","bn":"ইবনে রজব আল-হাম্বলী","pt":"Ibn Rajab al-Hanbali","hi":"इब्न रजब अल-हंबली"},"href":"authors/216/21663.html"}],"died":"795 AH","living":false,"era":"mutaakhkhirun","category":"التراجم والأعلام","categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"sub":"","subLabel":null,"subLabels":{"en":null,"fr":null,"es":null,"ur":null,"tr":null,"sw":null,"id":null,"ja":null,"zh":null,"ru":null,"bn":null,"pt":null,"hi":null},"published":"1417هـ 1997م","publishedTranslations":{"en":"1417 AH / 1997 CE","fr":"1417 H 1997","es":"1417 H 1997","ur":"1417ھ 1997ء","tr":"1417 H 1997","sw":"1417 H 1997","id":"1417 H 1997 M","ja":"ヒジュラ暦1417年／西暦1997年","zh":"伊历1417年／公元1997年","ru":"1417 г. х. / 1997 г.","bn":"1417 হি. 1997 খ্রি.","pt":"1417 H 1997","hi":"1417 हि. 1997 ई."},"pages":"402"}]
+    </script>
+    <script
+      type="application/json"
+      data-list
+    >
+      {"list":"catalogue","category":"4445c597","sub":null,"era":null,"page":1,"pages":2,"total":28,"perPage":25,"eraCounts":{"all":28,"salaf":0,"mutaqaddimun":0,"mutaakhkhirun":8,"muasirun":0,"unknown":20},"categoryLabel":"التراجم والأعلام","categoryLabels":{"en":"Biographies and Figures","fr":"Biographies et personnalités","es":"Biografías y personajes destacados","ur":"سوانح و شخصیات","tr":"Biyografiler ve Önemli Şahsiyetler","sw":"Wasifu na watu mashuhuri","id":"Biografi dan Tokoh","ja":"人物伝・著名人","zh":"传记与人物","ru":"Биографии и выдающиеся личности","bn":"জীবনী ও বিশিষ্ট ব্যক্তিবর্গ","pt":"Biografias e personalidades","hi":"जीवनियाँ और व्यक्तित्व"},"subLabel":null,"subLabels":null}
+    </script>
+
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Resources</div>
+        <div class="mt-2 flex flex-wrap items-center gap-2">
+          <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-text="count(':count result|:count results', total)" data-flux-subheading>
+    
+</div>
+
+          <template x-if="category !== ''">
+            <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-category">
+        <svg class="shrink-0 [:where(&amp;)]:size-4 size-3" data-flux-badge-icon="data-flux-badge-icon" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M4.5 2A2.5 2.5 0 0 0 2 4.5v2.879a2.5 2.5 0 0 0 .732 1.767l4.5 4.5a2.5 2.5 0 0 0 3.536 0l2.878-2.878a2.5 2.5 0 0 0 0-3.536l-4.5-4.5A2.5 2.5 0 0 0 7.38 2H4.5ZM5 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd"/>
+</svg>
+
+            
+    <span x-text="categoryLabel"></span>
+              <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('category', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+          </template>
+
+          <template x-if="category !== '' && sub !== ''">
+            <span class="flex items-center gap-2">
+              <svg class="shrink-0 [:where(&amp;)]:size-4 text-zinc-400 rtl:rotate-180" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+                      <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50" data-test="selected-sub-category">
+        <span x-text="subLabel"></span>
+                <button type="button" class="p-1 -my-1 -me-1 opacity-50 hover:opacity-100" x-on:click="choose('sub', '')" aria-label="Remove filter" data-flux-badge-close>
+            <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+            </button>
+    </div>
+            </span>
+          </template>
+        </div>
+      </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white" data-flux-button="data-flux-button" x-show="hasFilters" x-cloak="x-cloak" x-on:click="clearFilters()">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"/>
+</svg>
+
+                
+                    
+            
+            <span>Clear filters</span>
+    </button>
+    </div>
+
+    <div class="mb-6 flex flex-wrap items-center gap-3">
+      <div
+  class="inline-flex max-w-full overflow-x-auto rounded-lg border border-zinc-200 bg-zinc-50 p-1 dark:border-zinc-700 dark:bg-zinc-800/80"
+  role="radiogroup"
+  aria-label="Era"
+  data-test="era-filter"
+>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === ''"
+      x-on:click="choose('era', '')"
+      x-bind:disabled="era !== '' && eraCounts['all'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === ''          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-all"
+    >
+      All
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === '' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['all'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'salaf'"
+      x-on:click="choose('era', 'salaf')"
+      x-bind:disabled="era !== 'salaf' && eraCounts['salaf'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'salaf'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-salaf"
+    >
+      Salaf
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'salaf' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t="to :year AH" data-r="{&quot;year&quot;:300}">to 300 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['salaf'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaqaddimun'"
+      x-on:click="choose('era', 'mutaqaddimun')"
+      x-bind:disabled="era !== 'mutaqaddimun' && eraCounts['mutaqaddimun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaqaddimun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaqaddimun"
+    >
+      Mutaqaddimun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaqaddimun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:301,&quot;to&quot;:656}">301–656 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaqaddimun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'mutaakhkhirun'"
+      x-on:click="choose('era', 'mutaakhkhirun')"
+      x-bind:disabled="era !== 'mutaakhkhirun' && eraCounts['mutaakhkhirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'mutaakhkhirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-mutaakhkhirun"
+    >
+      Muta&#039;akhkhirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'mutaakhkhirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":from–:to AH" data-r="{&quot;from&quot;:657,&quot;to&quot;:1265}">657–1265 AH</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['mutaakhkhirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'muasirun'"
+      x-on:click="choose('era', 'muasirun')"
+      x-bind:disabled="era !== 'muasirun' && eraCounts['muasirun'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'muasirun'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-muasirun"
+    >
+      Mu&#039;asirun
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'muasirun' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline"><span data-t=":year AH on, or living" data-r="{&quot;year&quot;:1266}">1266 AH on, or living</span> ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['muasirun'])"
+        ></span>
+      </span>
+    </button>
+      <button
+      type="button"
+      role="radio"
+      x-bind:aria-checked="era === 'unknown'"
+      x-on:click="choose('era', 'unknown')"
+      x-bind:disabled="era !== 'unknown' && eraCounts['unknown'] === 0"
+      class="shrink-0 rounded-md px-3 py-1.5 text-start text-sm font-medium whitespace-nowrap transition disabled:cursor-default disabled:opacity-50"
+      x-bind:class="
+        era === 'unknown'          ? 'bg-white text-zinc-900 shadow-sm dark:bg-zinc-600 dark:text-white'
+          : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white'
+      "
+      data-test="era-option-unknown"
+    >
+      Unknown
+      <span
+        class="block text-xs font-normal"
+        x-bind:class="era === 'unknown' ? 'text-zinc-500 dark:text-zinc-300' : 'text-zinc-400 dark:text-zinc-500'"
+      >
+                  <span class="hidden xl:inline">no year ·</span>
+                <span
+          class="tabular-nums"
+          x-text="format(eraCounts['unknown'])"
+        ></span>
+      </span>
+    </button>
+  </div>
+
+      <button type="button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-10 text-sm rounded-lg gap-2 ps-3 pe-4 inline-flex  bg-white hover:bg-zinc-50 dark:bg-zinc-700 dark:hover:bg-zinc-600/75 text-zinc-800 dark:text-white border border-zinc-200 hover:border-zinc-200 disabled:border-zinc-200 border-b-zinc-300/80 dark:border-zinc-600 dark:hover:border-zinc-600 dark:disabled:border-zinc-600 shadow-xs [[data-flux-button-group]_&amp;]:border-s-0 [:is([data-flux-button-group]&gt;&amp;:first-child,_[data-flux-button-group]_:first-child&gt;&amp;)]:border-s-[1px]" data-flux-button="data-flux-button" data-flux-group-target="data-flux-group-target" x-show="category !== ''" x-cloak="x-cloak" x-on:click="showSubs = !showSubs" x-bind:aria-pressed="showSubs" data-test="toggle-sub-categories">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path d="M3 4.75a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM6.25 3a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 7.25a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM6.25 11.5a.75.75 0 0 0 0 1.5h7a.75.75 0 0 0 0-1.5h-7ZM4 12.25a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM3 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z"/>
+</svg>
+
+                
+                    
+            
+            <span><span x-show="!showSubs">Show sub-categories</span>
+        <span
+          x-show="showSubs"
+          x-cloak
+        >
+          Hide sub-categories
+        </span></span>
+    </button>
+    </div>
+
+    <div class="flex flex-col gap-6 lg:flex-row">
+      <aside
+        class="lg:w-72 lg:shrink-0"
+        x-show="category !== '' && showSubs"
+        x-cloak
+        data-test="sub-categories"
+      >
+        <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-2" data-flux-heading>Sub-categories</div>
+
+        <div class="w-full relative block group/input mb-2" data-flux-input>
+                            <div class="pointer-events-none absolute top-0 bottom-0 border-s border-transparent flex items-center justify-center text-xs text-zinc-400/75 dark:text-white/60 ps-3 start-0">
+                    <svg class="shrink-0 [:where(&amp;)]:size-5" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M2.628 1.601C5.028 1.206 7.49 1 10 1s4.973.206 7.372.601a.75.75 0 0 1 .628.74v2.288a2.25 2.25 0 0 1-.659 1.59l-4.682 4.683a2.25 2.25 0 0 0-.659 1.59v3.037c0 .684-.31 1.33-.844 1.757l-1.937 1.55A.75.75 0 0 1 8 18.25v-5.757a2.25 2.25 0 0 0-.659-1.591L2.659 6.22A2.25 2.25 0 0 1 2 4.629V2.34a.75.75 0 0 1 .628-.74Z" clip-rule="evenodd"/>
+</svg>
+
+                        </div>
+            
+            <input
+                type="text"
+                
+                class="w-full border block disabled:shadow-none dark:shadow-none appearance-none text-sm rounded-md py-1.5 h-8 leading-[1.125rem] ps-10 pe-3 bg-white dark:bg-white/10 dark:disabled:bg-white/[7%] text-zinc-700 disabled:text-zinc-500 placeholder-zinc-400 disabled:placeholder-zinc-400/70 dark:text-zinc-300 dark:disabled:text-zinc-400 dark:placeholder-zinc-400 dark:disabled:placeholder-zinc-500 shadow-xs border-zinc-200 border-b-zinc-300/80 disabled:border-b-zinc-200 dark:border-white/10 dark:disabled:border-white/5 data-invalid:shadow-none data-invalid:border-red-500 dark:data-invalid:border-red-500 disabled:data-invalid:border-red-500 dark:disabled:data-invalid:border-red-500" x-model="subFilter" placeholder="Filter sub-categories..."
+                                                                                                                data-flux-control
+                data-flux-group-target
+                                            >
+
+                    </div>
+
+        <p class="[:where(&amp;)]:font-normal [:where(&amp;)]:text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-show="subCategories.length === 0" data-flux-text >No sub-categories.</p>
+        <nav class="flex max-h-[70vh] flex-col overflow-y-auto">
+          <template
+            x-for="entry in subCategories"
+            :key="entry.value"
+          >
+            <button
+              type="button"
+              class="flex h-10 w-full cursor-pointer items-center gap-3 rounded-lg px-3 text-start text-sm font-medium lg:h-8"
+              x-bind:class="
+                sub === entry.value
+                  ? 'bg-white text-zinc-800 shadow-xs dark:bg-white/[7%] dark:text-white'
+                  : 'text-zinc-500 hover:bg-zinc-800/5 hover:text-zinc-800 dark:text-white/80 dark:hover:bg-white/[7%] dark:hover:text-white'
+              "
+              x-on:click="choose('sub', sub === entry.value ? '' : entry.value)"
+            >
+              <span
+                class="flex-1 truncate"
+                dir="auto"
+                x-text="entry.label"
+              ></span>
+              <span
+                class="rounded-sm bg-zinc-400/15 px-1.5 py-0.5 text-xs tabular-nums dark:bg-white/10"
+                x-text="format(entry.count)"
+              ></span>
+            </button>
+          </template>
+        </nav>
+      </aside>
+
+      <div class="min-w-0 flex-1">
+        <div
+          class="rounded-xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700"
+          x-show="total === 0"
+          x-cloak
+        >
+          <svg class="shrink-0 [:where(&amp;)]:size-6 mx-auto mb-3 size-8 text-zinc-400" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+</svg>
+
+                  <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>No resources found</div>
+        </div>
+
+        <div x-show="total > 0">
+          <div class="flex flex-col  " >
+    
+
+    <ui-table-scroll-area class="overflow-auto">
+        <table class="[:where(&amp;)]:min-w-full table-fixed border-separate border-spacing-0 isolate text-zinc-800 whitespace-nowrap [&amp;_dialog]:whitespace-normal [&amp;_[popover]]:whitespace-normal" data-flux-table>
+            <thead class="" data-flux-columns>
+    <tr >
+        <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Title</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Author</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Category</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Death year</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Published</div>
+    </th>
+              <th class="py-3 px-3 first:ps-0 last:pe-0 text-start text-sm font-medium text-zinc-800 dark:text-white border-b border-zinc-800/10 dark:border-white/20    **:data-flux-table-sortable:last:me-0 hidden lg:table-cell" data-flux-column>
+            <div class="flex in-[.group\/center-align]:justify-center in-[.group\/end-align]:justify-end">Pages</div>
+    </th>
+    </tr>
+</thead>
+
+            <tbody  data-flux-rows>
+    <template
+                x-for="row in shown"
+                :key="row.id"
+              >
+                <tr  class="" data-flux-row>
+    <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 relative max-w-md align-top whitespace-normal" data-flux-cell>
+    <div class="flex items-start gap-3">
+                      <div class="flex w-14 shrink-0 flex-col items-center gap-1 lg:w-10">
+                        <a
+                          x-bind:href="row.href"
+                          class="relative shrink-0"
+                          tabindex="-1"
+                          aria-hidden="true"
+                        >
+                          <template x-if="row.cover">
+                            <img
+                              x-bind:src="row.cover"
+                              alt=""
+                              loading="lazy"
+                              class="h-14 w-10 rounded border border-zinc-200 bg-white object-cover object-top shadow-sm dark:border-zinc-700"
+                            />
+                          </template>
+                          <template x-if="!row.cover">
+                            <div
+                              class="flex h-14 w-10 flex-col items-center justify-center gap-0.5 rounded border border-zinc-200 bg-zinc-50 font-semibold tracking-wide text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+                            >
+                              <svg class="shrink-0 [:where(&amp;)]:size-6 size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+                                    </div>
+                          </template>
+                        </a>
+                      </div>
+
+                      <div class="min-w-0">
+                        <a
+                          x-bind:href="row.href"
+                          class="font-medium text-zinc-800 hover:underline dark:text-white"
+                          dir="auto"
+                          x-text="tx(row.title, row.titles)"
+                        ></a>
+                        <div data-flux-badge="data-flux-badge" class="inline-flex items-center font-medium whitespace-nowrap  [print-color-adjust:exact] text-xs py-1 **:data-flux-badge-icon:me-1 rounded-md px-2 text-zinc-700 [&amp;_button]:text-zinc-700! dark:text-zinc-200 dark:[&amp;_button]:text-zinc-200! bg-zinc-400/15 dark:bg-zinc-400/40 [&amp;:is(button)]:hover:bg-zinc-400/25 dark:[button]:hover:bg-zinc-400/50 ms-2" x-show="row.type">
+        <span x-text="tx(row.type, row.types)"></span>
+    </div>
+                        <div
+                          class="text-sm text-zinc-500 dark:text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(row.title, row.titles) !== row.title"
+                          x-text="row.title"
+                        ></div>
+                        <span
+                          class="mt-1 block text-sm text-zinc-500 lg:hidden dark:text-zinc-400"
+                          x-show="row.categoryLabel"
+                          x-text="tx(row.categoryLabel, row.categoryLabels)"
+                        ></span>
+                      </div>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 max-w-56 align-top whitespace-normal" data-flux-cell>
+    <template
+                      x-for="(author, index) in row.authors"
+                      :key="index"
+                    >
+                      <div>
+                        <a
+                          class="hover:underline"
+                          x-bind:href="author.href"
+                          dir="auto"
+                          x-text="tx(author.name, author.names)"
+                        ></a>
+                        <div
+                          class="text-sm text-zinc-400"
+                          lang="ar"
+                          dir="rtl"
+                          x-show="tx(author.name, author.names) !== author.name"
+                          x-text="author.name"
+                        ></div>
+                      </div>
+                    </template>
+                    <div class="mt-1 text-sm text-zinc-500 lg:hidden dark:text-zinc-400">
+                      <span
+                        class="block"
+                        x-show="row.died"
+                        x-text="died(row)"
+                      ></span>
+                      <span
+                        class="block"
+                        dir="auto"
+                        x-show="row.published"
+                        x-text="tx(row.published, row.publishedTranslations)"
+                      ></span>
+                    </div>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden max-w-56 align-top whitespace-normal lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.categoryLabel, row.categoryLabels)"
+                    ></span>
+                    <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" dir="auto" x-show="row.sub" x-text="tx(row.subLabel, row.subLabels)" data-flux-text ></p>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      class="inline-flex items-center rounded-md px-1.5 py-0.5 text-xs font-medium"
+                      x-bind:class="
+                        row.living
+                          ? 'bg-emerald-400/15 text-emerald-700 dark:bg-emerald-400/40 dark:text-emerald-200'
+                          : 'bg-zinc-400/15 text-zinc-700 dark:bg-zinc-400/40 dark:text-zinc-200'
+                      "
+                      x-show="row.died"
+                      x-text="died(row)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top whitespace-nowrap lg:table-cell" data-flux-cell>
+    <span
+                      dir="auto"
+                      x-text="tx(row.published, row.publishedTranslations)"
+                    ></span>
+</td>
+
+                  <td class="[:where(&amp;)]:py-3 [:where(&amp;)]:px-3 first:ps-0 last:pe-0 text-sm  text-zinc-500 dark:text-zinc-300  not-in-[tr:first-child]:border-t border-zinc-800/10 dark:border-white/20 hidden align-top lg:table-cell" data-flux-cell>
+    <span x-text="row.pages ?? ''"></span>
+</td>
+</tr>
+              </template>
+</tbody>
+        </table>
+    </ui-table-scroll-area>
+
+    
+
+    </div>
+
+          <div
+  class="@container flex items-center justify-between gap-3 border-t border-zinc-100 pt-3 dark:border-zinc-700"
+  x-show="total > 0"
+  data-flux-pagination
+>
+  <div class="text-xs font-medium whitespace-nowrap text-zinc-500 dark:text-zinc-400">
+    Showing
+    <span x-text="(page - 1) * perPage + 1"></span>
+    to
+    <span x-text="Math.min(page * perPage, total)"></span>
+    of
+    <span x-text="total"></span>
+    results
+  </div>
+
+  <div
+    class="flex items-center rounded-[8px] border border-zinc-200 bg-white p-[1px] dark:border-white/10 dark:bg-white/10"
+    x-show="pages > 1"
+  >
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page - 1)"
+      x-bind:disabled="page <= 1"
+      aria-label="&amp;laquo; Previous"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+
+    <template
+      x-for="(link, index) in pageLinks"
+      :key="index"
+    >
+      <div class="hidden @[40rem]:contents">
+        <template x-if="link === '...'">
+          <div
+            class="flex size-6 cursor-default items-center justify-center rounded-[6px] text-xs font-medium text-zinc-400 dark:text-zinc-400"
+          >
+            ...
+          </div>
+        </template>
+        <template x-if="link === page">
+          <div
+            aria-current="page"
+            class="flex h-6 cursor-default items-center justify-center rounded-[6px] px-2 text-xs font-medium text-zinc-800 dark:text-white"
+            x-text="link"
+          ></div>
+        </template>
+        <template x-if="link !== '...' && link !== page">
+          <button
+            type="button"
+            class="h-6 rounded-[6px] px-2 text-xs font-medium text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/20 dark:hover:text-white"
+            x-on:click="turn(link)"
+            x-text="link"
+          ></button>
+        </template>
+      </div>
+    </template>
+
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page + 1)"
+      x-bind:disabled="page >= pages"
+      aria-label="Next &amp;raquo;"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+  </div>
+</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <footer
+  class="mx-auto mt-12 max-w-4xl border-t border-zinc-200 pt-4 pb-2 text-center text-xs leading-relaxed text-zinc-500 dark:border-zinc-700 dark:text-zinc-400"
+  data-test="translation-notice"
+>
+  <p>
+    This English translation was machine-generated by OpenAI and may contain errors. The original Arabic text is authoritative.
+    <a
+      href="https://docs.google.com/forms/d/e/1FAIpQLSff-a0SHkwz3jpEkg0emW7-hK9oI0TMBmrBHRnermrLYWdu7g/viewform?usp=pp_url&amp;entry.1782009901="
+      target="_blank"
+      rel="noopener"
+      class="underline hover:text-zinc-700 dark:hover:text-zinc-200"
+      x-data
+      x-on:click="$el.href = 'https:\/\/docs.google.com\/forms\/d\/e\/1FAIpQLSff-a0SHkwz3jpEkg0emW7-hK9oI0TMBmrBHRnermrLYWdu7g\/viewform?usp=pp_url\u0026entry.1782009901=' + encodeURIComponent(location.href)"
+      data-test="suggest-correction"
+    >
+      Suggest a correction
+    </a>
+  </p>
+</footer>
+    </div>
+
+  
+  <script src="../../../../../assets/static.js?v=c61067d140"></script>
+</body>
+</html>

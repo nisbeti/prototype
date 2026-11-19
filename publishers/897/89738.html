@@ -1,0 +1,423 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root="../../"
+  data-section="publishers"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>مؤسسة الرسالة</title>
+  <link
+    rel="icon"
+    href="../../assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="../../assets/static.css?v=c61067d140"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="../../assets/i18n.js?v=c61067d140"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      if (get('translation') === 'off') root.setAttribute('data-hide-translation', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../assets/frame.js?v=c61067d140"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <a href="../../publishers.html" data-flux-button="data-flux-button" class="relative items-center font-medium justify-center whitespace-nowrap disabled:opacity-50 dark:disabled:opacity-50 disabled:cursor-default disabled:pointer-events-none disabled:shadow-none justify-center h-8 text-sm rounded-md gap-2 ps-2 pe-3 inline-flex  bg-transparent hover:bg-zinc-800/5 dark:hover:bg-white/15 text-zinc-800 dark:text-white       rtl:[&_svg]:rotate-180 mb-4">
+        <svg class="shrink-0 [:where(&amp;)]:size-4" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M14 8a.75.75 0 0 1-.75.75H4.56l3.22 3.22a.75.75 0 1 1-1.06 1.06l-4.5-4.5a.75.75 0 0 1 0-1.06l4.5-4.5a.75.75 0 0 1 1.06 1.06L4.56 7.25h8.69A.75.75 0 0 1 14 8Z" clip-rule="evenodd"/>
+</svg>
+
+                
+                    
+            
+            <span>Publishers</span>
+    </a>
+
+    <h1 class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading><span dir="auto" data-tr="{&quot;bn&quot;:&quot;আর-রিসালা প্রতিষ্ঠান&quot;,&quot;en&quot;:&quot;Al-Risalah Foundation&quot;,&quot;es&quot;:&quot;Fundación al-Risalah&quot;,&quot;fr&quot;:&quot;Fondation al-Risalah&quot;,&quot;hi&quot;:&quot;मुअस्ससत अर-रिसाला&quot;,&quot;id&quot;:&quot;Yayasan Ar-Risalah&quot;,&quot;ja&quot;:&quot;アッ＝リサーラ財団&quot;,&quot;pt&quot;:&quot;Mu&#039;assasat al-Risala&quot;,&quot;ru&quot;:&quot;Фонд ар-Рисаля&quot;,&quot;sw&quot;:&quot;Muassasat al-Risala&quot;,&quot;tr&quot;:&quot;er-Risâle Kurumu&quot;,&quot;zh&quot;:&quot;使命出版社&quot;}" data-original="مؤسسة الرسالة">مؤسسة الرسالة</span></h1>
+
+            <div class="text-base [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-subheading>
+    Publisher
+</div>
+
+    
+    
+          <div data-orientation="horizontal" role="none" class="border-0 [print-color-adjust:exact] bg-zinc-800/15 dark:bg-white/20 h-px w-full my-6" data-flux-separator></div>
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-3" data-flux-heading>Resources</div>
+      <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+                  <a
+  href="../../catalogue/506/50693.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <div
+      class="flex aspect-[3/4] w-full flex-col items-center justify-center gap-1 rounded-lg border border-zinc-200 bg-zinc-50 text-zinc-400 dark:border-zinc-700 dark:bg-zinc-800"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-6 size-8" data-flux-icon xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" data-slot="icon">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/>
+</svg>
+
+            </div>
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;bn&quot;:&quot;ইহকামুল আহকাম: উমদাতুল আহকামের ব্যাখ্যা&quot;,&quot;en&quot;:&quot;Explanation of the Rulings: A Commentary on the Essentials of Rulings&quot;,&quot;es&quot;:&quot;Ihkam al-Ahkam (Perfeccionamiento de los dictámenes): comentario de Umdat al-Ahkam (El fundamento de los dictámenes)&quot;,&quot;fr&quot;:&quot;Ihkam al-ahkam : commentaire de Umdat al-ahkam [La maîtrise des règles : référence des règles]&quot;,&quot;hi&quot;:&quot;इहकाम अल-अहकाम शरह उम्दत अल-अहकाम (उम्दत अल-अहकाम की व्याख्या)&quot;,&quot;id&quot;:&quot;Ihkam al-Ahkam (Pemantapan Hukum): Syarah Umdat al-Ahkam (Pokok-Pokok Hukum)&quot;,&quot;ja&quot;:&quot;イフカーム・アル＝アフカーム：ウムダト・アル＝アフカーム注解&quot;,&quot;pt&quot;:&quot;Ihkam al-Ahkam (A consolidação das normas): comentário de Umdat al-Ahkam (A referência das normas)&quot;,&quot;ru&quot;:&quot;Ихкам аль-ахкам, комментарий к «Умдат аль-ахкам»&quot;,&quot;sw&quot;:&quot;Ihkam al-Ahkam (Ufafanuzi wa Umdat al-Ahkam)&quot;,&quot;tr&quot;:&quot;İhkâmü&#039;l-ahkâm Şerhu Umdeti&#039;l-ahkâm (Ahkâmın Sağlamlaştırılması: Umdetü&#039;l-ahkâm Şerhi)&quot;,&quot;ur&quot;:&quot;إحكام الأحكام شرح عمدة الأحكام (احکام الاحکام: عمدۃ الاحکام کی شرح)&quot;,&quot;zh&quot;:&quot;《判例之精要：〈判例纲要〉注释》&quot;}" data-original="إحكام الأحكام شرح عمدة الأحكام">إحكام الأحكام شرح عمدة الأحكام</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        إحكام الأحكام شرح عمدة الأحكام
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      تقي الدين ابن دقيق العيد
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/514/51484.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/514/51484.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;bn&quot;:&quot;নববীর ‘আত-তানবীহ’ সংশোধন; এর সঙ্গে সংযুক্ত: ইসনাবির ‘তাযকিরাতুন নাবিহ’&quot;,&quot;en&quot;:&quot;Correction of the Notification by Al-Nawawi, followed by the Reminder of the Notifier by Al-Esnawi&quot;,&quot;es&quot;:&quot;Corrección de al-Tanbih de al-Nawawi, seguido de Tadhkirat al-Nabih de al-Isnawi&quot;,&quot;fr&quot;:&quot;Correction d’al-Tanbih d’al-Nawawi, suivi de Tadhkirat al-Nabih d’al-Isnawi&quot;,&quot;hi&quot;:&quot;नववी की अत-तनबीह का संशोधन, और इसके साथ इस्नवी की तज़किरत अन-नबीह&quot;,&quot;id&quot;:&quot;Koreksi terhadap at-Tanbih karya an-Nawawi, Disusul Tadzkirah an-Nabih karya al-Isnawi&quot;,&quot;ja&quot;:&quot;アン＝ナワウィー著『タンビーフ』の訂正、ならびにアル＝イスナウィー著『タズキラト・アン＝ナビーフ』&quot;,&quot;pt&quot;:&quot;Correção de al-Tanbih, de al-Nawawi, seguido de Tadhkirat al-Nabih, de al-Isnawi&quot;,&quot;ru&quot;:&quot;Исправление «ат-Танбих» ан-Навави и вслед за ним «Напоминание проницательному» аль-Иснави&quot;,&quot;sw&quot;:&quot;Kusahihisha al-Tanbih (Tahadhari) cha al-Nawawi, kikifuatiwa na Tadhkirat al-Nabih (Kumbukumbu ya Mwerevu) cha al-Isnawi&quot;,&quot;tr&quot;:&quot;Nevevî’nin Tenbîh’inin tashihi; ardından İsnâvî’nin Tezkiretü’n-Nebîh’i&quot;,&quot;ur&quot;:&quot;تصحيح التنبيه للنووي ويليه تذكرة النبيه للإسنوي (نووی کی تصحيح التنبيه، اور اس کے ساتھ اسنوی کی تذكرة النبيه)&quot;,&quot;zh&quot;:&quot;《纠正《警示篇》》与《觉者的提醒》&quot;}" data-original="تصحيح التنبيه للنووي ويليه تذكرة النبيه للإسنوي">تصحيح التنبيه للنووي ويليه تذكرة النبيه للإسنوي</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تصحيح التنبيه للنووي ويليه تذكرة النبيه للإسنوي
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي • عبد الرحيم جمال الدين الإسنوي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/606/60666.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/606/60666.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;bn&quot;:&quot;কিতাব খুলাসাতুল আহকাম ফি মুহিম্মাতিস সুনান ওয়া কাওয়াইদিল ইসলাম&quot;,&quot;en&quot;:&quot;Summary of the Rulings on Important Sunnahs and Principles of Islam&quot;,&quot;es&quot;:&quot;Libro de la síntesis de las normas sobre los aspectos esenciales de la Sunna y los principios del islam&quot;,&quot;fr&quot;:&quot;Kitab Khulasat al-Ahkam fi Muhimmat al-Sunan wa Qawa&#039;id al-Islam [Synthèse des règles concernant les traditions essentielles et les principes de l&#039;islam]&quot;,&quot;hi&quot;:&quot;किताब ख़ुलासत अल-अहकाम फ़ी मुहिम्मात अस-सुनन व क़वाइद अल-इस्लाम (सुन्नतों के महत्वपूर्ण विषयों और इस्लाम के सिद्धांतों पर नियमों का सार)&quot;,&quot;id&quot;:&quot;Kitab Khulashat al-Ahkam fi Muhimmat as-Sunan wa Qawa&#039;id al-Islam [Ringkasan Hukum-Hukum Penting tentang Sunah dan Kaidah Islam]&quot;,&quot;ja&quot;:&quot;『フラーサト・アル＝アフカーム（法規定の要旨）―スンナの重要事項とイスラームの原則について』&quot;,&quot;pt&quot;:&quot;Livro Khulasat al-Ahkam fi Muhimmat al-Sunan wa Qawa&#039;id al-Islam [Síntese das normas sobre as tradições essenciais e os princípios do Islã]&quot;,&quot;ru&quot;:&quot;Китаб Хуласат аль-ахкам фи мухиммат ас-сунан ва кава&#039;ид аль-ислам (Краткое изложение правовых постановлений о важнейших положениях Сунны и основах ислама)&quot;,&quot;sw&quot;:&quot;Kitabu Khulasat al-Ahkam fi Muhimmat al-Sunan wa Qawa&#039;id al-Islam (Muhtasari wa hukumu kuhusu sunna muhimu na misingi ya Uislamu)&quot;,&quot;tr&quot;:&quot;Kitâbü Hulâsatü’l-ahkâm fî mühimmâti’s-sünen ve kavâ‘idi’l-İslâm (Sünnetin önemli meseleleri ve İslam’ın ilkeleri hakkında hükümlerin özeti)&quot;,&quot;zh&quot;:&quot;《教法规例概要：圣行要义与伊斯兰原则》&quot;}" data-original="كتاب خلاصة الأحكام في مهمات السنن وقواعد الإسلام">كتاب خلاصة الأحكام في مهمات السنن وقواعد الإسلام</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        كتاب خلاصة الأحكام في مهمات السنن وقواعد الإسلام
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/654/65468.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/654/65468.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;bn&quot;:&quot;তাহযিবুত তাহযীব — রিসালাহ সংস্করণ&quot;,&quot;en&quot;:&quot;Refinement of Refinement - Dar Al-Risalah&quot;,&quot;es&quot;:&quot;Tahdhib al-Tahdhib [Depuración de la depuración] — edición de al-Risala&quot;,&quot;fr&quot;:&quot;Tahdhib al-tahdhib (Épuration de l&#039;Épuration) – édition de Mu&#039;assasat al-Risala&quot;,&quot;hi&quot;:&quot;तहज़ीब अत-तहज़ीब — अर-रिसाला संस्करण&quot;,&quot;id&quot;:&quot;Tahdzib at-Tahdzib [Penyempurnaan Tahdzib] — edisi ar-Risala&quot;,&quot;ja&quot;:&quot;タフズィーブ・アッ＝タフズィーブ――ムアッササト・アッ＝リサーラ版&quot;,&quot;pt&quot;:&quot;Tahdhib al-Tahdhib (Revisão de Tahdhib) — edição da al-Risala&quot;,&quot;ru&quot;:&quot;Тахзиб ат-Тахзиб — издание ар-Рисаля&quot;,&quot;sw&quot;:&quot;Tahdhib al-Tahdhib (Usanifu wa Tahdhib) — toleo la al-Risala&quot;,&quot;tr&quot;:&quot;Tehzîbü’t-Tehzîb – er-Risâle Baskısı&quot;,&quot;ur&quot;:&quot;تهذيب التهذيب- ط الرسالة (تہذیب التہذیب، الرسالہ طبع)&quot;,&quot;zh&quot;:&quot;《传记修订》—里萨莱出版社版&quot;}" data-original="تهذيب التهذيب- ط الرسالة">تهذيب التهذيب- ط الرسالة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        تهذيب التهذيب- ط الرسالة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن محمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1401/140178.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1401/140178.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;bn&quot;:&quot;বিধানসমূহের সারসংক্ষেপ: সুন্নাহর গুরুত্বপূর্ণ বিষয় ও ইসলামের মূলনীতিতে&quot;,&quot;en&quot;:&quot;Summary of the Rulings on Important Sunnah and Principles of Islam&quot;,&quot;es&quot;:&quot;Compendio de normas sobre los aspectos esenciales de las Sunan y los principios del islam&quot;,&quot;fr&quot;:&quot;Synthèse des règles concernant les questions essentielles des traditions prophétiques et les principes de l&#039;islam&quot;,&quot;hi&quot;:&quot;अहकाम का सार: सुन्नतों के महत्वपूर्ण विषय और इस्लाम के नियम&quot;,&quot;id&quot;:&quot;Ringkasan hukum-hukum penting dalam Sunnah dan kaidah-kaidah Islam&quot;,&quot;ja&quot;:&quot;諸スンナとイスラームの諸原則に関する重要事項の法規定集&quot;,&quot;pt&quot;:&quot;Síntese das normas jurídicas sobre os temas essenciais da Sunna e os fundamentos do islã&quot;,&quot;ru&quot;:&quot;Краткое изложение предписаний по важнейшим вопросам Сунны и основам ислама&quot;,&quot;sw&quot;:&quot;Khulasat al-Ahkam fi Muhimmat al-Sunan wa Qawa&#039;id al-Islam (Muhtasari wa hukumu kuhusu mambo muhimu ya Sunna na misingi ya Uislamu)&quot;,&quot;tr&quot;:&quot;Sünenin önemli konuları ve İslam’ın esasları hakkında hükümlerin özeti&quot;,&quot;ur&quot;:&quot;خلاصة الأحكام في مهمات السنن وقواعد الإسلام (سنن کے اہم مسائل اور اسلام کے قواعد میں خلاصۂ احکام)&quot;,&quot;zh&quot;:&quot;《教法判例精要：圣训要义与伊斯兰纲领》&quot;}" data-original="خلاصة الأحكام في مهمات السنن وقواعد الإسلام">خلاصة الأحكام في مهمات السنن وقواعد الإسلام</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        خلاصة الأحكام في مهمات السنن وقواعد الإسلام
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      يحيى بن شرف النووي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1443/144391.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1443/144391.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;bn&quot;:&quot;জামিউল উলুম ওয়াল হিকাম (পঞ্চাশটি জাওয়ামিউল কালিম হাদিসের ব্যাখ্যা)—রিসালাহ সংস্করণ&quot;,&quot;en&quot;:&quot;The Collection of Sciences and Judgments in Explaining Fifty Hadiths from the Comprehensive Sayings - Dar Al-Risalah&quot;,&quot;es&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim [Compendio de las ciencias y las máximas: comentario de cincuenta hadices de las palabras concisas], edición de al-Risala&quot;,&quot;fr&quot;:&quot;Jami al-Ulum wa al-Hikam (Le recueil des sciences et des sagesses), commentaire de cinquante hadiths parmi les paroles concises du Prophète — édition de la Risala&quot;,&quot;hi&quot;:&quot;जामिउल उलूम वल-हिकम फ़ी शर्ह ख़म्सीन हदीसन मिन जवामिउल कलिम—रिसाला संस्करण&quot;,&quot;id&quot;:&quot;Jami&#039; al-Ulum wa al-Hikam fi Syarh Khamsin Haditsan min Jawami&#039; al-Kalim (Himpunan Ilmu dan Hikmah dalam Penjelasan Lima Puluh Hadis dari Ucapan Ringkas), cetakan Ar-Risalah&quot;,&quot;ja&quot;:&quot;『ジャーミウ・アル＝ウルーム・ワル＝ヒカム』—簡潔な言葉を集めた五十のハディースの注解（リサーラ社版）&quot;,&quot;pt&quot;:&quot;Reunião das ciências e das máximas na explicação de cinquenta hadiths das palavras concisas — edição da Mu&#039;assasat al-Risala&quot;,&quot;ru&quot;:&quot;Джами аль-улюм ва-ль-хикам фи шарх хамсин хадисан мин джавами аль-калим (Собрание знаний и мудростей: комментарий к пятидесяти хадисам из кратких речений) — издание «ар-Рисаля»&quot;,&quot;sw&quot;:&quot;Jami al-Ulum wa al-Hikam fi Sharh Khamsin Hadithan min Jawami al-Kalim (Jumla ya elimu na hekima katika ufafanuzi wa hadithi hamsini kutoka maneno mafupi yenye maana pana) - toleo la Mu&#039;assasat al-Risala&quot;,&quot;tr&quot;:&quot;Câmiu&#039;l-ulûm ve&#039;l-hikem fî şerhi hamsîne hadîsen min cevâmii&#039;l-kelim (Cevâmiu&#039;l-kelimden elli hadisin şerhi) – Risâle baskısı&quot;,&quot;zh&quot;:&quot;《知识与智慧总汇：注释五十则精炼圣训》—— الرسالة版&quot;}" data-original="جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط الرسالة">جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط الرسالة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        جامع العلوم والحكم في شرح خمسين حديثًا من جوامع الكلم- ط الرسالة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      عبد الرحمن البغدادي بن رجب الحنبلي
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1448/144845.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1448/144845.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;bn&quot;:&quot;আল-মুজাম আল-মুফাহরাস অথবা প্রসিদ্ধ গ্রন্থ ও বিচ্ছিন্ন পুস্তিকার সনদসমূহের সংক্ষিপ্ত তালিকা — আর-রিসালাহ&quot;,&quot;en&quot;:&quot;The Indexed Dictionary or the Extraction of the Chains of Narration from Famous Books and Dispersed Parts - The Message&quot;,&quot;es&quot;:&quot;Al-Mu&#039;jam al-Mufahras (El diccionario indexado), o recopilación de las cadenas de transmisión de libros célebres y fascículos dispersos — al-Risala&quot;,&quot;fr&quot;:&quot;Al-Mu&#039;jam al-mufahras aw tajrid asanid al-kutub al-mashhura wa-l-ajza&#039; al-manthura (Répertoire indexé ou dépouillement des chaînes de transmission des ouvrages célèbres et des fascicules épars) — al-Risala&quot;,&quot;hi&quot;:&quot;अल-मुअजम अल-मुफ़हरस या प्रसिद्ध किताबों की सनदों और बिखरे हुए जुज़ों का संकलन — अर-रिसाला&quot;,&quot;id&quot;:&quot;Al-Mu&#039;jam al-Mufahras aw Tajrid Asanid al-Kutub al-Masyhurah wa al-Ajza&#039; al-Mantsurah [Indeks berabjad atau ringkasan sanad kitab-kitab terkenal dan kumpulan hadis yang tersebar] – ar-Risalah&quot;,&quot;ja&quot;:&quot;索引付き伝承者辞典、または著名な書物と散逸した伝承集の伝承経路の要約――アッ＝リサーラ版&quot;,&quot;pt&quot;:&quot;Al-Mu&#039;jam al-Mufahras aw Tajrid Asanid al-Kutub al-Mashhura wa al-Ajza al-Manthura — al-Risala [O dicionário indexado, ou a compilação das cadeias de transmissão dos livros célebres e dos fascículos dispersos]&quot;,&quot;ru&quot;:&quot;Алфавитный указатель, или извлечение иснадов известных книг и отдельных сборников: «Ар-Рисаля»&quot;,&quot;sw&quot;:&quot;Al-Mu&#039;jam al-Mufahras (Kamusi Iliyopangwa kwa Faharasa), au Kuondoa Isnadi za Vitabu Maarufu na Juzuu Zilizotawanyika - al-Risala&quot;,&quot;tr&quot;:&quot;el-Muʿcemü’l-müfehres ev tecrîdü esânîdi’l-kütübi’l-meşhûre ve’l-eczâ’i’l-mensûre – er-Risâle [Fihrist Muʿcem yahut Meşhur Kitapların ve Dağınık Cüzlerin Senedlerinin Ayıklanması]&quot;,&quot;ur&quot;:&quot;المعجم المفهرس أو تجريد أسانيد الكتب المشهورة والأجزاء المنثورة- الرسالة (فہرست شدہ معجم یا مشہور کتابوں اور منتشر اجزا کی اسناد کا خلاصہ—الرسالة)&quot;,&quot;zh&quot;:&quot;《索引辞典，或著名典籍与散见分册传承链汇编——里萨拉》&quot;}" data-original="المعجم المفهرس أو تجريد أسانيد الكتب المشهورة والأجزاء المنثورة- الرسالة">المعجم المفهرس أو تجريد أسانيد الكتب المشهورة والأجزاء المنثورة- الرسالة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        المعجم المفهرس أو تجريد أسانيد الكتب المشهورة والأجزاء المنثورة- الرسالة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن علي بن حجر العسقلاني
+    </span>
+  </a>
+                  <a
+  href="../../catalogue/1949/194936.html"
+  class="group flex flex-col gap-2"
+  data-test="catalogue-item"
+>
+      <img
+      src="../../catalogue/1949/194936.jpg"
+      alt=""
+      loading="lazy"
+      class="aspect-[3/4] w-full rounded-lg border border-zinc-200 bg-white object-cover object-top dark:border-zinc-700"
+    />
+    <span class="text-sm font-medium text-zinc-800 group-hover:underline dark:text-white">
+    <span class="line-clamp-2" dir="auto" data-tr="{&quot;bn&quot;:&quot;আল-মু‘জাম আল-মুফাহরাস, অথবা প্রসিদ্ধ গ্রন্থসমূহের সনদ যাচাই ও বিচ্ছিন্ন পুস্তিকাগুলোর সংকলন&quot;,&quot;en&quot;:&quot;The Indexed Dictionary or the Editing of the Chains of Narration of Famous Books and Dispersed Parts&quot;,&quot;es&quot;:&quot;El diccionario indexado o la depuración de las cadenas de transmisión de los libros célebres y los opúsculos dispersos&quot;,&quot;fr&quot;:&quot;Al-mu&#039;jam al-mufahras aw tahrir asanid al-kutub al-mashhura wa-al-ajza al-manthura&quot;,&quot;hi&quot;:&quot;अल-मु&#039;जम अल-मुफ़हरस, या प्रसिद्ध पुस्तकों और बिखरे हुए भागों की सनदों का संपादन&quot;,&quot;id&quot;:&quot;Al-Mu&#039;jam Al-Mufahras atau Tahdzib Sanad-Sanad Kitab-Kitab Terkenal dan Juz-Juz yang Tersebar&quot;,&quot;ja&quot;:&quot;索引付き人名録――著名な書物および分冊資料の伝承経路の整理&quot;,&quot;pt&quot;:&quot;Al-Mu&#039;jam al-Mufahras, ou revisão das cadeias de transmissão dos livros célebres e dos fascículos dispersos [Índice alfabético]&quot;,&quot;ru&quot;:&quot;Алфавитный указатель, или уточнение иснадов известных книг и отдельных частей сочинений&quot;,&quot;sw&quot;:&quot;Al-Mujam al-Mufahras (Kamusi Yenye Fahirisi), au Kuhariri Minyororo ya Upokezi ya Vitabu Maarufu na Vijitabu Vilivyotawanyika&quot;,&quot;tr&quot;:&quot;el-Mu‘cemü’l-müfehres veya meşhur kitapların ve dağınık cüzlerin senedlerinin düzenlenmesi&quot;,&quot;ur&quot;:&quot;المعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة (فہرست وار معجم یا مشہور کتابوں اور منتشر اجزاء کی اسناد کی تحقیق)&quot;,&quot;zh&quot;:&quot;《索引辞典：或著名典籍与散见篇章传述链考订》&quot;}" data-original="المعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة">المعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة</span>
+          <span
+        class="line-clamp-1 font-normal text-zinc-500 dark:text-zinc-400"
+        lang="ar"
+        dir="rtl"
+        data-arabic-original
+      >
+        المعجم المفهرس أو تحرير أسانيد الكتب المشهورة والأجزاء المنثورة
+      </span>
+      </span>
+      <span
+      class="line-clamp-1 text-xs text-zinc-500 dark:text-zinc-400"
+      dir="auto"
+    >
+      أحمد بن محمد علي بن حجر العسقلاني
+    </span>
+  </a>
+              </div>
+      </section>
+
+    <footer
+  class="mx-auto mt-12 max-w-4xl border-t border-zinc-200 pt-4 pb-2 text-center text-xs leading-relaxed text-zinc-500 dark:border-zinc-700 dark:text-zinc-400"
+  data-test="translation-notice"
+>
+  <p>
+    This English translation was machine-generated by OpenAI and may contain errors. The original Arabic text is authoritative.
+    <a
+      href="https://docs.google.com/forms/d/e/1FAIpQLSff-a0SHkwz3jpEkg0emW7-hK9oI0TMBmrBHRnermrLYWdu7g/viewform?usp=pp_url&amp;entry.1782009901="
+      target="_blank"
+      rel="noopener"
+      class="underline hover:text-zinc-700 dark:hover:text-zinc-200"
+      x-data
+      x-on:click="$el.href = 'https:\/\/docs.google.com\/forms\/d\/e\/1FAIpQLSff-a0SHkwz3jpEkg0emW7-hK9oI0TMBmrBHRnermrLYWdu7g\/viewform?usp=pp_url\u0026entry.1782009901=' + encodeURIComponent(location.href)"
+      data-test="suggest-correction"
+    >
+      Suggest a correction
+    </a>
+  </p>
+</footer>
+    </div>
+
+  
+  <script src="../../assets/static.js?v=c61067d140"></script>
+</body>
+</html>

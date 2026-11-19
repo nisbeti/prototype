@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"bn","lang":"bn","dir":"ltr","title":"Muhiuddin Khan","version":"April 30, 2011","source":"tanzil","ayat":{"1":["বলুন, তিনি আল্লাহ, এক,",null],"2":["আল্লাহ অমুখাপেক্ষী,",null],"3":["তিনি কাউকে জন্ম দেননি এবং কেউ তাকে জন্ম দেয়নি",null],"4":["এবং তার সমতুল্য কেউ নেই।",null]}});

@@ -1,0 +1,2450 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root="../"
+  data-section="quran"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>القرآن الكريم</title>
+  <link
+    rel="icon"
+    href="../assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="../assets/static.css?v=c61067d140"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="../assets/i18n.js?v=c61067d140"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      if (get('translation') === 'off') root.setAttribute('data-hide-translation', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../assets/frame.js?v=c61067d140"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section class="w-full">
+    <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2 mb-6" data-flux-heading>Quran</div>
+
+    <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              <a
+          href="../quran/1.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            1
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Fatihah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:7}" data-n="7">7 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الفاتحة
+          </span>
+        </a>
+              <a
+          href="../quran/2.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            2
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Baqarah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:286}" data-n="286">286 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            البقرة
+          </span>
+        </a>
+              <a
+          href="../quran/3.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            3
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Ali &#039;Imran</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:200}" data-n="200">200 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            آل عمران
+          </span>
+        </a>
+              <a
+          href="../quran/4.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            4
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">An-Nisa</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:176}" data-n="176">176 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            النساء
+          </span>
+        </a>
+              <a
+          href="../quran/5.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            5
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Ma&#039;idah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:120}" data-n="120">120 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            المائدة
+          </span>
+        </a>
+              <a
+          href="../quran/6.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            6
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-An&#039;am</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:165}" data-n="165">165 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الأنعام
+          </span>
+        </a>
+              <a
+          href="../quran/7.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            7
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-A&#039;raf</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:206}" data-n="206">206 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الأعراف
+          </span>
+        </a>
+              <a
+          href="../quran/8.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            8
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Anfal</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:75}" data-n="75">75 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الأنفال
+          </span>
+        </a>
+              <a
+          href="../quran/9.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            9
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">At-Tawbah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:129}" data-n="129">129 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            التوبة
+          </span>
+        </a>
+              <a
+          href="../quran/10.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            10
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Yunus</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:109}" data-n="109">109 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            يونس
+          </span>
+        </a>
+              <a
+          href="../quran/11.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            11
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Hud</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:123}" data-n="123">123 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            هود
+          </span>
+        </a>
+              <a
+          href="../quran/12.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            12
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Yusuf</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:111}" data-n="111">111 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            يوسف
+          </span>
+        </a>
+              <a
+          href="../quran/13.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            13
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Ar-Ra&#039;d</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:43}" data-n="43">43 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الرعد
+          </span>
+        </a>
+              <a
+          href="../quran/14.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            14
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Ibrahim</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:52}" data-n="52">52 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            ابراهيم
+          </span>
+        </a>
+              <a
+          href="../quran/15.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            15
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Hijr</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:99}" data-n="99">99 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الحجر
+          </span>
+        </a>
+              <a
+          href="../quran/16.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            16
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">An-Nahl</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:128}" data-n="128">128 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            النحل
+          </span>
+        </a>
+              <a
+          href="../quran/17.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            17
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Isra</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:111}" data-n="111">111 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الإسراء
+          </span>
+        </a>
+              <a
+          href="../quran/18.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            18
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Kahf</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:110}" data-n="110">110 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الكهف
+          </span>
+        </a>
+              <a
+          href="../quran/19.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            19
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Maryam</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:98}" data-n="98">98 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            مريم
+          </span>
+        </a>
+              <a
+          href="../quran/20.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            20
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Taha</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:135}" data-n="135">135 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            طه
+          </span>
+        </a>
+              <a
+          href="../quran/21.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            21
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Anbya</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:112}" data-n="112">112 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الأنبياء
+          </span>
+        </a>
+              <a
+          href="../quran/22.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            22
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Hajj</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:78}" data-n="78">78 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الحج
+          </span>
+        </a>
+              <a
+          href="../quran/23.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            23
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Mu&#039;minun</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:118}" data-n="118">118 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            المؤمنون
+          </span>
+        </a>
+              <a
+          href="../quran/24.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            24
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">An-Nur</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:64}" data-n="64">64 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            النور
+          </span>
+        </a>
+              <a
+          href="../quran/25.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            25
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Furqan</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:77}" data-n="77">77 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الفرقان
+          </span>
+        </a>
+              <a
+          href="../quran/26.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            26
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Ash-Shu&#039;ara</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:227}" data-n="227">227 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الشعراء
+          </span>
+        </a>
+              <a
+          href="../quran/27.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            27
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">An-Naml</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:93}" data-n="93">93 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            النمل
+          </span>
+        </a>
+              <a
+          href="../quran/28.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            28
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Qasas</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:88}" data-n="88">88 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            القصص
+          </span>
+        </a>
+              <a
+          href="../quran/29.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            29
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-&#039;Ankabut</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:69}" data-n="69">69 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            العنكبوت
+          </span>
+        </a>
+              <a
+          href="../quran/30.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            30
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Ar-Rum</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:60}" data-n="60">60 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الروم
+          </span>
+        </a>
+              <a
+          href="../quran/31.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            31
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Luqman</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:34}" data-n="34">34 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            لقمان
+          </span>
+        </a>
+              <a
+          href="../quran/32.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            32
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">As-Sajdah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:30}" data-n="30">30 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            السجدة
+          </span>
+        </a>
+              <a
+          href="../quran/33.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            33
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Ahzab</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:73}" data-n="73">73 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الأحزاب
+          </span>
+        </a>
+              <a
+          href="../quran/34.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            34
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Saba</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:54}" data-n="54">54 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            سبإ
+          </span>
+        </a>
+              <a
+          href="../quran/35.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            35
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Fatir</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:45}" data-n="45">45 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            فاطر
+          </span>
+        </a>
+              <a
+          href="../quran/36.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            36
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Ya-Sin</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:83}" data-n="83">83 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            يس
+          </span>
+        </a>
+              <a
+          href="../quran/37.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            37
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">As-Saffat</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:182}" data-n="182">182 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الصافات
+          </span>
+        </a>
+              <a
+          href="../quran/38.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            38
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Sad</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:88}" data-n="88">88 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            ص
+          </span>
+        </a>
+              <a
+          href="../quran/39.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            39
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Az-Zumar</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:75}" data-n="75">75 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الزمر
+          </span>
+        </a>
+              <a
+          href="../quran/40.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            40
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Ghafir</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:85}" data-n="85">85 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            غافر
+          </span>
+        </a>
+              <a
+          href="../quran/41.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            41
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Fussilat</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:54}" data-n="54">54 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            فصلت
+          </span>
+        </a>
+              <a
+          href="../quran/42.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            42
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Ash-Shuraa</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:53}" data-n="53">53 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الشورى
+          </span>
+        </a>
+              <a
+          href="../quran/43.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            43
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Az-Zukhruf</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:89}" data-n="89">89 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الزخرف
+          </span>
+        </a>
+              <a
+          href="../quran/44.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            44
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Ad-Dukhan</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:59}" data-n="59">59 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الدخان
+          </span>
+        </a>
+              <a
+          href="../quran/45.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            45
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Jathiyah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:37}" data-n="37">37 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الجاثية
+          </span>
+        </a>
+              <a
+          href="../quran/46.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            46
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Ahqaf</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:35}" data-n="35">35 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الأحقاف
+          </span>
+        </a>
+              <a
+          href="../quran/47.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            47
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Muhammad</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:38}" data-n="38">38 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            محمد
+          </span>
+        </a>
+              <a
+          href="../quran/48.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            48
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Fath</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:29}" data-n="29">29 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الفتح
+          </span>
+        </a>
+              <a
+          href="../quran/49.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            49
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Hujurat</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:18}" data-n="18">18 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الحجرات
+          </span>
+        </a>
+              <a
+          href="../quran/50.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            50
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Qaf</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:45}" data-n="45">45 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            ق
+          </span>
+        </a>
+              <a
+          href="../quran/51.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            51
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Adh-Dhariyat</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:60}" data-n="60">60 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الذاريات
+          </span>
+        </a>
+              <a
+          href="../quran/52.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            52
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">At-Tur</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:49}" data-n="49">49 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الطور
+          </span>
+        </a>
+              <a
+          href="../quran/53.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            53
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">An-Najm</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:62}" data-n="62">62 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            النجم
+          </span>
+        </a>
+              <a
+          href="../quran/54.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            54
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Qamar</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:55}" data-n="55">55 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            القمر
+          </span>
+        </a>
+              <a
+          href="../quran/55.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            55
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Ar-Rahman</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:78}" data-n="78">78 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الرحمن
+          </span>
+        </a>
+              <a
+          href="../quran/56.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            56
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Waqi&#039;ah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:96}" data-n="96">96 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الواقعة
+          </span>
+        </a>
+              <a
+          href="../quran/57.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            57
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Hadid</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:29}" data-n="29">29 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الحديد
+          </span>
+        </a>
+              <a
+          href="../quran/58.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            58
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Mujadila</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:22}" data-n="22">22 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            المجادلة
+          </span>
+        </a>
+              <a
+          href="../quran/59.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            59
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Hashr</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:24}" data-n="24">24 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الحشر
+          </span>
+        </a>
+              <a
+          href="../quran/60.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            60
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Mumtahanah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:13}" data-n="13">13 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الممتحنة
+          </span>
+        </a>
+              <a
+          href="../quran/61.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            61
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">As-Saf</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:14}" data-n="14">14 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الصف
+          </span>
+        </a>
+              <a
+          href="../quran/62.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            62
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Jumu&#039;ah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:11}" data-n="11">11 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الجمعة
+          </span>
+        </a>
+              <a
+          href="../quran/63.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            63
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Munafiqun</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:11}" data-n="11">11 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            المنافقون
+          </span>
+        </a>
+              <a
+          href="../quran/64.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            64
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">At-Taghabun</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:18}" data-n="18">18 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            التغابن
+          </span>
+        </a>
+              <a
+          href="../quran/65.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            65
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">At-Talaq</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:12}" data-n="12">12 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الطلاق
+          </span>
+        </a>
+              <a
+          href="../quran/66.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            66
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">At-Tahrim</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:12}" data-n="12">12 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            التحريم
+          </span>
+        </a>
+              <a
+          href="../quran/67.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            67
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Mulk</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:30}" data-n="30">30 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الملك
+          </span>
+        </a>
+              <a
+          href="../quran/68.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            68
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Qalam</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:52}" data-n="52">52 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            القلم
+          </span>
+        </a>
+              <a
+          href="../quran/69.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            69
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Haqqah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:52}" data-n="52">52 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الحاقة
+          </span>
+        </a>
+              <a
+          href="../quran/70.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            70
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Ma&#039;arij</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:44}" data-n="44">44 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            المعارج
+          </span>
+        </a>
+              <a
+          href="../quran/71.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            71
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Nuh</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:28}" data-n="28">28 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            نوح
+          </span>
+        </a>
+              <a
+          href="../quran/72.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            72
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Jinn</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:28}" data-n="28">28 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الجن
+          </span>
+        </a>
+              <a
+          href="../quran/73.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            73
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Muzzammil</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:20}" data-n="20">20 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            المزمل
+          </span>
+        </a>
+              <a
+          href="../quran/74.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            74
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Muddaththir</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:56}" data-n="56">56 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            المدثر
+          </span>
+        </a>
+              <a
+          href="../quran/75.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            75
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Qiyamah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:40}" data-n="40">40 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            القيامة
+          </span>
+        </a>
+              <a
+          href="../quran/76.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            76
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Insan</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:31}" data-n="31">31 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الانسان
+          </span>
+        </a>
+              <a
+          href="../quran/77.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            77
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Mursalat</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:50}" data-n="50">50 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            المرسلات
+          </span>
+        </a>
+              <a
+          href="../quran/78.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            78
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">An-Naba</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:40}" data-n="40">40 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            النبإ
+          </span>
+        </a>
+              <a
+          href="../quran/79.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            79
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">An-Nazi&#039;at</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:46}" data-n="46">46 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            النازعات
+          </span>
+        </a>
+              <a
+          href="../quran/80.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            80
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">&#039;Abasa</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:42}" data-n="42">42 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            عبس
+          </span>
+        </a>
+              <a
+          href="../quran/81.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            81
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">At-Takwir</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:29}" data-n="29">29 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            التكوير
+          </span>
+        </a>
+              <a
+          href="../quran/82.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            82
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Infitar</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:19}" data-n="19">19 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الإنفطار
+          </span>
+        </a>
+              <a
+          href="../quran/83.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            83
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Mutaffifin</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:36}" data-n="36">36 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            المطففين
+          </span>
+        </a>
+              <a
+          href="../quran/84.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            84
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Inshiqaq</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:25}" data-n="25">25 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الإنشقاق
+          </span>
+        </a>
+              <a
+          href="../quran/85.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            85
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Buruj</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:22}" data-n="22">22 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            البروج
+          </span>
+        </a>
+              <a
+          href="../quran/86.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            86
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">At-Tariq</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:17}" data-n="17">17 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الطارق
+          </span>
+        </a>
+              <a
+          href="../quran/87.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            87
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-A&#039;la</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:19}" data-n="19">19 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الأعلى
+          </span>
+        </a>
+              <a
+          href="../quran/88.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            88
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Ghashiyah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:26}" data-n="26">26 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الغاشية
+          </span>
+        </a>
+              <a
+          href="../quran/89.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            89
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Fajr</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:30}" data-n="30">30 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الفجر
+          </span>
+        </a>
+              <a
+          href="../quran/90.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            90
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Balad</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:20}" data-n="20">20 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            البلد
+          </span>
+        </a>
+              <a
+          href="../quran/91.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            91
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Ash-Shams</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:15}" data-n="15">15 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الشمس
+          </span>
+        </a>
+              <a
+          href="../quran/92.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            92
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Layl</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:21}" data-n="21">21 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الليل
+          </span>
+        </a>
+              <a
+          href="../quran/93.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            93
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Ad-Duhaa</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:11}" data-n="11">11 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الضحى
+          </span>
+        </a>
+              <a
+          href="../quran/94.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            94
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Ash-Sharh</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:8}" data-n="8">8 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الشرح
+          </span>
+        </a>
+              <a
+          href="../quran/95.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            95
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">At-Tin</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:8}" data-n="8">8 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            التين
+          </span>
+        </a>
+              <a
+          href="../quran/96.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            96
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-&#039;Alaq</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:19}" data-n="19">19 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            العلق
+          </span>
+        </a>
+              <a
+          href="../quran/97.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            97
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Qadr</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:5}" data-n="5">5 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            القدر
+          </span>
+        </a>
+              <a
+          href="../quran/98.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            98
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Bayyinah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:8}" data-n="8">8 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            البينة
+          </span>
+        </a>
+              <a
+          href="../quran/99.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            99
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Az-Zalzalah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:8}" data-n="8">8 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الزلزلة
+          </span>
+        </a>
+              <a
+          href="../quran/100.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            100
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-&#039;Adiyat</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:11}" data-n="11">11 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            العاديات
+          </span>
+        </a>
+              <a
+          href="../quran/101.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            101
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Qari&#039;ah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:11}" data-n="11">11 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            القارعة
+          </span>
+        </a>
+              <a
+          href="../quran/102.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            102
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">At-Takathur</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:8}" data-n="8">8 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            التكاثر
+          </span>
+        </a>
+              <a
+          href="../quran/103.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            103
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-&#039;Asr</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:3}" data-n="3">3 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            العصر
+          </span>
+        </a>
+              <a
+          href="../quran/104.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            104
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Humazah</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:9}" data-n="9">9 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الهمزة
+          </span>
+        </a>
+              <a
+          href="../quran/105.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            105
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Fil</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:5}" data-n="5">5 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الفيل
+          </span>
+        </a>
+              <a
+          href="../quran/106.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            106
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Quraysh</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:4}" data-n="4">4 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            قريش
+          </span>
+        </a>
+              <a
+          href="../quran/107.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            107
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Ma&#039;un</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:7}" data-n="7">7 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الماعون
+          </span>
+        </a>
+              <a
+          href="../quran/108.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            108
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Kawthar</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:3}" data-n="3">3 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الكوثر
+          </span>
+        </a>
+              <a
+          href="../quran/109.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            109
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Kafirun</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:6}" data-n="6">6 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الكافرون
+          </span>
+        </a>
+              <a
+          href="../quran/110.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            110
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">An-Nasr</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:3}" data-n="3">3 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            النصر
+          </span>
+        </a>
+              <a
+          href="../quran/111.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            111
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Masad</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:5}" data-n="5">5 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            المسد
+          </span>
+        </a>
+              <a
+          href="../quran/112.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            112
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Ikhlas</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:4}" data-n="4">4 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الإخلاص
+          </span>
+        </a>
+              <a
+          href="../quran/113.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            113
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">Al-Falaq</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:5}" data-n="5">5 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الفلق
+          </span>
+        </a>
+              <a
+          href="../quran/114.html"
+          class="flex items-center gap-3 rounded-lg border border-zinc-200 px-3 py-2 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+        >
+          <span
+            class="flex size-8 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-sm tabular-nums dark:bg-zinc-700"
+          >
+            114
+          </span>
+          <span class="min-w-0 flex-1">
+            <span class="block truncate font-medium text-zinc-800 dark:text-white">An-Nas</span>
+            <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" data-flux-text ><span data-t=":count ayah|:count ayat" data-r="{&quot;count&quot;:6}" data-n="6">6 ayat</span></p>          </span>
+          <span
+            class="font-amiri text-xl"
+            lang="ar"
+            dir="rtl"
+          >
+            الناس
+          </span>
+        </a>
+          </div>
+  </section>
+
+    <footer
+  class="mx-auto mt-12 max-w-4xl border-t border-zinc-200 pt-4 pb-2 text-center text-xs leading-relaxed text-zinc-500 dark:border-zinc-700 dark:text-zinc-400"
+  data-test="translation-notice"
+>
+  <p>
+    This English translation was machine-generated by OpenAI and may contain errors. The original Arabic text is authoritative.
+    <a
+      href="https://docs.google.com/forms/d/e/1FAIpQLSff-a0SHkwz3jpEkg0emW7-hK9oI0TMBmrBHRnermrLYWdu7g/viewform?usp=pp_url&amp;entry.1782009901="
+      target="_blank"
+      rel="noopener"
+      class="underline hover:text-zinc-700 dark:hover:text-zinc-200"
+      x-data
+      x-on:click="$el.href = 'https:\/\/docs.google.com\/forms\/d\/e\/1FAIpQLSff-a0SHkwz3jpEkg0emW7-hK9oI0TMBmrBHRnermrLYWdu7g\/viewform?usp=pp_url\u0026entry.1782009901=' + encodeURIComponent(location.href)"
+      data-test="suggest-correction"
+    >
+      Suggest a correction
+    </a>
+  </p>
+</footer>
+    </div>
+
+  
+  <script src="../assets/static.js?v=c61067d140"></script>
+</body>
+</html>

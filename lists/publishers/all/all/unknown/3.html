@@ -1,0 +1,319 @@
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  data-root="../../../../../"
+  data-section="publishers"
+>
+<head>
+  <meta charset="utf-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Publishers</title>
+  <link
+    rel="icon"
+    href="../../../../../assets/favicon.svg"
+    type="image/svg+xml"
+  />
+  <link
+    rel="stylesheet"
+    href="../../../../../assets/static.css?v=c61067d140"
+  />
+  <style>
+    :root.dark {
+        color-scheme: dark;
+    }
+</style>
+<script>
+    window.Flux = {
+        applyAppearance (appearance) {
+            let applyDark = () => document.documentElement.classList.add('dark')
+            let applyLight = () => document.documentElement.classList.remove('dark')
+
+            if (appearance === 'system') {
+                let media = window.matchMedia('(prefers-color-scheme: dark)')
+
+                window.localStorage.removeItem('flux.appearance')
+
+                media.matches ? applyDark() : applyLight()
+            } else if (appearance === 'dark') {
+                window.localStorage.setItem('flux.appearance', 'dark')
+
+                applyDark()
+            } else if (appearance === 'light') {
+                window.localStorage.setItem('flux.appearance', 'light')
+
+                applyLight()
+            }
+        }
+    }
+
+    window.Flux.applyAppearance(window.localStorage.getItem('flux.appearance') || 'system')
+</script>
+  <script src="../../../../../assets/i18n.js?v=c61067d140"></script>
+  <script>
+    (function () {
+      var get = function (key) {
+        try {
+          return localStorage.getItem('bahith.' + key);
+        } catch (error) {
+          return null;
+        }
+      };
+      var languages = window.BAHITH_I18N || {};
+      var language = get('language');
+      if (!languages[language]) {
+        var wanted = (navigator.language || 'ar').slice(0, 2);
+        language = languages[wanted] ? wanted : 'ar';
+      }
+      var root = document.documentElement;
+      root.lang = language;
+      root.dir = get('direction') || (languages[language] ? languages[language].dir : 'rtl');
+      root.dataset.arabicFont = get('arabic-font') || 'amiri';
+      // The fonts every page draws in, fetched at once rather than once the stylesheet asks, so the first page does
+      // not move as they arrive. Only over http(s): a font preload is a CORS request, which a page opened from the disk
+      // has no origin to make, so there it would only log errors.
+      var arabicFonts = {
+        amiri: 'amiri-arabic-400-normal',
+        sans: 'noto-sans-arabic-arabic-400-normal',
+        indopak: 'indopak-nastaleeq',
+        uthmani: 'uthmanic-hafs',
+      };
+      var fonts = /^https?:$/.test(location.protocol)
+        ? [
+            'inter-latin-400-normal',
+            'inter-latin-500-normal',
+            arabicFonts[root.dataset.arabicFont] || arabicFonts.amiri,
+          ]
+        : [];
+      fonts.forEach(function (font) {
+        var link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'font';
+        link.type = 'font/woff2';
+        link.crossOrigin = '';
+        link.href = root.dataset.root + 'assets/fonts/' + font + '.woff2';
+        document.head.appendChild(link);
+      });
+      var quranFont = get('quran-font');
+      root.dataset.quranFont = ['uthmani', 'indopak', 'amiri'].indexOf(quranFont) >= 0 ? quranFont : 'uthmani';
+      var scale = parseInt(get('content-scale'), 10);
+      if (scale >= 80 && scale <= 150) root.style.setProperty('--content-scale', scale / 100);
+      if (get('reading-mode') === '1') root.setAttribute('data-reading-mode', '');
+      if (get('passage-marks') === 'off') root.setAttribute('data-hide-passages', '');
+      if (get('translation') === 'off') root.setAttribute('data-hide-translation', '');
+      // The browser drops the crossfade from page to page (static.css) when a page is slow to draw, or is left while it
+      // fades, and rejects its promises, which nothing else holds: settled here, so the console stays clear.
+      var settle = function (event) {
+        var transition = event.viewTransition;
+        if (transition) {
+          [transition.ready, transition.updateCallbackDone, transition.finished].forEach(function (promise) {
+            promise.catch(function () {
+              return null;
+            });
+          });
+        }
+      };
+      window.addEventListener('pageswap', settle);
+      window.addEventListener('pagereveal', settle);
+      // The page is written in English: hidden until static.js has put the reader's language in place, or a moment.
+      if (language !== 'en') {
+        root.setAttribute('data-translating', '');
+        setTimeout(function () {
+          root.removeAttribute('data-translating');
+        }, 1500);
+      }
+    })();
+  </script>
+</head>
+<body class="min-h-screen bg-white antialiased dark:bg-zinc-900">
+  
+  <script src="../../../../../assets/frame.js?v=c61067d140"></script>
+  <script>
+    window.bahithFrame();
+  </script>
+
+  <div class="[grid-area:main] p-6 lg:p-8   [[data-flux-container]_&amp;]:px-0" data-flux-main >
+            <section
+    class="w-full"
+    x-data="staticList({ kind: 'publishers' })"
+  >
+    <script
+      type="application/json"
+      data-rows
+    >
+      [{"id":99534,"href":"publishers/995/99534.html","name":"شركة دار المشاريع للطباعة","names":{"en":"Dar Al-Mashariq Printing Company","fr":"Société Dar al-Mashariq pour l'impression","es":"Compañía de Impresión Dar al-Mashariq","ur":"شركة دار المشاريع للطباعة","tr":"Dârü’l-Meşârî‘ Basım Şirketi","sw":"Kampuni ya Uchapishaji ya Dar Al-Mashariq","id":"Perusahaan Percetakan Dar Al-Masyariq","ja":"ダール・アル＝マシャーリク印刷会社","zh":"马沙里克出版社","ru":"Компания «Дар аль-Машарик» по печати","bn":"দারুল মাশারিক মুদ্রণ কোম্পানি","pt":"Empresa Dar al-Mashariq de Impressão","hi":"दार अल-मशारीक़ मुद्रण कंपनी"},"sort":"شركة دار المشاريع للطباعة","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":89833,"href":"publishers/898/89833.html","name":"عالم الكتب","names":{"en":"Al-Alam Al-Kutub","fr":"Alam al-Kutub","es":"Alam al-Kutub","ur":"عالم الكتب","tr":"Âlemü'l-kütüb","sw":"Alam al-Kutub","id":"Alam Al-Kutub","ja":"アーラム・アル＝クトゥブ","zh":"书籍世界","ru":"Алам аль-кутуб","bn":"আল-আলাম আল-কুতুব","pt":"Mundo dos Livros","hi":"आलम अल-कुतुब"},"sort":"عالم الكتب","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":101378,"href":"publishers/1013/101378.html","name":"عالم الكتب للنشر","names":{"en":"Al-Kutub Publishing","fr":"Alam al-Kutub pour l'édition","es":"Al-Kutub para la edición","ur":"عالم الكتب للنشر","tr":"Âlemü'l-Kütüb Yayınları","sw":"Alam al-Kutub lin-Nashr","id":"Al-Kutub untuk Penerbitan","ja":"アル＝クトゥブ出版","zh":"图书世界出版社","ru":"Издательство «Алям аль-кутуб»","bn":"আলামুল কুতুব লিন নাশর","pt":"Al-Kutub para Edição","hi":"आलम अल-कुतुब लिन-नशर"},"sort":"عالم الكتب للنشر","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":91236,"href":"publishers/912/91236.html","name":"غراس للنشر والتوزيع","names":{"en":"Gharas for Publishing and Distribution","fr":"Gharas pour l'édition et la distribution","es":"Gharas para la publicación y distribución","ur":"غراس للنشر والتوزيع","tr":"Ğırâs li'n-Neşr ve't-Tevzî","sw":"Gharas lil-Nashr wat-Tawzi","id":"Ghiras untuk Penerbitan dan Distribusi","ja":"ギラース出版・流通社","zh":"吉拉斯出版发行社","ru":"Гарас по издательскому делу и распространению","bn":"গিরাস প্রকাশনা ও বিতরণ","pt":"Gharas lil-Nashr wa-l-Tawzi","hi":"ग़िरास लिन-नशर वत-तौज़ीअ"},"sort":"غراس للنشر والتوزيع","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":90854,"href":"publishers/908/90854.html","name":"لطائف","names":{"en":"Lata'if","fr":"Lata'if","es":"Lata'if","ur":"لطائف","tr":"Letâif","sw":"Lata'if","id":"Lata'if","ja":"ラターイフ","zh":"莱塔伊夫","ru":"Латаиф","bn":"লাতায়েফ","pt":"Lata'if","hi":"लताइफ़"},"sort":"لطائف","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":89738,"href":"publishers/897/89738.html","name":"مؤسسة الرسالة","names":{"en":"Al-Risalah Foundation","fr":"Fondation al-Risalah","es":"Fundación al-Risalah","ur":"مؤسسة الرسالة","tr":"er-Risâle Kurumu","sw":"Muassasat al-Risala","id":"Yayasan Ar-Risalah","ja":"アッ＝リサーラ財団","zh":"使命出版社","ru":"Фонд ар-Рисаля","bn":"আর-রিসালা প্রতিষ্ঠান","pt":"Mu'assasat al-Risala","hi":"मुअस्ससत अर-रिसाला"},"sort":"مؤسسة الرسالة","death":0,"died":null,"living":false,"era":"unknown","count":8},{"id":531113,"href":"publishers/5311/531113.html","name":"مؤسسة الرسالة - بيروت","names":{"en":"Mu'assasat al-Risala, Beirut","fr":"Mu'assasat al-Risala, Beyrouth","es":"Mu'assasat al-Risala, Beirut","ur":"مؤسسة الرسالة - بيروت","tr":"Müessesetü’r-Risâle - Beyrut","sw":"Mu'assasat al-Risala, Beirut","id":"Mu'assasat al-Risala, Beirut","ja":"ムアッササト・アル＝リサーラ－ベイルート","zh":"使命出版社－贝鲁特","ru":"Муассасат ар-Рисаля, Бейрут","bn":"মুআসসাসাতুর রিসালা - বৈরুত","pt":"Mu'assasat al-Risala, Beirute","hi":"मुअस्ससत अर-रिसाला - बेरूत"},"sort":"مؤسسة الرسالة - بيروت","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":532175,"href":"publishers/5321/532175.html","name":"مؤسسة الرسالة، بيروت، لبنان","names":{"en":"Mu'assasat al-Risala, Beirut, Lebanon","fr":"Mu'assasat al-Risala, Beyrouth, Liban","es":"Mu'assasat al-Risala, Beirut, Líbano","ur":"مؤسسة الرسالة، بيروت، لبنان","tr":"Müessesetü'r-Risâle, Beyrut, Lübnan","sw":"Mu'assasat al-Risala, Beirut, Lebanon","id":"Mu'assasat ar-Risalah, Beirut, Lebanon","ja":"ムアッササト・アッ＝リサーラ、ベイルート、レバノン","zh":"使命基金会，贝鲁特，黎巴嫩","ru":"Муассасат ар-Рисаля, Бейрут, Ливан","bn":"মুয়াসসাসাতুর রিসালা, বৈরুত, লেবানন","pt":"Mu'assasat al-Risala, Beirute, Líbano","hi":"मुअस्ससत अर-रिसाला, बेरूत, लेबनान"},"sort":"مؤسسة الرسالة، بيروت، لبنان","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":89808,"href":"publishers/898/89808.html","name":"مؤسسة الريان","names":{"en":"Al-Rayan Foundation","fr":"Muassasat al-Rayyan","es":"Mu'assasat al-Rayyan","ur":"مؤسسة الريان","tr":"Müessesetü'r-Reyyân","sw":"Muassasat ar-Rayyan","id":"Mu'assasah Ar-Rayyan","ja":"ムアッササト・アッ＝ライヤーン","zh":"莱扬基金会","ru":"Муассасат ар-Райян","bn":"আল-রাইয়ান ফাউন্ডেশন","pt":"Fundacao al-Rayan","hi":"मुअस्ससत अर-रय्यान"},"sort":"مؤسسة الريان","death":0,"died":null,"living":false,"era":"unknown","count":59},{"id":91611,"href":"publishers/916/91611.html","name":"مؤسسة الكتب الثقافية","names":{"en":"Cultural Books Foundation","fr":"Fondation des livres culturels","es":"Fundación de Libros Culturales","ur":"مؤسسة الكتب الثقافية","tr":"Müessesetü’l-Kütübi’s-Sekâfiyye","sw":"Muassasat al-Kutub al-Thaqafiya","id":"Yayasan Buku Kebudayaan","ja":"文化書籍財団","zh":"文化图书基金会","ru":"Фонд культурных книг","bn":"সাংস্কৃতিক গ্রন্থ ফাউন্ডেশন","pt":"Fundação de Livros Culturais","hi":"सांस्कृतिक पुस्तकों की संस्था"},"sort":"مؤسسة الكتب الثقافية","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":89878,"href":"publishers/898/89878.html","name":"مؤسسة قرطبة","names":{"en":"Qurtuba Foundation","fr":"Fondation Qurtuba","es":"Fundación Qurtuba","ur":"مؤسسة قرطبة","tr":"Kurtuba Vakfı","sw":"Mu'assasat Qurtuba","id":"Yayasan Qurtubah","ja":"ムアッササト・クルトゥバ","zh":"科尔多瓦基金会","ru":"Фонд Кордова","bn":"কুরতুবা ফাউন্ডেশন","pt":"Fundacao Qurtuba","hi":"क़ुर्तुबा फ़ाउंडेशन"},"sort":"مؤسسة قرطبة","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":99664,"href":"publishers/996/99664.html","name":"مجلة الجامعة السلفية","names":{"en":"Al-Jami'a Al-Salafiyya Magazine","fr":"Revue de l'Université salafiste","es":"Revista de la Universidad al-Salafiyya","ur":"مجلة الجامعة السلفية","tr":"el-Câmiatü's-Selefiyye Dergisi","sw":"Jarida la Chuo Kikuu cha Al-Jami'a al-Salafiyya","id":"Majalah Universitas As-Salafiyah","ja":"マジャッラト・アル＝ジャーミア・アッ＝サラフィーヤ","zh":"萨拉菲大学期刊","ru":"Журнал Саляфитского университета","bn":"আল-জামিয়া আস-সালাফিয়্যাহ ম্যাগাজিন","pt":"Revista Al-Jami'a al-Salafiyya","hi":"अल-जामिआ अल-सलफ़िय्या पत्रिका"},"sort":"مجلة الجامعة السلفية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":90076,"href":"publishers/900/90076.html","name":"مجلة الحكمة","names":{"en":"Al-Hikmah Magazine","fr":"Revue al-Hikma","es":"Revista al-Hikmah","ur":"مجلة الحكمة","tr":"Mecelletü'l-Hikme","sw":"Jarida la al-Hikma","id":"Majalah Al-Hikmah","ja":"アル＝ヒクマ誌","zh":"智慧杂志","ru":"Журнал «аль-Хикма»","bn":"আল-হিকমাহ সাময়িকী","pt":"Revista al-Hikmah","hi":"अल-हिक्मह मैगज़ीन"},"sort":"مجلة الحكمة","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":90516,"href":"publishers/905/90516.html","name":"مجمع البحوث الإسلامية","names":{"en":"Islamic Research Academy","fr":"Académie de recherches islamiques","es":"Academia de Investigación Islámica","ur":"مجمع البحوث الإسلامية","tr":"İslâm Araştırmaları Akademisi","sw":"Chuo cha Tafiti za Kiislamu","id":"Majelis Penelitian Islam","ja":"イスラーム研究アカデミー","zh":"伊斯兰研究院","ru":"Академия исламских исследований","bn":"ইসলামিক রিসার্চ একাডেমি","pt":"Academia de Investigação Islâmica","hi":"इस्लामिक रिसर्च अकादमी"},"sort":"مجمع البحوث الإسلامية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":91365,"href":"publishers/913/91365.html","name":"مجمع الملك فهد لطباعة المصحف الشريف","names":{"en":"King Fahd Complex for the Printing of the Holy Quran","fr":"Complexe du roi Fahd pour l'impression du Noble Coran","es":"Complejo Rey Fahd para la impresion del Noble Coran","ur":"مجمع الملك فهد لطباعة المصحف الشريف","tr":"Kral Fehd Mushaf-ı Şerif Basım Kompleksi","sw":"Majma' al-Malik Fahd wa Uchapishaji wa Msahafu Mtukufu","id":"Kompleks Raja Fahd untuk Percetakan Mushaf Mulia","ja":"聖クルアーン印刷のためのファハド国王複合施設","zh":"法赫德国王《古兰经》印制中心","ru":"Комплекс имени короля Фахда по печати Священного Корана","bn":"পবিত্র কুরআন মুদ্রণের জন্য কিং ফাহদ কমপ্লেক্স","pt":"Complexo Rei Fahd para a Impressao do Nobre Alcorao","hi":"पवित्र क़ुरआन की छपाई के लिए किंग फ़हद परिसर"},"sort":"مجمع الملك فهد لطباعة المصحف الشريف","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":90245,"href":"publishers/902/90245.html","name":"مدار الوطن للنشر","names":{"en":"Mudar Al-Watan Publishing","fr":"Madar al-Watan pour l'édition","es":"Madar al-Watan para la edición","ur":"مدار الوطن للنشر","tr":"Medârü'l-Vatan Yayınları","sw":"Madar al-Watan lin-Nashr","id":"Penerbitan Madar Al-Wathan","ja":"マダール・アル＝ワタン出版","zh":"祖国轨道出版公司","ru":"Мадар аль-Ватан для издательства","bn":"মুদার আল-ওয়াতান পাবলিশিং","pt":"Madar al-Watan para Publicações","hi":"मदार अल-वतन लिन-नशर"},"sort":"مدار الوطن للنشر","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":92608,"href":"publishers/926/92608.html","name":"مركز المربي","names":{"en":"Al-Murabbi Center","fr":"Centre al-Murabbi","es":"Centro al-Murabbi","ur":"مركز المربي","tr":"Merkezü'l-Mürebbî","sw":"Kituo cha Al-Murabbi","id":"Markaz Al-Murabbi","ja":"マルカズ・アル＝ムラッビー","zh":"穆拉比中心","ru":"Центр аль-Мурабби","bn":"আল-মুরাব্বি কেন্দ্র","pt":"Markaz al-Murabbi","hi":"अल-मुरब्बी केंद्र"},"sort":"مركز المربي","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":98365,"href":"publishers/983/98365.html","name":"مركز ثبت للبحوث والدراسات","names":{"en":"Thabt Center for Research and Studies","fr":"Centre Thabt de recherche et d'études","es":"Centro Thabt de investigación y estudios","ur":"مركز ثبت للبحوث والدراسات","tr":"Merkezü S̱ebt li'l-Buhûs ve'd-Dirâsât","sw":"Markaz Thabt lil-Buhuth wa al-Dirasat","id":"Pusat Thabt untuk Penelitian dan Studi","ja":"サブト研究・調査センター","zh":"萨布特研究与学术中心","ru":"Центр Сабт исследований и изучения","bn":"সাবিত গবেষণা ও অধ্যয়ন কেন্দ্র","pt":"Markaz Thabt li al-Buhuth wa al-Dirasat","hi":"शोध और अध्ययन के लिए सब्त केंद्र"},"sort":"مركز ثبت للبحوث والدراسات","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":91439,"href":"publishers/914/91439.html","name":"مطابع القصيم","names":{"en":"Al-Qassim Press","fr":"Imprimerie d'al-Qassim","es":"Imprenta al-Qasim","ur":"مطابع القصيم","tr":"Matâbiu'l-Kasîm","sw":"Matabi' al-Qassim","id":"Percetakan Al-Qasim","ja":"アル＝カスィーム印刷所","zh":"卡西姆印刷社","ru":"Типография аль-Касим","bn":"মাতাবি‘ুল কাসিম","pt":"Tipografias de al-Qasim","hi":"मताबिअ अल-क़सीम"},"sort":"مطابع القصيم","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":99102,"href":"publishers/991/99102.html","name":"مطبع القرآن والسنة","names":{"en":"Quran and Sunnah Press","fr":"Imprimerie du Coran et de la Sunna","es":"Imprenta del Corán y la Sunna","ur":"مطبع القرآن والسنة","tr":"Kur'an ve Sünnet Matbaası","sw":"Matbaa ya Qurani na Sunna","id":"Mathba‘ Al-Qur'an wa as-Sunnah","ja":"クルアーン・スンナ印刷所","zh":"《古兰经》与圣训印刷所","ru":"Типография Корана и сунны","bn":"কুরআন ও সুন্নাহ প্রেস","pt":"Imprensa do Alcorão e da Sunnah","hi":"क़ुरआन व सुन्नत प्रेस"},"sort":"مطبع القرآن والسنة","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":94679,"href":"publishers/946/94679.html","name":"مطبعة أم القرى","names":{"en":"Umm Al-Qura Press","fr":"Imprimerie Umm al-Qura","es":"Imprenta de Umm al-Qura","ur":"مطبعة أم القرى","tr":"Matbaatü Ümmi'l-Kurâ","sw":"Matbaat Umm al-Qura","id":"Mathba'ah Umm Al-Qura","ja":"ウンム・アル＝クラー印刷所","zh":"乌姆·古拉印刷所","ru":"Типография Умм аль-Кура","bn":"উম্মুল কুরা প্রেস","pt":"Imprensa Umm al-Qura","hi":"मत्बअत उम्म अल-क़ुरा"},"sort":"مطبعة أم القرى","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":90690,"href":"publishers/906/90690.html","name":"مطبعة السنة المحمدية","names":{"en":"Al-Sunnah Al-Muhammadiyah Press","fr":"Matba'at al-Sunna al-Muhammadiyya","es":"Imprenta al-Sunna al-Muhammadiyya","ur":"مطبعة السنة المحمدية","tr":"es-Sünnetü’l-Muhammediyye Matbaası","sw":"Matbaa ya Al-Sunnah Al-Muhammadiyah","id":"Percetakan As-Sunnah Al-Muhammadiyah","ja":"アル＝スンナ・アル＝ムハンマディーヤ印刷所","zh":"穆罕默德圣行印刷厂","ru":"Типография «Ас-Сунна аль-Мухаммадия»","bn":"আস-সুন্নাহ আল-মুহাম্মাদিয়্যাহ প্রেস","pt":"Imprensa da Sunna Muhammadiana","hi":"मत्बअत अस-सुन्नह अल-मुहम्मदिय्या"},"sort":"مطبعة السنة المحمدية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":93528,"href":"publishers/935/93528.html","name":"مطبعة الصباح","names":{"en":"Al-Sabah Press","fr":"Matba'at al-Sabah","es":"Matba'at al-Sabah","ur":"مطبعة الصباح","tr":"Matbaatü's-Sabâh","sw":"Matba'at al-Sabah","id":"Matba'ah Ash-Shabah","ja":"マトバアト・アッサバーフ","zh":"晨光印刷所","ru":"Матбаат ас-Сабах","bn":"আস-সাবাহ প্রেস","pt":"Imprensa Al-Sabah","hi":"अस-सबाह प्रेस"},"sort":"مطبعة الصباح","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":95303,"href":"publishers/953/95303.html","name":"مطبعة المحمودية التجارية الكبري","names":{"en":"Al-Mahmoudiya Commercial Press","fr":"Grande imprimerie commerciale al-Mahmoudiya","es":"Matbaat al-Mahmudiyya al-Tijariyya al-Kubra","ur":"مطبعة المحمودية التجارية الكبري","tr":"Mahmûdiyye Büyük Ticaret Matbaası","sw":"Matbaat al-Mahmoudiya al-Tijariyya al-Kubra","id":"Mathba'ah Al-Mahmudiyyah At-Tijariyyah Al-Kubra","ja":"アル＝マフムーディーヤ商業印刷所","zh":"马赫穆迪亚大型商业印刷所","ru":"Коммерческая типография аль-Махмудия","bn":"আল-মাহমুদিয়া বাণিজ্যিক ছাপাখানা","pt":"Imprensa Comercial al-Mahmudiyya","hi":"अल-महमूदिया वाणिज्यिक प्रेस"},"sort":"مطبعة المحمودية التجارية الكبري","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":531266,"href":"publishers/5312/531266.html","name":"مطبعة عيسى البابي الحلبي وشركاه، القاهرة","names":{"en":"Matba'at Isa al-Babi al-Halabi wa-Shuraka'uhu, Cairo","fr":"Matba'at Isa al-Babi al-Halabi wa-Shuraka'uhu, Le Caire","es":"Matba'at Isa al-Babi al-Halabi wa-Shuraka'uhu, El Cairo","ur":"مطبعة عيسى البابي الحلبي وشركاه، القاهرة","tr":"Matbaatü Îsâ el-Bâbî el-Halebî ve Şürekâühû, Kahire","sw":"Matba'at Isa al-Babi al-Halabi wa-Shuraka'uhu, Kairo","id":"Matba'at Isa al-Babi al-Halabi wa-Shuraka'uhu, Kairo","ja":"マトバアト・イーサー・アル＝バービー・アル＝ハラビー・ワ・シュラカーウフ、カイロ","zh":"伊萨·巴比·哈拉比及其合伙人印刷局，开罗","ru":"Матбаат Иса аль-Баби аль-Халяби ва шуракауху, Каир","bn":"মাতবাআতু ঈসা আল-বাবি আল-হালাবি ওয়া শুরাকাউহু, কায়রো","pt":"Matba'at Isa al-Babi al-Halabi wa-Shuraka'uhu, Cairo","hi":"मत्बअत ईसा अल-बाबी अल-हलबी व शुकराऊह، क़ाहिरा"},"sort":"مطبعة عيسى البابي الحلبي وشركاه، القاهرة","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":92890,"href":"publishers/928/92890.html","name":"مكتب المطبوعات الإسلامية","names":{"en":"Islamic Publications Office","fr":"Bureau des publications islamiques","es":"Maktab al-Matbu'at al-Islamiyya","ur":"مكتب المطبوعات الإسلامية","tr":"Mektebü'l-Matbûâti'l-İslâmiyye","sw":"Maktab al-Matbu'at al-Islamiyya","id":"Maktab Al-Mathbu'at Al-Islamiyah","ja":"マクタブ・アル＝マトブーアート・アル＝イスラーミーヤ","zh":"伊斯兰出版办公室","ru":"Мактаб аль-матбуат аль-исламия","bn":"ইসলামি প্রকাশনা কার্যালয়","pt":"Escritório de Publicações Islâmicas","hi":"इस्लामी प्रकाशन कार्यालय"},"sort":"مكتب المطبوعات الإسلامية","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":90218,"href":"publishers/902/90218.html","name":"مكتبة ابن تيمية","names":{"en":"Ibn Taymiyyah Library","fr":"Maktabat Ibn Taymiyya","es":"Maktabat Ibn Taymiyah","ur":"مكتبة ابن تيمية","tr":"İbn Teymiyye Kütüphanesi","sw":"Maktabat Ibn Taymiyya","id":"Maktabah Ibnu Taimiyah","ja":"イブン・タイミーヤ図書館","zh":"伊本·泰米叶图书馆","ru":"Библиотека Ибн Таймийи","bn":"ইবনে তাইমিয়্যাহ লাইব্রেরি","pt":"Biblioteca Ibn Taymiyyah","hi":"मकतबत इब्न तैमिय्या"},"sort":"مكتبة ابن تيمية","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":92685,"href":"publishers/926/92685.html","name":"مكتبة الأصالة والتراث","names":{"en":"Al-Asalah and Heritage Library","fr":"Bibliothèque de l'authenticité et du patrimoine","es":"Biblioteca de la Autenticidad y el Patrimonio","ur":"مكتبة الأصالة والتراث","tr":"Mektebetü’l-Asâle ve’t-Türâs","sw":"Maktabat al-Asala wa al-Turath","id":"Perpustakaan Al-Ashalah dan Warisan","ja":"マクタバト・アル＝アサーラ・ワッタラース","zh":"阿萨拉与遗产图书馆","ru":"Библиотека аль-Асала и наследия","bn":"আল-আসালা ও ঐতিহ্য গ্রন্থাগার","pt":"Biblioteca al-Asalah wa-al-Turath","hi":"अल-असाला और विरासत पुस्तकालय"},"sort":"مكتبة الأصالة والتراث","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":98755,"href":"publishers/987/98755.html","name":"مكتبة الأنصار للنشر والتوزيع","names":{"en":"Al-Ansar Library for Publishing and Distribution","fr":"Bibliothèque al-Ansar pour l'édition et la distribution","es":"Biblioteca al-Ansar para la Publicación y Distribución","ur":"مكتبة الأنصار للنشر والتوزيع","tr":"Yayın ve Dağıtım için el-Ensâr Kütüphanesi","sw":"Maktaba ya Al-Ansar ya Uchapishaji na Usambazaji","id":"Perpustakaan Al-Anshar untuk Penerbitan dan Distribusi","ja":"出版・流通アル＝アンサーリー図書館","zh":"安萨尔出版发行图书馆","ru":"Библиотека «аль-Ансар»: издание и распространение","bn":"মাকতাবাতুল আনসার লিন নাশরি ওয়াত তাওযী","pt":"Biblioteca al-Ansar para Publicação e Distribuição","hi":"मक्तबत अल-अंसार लिन्नशर वत्तौज़ीअ"},"sort":"مكتبة الأنصار للنشر والتوزيع","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":90480,"href":"publishers/904/90480.html","name":"مكتبة الإرشاد","names":{"en":"Al-Irshad Library","fr":"Bibliothèque al-Irshad","es":"Biblioteca al-Irshad","ur":"مكتبة الإرشاد","tr":"İrşad Kütüphanesi","sw":"Maktaba ya al-Irshad","id":"Perpustakaan Al-Irsyad","ja":"アル＝イルシャード図書館","zh":"伊尔沙德图书馆","ru":"Библиотека аль-Иршад","bn":"আল-ইরশাদ লাইব্রেরি","pt":"Biblioteca al-Irshad","hi":"मकतबत अल-इरशाद"},"sort":"مكتبة الإرشاد","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":3214597,"href":"publishers/32145/3214597.html","name":"مكتبة الإيمان بالمدينة المنورة","names":{"en":"Maktabat al-Iman, Medina","fr":"Maktabat al-Iman, Médine","es":"Maktabat al-Iman, Medina","ur":"مكتبة الإيمان بالمدينة المنورة","tr":"Mektebetü'l-Îmân, Medine","sw":"Maktabat al-Iman, Madina","id":"Maktabat al-Iman, Madinah","ja":"マクタバト・アル＝イーマーン（マディーナ）","zh":"麦地那信仰书店","ru":"Мактаба аль-Иман, Медина","bn":"মাকতাবাতুল ঈমান, মদিনা","pt":"Maktabat al-Iman, Medina","hi":"मकतबत अल-ईमान, मदीना"},"sort":"مكتبة الإيمان بالمدينة المنورة","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":90798,"href":"publishers/907/90798.html","name":"مكتبة البشرى","names":{"en":"Al-Bushra Library","fr":"Bibliothèque al-Bushra","es":"Biblioteca al-Bushra","ur":"مكتبة البشرى","tr":"Mektebetü'l-Büşrâ","sw":"Maktaba al-Bushra","id":"Maktabah Al-Busyra","ja":"アル＝ブシュラー図書館","zh":"布什拉图书馆","ru":"Библиотека аль-Бушра","bn":"মাকতাবাতুল বুশরা","pt":"Biblioteca al-Bushra","hi":"अल-बुशरा पुस्तकालय"},"sort":"مكتبة البشرى","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":90077,"href":"publishers/900/90077.html","name":"مكتبة التراث الإسلامي","names":{"en":"Islamic Heritage Library","fr":"Maktabat al-Turath al-Islami","es":"Biblioteca del patrimonio islámico","ur":"مكتبة التراث الإسلامي","tr":"Mektebetü't-Türâsi'l-İslâmî","sw":"Maktaba ya Turathi ya Kiislamu","id":"Perpustakaan Warisan Islam","ja":"イスラーム遺産図書館","zh":"伊斯兰遗产图书馆","ru":"Библиотека исламского наследия","bn":"ইসলামি ঐতিহ্য লাইব্রেরি","pt":"Biblioteca do Património Islâmico","hi":"इस्लामी विरासत लाइब्रेरी"},"sort":"مكتبة التراث الإسلامي","death":0,"died":null,"living":false,"era":"unknown","count":3},{"id":90270,"href":"publishers/902/90270.html","name":"مكتبة التوبة","names":{"en":"Al-Tawbah Library","fr":"Maktabat al-Tawba","es":"Maktabat al-Tawba","ur":"مكتبة التوبة","tr":"Mektebetü't-Tevbe","sw":"Maktaba al-Tawba","id":"Maktabah At-Taubah","ja":"アッ＝タウバ図書館","zh":"讨白图书馆","ru":"Мактабат ат-Тауба","bn":"আত-তাওবাহ লাইব্রেরি","pt":"Biblioteca al-Tawbah","hi":"मकतबत अत-तौबा"},"sort":"مكتبة التوبة","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":89734,"href":"publishers/897/89734.html","name":"مكتبة الحرمين","names":{"en":"Al-Haramain Library","fr":"Bibliothèque al-Haramain","es":"Biblioteca al-Haramain","ur":"مكتبة الحرمين","tr":"el-Haremeyn Kütüphanesi","sw":"Maktabat al-Haramain","id":"Perpustakaan Al-Haramain","ja":"アル＝ハラマイン図書館","zh":"两圣地图书馆","ru":"Библиотека аль-Харамайн","bn":"আল-হারামাইন গ্রন্থাগার","pt":"Maktabat al-Haramayn","hi":"मक्तबत अल-हरमैन"},"sort":"مكتبة الحرمين","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":91147,"href":"publishers/911/91147.html","name":"مكتبة الخانجي","names":{"en":"Al-Khanji Library","fr":"Bibliothèque al-Khanji","es":"Biblioteca al-Khanji","ur":"مكتبة الخانجي","tr":"Mektebetü'l-Hâncî","sw":"Maktaba ya al-Khanji","id":"Perpustakaan Al-Khanji","ja":"アル＝ハーンジー図書館","zh":"汗吉图书馆","ru":"Библиотека «Аль-Ханджи»","bn":"মাকতাবাতুল খানজি","pt":"Biblioteca al-Khanji","hi":"अल-ख़ानजी पुस्तकालय"},"sort":"مكتبة الخانجي","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":89930,"href":"publishers/899/89930.html","name":"مكتبة الرشد ناشرون","names":{"en":"Al-Rushd Library","fr":"Bibliothèque al-Rushd","es":"Biblioteca al-Rushd","ur":"مكتبة الرشد ناشرون","tr":"Rüşd Yayınevi","sw":"Maktabat al-Rushd Nashirun","id":"Perpustakaan Ar-Rusyd","ja":"マクタバト・アル＝ルシュド・ナーシルーン","zh":"鲁世德图书馆","ru":"Библиотека ар-Рушд","bn":"আর-রুশদ লাইব্রেরি","pt":"Biblioteca al-Rushd","hi":"अर-रुश्द पुस्तकालय"},"sort":"مكتبة الرشد ناشرون","death":0,"died":null,"living":false,"era":"unknown","count":4},{"id":89810,"href":"publishers/898/89810.html","name":"مكتبة السنة","names":{"en":"Library of the Sunnah","fr":"Maktabat al-Sunna","es":"Maktabat al-Sunnah","ur":"مكتبة السنة","tr":"Mektebetü's-sünne","sw":"Maktabat as-Sunna","id":"Maktabah As-Sunnah","ja":"マクタバト・アッ＝スンナ","zh":"圣训图书馆","ru":"Мактабат ас-Сунна","bn":"সুন্নাহ লাইব্রেরি","pt":"Biblioteca da Sunna","hi":"मकतबा अस-सुन्ना"},"sort":"مكتبة السنة","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":91824,"href":"publishers/918/91824.html","name":"مكتبة السوادي","names":{"en":"Al-Suwadi Library","fr":"Bibliotheque Al-Suwadi","es":"Biblioteca Al-Suwadi","ur":"مكتبة السوادي","tr":"es-Süvâdî Kütüphanesi","sw":"Maktabat al-Suwadi","id":"Perpustakaan As-Suwadi","ja":"アル＝スワーディー図書館","zh":"苏瓦迪图书馆","ru":"Библиотека ас-Сувади","bn":"আল-সুওয়াদি লাইব্রেরি","pt":"Biblioteca al-Suwadi","hi":"मकतबत अस-सुवादी"},"sort":"مكتبة السوادي","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":90133,"href":"publishers/901/90133.html","name":"مكتبة الصحابة بطنطا","names":{"en":"Al-Sahaba Library in Tanta","fr":"Maktabat al-Sahaba à Tanta","es":"Biblioteca al-Sahaba en Tanta","ur":"مكتبة الصحابة بطنطا","tr":"Tanta'daki Mektebetü's-Sahâbe","sw":"Maktaba ya al-Sahaba huko Tanta","id":"Perpustakaan Sahabat di Tanta","ja":"タンターのアル＝サハーバ図書館","zh":"坦塔圣门弟子图书馆","ru":"Библиотека ас-Сахаба в Танте","bn":"তান্তায় আস-সাহাবা লাইব্রেরি","pt":"Biblioteca al-Sahaba em Tanta","hi":"मकतबत अस-सहाबह बि-तंता"},"sort":"مكتبة الصحابة بطنطا","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":89779,"href":"publishers/897/89779.html","name":"مكتبة العبيكان","names":{"en":"Al-Obeikan Library","fr":"Maktabat al-Ubaykan","es":"Maktabat al-Ubaykan","ur":"مكتبة العبيكان","tr":"Mektebetü'l-Ubeykân","sw":"Maktabat al-Obeikan","id":"Maktabah Al-Ubaikan","ja":"マクタバト・アル＝ウバイカーン","zh":"欧贝坎图书馆","ru":"Мактабат аль-Убейкан","bn":"আল-উবাইকান গ্রন্থাগার","pt":"Maktabat al-Ubaykan","hi":"मक्तबत अल-उबैкан"},"sort":"مكتبة العبيكان","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":91411,"href":"publishers/914/91411.html","name":"مكتبة الغرباء الأثرية","names":{"en":"Al-Ghurabaa Heritage Library","fr":"Bibliothèque patrimoniale al-Ghuraba","es":"Biblioteca Patrimonial al-Ghurabaa","ur":"مكتبة الغرباء الأثرية","tr":"el-Gurabâü'l-Eseriyye Kütüphanesi","sw":"Maktaba ya Urithi ya al-Ghurabaa","id":"Perpustakaan Warisan Al-Ghuraba'","ja":"アル＝グラバー・アサリー図書館","zh":"陌生人遗产图书馆","ru":"Библиотека наследия аль-Гураба","bn":"মাকতাবাতুল গুরাবা আল-আসারিয়্যাহ","pt":"Biblioteca Patrimonial al-Ghuraba","hi":"मकतबत अल-ग़ुरबा अल-असरिय्या"},"sort":"مكتبة الغرباء الأثرية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":532414,"href":"publishers/5324/532414.html","name":"مكتبة الغرباء الأثرية - المدينة النبوية.","names":{"en":"Maktabat al-Ghuraba al-Athariyya - Prophetic City","fr":"Maktabat al-Ghuraba al-Athariyya - Médine","es":"Maktabat al-Ghuraba al-Athariyya - Ciudad Profética","ur":"مكتبة الغرباء الأثرية - المدينة النبوية.","tr":"Mektebetü'l-Gurebâi'l-Eseriyye - Medine","sw":"Maktabat al-Ghuraba al-Athariyya - Madina","id":"Maktabat al-Ghuraba al-Athariyya - Kota Nabi","ja":"マクタバト・アル＝グラバー・アル＝アサリーヤ－預言者の町","zh":"古拉巴遗产图书馆—先知之城","ru":"Мактабат аль-Гураба аль-асарийя — Пророческий город","bn":"মাকতাবাতুল গুরাবায়িল আছারিয়্যা - মদিনা নববিয়্যা","pt":"Maktabat al-Ghuraba al-Athariyya, Cidade do Profeta","hi":"मकतबत अल-ग़ुरबा अल-असरिय्या - अल-मदीना अन-नबविय्या"},"sort":"مكتبة الغرباء الأثرية - المدينة النبوية.","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":91090,"href":"publishers/910/91090.html","name":"مكتبة الكليات الأزهرية","names":{"en":"Al-Azhar Colleges Library","fr":"Bibliothèque des facultés d'al-Azhar","es":"Biblioteca de los Colegios de al-Azhar","ur":"مكتبة الكليات الأزهرية","tr":"Mektebetü'l-Külliyyâti'l-Ezheriyye","sw":"Maktaba ya vyuo vya al-Azhar","id":"Perpustakaan Fakultas Al-Azhar","ja":"アル＝アズハル諸学部図書館","zh":"爱资哈尔学院图书馆","ru":"Библиотека азхарских колледжей","bn":"মাকতাবাতুল কুল্লিয়াতিল আযহারিয়্যাহ","pt":"Biblioteca das Faculdades de Al-Azhar","hi":"अल-अज़हर कॉलेजों का पुस्तकालय"},"sort":"مكتبة الكليات الأزهرية","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":91420,"href":"publishers/914/91420.html","name":"مكتبة المؤيد","names":{"en":"Al-Mu'ayyid Library","fr":"Bibliothèque al-Mu'ayyid","es":"Biblioteca al-Mu'ayyid","ur":"مكتبة المؤيد","tr":"el-Müeyyed Kütüphanesi","sw":"Maktaba ya al-Mu'ayyid","id":"Perpustakaan Al-Mu'ayyid","ja":"アル＝ムアイイド図書館","zh":"穆艾耶德图书馆","ru":"Библиотека аль-Му'аййид","bn":"মাকতাবাতুল মুয়াইয়িদ","pt":"Biblioteca al-Mu'ayyid","hi":"मकतबत अल-मुअय्यद"},"sort":"مكتبة المؤيد","death":0,"died":null,"living":false,"era":"unknown","count":3},{"id":90004,"href":"publishers/900/90004.html","name":"مكتبة المعارف","names":{"en":"Al-Ma'arif Library","fr":"Bibliothèque al-Ma'arif","es":"Maktabat al-Ma'arif","ur":"مكتبة المعارف","tr":"Mektebetü'l-Maârif","sw":"Maktabat al-Ma'arif","id":"Maktabah Al-Ma'arif","ja":"マクタバト・アル＝マアーリフ","zh":"知识图书馆","ru":"Библиотека аль-Маариф","bn":"আল-মাআরিফ লাইব্রেরি","pt":"Biblioteca al-Ma'arif","hi":"अल-मआरिफ़ लाइब्रेरी"},"sort":"مكتبة المعارف","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":89729,"href":"publishers/897/89729.html","name":"مكتبة المنار","names":{"en":"Al-Manar Library","fr":"Bibliothèque al-Manar","es":"Biblioteca al-Manar","ur":"مكتبة المنار","tr":"el-Menâr Kütüphanesi","sw":"Maktabat al-Manar","id":"Perpustakaan Al-Manar","ja":"アル＝マナール図書館","zh":"灯塔图书馆","ru":"Библиотека аль-Манар","bn":"আল-মানার গ্রন্থাগার","pt":"Maktabat al-Manar","hi":"मक्तबत अल-मनार"},"sort":"مكتبة المنار","death":0,"died":null,"living":false,"era":"unknown","count":2},{"id":91757,"href":"publishers/917/91757.html","name":"مكتبة دار الأقصى","names":{"en":"Dar Al-Aqsa Library","fr":"Bibliotheque Dar al-Aqsa","es":"Biblioteca Dar al-Aqsa","ur":"مكتبة دار الأقصى","tr":"Dârü’l-Aksâ Kütüphanesi","sw":"Maktabat Dar al-Aqsa","id":"Perpustakaan Dar Al-Aqsha","ja":"ダール・アル＝アクサー図書館","zh":"阿克萨之家图书馆","ru":"Библиотека «Дар аль-Акса»","bn":"দারুল আকসা লাইব্রেরি","pt":"Biblioteca da Dar al-Aqsa","hi":"दार अल-अक़्सा लाइब्रेरी"},"sort":"مكتبة دار الأقصى","death":0,"died":null,"living":false,"era":"unknown","count":1},{"id":90467,"href":"publishers/904/90467.html","name":"مكتبة دار البيان","names":{"en":"Dar Al-Bayan Library","fr":"Bibliothèque Dar al-Bayan","es":"Biblioteca Dar al-Bayan","ur":"مكتبة دار البيان","tr":"Dârü'l-Beyân Kütüphanesi","sw":"Maktaba ya Dar al-Bayan","id":"Perpustakaan Dar Al-Bayan","ja":"ダール・アル＝バヤーン図書館","zh":"达尔·拜亚尼图书馆","ru":"Библиотека Дар аль-Баян","bn":"দারুল বায়ান লাইব্রেরি","pt":"Biblioteca Dar al-Bayan","hi":"मकतबत दार अल-बयान"},"sort":"مكتبة دار البيان","death":0,"died":null,"living":false,"era":"unknown","count":4},{"id":95806,"href":"publishers/958/95806.html","name":"مكتبة دار الحميضي","names":{"en":"Dar Al-Humaidi Library","fr":"Bibliothèque Dar al-Humaidi","es":"Biblioteca Dar al-Humaidi","ur":"مكتبة دار الحميضي","tr":"Dârü’l-Humaydî Kütüphanesi","sw":"Maktaba Dar al-Humaidi","id":"Perpustakaan Dar Al-Humaidi","ja":"ダール・アル＝フマイディー図書館","zh":"胡迈迪出版社图书馆","ru":"Библиотека Дар аль-Хумайди","bn":"মাকতাবাতু দারিল হুমাইদি","pt":"Biblioteca Dar al-Humaidi","hi":"मकतबत दार अल-हुमैदी"},"sort":"مكتبة دار الحميضي","death":0,"died":null,"living":false,"era":"unknown","count":1}]
+    </script>
+    <script
+      type="application/json"
+      data-list
+    >
+      {"list":"publishers","category":null,"sub":null,"era":"unknown","page":3,"pages":4,"total":158,"perPage":50,"eraCounts":{"all":158,"salaf":0,"mutaqaddimun":0,"mutaakhkhirun":0,"muasirun":0,"unknown":158},"categoryLabel":null,"categoryLabels":null,"subLabel":null,"subLabels":null}
+    </script>
+
+    <div class="mb-6">
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-2xl [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>Publishers</div>
+      <div class="text-sm [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70" x-text="count(':count name|:count names', total)" data-flux-subheading>
+    
+</div>
+    </div>
+
+    
+    <div
+      class="rounded-xl border border-dashed border-zinc-300 p-10 text-center dark:border-zinc-700"
+      x-show="total === 0"
+      x-cloak
+    >
+      <div class="font-medium [:where(&amp;)]:text-zinc-800 [:where(&amp;)]:dark:text-white text-sm [&amp;:has(+[data-flux-subheading])]:mb-2 [[data-flux-subheading]+&amp;]:mt-2" data-flux-heading>No names found</div>
+    </div>
+
+    <div
+      class="mb-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+      x-show="total > 0"
+    >
+      <template
+        x-for="row in shown"
+        :key="row.id"
+      >
+        <a
+          x-bind:href="row.href"
+          class="flex items-center justify-between gap-3 rounded-lg border border-zinc-200 px-4 py-3 transition hover:border-zinc-400 hover:bg-zinc-50 dark:border-zinc-700 dark:hover:border-zinc-500 dark:hover:bg-zinc-800"
+          data-test="contributor-card"
+        >
+          <span class="min-w-0">
+            <span
+              class="block font-medium break-words text-zinc-800 dark:text-white"
+              dir="auto"
+              x-text="tx(row.name, row.names)"
+            ></span>
+            <span
+              class="block text-[0.8em] font-normal break-words text-zinc-500 dark:text-zinc-400"
+              x-show="tx(row.name, row.names) !== row.name"
+              data-arabic-original
+            >
+              <bdi
+                lang="ar"
+                dir="rtl"
+                x-text="row.name"
+              ></bdi>
+            </span>
+          </span>
+          <span class="flex shrink-0 flex-col items-end gap-1">
+                        <p class="[:where(&amp;)]:font-normal text-xs [:where(&amp;)]:text-zinc-500 [:where(&amp;)]:dark:text-white/70 whitespace-nowrap" x-text="count('[0,1] :count item|[2,*] :count items', row.count)" data-flux-text ></p>          </span>
+        </a>
+      </template>
+    </div>
+
+    <div
+  class="@container flex items-center justify-between gap-3 border-t border-zinc-100 pt-3 dark:border-zinc-700"
+  x-show="total > 0"
+  data-flux-pagination
+>
+  <div class="text-xs font-medium whitespace-nowrap text-zinc-500 dark:text-zinc-400">
+    Showing
+    <span x-text="(page - 1) * perPage + 1"></span>
+    to
+    <span x-text="Math.min(page * perPage, total)"></span>
+    of
+    <span x-text="total"></span>
+    results
+  </div>
+
+  <div
+    class="flex items-center rounded-[8px] border border-zinc-200 bg-white p-[1px] dark:border-white/10 dark:bg-white/10"
+    x-show="pages > 1"
+  >
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page - 1)"
+      x-bind:disabled="page <= 1"
+      aria-label="&amp;laquo; Previous"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+
+    <template
+      x-for="(link, index) in pageLinks"
+      :key="index"
+    >
+      <div class="hidden @[40rem]:contents">
+        <template x-if="link === '...'">
+          <div
+            class="flex size-6 cursor-default items-center justify-center rounded-[6px] text-xs font-medium text-zinc-400 dark:text-zinc-400"
+          >
+            ...
+          </div>
+        </template>
+        <template x-if="link === page">
+          <div
+            aria-current="page"
+            class="flex h-6 cursor-default items-center justify-center rounded-[6px] px-2 text-xs font-medium text-zinc-800 dark:text-white"
+            x-text="link"
+          ></div>
+        </template>
+        <template x-if="link !== '...' && link !== page">
+          <button
+            type="button"
+            class="h-6 rounded-[6px] px-2 text-xs font-medium text-zinc-400 hover:bg-zinc-100 hover:text-zinc-800 dark:text-zinc-400 dark:hover:bg-white/20 dark:hover:text-white"
+            x-on:click="turn(link)"
+            x-text="link"
+          ></button>
+        </template>
+      </div>
+    </template>
+
+    <button
+      type="button"
+      class="flex size-8 items-center justify-center rounded-[6px] text-zinc-400 enabled:hover:bg-zinc-100 enabled:hover:text-zinc-800 disabled:text-zinc-300 sm:size-6 dark:text-zinc-400 dark:enabled:hover:bg-white/20 dark:enabled:hover:text-white dark:disabled:text-zinc-500"
+      x-on:click="turn(page + 1)"
+      x-bind:disabled="page >= pages"
+      aria-label="Next &amp;raquo;"
+    >
+      <svg class="shrink-0 [:where(&amp;)]:size-4 rtl:hidden" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/>
+</svg>
+
+              <svg class="shrink-0 [:where(&amp;)]:size-4 hidden rtl:inline" data-flux-icon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">
+  <path fill-rule="evenodd" d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd"/>
+</svg>
+
+            </button>
+  </div>
+</div>
+  </section>
+
+    <footer
+  class="mx-auto mt-12 max-w-4xl border-t border-zinc-200 pt-4 pb-2 text-center text-xs leading-relaxed text-zinc-500 dark:border-zinc-700 dark:text-zinc-400"
+  data-test="translation-notice"
+>
+  <p>
+    This English translation was machine-generated by OpenAI and may contain errors. The original Arabic text is authoritative.
+    <a
+      href="https://docs.google.com/forms/d/e/1FAIpQLSff-a0SHkwz3jpEkg0emW7-hK9oI0TMBmrBHRnermrLYWdu7g/viewform?usp=pp_url&amp;entry.1782009901="
+      target="_blank"
+      rel="noopener"
+      class="underline hover:text-zinc-700 dark:hover:text-zinc-200"
+      x-data
+      x-on:click="$el.href = 'https:\/\/docs.google.com\/forms\/d\/e\/1FAIpQLSff-a0SHkwz3jpEkg0emW7-hK9oI0TMBmrBHRnermrLYWdu7g\/viewform?usp=pp_url\u0026entry.1782009901=' + encodeURIComponent(location.href)"
+      data-test="suggest-correction"
+    >
+      Suggest a correction
+    </a>
+  </p>
+</footer>
+    </div>
+
+  
+  <script src="../../../../../assets/static.js?v=c61067d140"></script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+window.bahithSheets.put({"321434":{"kind":"hadith","books":1,"works":1,"multi":[],"rows":[{"author":"ابن رجب الحنبلي","death":795,"editions":[{"id":3315,"title":"فتح الباري لابن رجب","label":"فتح الباري لابن رجب","number":null,"href":"books/033/3315/2478.html#p2512"}]}],"plain":[0],"collections":[0]}});

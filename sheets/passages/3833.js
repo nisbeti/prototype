@@ -1,0 +1,1 @@
+window.bahithSheets.put({"383334":{"kind":"passage","books":1,"works":1,"multi":[],"rows":[{"author":"ابن رجب الحنبلي","death":795,"editions":[{"id":3325,"title":"جامع العلوم والحكم - ت الأرنؤوط","label":"ت الأرنؤوط","number":null,"href":"books/033/3325/453.html#p488"}]}],"plain":[0],"collections":[0]}});

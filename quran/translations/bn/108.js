@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"bn","lang":"bn","dir":"ltr","title":"Muhiuddin Khan","version":"April 30, 2011","source":"tanzil","ayat":{"1":["নিশ্চয় আমি আপনাকে কাওসার দান করেছি।",null],"2":["অতএব আপনার পালনকর্তার উদ্দেশ্যে নামায পড়ুন এবং কোরবানী করুন।",null],"3":["যে আপনার শত্রু, সেই তো লেজকাটা, নির্বংশ।",null]}});

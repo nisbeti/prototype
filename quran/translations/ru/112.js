@@ -1,0 +1,1 @@
+window.bahithQuranTranslation({"language":"ru","lang":"ru","dir":"ltr","title":"Elmir Kuliev","version":"May 29, 2011","source":"tanzil","ayat":{"1":["Скажи: «Он - Аллах Единый,",null],"2":["Аллах Самодостаточный.",null],"3":["Он не родил и не был рожден,",null],"4":["и нет никого равного Ему».",null]}});
